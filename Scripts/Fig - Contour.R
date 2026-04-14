@@ -12,28 +12,23 @@
 ## =============================================================================
 
 source('Scripts/00-Libraries.R', encoding = 'UTF-8')
-df <- read_csv("Parameters/panel_data.csv", show_col_types = FALSE)
+
+## Load data -------------------------------------------------------------------
+# Materials (DMC only for figures), GDP and population from separate panel files.
+# Join GDP/pop only where needed — prevents accidental aggregation over materials.
+df <- read_csv("Parameters/materials_DMC.csv", show_col_types = FALSE)
+df_gdp <- read_csv("Parameters/gdp.csv", show_col_types = FALSE)
+df_pop <- read_csv("Parameters/population_historical.csv", show_col_types = FALSE)
+
 df <- df |> filter(abs(DMC_Mt) > 0.1)
 cat("Rows:", nrow(df), "\n")
 
-## Colour palettes (copied from Figure 1 - TimeSeries.R) ----------------------
+## Colour palettes — defined in 00-CommonParameters.R -------------------------
+# PALETTE_REGIONS          : 9 analysis groups (regions)
+# PALETTE_MATERIALS        : 21 material categories
+# PALETTE_MATERIAL_GROUPS  : 6 material groups
 
-# 21-colour palette for material categories — tab20 + 2 extras, assigned alphabetically
-# fmt: skip
-TAB20 <- c("#1f77b4","#aec7e8","#ff7f0e","#ffbb78","#2ca02c","#98df8a","#d62728",
-           "#ff9896","#9467bd","#8c564b","#c49c94","#e377c2","#f7b6d2","#7f7f7f",
-           "#c7c7c7","#bcbd22","#dbdb8d","#17becf","#9edae5","#393b79","#637939")
-mats_sorted <- sort(unique(df$material_category))
-palette_mats <- setNames(TAB20[seq_len(length(mats_sorted))], mats_sorted)
-
-groups_sorted <- sort(unique(df$Analysis_group[!is.na(df$Analysis_group)]))
-n_groups <- length(groups_sorted)
-# fmt: skip
-group_palette_raw <- c("#8dd3c7","#ffffb3","#bebada","#fb8072","#80b1d3","#fdb462","#b3de69",
-                       "#fccde5","#d9d9d9","#bc80bd","#ccebc5","#ffed6f","#e41a1c","#377eb8","#4daf4a")
-palette_groups <- setNames(group_palette_raw[seq_len(n_groups)], groups_sorted)
-
-## Material group dictionary and palette (same as Fig 1C) ---------------------
+## Material group dictionary ---------------------------------------------------
 
 dict_mat <- readxl::read_excel("Inputs/Dict_Materials.xlsx", sheet = "Categories") %>%
   select(Material_22, Material_group)
@@ -44,18 +39,16 @@ grp_mat_order <- df %>%
   group_by(Material_group) %>%
   summarise(total = sum(DMC_Mt), .groups = "drop") %>%
   arrange(total)
-n_mat_groups <- nrow(grp_mat_order)
-# fmt: skip
-palette_mat_groups_raw <- c("#e41a1c","#377eb8","#4daf4a","#ff7f00","#984ea3","#a65628")
-palette_mat_groups <- setNames(palette_mat_groups_raw[seq_len(n_mat_groups)], grp_mat_order$Material_group)
 
 ## Base data: deduplicated population and GDP (one row per country-year) -------
+# Analysis_group lives in the material file; join it into pop and GDP frames.
+iso_region <- df %>% distinct(ISO3, Analysis_group)
 
 years_5yr <- seq(1970, 2023, by = 1)
 
-pop_cy <- df %>% distinct(ISO3, year, Analysis_group, population) %>% filter(!is.na(population))
+pop_cy <- df_pop %>% left_join(iso_region, by = "ISO3") %>% filter(!is.na(population))
 
-gdp_cy <- df %>% distinct(ISO3, year, Analysis_group, GDP_PPP_2017USD) %>% filter(!is.na(GDP_PPP_2017USD))
+gdp_cy <- df_gdp %>% left_join(iso_region, by = "ISO3") %>% filter(!is.na(GDP_PPP_2017USD))
 
 ## Helper: build iso-line dataframe -------------------------------------------
 # Mat/cap = Mat/GDP × GDP/cap  →  y = iso_level_kg / x  (hyperbola)
@@ -115,11 +108,7 @@ country_base <- dmc_all %>%
 # Consistent regional economic totals (same country set for all material splits)
 region_econ <- country_base %>%
   group_by(year, Analysis_group) %>%
-  summarise(
-    GDP = sum(GDP_PPP_2017USD, na.rm = TRUE),
-    pop = sum(population, na.rm = TRUE),
-    .groups = "drop"
-  ) %>%
+  summarise(GDP = sum(GDP_PPP_2017USD, na.rm = TRUE), pop = sum(population, na.rm = TRUE), .groups = "drop") %>%
   mutate(gdp_pc = GDP / pop)
 
 # Set of (ISO3, year, Analysis_group) in the consistent base — used to restrict DMC
@@ -131,7 +120,7 @@ region_all <- country_base %>%
   left_join(region_econ, by = c("year", "Analysis_group")) %>%
   mutate(
     mat_gdp = DMC_kg / GDP, # kg / 2017 USD PPP
-    gdp_pc  = GDP / pop     # 2017 USD PPP / person
+    gdp_pc = GDP / pop # 2017 USD PPP / person
   ) %>%
   filter(year %in% years_5yr, !is.na(mat_gdp), !is.na(gdp_pc)) %>%
   arrange(Analysis_group, year)
@@ -208,10 +197,11 @@ ggplot(region_all, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
     segment.size = 0.3,
     segment.colour = "grey40"
   ) +
-  scale_colour_manual(values = palette_groups, name = NULL) +
-  scale_x_continuous(limits = c(0, 10)) +
-  scale_y_log10(labels = label_dollar(accuracy = 1)) +
+  scale_colour_manual(values = PALETTE_REGIONS, name = NULL) +
+  scale_x_continuous(limits = c(0, 7.4)) +
+  scale_y_log10(labels = label_dollar(accuracy = 1), limits = c(NA, 100e3)) +
   annotation_logticks(sides = "l", linewidth = 0.2, colour = "grey50") +
+  coord_cartesian(clip = "off", expand = F) +
   theme_pb_large() +
   labs(
     x = "Material Intensity (kg per 2017 USD PPP)",
@@ -238,6 +228,7 @@ region_grp <- df %>%
   summarise(DMC_kg = sum(DMC_Mt * 1e9, na.rm = TRUE), .groups = "drop") %>%
   left_join(region_econ, by = c("year", "Analysis_group")) %>%
   filter(!is.na(GDP), year %in% years_5yr) %>%
+  filter(!(Material_group %in% c("Mixed", "Waste"))) |>
   mutate(mat_gdp = DMC_kg / GDP, gdp_pc = GDP / pop) %>%
   mutate(Material_group = factor(Material_group, levels = grp_mat_order$Material_group)) %>%
   arrange(Analysis_group, Material_group, year)
@@ -324,10 +315,11 @@ ggplot(region_grp, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
     segment.colour = "grey40"
   ) +
   facet_wrap(~Material_group, nrow = 2, scales = "free") +
-  scale_colour_manual(values = palette_groups, name = NULL) +
+  scale_colour_manual(values = PALETTE_REGIONS, name = NULL) +
   scale_x_continuous(labels = label_number(accuracy = 0.01)) +
-  scale_y_log10(labels = label_dollar(accuracy = 1)) +
+  scale_y_log10(labels = label_dollar(accuracy = 1), limits = c(NA, 100e3)) +
   annotation_logticks(sides = "l", linewidth = 0.18, colour = "grey50") +
+  coord_cartesian(clip = "off", expand = F) +
   theme_pb_large() +
   labs(
     x = "Material Intensity (kg per 2017 USD PPP)",
@@ -348,6 +340,7 @@ ggsave("Figures/FigContour_B_material_group.png", ggplot2::last_plot(), units = 
 ## FIGURE C: Faceted by all 22 material categories -----------------------------
 
 cat("\n── Figure Contour C: 22 material categories ──\n")
+
 
 # DMC numerator only — same consistent country base and region_econ denominator
 # as region_all, so sum of all 22 materials' mat/cap equals the total.
@@ -444,11 +437,12 @@ ggplot(region_mat, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
     min.segment.length = 0.3
   ) +
   facet_wrap(~mat_label, nrow = 4, scales = "free") +
-  scale_colour_manual(values = palette_groups, name = NULL) +
+  scale_colour_manual(values = PALETTE_REGIONS, name = NULL) +
   scale_x_continuous(labels = label_number(accuracy = 0.001)) +
-  scale_y_log10(labels = label_dollar(accuracy = 1)) +
+  scale_y_log10(labels = label_dollar(accuracy = 1), limits = c(NA, 100e3)) +
   annotation_logticks(sides = "l", linewidth = 0.15, colour = "grey50") +
   theme_pb_large() +
+  coord_cartesian(clip = "off", expand = F) +
   labs(
     x = "Material Intensity (kg per 2017 USD PPP)",
     y = "GDP per Capita (2017 USD PPP)",

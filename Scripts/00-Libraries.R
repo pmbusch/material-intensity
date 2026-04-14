@@ -33,6 +33,7 @@ lapply(list_libraries, require, character.only = TRUE)
 rm(list_libraries)
 
 source("Scripts/00b-Theme.R", encoding = "UTF-8")
+source("Scripts/00-CommonParameters.R", encoding = "UTF-8")
 
 # Functions -----
 # load all required functions automatically
