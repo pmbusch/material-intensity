@@ -14,11 +14,10 @@
 source('Scripts/00-Libraries.R', encoding = 'UTF-8')
 
 ## Load data -------------------------------------------------------------------
-# Materials (DMC only for figures), GDP and population from separate panel files.
-# Join GDP/pop only where needed — prevents accidental aggregation over materials.
-df <- read_csv("Parameters/materials_DMC.csv", show_col_types = FALSE)
-df_gdp <- read_csv("Parameters/gdp.csv", show_col_types = FALSE)
-df_pop <- read_csv("Parameters/population_historical.csv", show_col_types = FALSE)
+# Pre-aggregated regional files produced by 01a/01b/01c scripts.
+df <- read_csv("Parameters/materials_region_DMC.csv", show_col_types = FALSE) %>% rename(Analysis_group = Region)
+df_gdp <- read_csv("Parameters/gdp_region.csv", show_col_types = FALSE)
+df_pop <- read_csv("Parameters/population_region_historical.csv", show_col_types = FALSE)
 
 df <- df |> filter(abs(DMC_Mt) > 0.1)
 cat("Rows:", nrow(df), "\n")
@@ -40,15 +39,7 @@ grp_mat_order <- df %>%
   summarise(total = sum(DMC_Mt), .groups = "drop") %>%
   arrange(total)
 
-## Base data: deduplicated population and GDP (one row per country-year) -------
-# Analysis_group lives in the material file; join it into pop and GDP frames.
-iso_region <- df %>% distinct(ISO3, Analysis_group)
-
-years_5yr <- seq(1970, 2023, by = 1)
-
-pop_cy <- df_pop %>% left_join(iso_region, by = "ISO3") %>% filter(!is.na(population))
-
-gdp_cy <- df_gdp %>% left_join(iso_region, by = "ISO3") %>% filter(!is.na(GDP_PPP_2017USD))
+years_5yr <- seq(1970, 2024, by = 1)
 
 ## Helper: build iso-line dataframe -------------------------------------------
 # Mat/cap = Mat/GDP × GDP/cap  →  y = iso_level_kg / x  (hyperbola)
@@ -71,7 +62,7 @@ make_isolines <- function(iso_levels_t, x_min, x_max, y_min = -Inf, y_max = Inf,
 # Selects up to n_max "nice" log-spaced values (1/2/5 series) spanning from
 # just below the data minimum to just above the data maximum.
 
-NICE_LEVELS_T <- sort(c(outer(c(1, 2, 5), 10^(-3:3)))) # 0.001 … 5000 t/cap
+NICE_LEVELS_T <- sort(c(outer(c(1, 2, 3, 4, 5), 10^(-3:3)))) # 0.001 … 5000 t/cap
 
 pick_iso_levels <- function(mat_pc_vals_kg, n_max = 5) {
   min_t <- min(mat_pc_vals_kg, na.rm = TRUE) / 1000 # kg → t
@@ -92,38 +83,25 @@ pick_iso_levels <- function(mat_pc_vals_kg, n_max = 5) {
 
 cat("\n── Figure Contour A: all materials ──\n")
 
-dmc_all <- df %>%
+# Data already at regional level — join GDP and population directly by region-year
+region_all <- df %>%
   filter(!is.na(Analysis_group)) %>%
-  group_by(ISO3, year, Analysis_group) %>%
-  summarise(DMC_Mt = sum(DMC_Mt, na.rm = TRUE), .groups = "drop")
-
-# Join population and GDP once to get the consistent country-year base.
-# This base is reused as the GDP/pop denominator for all material-group and
-# individual-material figures — ensuring group mat/cap can never exceed the total.
-country_base <- dmc_all %>%
-  left_join(pop_cy, by = c("ISO3", "year", "Analysis_group")) %>%
-  left_join(gdp_cy, by = c("ISO3", "year", "Analysis_group")) %>%
-  filter(!is.na(population), !is.na(GDP_PPP_2017USD))
-
-# Consistent regional economic totals (same country set for all material splits)
-region_econ <- country_base %>%
-  group_by(year, Analysis_group) %>%
-  summarise(GDP = sum(GDP_PPP_2017USD, na.rm = TRUE), pop = sum(population, na.rm = TRUE), .groups = "drop") %>%
-  mutate(gdp_pc = GDP / pop)
-
-# Set of (ISO3, year, Analysis_group) in the consistent base — used to restrict DMC
-countries_base <- country_base %>% select(ISO3, year, Analysis_group) %>% distinct()
-
-region_all <- country_base %>%
   group_by(year, Analysis_group) %>%
   summarise(DMC_kg = sum(DMC_Mt * 1e9, na.rm = TRUE), .groups = "drop") %>%
-  left_join(region_econ, by = c("year", "Analysis_group")) %>%
+  left_join(df_gdp, by = c("Analysis_group" = "Region", "year")) %>%
+  left_join(df_pop, by = c("Analysis_group" = "Region", "year")) %>%
+  filter(!is.na(GDP_PPP_2017USD), !is.na(population)) %>%
   mutate(
-    mat_gdp = DMC_kg / GDP, # kg / 2017 USD PPP
-    gdp_pc = GDP / pop # 2017 USD PPP / person
+    GDP = GDP_PPP_2017USD,
+    pop = population,
+    mat_gdp = DMC_kg / GDP_PPP_2017USD,
+    gdp_pc = GDP_PPP_2017USD / population
   ) %>%
   filter(year %in% years_5yr, !is.na(mat_gdp), !is.na(gdp_pc)) %>%
   arrange(Analysis_group, year)
+
+# Region-year econ totals reused as denominator in Figures B and C
+region_econ <- region_all %>% select(year, Analysis_group, GDP, pop)
 
 # World average: sum across all regions
 world_all <- region_all %>%
@@ -132,7 +110,7 @@ world_all <- region_all %>%
   mutate(mat_gdp = DMC_kg / GDP, gdp_pc = GDP / pop)
 
 iso_a <- make_isolines(
-  iso_levels_t = c(0.5, 1, 2, 5, 10, 20),
+  iso_levels_t = c(0.5, 1, 2, 5, 10, 20, 30, 40),
   x_min = min(region_all$mat_gdp),
   x_max = max(region_all$mat_gdp),
   y_min = min(region_all$gdp_pc),
@@ -155,8 +133,6 @@ ggplot(region_all, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
     arrow = arrow(length = unit(0.12, "cm"), type = "closed", ends = "last"),
     linewidth = 0.6
   ) +
-  geom_point(data = filter(region_all, year == 1970), shape = 15, size = 2.2) +
-  geom_point(data = filter(region_all, year == 2023), shape = 16, size = 2.2) +
   # World average — black line on top
   geom_path(
     data = world_all,
@@ -166,17 +142,25 @@ ggplot(region_all, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
     arrow = arrow(length = unit(0.13, "cm"), type = "closed", ends = "last"),
     inherit.aes = FALSE
   ) +
+  # World average decade points
   geom_point(
-    data = filter(world_all, year == 1970), aes(x = mat_gdp, y = gdp_pc),
-    colour = "black", shape = 15, size = 2.4, inherit.aes = FALSE
-  ) +
-  geom_point(
-    data = filter(world_all, year == 2023), aes(x = mat_gdp, y = gdp_pc),
+    data = filter(world_all, year %in% seq(1970, 2020, by = 10)),
+    aes(x = mat_gdp, y = gdp_pc, alpha = year),
     colour = "black", shape = 16, size = 2.4, inherit.aes = FALSE
   ) +
-  # Direct region labels at 2023 endpoint
+  # Decade points with alpha gradient: light (1970) → dark (2020)
+  geom_point(
+  data = filter(region_all, year %in% seq(1970, 2020, by = 10)),
+  shape = 16, size = 2, colour = "white", alpha = 1
+) +
+  geom_point(
+      data = filter(region_all, year %in% seq(1970, 2020, by = 10)),
+      aes(alpha = year),
+      shape = 16, size = 2
+    ) +
+  # Direct region labels at 2024 endpoint
   geom_text_repel(
-    data = filter(region_all, year == 2023),
+    data = filter(region_all, year == 2024),
     aes(label = Analysis_group),
     size = 2.2,
     show.legend = FALSE,
@@ -187,7 +171,7 @@ ggplot(region_all, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
     min.segment.length = 0.2
   ) +
   geom_text_repel(
-    data = filter(world_all, year == 2023),
+    data = filter(world_all, year == 2024),
     aes(x = mat_gdp, y = gdp_pc, label = "World avg"),
     colour = "black",
     fontface = "bold",
@@ -197,21 +181,27 @@ ggplot(region_all, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
     segment.size = 0.3,
     segment.colour = "grey40"
   ) +
-  scale_colour_manual(values = PALETTE_REGIONS, name = NULL) +
-  scale_x_continuous(limits = c(0, 7.4)) +
-  scale_y_log10(labels = label_dollar(accuracy = 1), limits = c(NA, 100e3)) +
-  annotation_logticks(sides = "l", linewidth = 0.2, colour = "grey50") +
-  coord_cartesian(clip = "off", expand = F) +
-  theme_pb_large() +
-  labs(
-    x = "Material Intensity (kg per 2017 USD PPP)",
-    y = "GDP per Capita (2017 USD PPP)",
-    caption = "■ 1970  ● 2023  — arrowhead points toward 2023"
+  # Year labels for East Asia at start (1970) and end (2024)
+  geom_text(
+    data = filter(world_all, year %in% c(1970, 2024)),
+    aes(label = year,vjust=c(1.5, 0),hjust=c(-0.2, 1.5)),
+    fontface="bold",
+    colour = "black", size = 2.5,
+    show.legend = FALSE
   ) +
-  theme(legend.position = "none", plot.caption = element_text(hjust = 0, size = 6))
+  scale_colour_manual(values = PALETTE_REGIONS, name = NULL) +
+  scale_alpha_continuous(range = c(0.4, 1), guide = "none") +
+  scale_x_continuous(breaks = c(0.5, 2, 4, 6)) +
+  scale_y_log10(labels = label_dollar(accuracy = 1)) +
+  annotation_logticks(sides = "l", linewidth = 0.2, colour = "grey50") +
+  coord_cartesian(clip = "off", expand = F, xlim = c(0.3, 7.4), ylim = c(NA, 100e3)) +
+  theme_pb_large() +
+  labs(x = "Material Intensity (kg per 2017 USD PPP)", y = "GDP per Capita (2017 USD PPP)") +
+  theme(legend.position = "none")
 
 # fmt: skip
 ggsave("Figures/FigContour_A_all.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7 * 2, height = 8.7 * 2)
+ggsave("Figures/SVG/FigContour_A_all.svg", ggplot2::last_plot(), units = 'cm', width = 8.7 * 2, height = 8.7 * 2)
 
 
 ## FIGURE B: Faceted by material group -----------------------------------------
@@ -223,7 +213,6 @@ cat("\n── Figure Contour B: by material group ──\n")
 region_grp <- df %>%
   left_join(dict_mat, by = c("material_category" = "Material_22")) %>%
   filter(!is.na(Analysis_group), !is.na(Material_group)) %>%
-  semi_join(countries_base, by = c("ISO3", "year", "Analysis_group")) %>%
   group_by(year, Analysis_group, Material_group) %>%
   summarise(DMC_kg = sum(DMC_Mt * 1e9, na.rm = TRUE), .groups = "drop") %>%
   left_join(region_econ, by = c("year", "Analysis_group")) %>%
@@ -272,8 +261,6 @@ ggplot(region_grp, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
     arrow = arrow(length = unit(0.1, "cm"), type = "closed", ends = "last"),
     linewidth = 0.5
   ) +
-  geom_point(data = filter(region_grp, year == 1970), shape = 15, size = 1.8) +
-  geom_point(data = filter(region_grp, year == 2023), shape = 16, size = 1.8) +
   # World average per group — black line
   geom_path(
     data = world_grp,
@@ -283,17 +270,25 @@ ggplot(region_grp, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
     arrow = arrow(length = unit(0.1, "cm"), type = "closed", ends = "last"),
     inherit.aes = FALSE
   ) +
+  # World average decade points
   geom_point(
-    data = filter(world_grp, year == 1970), aes(x = mat_gdp, y = gdp_pc),
-    colour = "black", shape = 15, size = 2, inherit.aes = FALSE
-  ) +
-  geom_point(
-    data = filter(world_grp, year == 2023), aes(x = mat_gdp, y = gdp_pc),
+    data = filter(world_grp, year %in% seq(1970, 2020, by = 10)),
+    aes(x = mat_gdp, y = gdp_pc, alpha = year),
     colour = "black", shape = 16, size = 2, inherit.aes = FALSE
   ) +
-  # Direct labels at 2023 endpoint
+  # Decade points with alpha gradient: light (1970) → dark (2020)
+  geom_point(
+    data = filter(region_grp, year %in% seq(1970, 2020, by = 10)),
+    shape = 16, size = 1.8, colour = "white", alpha = 1
+  ) +
+  geom_point(
+    data = filter(region_grp, year %in% seq(1970, 2020, by = 10)),
+    aes(alpha = year),
+    shape = 16, size = 1.8
+  ) +
+  # Direct labels at 2024 endpoint
   geom_text_repel(
-    data = filter(region_grp, year == 2023),
+    data = filter(region_grp, year == 2024),
     aes(label = Analysis_group),
     size = 1.8,
     show.legend = FALSE,
@@ -304,7 +299,7 @@ ggplot(region_grp, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
     min.segment.length = 0.2
   ) +
   geom_text_repel(
-    data = filter(world_grp, year == 2023),
+    data = filter(world_grp, year == 2024),
     aes(x = mat_gdp, y = gdp_pc, label = "World avg"),
     colour = "black",
     fontface = "bold",
@@ -314,27 +309,37 @@ ggplot(region_grp, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
     segment.size = 0.25,
     segment.colour = "grey40"
   ) +
+  # Year labels for world avg at start (1970) and end (2024)
+  geom_text(
+    data = filter(world_grp, year %in% c(1970, 2024)),
+    aes(x = mat_gdp, y = gdp_pc, label = year,
+        vjust = ifelse(year == 1970, 1.5, 0),
+        hjust = ifelse(year == 1970, -0.2, 1.5)),
+    fontface = "bold",
+    colour = "black", size = 2,
+    show.legend = FALSE,
+    inherit.aes = FALSE
+  ) +
   facet_wrap(~Material_group, nrow = 2, scales = "free") +
   scale_colour_manual(values = PALETTE_REGIONS, name = NULL) +
+  scale_alpha_continuous(range = c(0.4, 1), guide = "none") +
   scale_x_continuous(labels = label_number(accuracy = 0.01)) +
-  scale_y_log10(labels = label_dollar(accuracy = 1), limits = c(NA, 100e3)) +
+  scale_y_log10(labels = label_dollar(accuracy = 1)) +
   annotation_logticks(sides = "l", linewidth = 0.18, colour = "grey50") +
-  coord_cartesian(clip = "off", expand = F) +
+  coord_cartesian(clip = "off", expand = F, ylim = c(NA, 100e3)) +
   theme_pb_large() +
-  labs(
-    x = "Material Intensity (kg per 2017 USD PPP)",
-    y = "GDP per Capita (2017 USD PPP)",
-    caption = "■ 1970  ● 2023  — arrowhead points toward 2023  — black line: World avg"
-  ) +
-  theme(
-    legend.position = "none",
-    plot.caption = element_text(hjust = 0, size = 6),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6)
-  )
+  labs(x = "Material Intensity (kg per 2017 USD PPP)", y = "GDP per Capita (2017 USD PPP)") +
+  theme(legend.position = "none", axis.text.x = element_text(size = 6), axis.text.y = element_text(size = 6))
 
 # fmt: skip
 ggsave("Figures/FigContour_B_material_group.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7 * 3, height = 8.7 * 2)
+ggsave(
+  "Figures/SVG/FigContour_B_material_group.svg",
+  ggplot2::last_plot(),
+  units = 'cm',
+  width = 8.7 * 3,
+  height = 8.7 * 2
+)
 
 
 ## FIGURE C: Faceted by all 22 material categories -----------------------------
@@ -346,7 +351,6 @@ cat("\n── Figure Contour C: 22 material categories ──\n")
 # as region_all, so sum of all 22 materials' mat/cap equals the total.
 region_mat <- df %>%
   filter(!is.na(Analysis_group)) %>%
-  semi_join(countries_base, by = c("ISO3", "year", "Analysis_group")) %>%
   group_by(year, Analysis_group, material_category) %>%
   summarise(DMC_kg = sum(DMC_Mt * 1e9, na.rm = TRUE), .groups = "drop") %>%
   left_join(region_econ, by = c("year", "Analysis_group")) %>%
@@ -405,8 +409,6 @@ ggplot(region_mat, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
     arrow = arrow(length = unit(0.08, "cm"), type = "closed", ends = "last"),
     linewidth = 0.38
   ) +
-  geom_point(data = filter(region_mat, year == 1970), shape = 15, size = 1.3) +
-  geom_point(data = filter(region_mat, year == 2023), shape = 16, size = 1.3) +
   # World average per material — black line
   geom_path(
     data = world_mat,
@@ -416,17 +418,25 @@ ggplot(region_mat, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
     arrow = arrow(length = unit(0.08, "cm"), type = "closed", ends = "last"),
     inherit.aes = FALSE
   ) +
+  # World average decade points
   geom_point(
-    data = filter(world_mat, year == 1970), aes(x = mat_gdp, y = gdp_pc),
-    colour = "black", shape = 15, size = 1.4, inherit.aes = FALSE
-  ) +
-  geom_point(
-    data = filter(world_mat, year == 2023), aes(x = mat_gdp, y = gdp_pc),
+    data = filter(world_mat, year %in% seq(1970, 2020, by = 10)),
+    aes(x = mat_gdp, y = gdp_pc, alpha = year),
     colour = "black", shape = 16, size = 1.4, inherit.aes = FALSE
   ) +
-  # Direct labels at 2023 endpoint (skip to avoid clutter in 22-panel plot)
+  # Decade points with alpha gradient: light (1970) → dark (2020)
+  geom_point(
+    data = filter(region_mat, year %in% seq(1970, 2020, by = 10)),
+    shape = 16, size = 1.3, colour = "white", alpha = 1
+  ) +
+  geom_point(
+    data = filter(region_mat, year %in% seq(1970, 2020, by = 10)),
+    aes(alpha = year),
+    shape = 16, size = 1.3
+  ) +
+  # Direct labels at 2024 endpoint (skip to avoid clutter in 22-panel plot)
   geom_text_repel(
-    data = filter(region_mat, year == 2023),
+    data = filter(region_mat, year == 2024),
     aes(label = Analysis_group),
     size = 1.5,
     show.legend = FALSE,
@@ -438,24 +448,23 @@ ggplot(region_mat, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
   ) +
   facet_wrap(~mat_label, nrow = 4, scales = "free") +
   scale_colour_manual(values = PALETTE_REGIONS, name = NULL) +
+  scale_alpha_continuous(range = c(0.4, 1), guide = "none") +
   scale_x_continuous(labels = label_number(accuracy = 0.001)) +
-  scale_y_log10(labels = label_dollar(accuracy = 1), limits = c(NA, 100e3)) +
+  scale_y_log10(labels = label_dollar(accuracy = 1)) +
   annotation_logticks(sides = "l", linewidth = 0.15, colour = "grey50") +
   theme_pb_large() +
-  coord_cartesian(clip = "off", expand = F) +
-  labs(
-    x = "Material Intensity (kg per 2017 USD PPP)",
-    y = "GDP per Capita (2017 USD PPP)",
-    caption = "■ 1970  ● 2023  — arrowhead points toward 2023  — black line: World avg"
-  ) +
-  theme(
-    legend.position = "none",
-    plot.caption = element_text(hjust = 0, size = 6),
-    axis.text.x = element_text(size = 5),
-    axis.text.y = element_text(size = 5)
-  )
+  coord_cartesian(clip = "off", expand = F, ylim = c(NA, 100e3)) +
+  labs(x = "Material Intensity (kg per 2017 USD PPP)", y = "GDP per Capita (2017 USD PPP)") +
+  theme(legend.position = "none", axis.text.x = element_text(size = 5), axis.text.y = element_text(size = 5))
 
 # fmt: skip
 ggsave("Figures/FigContour_C_22_materials.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7 * 4, height = 8.7 * 3)
+ggsave(
+  "Figures/SVG/FigContour_C_22_materials.svg",
+  ggplot2::last_plot(),
+  units = 'cm',
+  width = 8.7 * 4,
+  height = 8.7 * 3
+)
 
 # EoF

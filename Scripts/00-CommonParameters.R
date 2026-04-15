@@ -11,7 +11,7 @@
 ## Unknown categories fall back to grey via na.value = "#999999".
 ## =============================================================================
 
-# ── Regions (Analysis_group, 9 levels) ────────────────────────────────────────
+# ── Regions (Analysis_group, 8 levels) ────────────────────────────────────────
 # Based on Paul Tol's Vibrant palette with geographic-semantic adjustments.
 
 PALETTE_REGIONS <- c(
@@ -20,9 +20,8 @@ PALETTE_REGIONS <- c(
   "North America" = "#004488",
   "Latin America" = "#228B22",
   "Sub-Saharan Africa" = "#EE7733",
-  "North Africa & Middle East" = "#CCBB44",
+  "Middle East & North Africa" = "#CCBB44",
   "South Asia" = "#AA3377",
-  "Southeast Asia" = "#009988",
   "Oceania" = "#33BBEE"
 )
 
