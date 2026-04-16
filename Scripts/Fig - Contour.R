@@ -79,6 +79,44 @@ pick_iso_levels <- function(mat_pc_vals_kg, n_max = 5) {
   in_range
 }
 
+# LOWESS smoothing  ----------
+# Idea: avoid showing annual variability while preserving end points
+# frac: 0.181818, 10-11 years window
+smooth_lowess <- function(df, group_cols = NULL, frac = 0.18181818, year_col = "year") {
+  split_df <- if (is.null(group_cols)) list(df) else split(df, df[group_cols], drop = TRUE)
+
+  out <- lapply(split_df, function(d) {
+    x <- d[[year_col]]
+
+    for (col in c("mat_gdp", "gdp_pc")) {
+      y <- d[[col]]
+
+      d[[paste0(col, "_raw")]] <- y
+
+      ok <- is.finite(x) & is.finite(y)
+
+      # need enough points
+      if (sum(ok) < 5) {
+        d[[col]] <- y
+        next
+      }
+
+      fit <- tryCatch(loess(y[ok] ~ x[ok], span = frac, na.action = na.exclude), error = function(e) NULL)
+
+      if (is.null(fit)) {
+        d[[col]] <- y
+      } else {
+        pred <- tryCatch(predict(fit, newdata = x), error = function(e) rep(NA_real_, length(x)))
+        d[[col]] <- pred
+      }
+    }
+    d
+  })
+
+  do.call(rbind, out)
+}
+
+
 ## FIGURE A: All materials summed ----------------------------------------------
 
 cat("\n── Figure Contour A: all materials ──\n")
@@ -100,6 +138,9 @@ region_all <- df %>%
   filter(year %in% years_5yr, !is.na(mat_gdp), !is.na(gdp_pc)) %>%
   arrange(Analysis_group, year)
 
+region_all <- smooth_lowess(region_all, group_cols = c("Analysis_group"))
+
+
 # Region-year econ totals reused as denominator in Figures B and C
 region_econ <- region_all %>% select(year, Analysis_group, GDP, pop)
 
@@ -108,6 +149,8 @@ world_all <- region_all %>%
   group_by(year) %>%
   summarise(DMC_kg = sum(DMC_kg), GDP = sum(GDP), pop = sum(pop), .groups = "drop") %>%
   mutate(mat_gdp = DMC_kg / GDP, gdp_pc = GDP / pop)
+
+world_all <- smooth_lowess(world_all)
 
 iso_a <- make_isolines(
   iso_levels_t = c(0.5, 1, 2, 5, 10, 20, 30, 40),
@@ -222,11 +265,15 @@ region_grp <- df %>%
   mutate(Material_group = factor(Material_group, levels = grp_mat_order$Material_group)) %>%
   arrange(Analysis_group, Material_group, year)
 
+region_grp <- smooth_lowess(region_grp, group_cols = c("Analysis_group", "Material_group"))
+
 # World average per material group
 world_grp <- region_grp %>%
   group_by(year, Material_group) %>%
   summarise(DMC_kg = sum(DMC_kg), GDP = sum(GDP), pop = sum(pop), .groups = "drop") %>%
   mutate(mat_gdp = DMC_kg / GDP, gdp_pc = GDP / pop)
+
+world_grp <- smooth_lowess(world_grp, group_cols = c("Material_group"))
 
 # Per-group iso-lines: auto-pick levels that bracket actual mat/cap range,
 # and clip x/y to the data range so the facet axes aren't expanded by the lines.
@@ -370,11 +417,15 @@ region_mat <- region_mat %>%
   ) %>%
   arrange(Analysis_group, material_category, year)
 
+region_mat <- smooth_lowess(region_mat, group_cols = c("Analysis_group", "material_category"))
+
 # World average per material category
 world_mat <- region_mat %>%
   group_by(year, material_category, mat_label) %>%
   summarise(DMC_kg = sum(DMC_kg), GDP = sum(GDP), pop = sum(pop), .groups = "drop") %>%
   mutate(mat_gdp = DMC_kg / GDP, gdp_pc = GDP / pop)
+
+world_mat <- smooth_lowess(world_mat, group_cols = c("material_category"))
 
 # Per-material iso-lines: auto-pick levels that bracket actual mat/cap range,
 # and clip x/y to the data range so facet axes aren't expanded by the lines.
@@ -419,6 +470,10 @@ ggplot(region_mat, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
     inherit.aes = FALSE
   ) +
   # World average decade points
+  geom_point(
+    data = filter(world_mat, year %in% seq(1970, 2020, by = 10)),
+    shape = 16, size = 1.4, colour = "white", alpha = 1
+  ) +
   geom_point(
     data = filter(world_mat, year %in% seq(1970, 2020, by = 10)),
     aes(x = mat_gdp, y = gdp_pc, alpha = year),
