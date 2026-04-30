@@ -119,7 +119,13 @@ ggplot(pc_grp_h, aes(x = year, y = DMC_pc_tonnes, colour = analysis_group, label
 
 # fmt: skip
 ggsave("Figures/Fig2A_DMC_per_capita_by_region.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7*1.5)
-ggsave("Figures/SVG/Fig2A_DMC_per_capita_by_region.svg", ggplot2::last_plot(), units = 'cm', width = 8.7*2, height = 8.7*1.5)
+ggsave(
+  "Figures/SVG/Fig2A_DMC_per_capita_by_region.svg",
+  ggplot2::last_plot(),
+  units = 'cm',
+  width = 8.7 * 2,
+  height = 8.7 * 1.5
+)
 
 
 ##  Figure 2B: Material intensity by region (line chart) ---------------------
@@ -171,7 +177,13 @@ ggplot(
 
 # fmt: skip
 ggsave("Figures/Fig2B_material_intensity.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7*1.5)
-ggsave("Figures/SVG/Fig2B_material_intensity.svg", ggplot2::last_plot(), units = 'cm', width = 8.7*2, height = 8.7*1.5)
+ggsave(
+  "Figures/SVG/Fig2B_material_intensity.svg",
+  ggplot2::last_plot(),
+  units = 'cm',
+  width = 8.7 * 2,
+  height = 8.7 * 1.5
+)
 
 
 ###################
@@ -268,12 +280,25 @@ ggplot(pc_mat_h, aes(x = year, y = DMC_pc_tonnes, colour = analysis_group, label
 
 # fmt: skip
 ggsave("Figures/Fig2C_DMC_per_capita_by_material.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*4, height = 8.7*4)
-ggsave("Figures/SVG/Fig2C_DMC_per_capita_by_material.svg", ggplot2::last_plot(), units = 'cm', width = 8.7*4, height = 8.7*4)
+ggsave(
+  "Figures/SVG/Fig2C_DMC_per_capita_by_material.svg",
+  ggplot2::last_plot(),
+  units = 'cm',
+  width = 8.7 * 4,
+  height = 8.7 * 4
+)
 
 
 ##  Figure 2D: Material intensity by region and material --------------------
 
 cat("── Figure 2D ──\n")
+
+# material intesity at 2024....
+region_econ_mat |>
+  filter(year == 2024) |>
+  dplyr::select(analysis_group, material_category, intensity_kg_USD) |>
+  pivot_wider(names_from = analysis_group, values_from = intensity_kg_USD)
+
 
 int_mat <- region_econ_mat %>% select(year, analysis_group, material_category, intensity_kg_USD)
 
@@ -333,7 +358,13 @@ ggplot(
 
 # fmt: skip
 ggsave("Figures/Fig2D_material_intensity_byMaterial.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*4, height = 8.7*4)
-ggsave("Figures/SVG/Fig2D_material_intensity_byMaterial.svg", ggplot2::last_plot(), units = 'cm', width = 8.7*4, height = 8.7*4)
+ggsave(
+  "Figures/SVG/Fig2D_material_intensity_byMaterial.svg",
+  ggplot2::last_plot(),
+  units = 'cm',
+  width = 8.7 * 4,
+  height = 8.7 * 4
+)
 
 
 ## Figure 2 aux: Small multiples by material category and region -------------
@@ -383,6 +414,12 @@ ggplot(mat_region_stacked, aes(x = year, y = DMC_Mt, fill = analysis_group)) +
 
 # fmt: skip
 ggsave("Figures/Fig2F_small_multiples_material_region.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*4, height = 8.7*3)
-ggsave("Figures/SVG/Fig2F_small_multiples_material_region.svg", ggplot2::last_plot(), units = 'cm', width = 8.7*4, height = 8.7*3)
+ggsave(
+  "Figures/SVG/Fig2F_small_multiples_material_region.svg",
+  ggplot2::last_plot(),
+  units = 'cm',
+  width = 8.7 * 4,
+  height = 8.7 * 3
+)
 
 # EoF

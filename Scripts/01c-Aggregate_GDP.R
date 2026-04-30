@@ -28,7 +28,8 @@
 
 source('Scripts/00-Libraries.R', encoding = 'UTF-8')
 
-gdp_path <- "Inputs/WorldBank/API_NY.GDP.MKTP.KD_DS2_en_excel_v2_753.xls"
+gdp_path <- "Inputs/WorldBank/API_NY.GDP.MKTP.KD_DS2_en_excel_v2_753.xls" # 2015 constant
+# gdp_path <- "Inputs/WorldBank/API_NY.GDP.PCAP.PP.KD_DS2_en_excel_v2_251.xls" # 2021 constant, PPP adjusted (purchasing power parity)
 
 # Pacific island small states (PSS members, from WB composition sheet)
 # fmt: skip

@@ -67,10 +67,20 @@ PALETTE_MATERIALS <- c(
 
 # fmt: skip
 PALETTE_MATERIAL_GROUPS <- c(
-  "Energy fuels"           = "#5D4037",   # dark oil brown  (fossil fuel family)
+  "Fossil fuels"           = "#5D4037",   # dark oil brown  (fossil fuel family)
   "Biomass"                = "#558B2F",   # grass green      (biomass family)
-  "Metals and ores"        = "#B71C1C",   # iron rust red    (metals family)
-  "Construction materials" = "#78909C",   # stone grey-blue  (minerals family)
+  "Metal ores"        = "#B71C1C",   # iron rust red    (metals family)
+  "Non-metallic minerals" = "#78909C",   # stone grey-blue  (minerals family)
   "Mixed"                  = "#7B1FA2",   # purple
   "Waste"                  = "#37474F"    # dark charcoal
 )
+
+# Longest-lived at bottom of stack, shortest at top.
+PALETTE_ENDUSE <- c(
+  "Buildings" = "#2C3E7A", # dark blue
+  "Civil infrastructure" = "#5B8DB8", # medium blue
+  "Machinery" = "#E8A838", # amber
+  "Short-lived products" = "#D4583A" # red-orange
+)
+
+SSP_COLORS <- c("SSP1" = "#2d7d46", "SSP2" = "#8db84e", "SSP3" = "#e8a628", "SSP4" = "#d4622a", "SSP5" = "#c0392b")

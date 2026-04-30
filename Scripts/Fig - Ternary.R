@@ -1,11 +1,11 @@
 ## =============================================================================
 ## Fig - Ternary.R
 ## Ternary trajectories: share of material consumption by broad group
-## (Biomass / Stock materials / Energy fuels) for each region, 1970–2024.
+## (Biomass / Minerals & Metal Ores / Fossil fuels) for each region, 1970–2024.
 ## Manual Cartesian projection, standard equilateral triangle:
-##   Energy fuels     → top          (0.5, H)
-##   Biomass          → bottom-left  (0,   0)
-##   Stock materials  → bottom-right (1,   0)
+##   Fossil fuels          → top          (0.5, H)
+##   Biomass               → bottom-left  (0,   0)
+##   Minerals & Metal Ores → bottom-right (1,   0)
 ## Point size at decade marks = total Mat/GDP (kg/USD).
 ## Colour = region (PALETTE_REGIONS); alpha gradient = time (light → dark).
 ## =============================================================================
@@ -30,9 +30,12 @@ dict_mat <- readxl::read_excel("Inputs/Dict_Materials.xlsx", sheet = "Categories
 years_all <- seq(1970, 2024, by = 1)
 
 ## Map to 3 ternary categories -------------------------------------------------
+# Material_group values match Dict_Materials.xlsx → Categories → Material_group
+# (updated to PALETTE_MATERIAL_GROUPS names: "Fossil fuels", "Metal ores",
+# "Non-metallic minerals"). Both metals and minerals map to one ternary vertex.
 ternary_map <- tibble(
-  Material_group = c("Biomass", "Construction materials", "Metals and ores", "Energy fuels"),
-  ternary_group = c("Biomass", "Stock materials", "Stock materials", "Energy fuels")
+  Material_group = c("Biomass", "Fossil fuels", "Metal ores", "Non-metallic minerals"),
+  ternary_group = c("Biomass", "Fossil fuels", "Minerals & Metal Ores", "Minerals & Metal Ores")
 )
 
 ## Aggregate DMC by region × year × ternary group -----------------------------
@@ -71,10 +74,10 @@ make_wide <- function(df) {
   df %>%
     pivot_wider(names_from = ternary_group, values_from = DMC_Mt) %>%
     mutate(
-      total_3grp = Biomass + `Stock materials` + `Energy fuels`,
+      total_3grp = Biomass + `Minerals & Metal Ores` + `Fossil fuels`,
       share_biomass = Biomass / total_3grp,
-      share_stock = `Stock materials` / total_3grp,
-      share_energy = `Energy fuels` / total_3grp
+      share_stock = `Minerals & Metal Ores` / total_3grp,
+      share_energy = `Fossil fuels` / total_3grp
     ) %>%
     filter(!is.na(share_biomass), !is.na(share_stock), !is.na(share_energy)) %>%
     mutate(x_cart = share_stock + 0.5 * share_energy, y_cart = H * share_energy)
@@ -233,7 +236,7 @@ axis_arrows <- tibble(
 axis_lbl <- tibble(
   x = c(0.25 + en_nx * (ax_off + lbl_xoff), 0.75 + st_nx * (ax_off + lbl_xoff), 0.5),
   y = c(H * 0.5 + en_ny * (ax_off + lbl_xoff), H * 0.5 + st_ny * (ax_off + lbl_xoff), bi_ny * (ax_off + lbl_xoff)),
-  label = c("Energy fuels", "Stock materials", "Biomass"),
+  label = c("Fossil fuels", "Minerals & Metal Ores", "Biomass"),
   angle = c(60, -60, 0),
   hjust = c(0.5, 0.5, 0.5),
   vjust = c(0.5, 0.5, 0.5)
@@ -243,7 +246,7 @@ axis_lbl <- tibble(
 corner_lbl <- tibble(
   x = c(0, 1, 0.5),
   y = c(0, 0, H),
-  label = c("Biomass", "Stock\nmaterials", "Energy fuels"),
+  label = c("Biomass", "Minerals &\nMetal Ores", "Fossil fuels"),
   hjust = c(1.1, -0.1, 0.5),
   vjust = c(1.4, 1.4, -0.5)
 )
