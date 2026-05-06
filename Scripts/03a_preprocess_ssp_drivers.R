@@ -71,7 +71,7 @@ cat("Country name key column detected:", iiasa_name_col, "\n")
 dict_clean <- dict_iiasa %>%
   rename(iiasa_name = all_of(iiasa_name_col)) %>%
   filter(!is.na(Region)) %>%
-  select(iiasa_name, Region)
+  dplyr::select(iiasa_name, Region)
 
 cat("Countries with region assignment:", nrow(dict_clean), "\n")
 cat("Regions:", paste(sort(unique(dict_clean$Region)), collapse = ", "), "\n")
@@ -86,13 +86,13 @@ iiasa_long_raw <- iiasa_filtered %>%
   mutate(year = as.integer(year)) %>%
   filter(!is.na(value)) %>%
   rename(iiasa_region = region) %>%
-  select(ssp, iiasa_region, variable, year, value)
+  dplyr::select(ssp, iiasa_region, variable, year, value)
 
 # Historical (≤ BASE_YEAR) anchors the 2024 base value; SSPs diverge after.
 # Replicate the historical prefix for every SSP so each is a complete series.
 iiasa_hist_prefix <- iiasa_long_raw %>%
   filter(ssp %in% HIST_SCENARIO, year <= BASE_YEAR) %>%
-  select(iiasa_region, variable, year, value)
+  dplyr::select(iiasa_region, variable, year, value)
 
 iiasa_long <- bind_rows(
   purrr::map_dfr(SSP_SCENARIOS, \(s) iiasa_hist_prefix %>% mutate(ssp = s)),
@@ -151,7 +151,7 @@ iiasa_annual <- iiasa_region %>%
       tibble(year = as.integer(interp$x), value = interp$y)
     })
   ) %>%
-  select(-data) %>%
+  dplyr::select(-data) %>%
   unnest(annual_df) %>%
   ungroup()
 
@@ -164,12 +164,12 @@ cat("Year range:", min(iiasa_annual$year), "-", max(iiasa_annual$year), "\n")
 cat("\nSTEP 7: Compute index (base year", BASE_YEAR, "= 1)\n")
 
 
-base_vals <- iiasa_annual %>% filter(year == BASE_YEAR) %>% select(ssp, Region, variable, base_value = value)
+base_vals <- iiasa_annual %>% filter(year == BASE_YEAR) %>% dplyr::select(ssp, Region, variable, base_value = value)
 
 iiasa_indexed <- iiasa_annual %>%
   left_join(base_vals, by = c("ssp", "Region", "variable")) %>%
   mutate(index = if_else(!is.na(base_value) & base_value > 0, value / base_value, NA_real_)) %>%
-  select(-base_value) %>%
+  dplyr::select(-base_value) %>%
   rename(scenario = ssp, region = Region)
 
 na_index <- sum(is.na(iiasa_indexed$index))
@@ -208,7 +208,7 @@ cat("\n  GDP index at base year", BASE_YEAR, "(should all equal 1.0):\n")
 print(
   iiasa_indexed %>%
     filter(variable == "GDP|PPP", year == BASE_YEAR) %>%
-    select(scenario, region, index) %>%
+    dplyr::select(scenario, region, index) %>%
     pivot_wider(names_from = scenario, values_from = index) %>%
     arrange(region),
   n = 30

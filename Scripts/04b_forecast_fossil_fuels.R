@@ -8,7 +8,7 @@
 ##   Parameters/IIASA/ssp_drivers.rds               — GDP and population indices (Script 03a)
 ##   Inputs/IIASA_SSP/2018_Quantification/
 ##     primaryEnergy_SSP.csv                         — IIASA R5 primary energy by scenario
-##   Parameters/materials_region_DE.csv              — UNEP domestic extraction for M_2024 anchor
+##   Parameters/materials_region_DMC.csv             — UNEP DMC for M_2024 anchor
 ##
 ## Output:
 ##   Results/fossil_fuel_forecast.csv
@@ -16,6 +16,7 @@
 ## =============================================================================
 
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
+source("Scripts/04_BaseAssumptions.R", encoding = "UTF-8")
 
 # ── Marker models: one per SSP scenario ───────────────────────────────────────
 SSP_MARKERS <- c(
@@ -65,11 +66,6 @@ R5_REGION_MAP <- tribble(
   "EUR"      , "Europe & Russia" # blended OECD_EU + REF trajectory
 )
 
-BASE_YEAR <- 2024L
-FORECAST_START <- 2024L
-FORECAST_END <- 2060L
-
-
 # Step 1: Load IIASA primary energy data ──────────────────────────────────────
 
 cat("STEP 1: Load IIASA primary energy data\n")
@@ -98,7 +94,7 @@ energy_filtered <- energy_raw %>%
   filter(str_detect(scenario, "Baseline")) |>
   # Add short fuel label
   mutate(fuel = names(FUEL_VARIABLES)[match(variable, unname(FUEL_VARIABLES))]) %>%
-  select(ssp, r5_region = region, fuel, all_of(yr_cols))
+  dplyr::select(ssp, r5_region = region, fuel, all_of(yr_cols))
 
 cat("Rows after filter:", nrow(energy_filtered), "\n")
 cat("SSPs:", paste(sort(unique(energy_filtered$ssp)), collapse = ", "), "\n")
@@ -137,7 +133,7 @@ energy_annual <- energy_long %>%
       tibble(year = as.integer(interp_years), value_ej = f(interp_years))
     })
   ) %>%
-  select(-data) %>%
+  dplyr::select(-data) %>%
   unnest(annual_df) %>%
   ungroup()
 
@@ -158,7 +154,7 @@ energy_oecd_ref <- energy_annual %>%
   pivot_wider(names_from = r5_code, values_from = value_ej, values_fill = 0) %>%
   left_join(EUR_BLEND_WEIGHTS, by = "fuel") %>%
   mutate(value_ej = w_oecd_eu * OECD_EU + (1 - w_oecd_eu) * REF, r5_region = "EUR") %>%
-  select(ssp, r5_region, fuel, year, value_ej)
+  dplyr::select(ssp, r5_region, fuel, year, value_ej)
 
 cat("  Europe & Russia blended rows:", nrow(energy_oecd_ref), "\n")
 
@@ -185,7 +181,7 @@ cat("\nSTEP 6: Map R5 regions to project regions\n")
 energy_7region <- energy_r5 %>%
   left_join(R5_REGION_MAP, by = "r5_region", relationship = "many-to-many") %>%
   filter(!is.na(region)) %>%
-  select(scenario = ssp, region, fuel, year, value_ej)
+  dplyr::select(scenario = ssp, region, fuel, year, value_ej)
 
 cat("  7-region energy rows:", nrow(energy_7region), "\n")
 cat("  Regions:", paste(sort(unique(energy_7region$region)), collapse = ", "), "\n")
@@ -197,13 +193,15 @@ cat("\nSTEP 7: Load SSP drivers and compute E/GDP index\n")
 
 ssp_drivers <- read_csv("Parameters/IIASA/ssp_drivers.csv", show_col_types = FALSE)
 
-pop_index <- ssp_drivers %>% filter(variable == "Population") %>% select(scenario, region, year, pop_index = index)
+pop_index <- ssp_drivers %>%
+  filter(variable == "Population") %>%
+  dplyr::select(scenario, region, year, pop_index = index)
 
 gdp_percap_index <- ssp_drivers %>%
   filter(variable == "GDP|PPP [per capita]") %>%
-  select(scenario, region, year, gdp_percap_index = index)
+  dplyr::select(scenario, region, year, gdp_percap_index = index)
 
-gdp_value <- ssp_drivers %>% filter(variable == "GDP|PPP") %>% select(scenario, region, year, gdp_value = value)
+gdp_value <- ssp_drivers %>% filter(variable == "GDP|PPP") %>% dplyr::select(scenario, region, year, gdp_value = value)
 
 cat("  Scenarios:", paste(sort(unique(ssp_drivers$scenario)), collapse = ", "), "\n")
 cat(
@@ -222,12 +220,12 @@ e_gdp_raw <- energy_7region %>%
   left_join(gdp_value, by = c("scenario", "region", "year")) %>%
   mutate(e_gdp = value_ej / gdp_value)
 
-e_gdp_base_vals <- e_gdp_raw %>% filter(year == BASE_YEAR) %>% select(scenario, region, fuel, e_gdp_base = e_gdp)
+e_gdp_base_vals <- e_gdp_raw %>% filter(year == BASE_YEAR) %>% dplyr::select(scenario, region, fuel, e_gdp_base = e_gdp)
 
 e_gdp_index <- e_gdp_raw %>%
   left_join(e_gdp_base_vals, by = c("scenario", "region", "fuel")) %>%
   mutate(e_gdp_index = if_else(!is.na(e_gdp_base) & e_gdp_base > 0, e_gdp / e_gdp_base, NA_real_)) %>%
-  select(scenario, region, fuel, year, e_gdp_index)
+  dplyr::select(scenario, region, fuel, year, e_gdp_index)
 
 cat("  E/GDP index rows:", nrow(e_gdp_index), "\n")
 
@@ -260,22 +258,22 @@ ggsave("Figures/IIASA/PrimaryEnergy.png", ggplot2::last_plot(), units = 'cm', dp
 
 # Step 8: Extract base-year material anchor from UNEP domestic extraction ──────
 
-cat("\nSTEP 8: Extract M_2024 from UNEP DE data\n")
+cat("\nSTEP 8: Extract M_2024 from UNEP DMC data\n")
 
-unep_de <- read_csv("Parameters/materials_region_DE.csv", show_col_types = FALSE)
-cat("  UNEP DE rows:", nrow(unep_de), "| year range:", min(unep_de$year), "-", max(unep_de$year), "\n")
+unep_dmc <- read_csv("Parameters/materials_region_DMC.csv", show_col_types = FALSE)
+cat("  UNEP DMC rows:", nrow(unep_dmc), "| year range:", min(unep_dmc$year), "-", max(unep_dmc$year), "\n")
 
 # Map fuel labels to UNEP material_category names
 fuel_unep_lookup <- tibble(fuel = names(FUEL_UNEP_MAP), material_category = unname(FUEL_UNEP_MAP))
 
 # Use the last available year at or before BASE_YEAR as the anchor
-anchor_year <- max(unep_de$year[unep_de$year <= BASE_YEAR])
-cat("  Using UNEP DE anchor year:", anchor_year, "\n")
+anchor_year <- max(unep_dmc$year[unep_dmc$year <= BASE_YEAR])
+cat("  Using UNEP DMC anchor year:", anchor_year, "\n")
 
-m_2024 <- unep_de %>%
+m_2024 <- unep_dmc %>%
   filter(year == anchor_year) %>%
   inner_join(fuel_unep_lookup, by = "material_category") %>%
-  select(region = Region, fuel, M_2024_Mt = DE_Mt)
+  dplyr::select(region = Region, fuel, M_2024_Mt = DMC_Mt)
 
 cat("  Anchor rows (region × fuel):", nrow(m_2024), "\n")
 cat("  Regions in anchor:", paste(sort(unique(m_2024$region)), collapse = ", "), "\n")
@@ -298,7 +296,7 @@ forecast <- e_gdp_index %>%
     M_Mt = M_2024_Mt * pop_index * gdp_percap_index * e_gdp_index * me_ratio_index
   ) %>%
   filter(!is.na(M_Mt)) %>%
-  select(scenario, region, fuel, year, M_Mt)
+  dplyr::select(scenario, region, fuel, year, M_Mt)
 
 cat("  Forecast rows:", nrow(forecast), "\n")
 cat("  Scenarios:", paste(sort(unique(forecast$scenario)), collapse = ", "), "\n")
@@ -313,6 +311,63 @@ cat("\nSTEP 10: Save forecast\n")
 
 write_csv(forecast, "Results/fossil_fuel_forecast.csv")
 cat("  Saved: Results/fossil_fuel_forecast.csv (", nrow(forecast), "rows )\n")
+
+
+# Figure: E/G intensity index trajectory ──────────────────────────────────────
+
+# Compute data first
+df_gdp <- read_csv("Parameters/gdp_region.csv", show_col_types = FALSE)
+
+# 1. Compute historical M/G ratios (1970-2024)
+historical_mg <- unep_dmc |>
+  inner_join(fuel_unep_lookup, by = "material_category") %>%
+  group_by(Region, year, material_category) |>
+  summarise(M = sum(DMC_Mt), .groups = "drop") |>
+  left_join(df_gdp, by = c("Region", "year")) |>
+  mutate(
+    mg_ratio = M / (GDP_2015USD / 1e9), # adjust units to match mg_annual
+    scenario = "Historical"
+  ) |>
+  rename(region = Region, fuel = material_category) # if needed — see note below
+
+# 2. Get 2024 anchor values per region/category for indexing
+anchor_2024 <- historical_mg |> filter(year == 2024) |> dplyr::select(region, mg_ratio_2024 = mg_ratio, fuel)
+
+# 3. Apply index to forecast: actual M/G = index * 2024 actual M/G
+mg_forecast <- e_gdp_index |>
+  filter(year >= 2024) |>
+  mutate(fuel = FUEL_UNEP_MAP[fuel]) |>
+  left_join(anchor_2024) |>
+  mutate(mg_ratio = e_gdp_index * mg_ratio_2024)
+
+# 4. Bind historical + forecast
+mg_full <- bind_rows(
+  historical_mg |> dplyr::select(scenario, region, fuel, year, mg_ratio),
+  mg_forecast |> dplyr::select(scenario, region, fuel, year, mg_ratio)
+)
+
+mg_full |>
+  filter(year <= 2060) |>
+  ggplot(aes(year, mg_ratio, col = scenario)) +
+  geom_line() +
+  geom_textline(
+    data = ~ filter(.x, region == "Sub-Saharan Africa"),
+    aes(col = scenario, label = scenario),
+    hjust = 0.85,
+    vjust = -0.1,
+    text_smoothing = 30,
+    show.legend = FALSE,
+    linewidth = NA
+  ) +
+  facet_grid(fuel ~ region, scales = "free") +
+  scale_color_manual(values = SSP_COLORS) +
+  coord_cartesian(expand = FALSE, clip = "off") +
+  labs(x = "Year", y = "DMC / GDP (kg per 2015 USD)", color = "") +
+  theme_pb_large() +
+  theme(legend.position = c(0.05, 0.9))
+
+# fmt: skip
+ggsave("Figures/Assumptions/FossilFuelIntensity.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 4.2, height = 8.7 * 2)
 
 
 # Step 11: Summary check ──────────────────────────────────────────────────────
@@ -396,7 +451,7 @@ label_data <- forecast_plot |>
   ungroup()
 
 ggplot(forecast_plot, aes(year, M_Gt, fill = region)) +
-  geom_area(color = NA, alpha = 0.85) +
+  geom_area(color = "black",linewidth=0.2, alpha = 0.85) +
   geom_text(
     data = label_data,
     aes(x = year, y = y_mid, label = region),
