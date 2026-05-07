@@ -29,6 +29,11 @@ ASSUMPTIONS_SHEET <- "NonMetallicMinerals"
 MATERIAL_KEY <- "nonmetallic_minerals"
 FORECAST_START <- 2025L # DSM starts year after base year
 
+# ── Downcycling / substitution parameters ─────────────────────────────────────
+sub_factor_downcycling_roads <- 0.90 # recycled aggregate replacing virgin aggregate in road base
+sub_factor_recycling_same <- 0.75 # recycled concrete replacing virgin concrete (same sector)
+sub_factor_metal <- 1.00 # metal recycling is 1:1 after losses captured in EOL-RR
+max_secondary_roads <- 0.70 # max share of road material demand that can be secondary
 
 # Step 1: Load inputs ----------------------------------------------------------
 
@@ -284,6 +289,82 @@ overshoot_count <- summary_raw |> filter(production_Mt == 0, total_stock_Mt > 0)
 cat("  Year-group combos with production=0 due to stock overshoot:", overshoot_count, "\n")
 
 
+# Step 6.5: Waste recovery (downcycling for non-metallic minerals) --------------
+
+cat("\nSTEP 6.5: Waste recovery -- calculate downcycled mineral flows\n")
+
+downcycling_rates <- read_excel("Inputs/Recycling_Assumptions.xlsx", sheet = "Downcycling") |>
+  dplyr::select(region = Region, Downcycling_Buildings, Downcycling_Roads)
+
+unmatched_downcycling <- summary_raw |> distinct(region) |> anti_join(downcycling_rates, by = "region")
+if (nrow(unmatched_downcycling) > 0) {
+  warning(sprintf(
+    "[WARN] %d region(s) have no match in Downcycling sheet: %s",
+    nrow(unmatched_downcycling),
+    paste(unmatched_downcycling$region, collapse = ", ")
+  ))
+}
+
+# Compute raw recovery flows
+summary_raw <- summary_raw |>
+  left_join(downcycling_rates, by = "region") |>
+  mutate(
+    recovered_same_sector = if_else(
+      str_detect(end_use, "Building"),
+      waste_Mt * Downcycling_Buildings * sub_factor_recycling_same,
+      0
+    ),
+    recovered_to_roads = case_when(
+      str_detect(end_use, "Building") ~ waste_Mt * Downcycling_Roads * sub_factor_downcycling_roads,
+      str_detect(end_use, "Civil") ~ waste_Mt *
+        (Downcycling_Buildings + Downcycling_Roads) *
+        sub_factor_downcycling_roads,
+      TRUE ~ 0
+    )
+  )
+
+# Aggregate secondary material available for roads, cap directly — no ratio
+road_recovery <- summary_raw |>
+  group_by(scenario, region, year) |>
+  summarise(
+    secondary_available = sum(recovered_to_roads, na.rm = TRUE),
+    road_production = sum(production_Mt[str_detect(end_use, "Civil")], na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  mutate(secondary_for_roads = pmin(secondary_available, max_secondary_roads * road_production)) |>
+  dplyr::select(scenario, region, year, secondary_for_roads)
+
+# Apply credits to the correct end-use row
+summary_raw <- summary_raw |>
+  left_join(road_recovery, by = c("scenario", "region", "year")) |>
+  mutate(
+    recovered_same_sector = pmin(recovered_same_sector, production_Mt),
+    recovered_material_Mt = case_when(
+      str_detect(end_use, "Building") ~ recovered_same_sector,
+      str_detect(end_use, "Civil") ~ coalesce(secondary_for_roads, 0),
+      TRUE ~ 0
+    ),
+    recovered_material_Mt = replace_na(recovered_material_Mt, 0),
+    production_Mt = pmax(0, production_Mt - recovered_material_Mt)
+  ) |>
+  dplyr::select(
+    -recovered_same_sector,
+    -recovered_to_roads,
+    -secondary_for_roads,
+    -Downcycling_Buildings,
+    -Downcycling_Roads
+  )
+
+cat(
+  "  Total global recovered minerals (SSP2, 2050):",
+  round(
+    sum(summary_raw$recovered_material_Mt[summary_raw$scenario == "SSP2" & summary_raw$year == 2050], na.rm = TRUE),
+    1
+  ),
+  "Mt\n"
+)
+
+
 # Step 7: Save outputs ----------------------------------------------------------
 
 cat("\nSTEP 7: Save outputs\n")
@@ -298,7 +379,17 @@ write_csv(age_profile_out, paste0("Results/stock_age_profile_", MATERIAL_KEY, ".
 cat("  Saved: Results/stock_age_profile_", MATERIAL_KEY, ".csv (", nrow(age_profile_out), " rows)\n", sep = "")
 
 forecast_out <- summary_raw |>
-  dplyr::select(scenario, region, end_use, year, replacement_Mt, new_additions_Mt, production_Mt, waste_Mt)
+  dplyr::select(
+    scenario,
+    region,
+    end_use,
+    year,
+    replacement_Mt,
+    new_additions_Mt,
+    production_Mt,
+    waste_Mt,
+    recovered_material_Mt
+  )
 write_csv(forecast_out, paste0("Results/", MATERIAL_KEY, "_forecast.csv"))
 cat("  Saved: Results/", MATERIAL_KEY, "_forecast.csv (", nrow(forecast_out), " rows)\n", sep = "")
 

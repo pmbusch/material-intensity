@@ -25,7 +25,7 @@ df_pop <- read_csv("Parameters/population_region_historical.csv", show_col_types
 
 # Material group lookup (22 categories → 6 groups)
 dict_mat <- readxl::read_excel("Inputs/Dict_Materials.xlsx", sheet = "Categories") %>%
-  select(Material_22, Material_group)
+  dplyr::select(Material_22, Material_group)
 
 df <- df |> filter(abs(DMC_Mt) > 0.1)
 cat("Rows:", nrow(df), "\n")
@@ -100,7 +100,7 @@ compute_kaya_idx <- function(agg_df) {
         levels = DRIVER_LEVELS
       )
     ) %>%
-    select(year, driver, index)
+    dplyr::select(year, driver, index)
 }
 
 ## Helper: Kaya base plot ------------------------------------------------------
@@ -150,15 +150,15 @@ region_base <- df %>%
   summarise(DMC_Mt_total = sum(DMC_Mt, na.rm = TRUE), .groups = "drop") %>%
   left_join(df_pop %>% rename(analysis_group = Region), by = c("year", "analysis_group")) %>%
   left_join(df_gdp %>% rename(analysis_group = Region), by = c("year", "analysis_group")) %>%
-  filter(!is.na(population), !is.na(GDP_PPP_2017USD))
+  filter(!is.na(population), !is.na(GDP_2015USD))
 
 # Global pop + GDP by year (reused in material-level global panels)
 global_pop_gdp <- region_base %>%
   group_by(year) %>%
-  summarise(total_pop = sum(population, na.rm = TRUE), total_GDP = sum(GDP_PPP_2017USD, na.rm = TRUE), .groups = "drop")
+  summarise(total_pop = sum(population, na.rm = TRUE), total_GDP = sum(GDP_2015USD, na.rm = TRUE), .groups = "drop")
 
 # Regional pop + GDP by year (reused in material-level regional panels)
-region_pop_gdp <- region_base %>% select(year, analysis_group, total_pop = population, total_GDP = GDP_PPP_2017USD)
+region_pop_gdp <- region_base %>% dplyr::select(year, analysis_group, total_pop = population, total_GDP = GDP_2015USD)
 
 # Material ordering: descending total DMC (largest material first)
 mat_order <- df %>%
@@ -177,7 +177,7 @@ world_agg <- region_base %>%
   summarise(
     total_DMC = sum(DMC_Mt_total * 1e6, na.rm = TRUE), # Mt → tonnes
     total_pop = sum(population, na.rm = TRUE),
-    total_GDP = sum(GDP_PPP_2017USD, na.rm = TRUE),
+    total_GDP = sum(GDP_2015USD, na.rm = TRUE),
     .groups = "drop"
   )
 
@@ -195,8 +195,8 @@ ggsave("Figures/SVG/FigKa_global_kaya.svg", last_plot(), units = 'cm', width = 8
 cat("── Figure Kb ──\n")
 
 region_agg <- region_base %>%
-  mutate(total_DMC = DMC_Mt_total * 1e6, total_pop = population, total_GDP = GDP_PPP_2017USD) %>%
-  select(year, analysis_group, total_DMC, total_pop, total_GDP)
+  mutate(total_DMC = DMC_Mt_total * 1e6, total_pop = population, total_GDP = GDP_2015USD) %>%
+  dplyr::select(year, analysis_group, total_DMC, total_pop, total_GDP)
 
 region_kaya <- region_agg %>% group_by(analysis_group) %>% group_modify(~ compute_kaya_idx(.x)) %>% ungroup()
 

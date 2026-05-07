@@ -8,7 +8,7 @@
 ## =============================================================================
 
 BASE_YEAR <- 2024L
-TARGET_YEAR <- 2050L # intensity convergence year
+TARGET_YEAR <- 2060L # intensity convergence year
 FORECAST_START <- 2024L # override in DSM scripts: 2025L
 FORECAST_END <- 2060L
 SNAPSHOT_YEARS <- c(2030L, 2040L, 2050L, 2060L)

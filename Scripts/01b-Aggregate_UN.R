@@ -42,8 +42,8 @@ dict_un_agg <- read_excel("Inputs/Dict_Countries.xlsx", sheet = "UN_Agg")
 
 # Join to get ISO3 ↔ Region via the shared UN_Pop_name key
 iso_region_map <- dict_countries %>%
-  select(ISO3, UN_Pop_name) %>%
-  inner_join(dict_un_agg %>% select(UN_Pop_name, Region), by = "UN_Pop_name") %>%
+  dplyr::select(ISO3, UN_Pop_name) %>%
+  inner_join(dict_un_agg %>% dplyr::select(UN_Pop_name, Region), by = "UN_Pop_name") %>%
   filter(!is.na(ISO3), !is.na(Region))
 
 cat("ISO3-Region pairs in mapping:", nrow(iso_region_map), "\n")
@@ -79,7 +79,7 @@ read_wpp_sheet <- function(path, sheet_name) {
       population = as.numeric(pop_thou) * 1e3 # thousands → persons
     ) %>%
     filter(!is.na(population)) %>%
-    select(ISO3, loc_name, year, population)
+    dplyr::select(ISO3, loc_name, year, population)
 }
 
 pop_est <- read_wpp_sheet(pop_path, "Estimates")
@@ -137,7 +137,7 @@ cat(
 cat("\nSTEP 4: Aggregate and save population files\n")
 
 save_pop_outputs <- function(pop_df, label) {
-  pop_with_region <- pop_df %>% left_join(iso_region_map %>% select(ISO3, Region), by = "ISO3")
+  pop_with_region <- pop_df %>% left_join(iso_region_map %>% dplyr::select(ISO3, Region), by = "ISO3")
 
   # ── Regional aggregate ──────────────────────────────────────────────────────
   pop_region <- pop_with_region %>%
@@ -161,7 +161,7 @@ save_pop_outputs <- function(pop_df, label) {
   cat("  Saved:", path, "(", nrow(pop_world), "rows )\n")
 
   # ── Selected country data ───────────────────────────────────────────────────
-  pop_country <- pop_df %>% filter(ISO3 %in% COUNTRY_ISO3) %>% select(ISO3, year, population)
+  pop_country <- pop_df %>% filter(ISO3 %in% COUNTRY_ISO3) %>% dplyr::select(ISO3, year, population)
 
   path <- paste0("Parameters/population_country_", label, ".csv")
   write_csv(pop_country, path)

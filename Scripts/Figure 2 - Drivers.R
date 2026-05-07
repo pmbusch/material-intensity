@@ -10,7 +10,7 @@ source('Scripts/00-Libraries.R', encoding = 'UTF-8')
 # Columns:
 #   materials_region_DMC : Region, year, material_category, DMC_Mt
 #   population_region    : Region, year, population
-#   gdp_region           : Region, year, GDP_PPP_2017USD
+#   gdp_region           : Region, year, GDP_2015USD
 df <- read_csv("Parameters/materials_region_DMC.csv", show_col_types = FALSE)
 df_pop <- read_csv("Parameters/population_region_historical.csv", show_col_types = FALSE)
 df_gdp <- read_csv("Parameters/gdp_region.csv", show_col_types = FALSE)
@@ -52,10 +52,10 @@ dmc_region <- df %>% group_by(Region, year) %>% summarise(DMC_Mt_total = sum(DMC
 region_econ <- dmc_region %>%
   left_join(df_pop, by = c("Region", "year")) %>%
   left_join(df_gdp, by = c("Region", "year")) %>%
-  filter(!is.na(population), !is.na(GDP_PPP_2017USD)) %>%
+  filter(!is.na(population), !is.na(GDP_2015USD)) %>%
   mutate(
     DMC_pc_tonnes = DMC_Mt_total * 1e6 / population, # Mt → t, then per capita
-    intensity_kg_USD = DMC_Mt_total * 1e9 / GDP_PPP_2017USD # Mt → kg, then per USD
+    intensity_kg_USD = DMC_Mt_total * 1e9 / GDP_2015USD # Mt → kg, then per USD
   ) %>%
   rename(analysis_group = Region)
 
@@ -65,10 +65,10 @@ world_econ <- df_world_mat %>%
   summarise(DMC_Mt_total = sum(DMC_Mt, na.rm = TRUE), .groups = "drop") %>%
   left_join(df_world_pop, by = "year") %>%
   left_join(df_world_gdp, by = "year") %>%
-  filter(!is.na(population), !is.na(GDP_PPP_2017USD)) %>%
+  filter(!is.na(population), !is.na(GDP_2015USD)) %>%
   mutate(
     DMC_pc_tonnes = DMC_Mt_total * 1e6 / population,
-    intensity_kg_USD = DMC_Mt_total * 1e9 / GDP_PPP_2017USD,
+    intensity_kg_USD = DMC_Mt_total * 1e9 / GDP_2015USD,
     analysis_group = "World avg"
   )
 
@@ -77,7 +77,7 @@ label_pos_yrs <- c(2000, 2010, 2005, 2015, 2020)
 year_min <- min(region_econ$year)
 year_max <- max(region_econ$year)
 
-pc_grp <- region_econ %>% select(year, analysis_group, DMC_pc_tonnes)
+pc_grp <- region_econ %>% dplyr::select(year, analysis_group, DMC_pc_tonnes)
 
 hjust_2a <- bind_rows(
   pc_grp %>% group_by(analysis_group) %>% summarise(total = sum(DMC_pc_tonnes), .groups = "drop"),
@@ -89,10 +89,10 @@ hjust_2a <- bind_rows(
     hjust_val = (label_year - year_min) / (year_max - year_min)
   )
 
-pc_grp_h <- left_join(pc_grp, select(hjust_2a, analysis_group, hjust_val), by = "analysis_group")
+pc_grp_h <- left_join(pc_grp, dplyr::select(hjust_2a, analysis_group, hjust_val), by = "analysis_group")
 world_pc_h <- left_join(
-  world_econ %>% select(year, analysis_group, DMC_pc_tonnes),
-  select(hjust_2a, analysis_group, hjust_val),
+  world_econ %>% dplyr::select(year, analysis_group, DMC_pc_tonnes),
+  dplyr::select(hjust_2a, analysis_group, hjust_val),
   by = "analysis_group"
 )
 
@@ -132,7 +132,7 @@ ggsave(
 
 cat("── Figure 2B ──\n")
 
-intensity_grp <- region_econ %>% select(year, analysis_group, intensity_kg_USD)
+intensity_grp <- region_econ %>% dplyr::select(year, analysis_group, intensity_kg_USD)
 
 hjust_2b <- bind_rows(
   intensity_grp %>% group_by(analysis_group) %>% summarise(total = sum(intensity_kg_USD), .groups = "drop"),
@@ -144,10 +144,10 @@ hjust_2b <- bind_rows(
     hjust_val = (label_year - year_min) / (year_max - year_min)
   )
 
-int_grp_h <- left_join(intensity_grp, select(hjust_2b, analysis_group, hjust_val), by = "analysis_group")
+int_grp_h <- left_join(intensity_grp, dplyr::select(hjust_2b, analysis_group, hjust_val), by = "analysis_group")
 world_int_h <- left_join(
-  world_econ %>% select(year, analysis_group, intensity_kg_USD),
-  select(hjust_2b, analysis_group, hjust_val),
+  world_econ %>% dplyr::select(year, analysis_group, intensity_kg_USD),
+  dplyr::select(hjust_2b, analysis_group, hjust_val),
   by = "analysis_group"
 )
 
@@ -172,7 +172,7 @@ ggplot(
   scale_y_continuous() +
   coord_cartesian(clip = "off") +
   theme_pb_large() +
-  labs(title = "Material intensity", x = "Year", y = "DMC / GDP (kg per 2017 USD PPP)") +
+  labs(title = "Material intensity", x = "Year", y = "DMC / GDP (kg per 2015 USD)") +
   theme(legend.position = "none", plot.title = element_text(hjust = 0.5))
 
 # fmt: skip
@@ -211,8 +211,8 @@ dmc_mat_region <- df %>%
 region_econ_mat <- dmc_mat_region %>%
   left_join(df_pop, by = c("Region", "year")) %>%
   left_join(df_gdp, by = c("Region", "year")) %>%
-  filter(!is.na(population), !is.na(GDP_PPP_2017USD)) %>%
-  mutate(DMC_pc_tonnes = DMC_Mt_total * 1e6 / population, intensity_kg_USD = DMC_Mt_total * 1e9 / GDP_PPP_2017USD) %>%
+  filter(!is.na(population), !is.na(GDP_2015USD)) %>%
+  mutate(DMC_pc_tonnes = DMC_Mt_total * 1e6 / population, intensity_kg_USD = DMC_Mt_total * 1e9 / GDP_2015USD) %>%
   rename(analysis_group = Region)
 
 # World average per material
@@ -220,14 +220,14 @@ world_econ_mat <- df_world_mat %>%
   filter(material_category %in% selected_materials) %>%
   left_join(df_world_pop, by = "year") %>%
   left_join(df_world_gdp, by = "year") %>%
-  filter(!is.na(population), !is.na(GDP_PPP_2017USD)) %>%
+  filter(!is.na(population), !is.na(GDP_2015USD)) %>%
   mutate(
     DMC_pc_tonnes = DMC_Mt * 1e6 / population,
-    intensity_kg_USD = DMC_Mt * 1e9 / GDP_PPP_2017USD,
+    intensity_kg_USD = DMC_Mt * 1e9 / GDP_2015USD,
     analysis_group = "World avg"
   )
 
-pc_mat <- region_econ_mat %>% select(year, analysis_group, material_category, DMC_pc_tonnes)
+pc_mat <- region_econ_mat %>% dplyr::select(year, analysis_group, material_category, DMC_pc_tonnes)
 
 hjust_2c <- bind_rows(
   pc_mat %>% group_by(analysis_group, material_category) %>% summarise(total = sum(DMC_pc_tonnes), .groups = "drop"),
@@ -244,14 +244,14 @@ hjust_2c <- bind_rows(
 
 pc_mat_h <- left_join(
   pc_mat,
-  select(hjust_2c, analysis_group, material_category, hjust_val),
+  dplyr::select(hjust_2c, analysis_group, material_category, hjust_val),
   by = c("analysis_group", "material_category")
 ) |>
   mutate(material_category = factor(material_category, levels = selected_materials))
 
 world_pc_mat_h <- left_join(
-  world_econ_mat %>% select(year, analysis_group, material_category, DMC_pc_tonnes),
-  select(hjust_2c, analysis_group, material_category, hjust_val),
+  world_econ_mat %>% dplyr::select(year, analysis_group, material_category, DMC_pc_tonnes),
+  dplyr::select(hjust_2c, analysis_group, material_category, hjust_val),
   by = c("analysis_group", "material_category")
 ) |>
   mutate(material_category = factor(material_category, levels = selected_materials))
@@ -300,7 +300,7 @@ region_econ_mat |>
   pivot_wider(names_from = analysis_group, values_from = intensity_kg_USD)
 
 
-int_mat <- region_econ_mat %>% select(year, analysis_group, material_category, intensity_kg_USD)
+int_mat <- region_econ_mat %>% dplyr::select(year, analysis_group, material_category, intensity_kg_USD)
 
 hjust_2d <- bind_rows(
   int_mat %>%
@@ -319,14 +319,14 @@ hjust_2d <- bind_rows(
 
 int_mat_h <- left_join(
   int_mat,
-  select(hjust_2d, analysis_group, material_category, hjust_val),
+  dplyr::select(hjust_2d, analysis_group, material_category, hjust_val),
   by = c("analysis_group", "material_category")
 ) |>
   mutate(material_category = factor(material_category, levels = selected_materials))
 
 world_int_mat_h <- left_join(
-  world_econ_mat %>% select(year, analysis_group, material_category, intensity_kg_USD),
-  select(hjust_2d, analysis_group, material_category, hjust_val),
+  world_econ_mat %>% dplyr::select(year, analysis_group, material_category, intensity_kg_USD),
+  dplyr::select(hjust_2d, analysis_group, material_category, hjust_val),
   by = c("analysis_group", "material_category")
 ) |>
   mutate(material_category = factor(material_category, levels = selected_materials))
@@ -353,7 +353,7 @@ ggplot(
   scale_y_continuous() +
   coord_cartesian(clip = "off") +
   theme_pb_large() +
-  labs(title = "Material intensity", x = "Year", y = "DMC / GDP (kg per 2017 USD PPP)") +
+  labs(title = "Material intensity", x = "Year", y = "DMC / GDP (kg per 2015 USD)") +
   theme(legend.position = "none", plot.title = element_text(hjust = 0.5))
 
 # fmt: skip

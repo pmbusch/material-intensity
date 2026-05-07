@@ -25,7 +25,7 @@ df_gdp <- read_csv("Parameters/gdp_region.csv", show_col_types = FALSE)
 df_pop <- read_csv("Parameters/population_region_historical.csv", show_col_types = FALSE)
 
 dict_mat <- readxl::read_excel("Inputs/Dict_Materials.xlsx", sheet = "Categories") %>%
-  select(Material_22, Material_group)
+  dplyr::select(Material_22, Material_group)
 
 years_all <- seq(1970, 2024, by = 1)
 
@@ -99,12 +99,12 @@ region_matgdp <- df %>%
   group_by(year, Analysis_group) %>%
   summarise(DMC_kg = sum(DMC_Mt * 1e9, na.rm = TRUE), .groups = "drop") %>%
   left_join(df_gdp, by = c("Analysis_group" = "Region", "year")) %>%
-  filter(!is.na(GDP_PPP_2017USD)) %>%
-  mutate(mat_gdp = DMC_kg / GDP_PPP_2017USD) %>%
+  filter(!is.na(GDP_2015USD)) %>%
+  mutate(mat_gdp = DMC_kg / GDP_2015USD) %>%
   left_join(df_pop, by = c("Analysis_group" = "Region", "year")) %>%
   filter(!is.na(population)) %>%
   mutate(mat_pop = DMC_kg / population / 1e3) %>%
-  select(year, Analysis_group, mat_gdp, mat_pop)
+  dplyr::select(year, Analysis_group, mat_gdp, mat_pop)
 
 region_wide <- region_wide %>% left_join(region_matgdp, by = c("year", "Analysis_group"))
 
@@ -113,7 +113,7 @@ world_matgdp <- df %>%
   group_by(year) %>%
   summarise(DMC_kg = sum(DMC_Mt * 1e9, na.rm = TRUE), .groups = "drop") %>%
   left_join(
-    df_gdp %>% group_by(year) %>% summarise(GDP = sum(GDP_PPP_2017USD, na.rm = TRUE), .groups = "drop"),
+    df_gdp %>% group_by(year) %>% summarise(GDP = sum(GDP_2015USD, na.rm = TRUE), .groups = "drop"),
     by = "year"
   ) %>%
   filter(!is.na(GDP)) %>%
@@ -125,7 +125,7 @@ world_matgdp <- df %>%
   filter(!is.na(pop)) %>%
   mutate(mat_pop = DMC_kg / pop / 1e3)
 
-world_wide <- world_wide %>% left_join(world_matgdp %>% select(year, mat_gdp, mat_pop), by = "year")
+world_wide <- world_wide %>% left_join(world_matgdp %>% dplyr::select(year, mat_gdp, mat_pop), by = "year")
 
 decade_pts <- region_wide %>% filter(year %in% seq(1970, 2020, by = 10))
 decade_pts_world <- world_wide %>% filter(year %in% seq(1970, 2020, by = 10))

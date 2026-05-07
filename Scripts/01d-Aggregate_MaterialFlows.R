@@ -42,7 +42,7 @@ cat("\nSTEP 2: Join Region from MaterialFlows_Agg\n")
 
 mf <- mf_raw %>%
   rename(amount_t = `Amount (t)`) %>%
-  left_join(dict_agg %>% select(country, Region), by = "country") %>%
+  left_join(dict_agg %>% dplyr::select(country, Region), by = "country") %>%
   mutate(DE_Mt = amount_t / 1e6)
 
 unmatched <- mf %>% filter(is.na(Region)) %>% distinct(country) %>% pull() %>% sort()

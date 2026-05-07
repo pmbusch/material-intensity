@@ -97,7 +97,7 @@ if (length(bad_material) > 0) {
 cat("\nSTEP 3: Join Region from MISO_Agg\n")
 
 # MISO `region` column contains country names matching Dict's `Country` column
-miso_long <- miso_long %>% left_join(dict_miso %>% select(Country, Region), by = c("region" = "Country"))
+miso_long <- miso_long %>% left_join(dict_miso %>% dplyr::select(Country, Region), by = c("region" = "Country"))
 
 unmatched <- miso_long %>% filter(is.na(Region)) %>% distinct(region) %>% pull() %>% sort()
 if (length(unmatched) > 0) {
@@ -130,7 +130,7 @@ aggregate_miso <- function(df) {
     group_by(Region, material, end_use, year) %>%
     summarise(value_kt = sum(value_kt, na.rm = TRUE), .groups = "drop") %>%
     mutate(value_Mt = value_kt / 1e3) %>% # kt → Mt
-    select(Region, material, end_use, year, value_Mt)
+    dplyr::select(Region, material, end_use, year, value_Mt)
 }
 
 stock_agg <- aggregate_miso(miso_stock)

@@ -31,12 +31,12 @@ event_lines <- list(
 
 # FIGURES ---------------
 
-# Figure 1A: Global DMC by material group ------------------------------------
+# Figure 1A old: Global DMC by material group ------------------------------------
 
 cat("── Figure 1A ──\n")
 
 dict_mat <- readxl::read_excel("Inputs/Dict_Materials.xlsx", sheet = "Categories") %>%
-  select(Material_22, Material_group)
+  dplyr::select(Material_22, Material_group)
 
 global_grp_mat <- df %>%
   left_join(dict_mat, by = c("material_category" = "Material_22")) %>%
@@ -80,63 +80,199 @@ ggplot(global_grp_mat, aes(x = year, y = DMC_Gt, fill = Material_group)) +
 
 # fmt: skip
 ggsave("Figures/Fig1A_global_DMC_by_material_group.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
-ggsave("Figures/SVG/Fig1A_global_DMC_by_material_group.svg", ggplot2::last_plot(), units = 'cm', width = 8.7*2, height = 8.7)
+ggsave(
+  "Figures/SVG/Fig1A_global_DMC_by_material_group.svg",
+  ggplot2::last_plot(),
+  units = 'cm',
+  width = 8.7 * 2,
+  height = 8.7
+)
 
 
-# Figure 1B: Global DMC by material category ----------------------------------
+# Figure 1A: Global DMC by material category ----------------------------------
 
 cat("\n── Figure 1B ──\n")
 
+
 global_mat <- df %>%
-  group_by(year, material_category) %>%
-  summarise(DMC_Gt = sum(DMC_Mt, na.rm = TRUE) / 1e3, .groups = "drop")
+  filter(DMC_Mt > 0) |>
+  filter(!str_detect(material_category, "Waste for ")) |>
+  mutate(
+    material_group = case_when(
+      material_category %in%
+        c(
+          "Coal",
+          "Natural Gas",
+          "Petroleum",
+          "Oil shale and tar sands",
+          "Refined fossil fuels mainly for fuel e.g. LPG gasoline diesel",
+          "Other products mainly from fossil fuels e.g. plastics"
+        ) ~ "Fossil fuels",
+      material_category %in%
+        c(
+          "Crops",
+          "Crop Residues",
+          "Wood",
+          "Grazed biomass and fodder crops",
+          "Non-wild animal products",
+          "Wild catch and harvest",
+          "Products mainly from biomass nec.",
+          "Mixed / complex products nec."
+        ) ~ "Biomass",
+      material_category %in% c("Ferrous ores", "Non-ferrous ores", "Products mainly from metals nec.") ~ "Metal ores",
+      material_category %in%
+        c(
+          "Non-metallic minerals - construction dominant",
+          "Non-metallic minerals - industrial or agricultural dominant",
+          "Products mainly from non-metallic minerals"
+        ) ~ "Non-metallic minerals",
+
+      TRUE ~ NA_character_ # flags anything unclassified
+    )
+  ) |>
+  mutate(
+    material_category_plot = case_when(
+      material_category == "Coal" ~ "Coal",
+      material_category == "Natural Gas" ~ "Natural Gas",
+      material_category == "Petroleum" ~ "Petroleum",
+      material_category == "Crops" ~ "Crops",
+      material_category == "Crop Residues" ~ "Crop Residues",
+      material_category == "Wood" ~ "Wood",
+      material_category == "Grazed biomass and fodder crops" ~ "Grazed biomass and fodder crops",
+      material_category == "Ferrous ores" ~ "Ferrous ores",
+      material_category == "Non-ferrous ores" ~ "Non-ferrous ores",
+      material_category == "Non-metallic minerals - construction dominant" ~ "Construction minerals",
+      material_category == "Non-metallic minerals - industrial or agricultural dominant" ~ "Industrial minerals",
+      material_group == "Fossil fuels" ~ "Other - Fossil fuels",
+      material_group == "Biomass" ~ "Other - Biomass",
+      material_group == "Metal ores" ~ "Other - Metal ores",
+      material_group == "Non-metallic minerals" ~ "Other - Non-metallic minerals",
+      TRUE ~ "Other"
+    )
+  ) |>
+  group_by(year, material_group, material_category_plot) %>%
+  summarise(DMC_Gt = sum(DMC_Mt, na.rm = TRUE) / 1e3, .groups = "drop") |>
+  mutate(
+    material_group = factor(
+      material_group,
+      levels = rev(c("Non-metallic minerals", "Biomass", "Fossil fuels", "Metal ores"))
+    )
+  )
+
+PALETTE_MATERIALS <- c(
+  # Fossil fuels — brown family
+  "Coal" = "#3E2723",
+  "Natural Gas" = "#6D4C41",
+  "Petroleum" = "#A1887F",
+  "Other - Fossil fuels" = "#D7CCC8",
+  # Biomass — green family
+  "Crops" = "#1B5E20",
+  "Crop Residues" = "#388E3C",
+  "Wood" = "#558B2F",
+  "Grazed biomass and fodder crops" = "#8BC34A",
+  "Other - Biomass" = "#DCEDC8",
+  # Metal ores — red family
+  "Ferrous ores" = "#B71C1C",
+  "Non-ferrous ores" = "#E57373",
+  "Other - Metal ores" = "#FFCDD2",
+  # Non-metallic minerals — grey-blue family
+  "Construction minerals" = "#455A64",
+  "Industrial minerals" = "#90A4AE",
+  "Other - Non-metallic minerals" = "#CFD8DC"
+)
 
 mat_totals_1a <- global_mat %>%
-  group_by(material_category) %>%
+  group_by(material_group, material_category_plot) %>%
   summarise(total = sum(DMC_Gt), .groups = "drop") %>%
-  arrange(total)
+  arrange(material_group, total)
 
 global_mat <- global_mat %>%
-  mutate(material_category = factor(material_category, levels = mat_totals_1a$material_category))
+  mutate(material_category_plot = factor(material_category_plot, levels = mat_totals_1a$material_category_plot))
 
 labels_1a <- global_mat %>%
-  filter(year == 2008) %>%
-  arrange(desc(material_category)) %>%
-  mutate(top = cumsum(DMC_Gt), bot = lag(top, default = 0), mid_y = (top + bot) / 2) |>
-  mutate(material_category_label = if_else(DMC_Gt > 0.5, material_category, ""))
+  arrange(year, desc(material_category_plot)) %>%
+  group_by(year) %>%
+  mutate(top = cumsum(DMC_Gt), bot = lag(top, default = 0), mid_y = (top + bot) / 2) %>%
+  ungroup() %>%
+  mutate(material_category_label = if_else(DMC_Gt > 0.5, material_category_plot, NA_character_))
 
-ggplot(global_mat, aes(x = year, y = DMC_Gt, fill = material_category)) +
+group_boundaries <- global_mat %>%
+  arrange(year, desc(material_category_plot)) %>%
+  group_by(year) %>%
+  mutate(top = cumsum(DMC_Gt)) %>%
+  group_by(year, material_group) %>%
+  summarise(boundary_y = max(top), .groups = "drop") %>%
+  filter(material_group != last(levels(global_mat$material_category_plot))) # drop top
+
+group_labels <- group_boundaries %>%
+  arrange(year, desc(material_group)) %>%
+  filter(year == max(year)) %>%
+  mutate(bot = lag(boundary_y, default = 0), mid_y = (boundary_y + bot) / 2) |>
+  mutate(
+    material_group_label = case_when(
+      material_group == "Fossil fuels" ~ "Fossil\nfuels",
+      material_group == "Metal ores" ~ "Metal\nores",
+      TRUE ~ material_group
+    )
+  )
+
+p_material <- ggplot(global_mat, aes(x = year, y = DMC_Gt, fill = material_category_plot)) +
   geom_area(colour = "black", linewidth = 0.05, alpha = 0.9) +
-  geom_text(
+  geom_textpath(
     data = labels_1a,
-    aes(x = 2008, y = mid_y, label = material_category_label),
-    hjust = 0, size = 1.8, fontface = "bold", inherit.aes = FALSE
+    aes(x = year, y = mid_y, label = material_category_label, group = material_category_plot),
+    colour = "black",
+    linewidth = 0,
+    hjust = 0.5,
+    size = 1.8,
+    inherit.aes = FALSE
   ) +
+  geom_line(
+    data = group_boundaries,
+    aes(x = year, y = boundary_y, group = material_group),
+    colour = "black",
+    linewidth = 0.5,
+    inherit.aes = FALSE
+  ) +
+  geom_text(
+  data = group_labels,
+  aes(x = 2025, y = mid_y, label = material_group_label,color=material_group),
+  inherit.aes = FALSE, lineheight = 0.8,
+  fontface = "bold", size = 2.2,
+  angle = 90, hjust = 0.5,
+  clip = "off",vjust=0.9
+) +
   event_lines +
+  # fmt: skip
+  annotate("text",x = -Inf, y = Inf,label = "a",hjust = -1, vjust = 1,fontface = "bold",size = 14 * 5 / 14 * 0.8,colour = "black") +
   scale_fill_manual(values = PALETTE_MATERIALS, name = NULL) +
-  scale_colour_manual(values = PALETTE_MATERIALS, guide = "none") +
+  scale_colour_manual(values = PALETTE_MATERIAL_GROUPS, guide = "none") +
   scale_x_continuous(breaks = seq(1970, 2024, 10), expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
-  coord_cartesian(clip = "off") +
+  coord_cartesian(clip = "off", xlim = c(1970, 2024)) +
   theme_pb_large() +
   labs(title = "Material", x = "Year", y = "Domestic Material Consumption (Gt)") +
   theme(
     legend.position = "none",
     plot.title = element_text(hjust = 0.5),
-    plot.margin = margin(t = 5, r = 70, b = 5, l = 5, unit = "pt")
+    plot.margin = margin(t = 5, r = 15, b = 5, l = 5, unit = "pt")
   )
+p_material
 
 # fmt: skip
-ggsave("Figures/Fig1B_global_DMC_by_material.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
-ggsave("Figures/SVG/Fig1B_global_DMC_by_material.svg", ggplot2::last_plot(), units = 'cm', width = 8.7*2, height = 8.7)
+ggsave("Figures/Fig1A_global_DMC_by_material.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7, height = 8.7)
+# fmt: skip
+ggsave("Figures/SVG/Fig1A_global_DMC_by_material.svg",ggplot2::last_plot(),units = 'cm',width = 8.7,height = 8.7)
 
 
-#  Figure 1C: Global DMC by region --------------------------------------------
+#  Figure 1B: Global DMC by region --------------------------------------------
 
-cat("── Figure 1C ──\n")
+cat("── Figure 1B ──\n")
 
 # Data is already at region level — just rename for plot aesthetics
 global_grp <- df %>%
+  filter(DMC_Mt > 0) |>
+  filter(!str_detect(material_category, "Waste for ")) |>
   rename(analysis_group = Region) %>%
   filter(!is.na(analysis_group)) %>%
   group_by(year, analysis_group) %>%
@@ -150,16 +286,25 @@ grp_totals_1b <- global_grp %>%
 global_grp <- global_grp %>% mutate(analysis_group = factor(analysis_group, levels = grp_totals_1b$analysis_group))
 
 labels_1b <- global_grp %>%
-  filter(year == 2008) %>%
-  arrange(desc(analysis_group)) %>%
-  mutate(top = cumsum(DMC_Gt), bot = lag(top, default = 0), mid_y = (top + bot) / 2)
+  arrange(year, desc(analysis_group)) %>%
+  group_by(year) %>%
+  mutate(top = cumsum(DMC_Gt), bot = lag(top, default = 0), mid_y = (top + bot) / 2) %>%
+  ungroup() %>%
+  mutate(label = if_else(DMC_Gt > 0.5, analysis_group, NA_character_))
 
-ggplot(global_grp, aes(x = year, y = DMC_Gt, fill = analysis_group)) +
+p_region <- ggplot(global_grp, aes(x = year, y = DMC_Gt, fill = analysis_group)) +
   geom_area(colour = "black", linewidth = 0.05, alpha = 0.9) +
-  geom_text(data = labels_1b,
-            aes(x = 2008, y = mid_y, label = analysis_group),
-            hjust = 0, size = 1.8, inherit.aes = FALSE) +
+  geom_textpath(
+    data = labels_1b,
+    aes(x = year, y = mid_y, label = label, group = analysis_group),
+    colour = "black",
+    linewidth = 0,
+    size = 1.8,
+    inherit.aes = FALSE
+  ) +
   event_lines +
+  # fmt: skip
+  annotate("text",x = -Inf, y = Inf,label = "b",hjust = -1, vjust = 1.2,fontface = "bold",size = 14 * 5 / 14 * 0.8,colour = "black") +
   scale_fill_manual(values = PALETTE_REGIONS, name = NULL) +
   scale_colour_manual(values = PALETTE_REGIONS, guide = "none") +
   scale_x_continuous(breaks = seq(1970, 2024, 10), expand = c(0, 0)) +
@@ -170,15 +315,22 @@ ggplot(global_grp, aes(x = year, y = DMC_Gt, fill = analysis_group)) +
   theme(
     legend.position = "none",
     plot.title = element_text(hjust = 0.5),
-    plot.margin = margin(t = 5, r = 80, b = 5, l = 5, unit = "pt")
+    plot.margin = margin(t = 5, r = 10, b = 5, l = 5, unit = "pt")
   )
+p_region
 
 # fmt: skip
-ggsave("Figures/Fig1C_global_DMC_by_region.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
-ggsave("Figures/SVG/Fig1C_global_DMC_by_region.svg", ggplot2::last_plot(), units = 'cm', width = 8.7*2, height = 8.7)
+ggsave("Figures/Fig1B_global_DMC_by_region.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7, height = 8.7)
+ggsave("Figures/SVG/Fig1B_global_DMC_by_region.svg", ggplot2::last_plot(), units = 'cm', width = 8.7, height = 8.7)
+
+# Merge --
+library(cowplot)
+plot_grid(p_material, p_region, ncol = 2)
+ggsave("Figures/Fig1.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7 * 2, height = 8.7)
+ggsave("Figures/SVG/Fig1.svg", ggplot2::last_plot(), units = 'cm', width = 8.7 * 2, height = 8.7)
 
 
-#  Figure 1D: Global extraction by region -------------------------------------
+#  Figure 1D OLD: Global extraction by region -------------------------------------
 
 cat("── Figure 1D ──\n")
 
@@ -224,6 +376,6 @@ ggplot(global_de, aes(x = year, y = DE_Gt, fill = analysis_group)) +
 
 # fmt: skip
 ggsave("Figures/Fig1D_global_DE_by_region.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
-ggsave("Figures/SVG/Fig1D_global_DE_by_region.svg", ggplot2::last_plot(), units = 'cm', width = 8.7*2, height = 8.7)
+ggsave("Figures/SVG/Fig1D_global_DE_by_region.svg", ggplot2::last_plot(), units = 'cm', width = 8.7 * 2, height = 8.7)
 
 # EoF

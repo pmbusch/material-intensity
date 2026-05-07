@@ -29,6 +29,10 @@ ASSUMPTIONS_SHEET <- "MetalOres"
 MATERIAL_KEY <- "metal_ores"
 FORECAST_START <- 2025L # DSM starts year after base year
 
+# ── Recycling parameters ──────────────────────────────────────────────────────
+sub_factor_metal <- 1.00 # metal recycling is 1:1 after losses captured in EOL-RR
+max_recycling <- 1.00 # recycling cannot exceed 100% of demand
+
 
 # Step 1: Load inputs ----------------------------------------------------------
 
@@ -272,6 +276,42 @@ overshoot_count <- summary_raw |> filter(production_Mt == 0, total_stock_Mt > 0)
 cat("  Year-group combos with production=0 due to stock overshoot:", overshoot_count, "\n")
 
 
+# Step 6.5: Waste recovery (secondary metal production) ------------------------
+
+cat("\nSTEP 6.5: Waste recovery -- calculate secondary metal production\n")
+
+recycling_eol <- read_excel("Inputs/Recycling_Assumptions.xlsx", sheet = "Recycling_EOL") |>
+  dplyr::select(region = Region, Recycling_rate)
+
+unmatched_recycling <- summary_raw |> distinct(region) |> anti_join(recycling_eol, by = "region")
+if (nrow(unmatched_recycling) > 0) {
+  warning(sprintf(
+    "[WARN] %d region(s) have no match in Recycling_EOL sheet: %s",
+    nrow(unmatched_recycling),
+    paste(unmatched_recycling$region, collapse = ", ")
+  ))
+}
+
+# Primary production = Total Production  - Recovered material
+summary_raw <- summary_raw |>
+  left_join(recycling_eol, by = "region") |>
+  mutate(
+    recovered_material_Mt = pmin(waste_Mt * Recycling_rate * sub_factor_metal, max_recycling * production_Mt),
+    recovered_material_Mt = replace_na(recovered_material_Mt, 0),
+    production_Mt = pmax(0, production_Mt - recovered_material_Mt)
+  ) |>
+  dplyr::select(-Recycling_rate)
+
+cat(
+  "  Total global recovered metal (SSP2, 2050):",
+  round(
+    sum(summary_raw$recovered_material_Mt[summary_raw$scenario == "SSP2" & summary_raw$year == 2050], na.rm = TRUE),
+    1
+  ),
+  "Mt\n"
+)
+
+
 # Step 7: Save outputs ----------------------------------------------------------
 
 cat("\nSTEP 7: Save outputs\n")
@@ -286,7 +326,17 @@ write_csv(age_profile_out, paste0("Results/stock_age_profile_", MATERIAL_KEY, ".
 cat("  Saved: Results/stock_age_profile_", MATERIAL_KEY, ".csv (", nrow(age_profile_out), " rows)\n", sep = "")
 
 forecast_out <- summary_raw |>
-  dplyr::select(scenario, region, end_use, year, replacement_Mt, new_additions_Mt, production_Mt, waste_Mt)
+  dplyr::select(
+    scenario,
+    region,
+    end_use,
+    year,
+    replacement_Mt,
+    new_additions_Mt,
+    production_Mt,
+    waste_Mt,
+    recovered_material_Mt
+  )
 write_csv(forecast_out, paste0("Results/", MATERIAL_KEY, "_forecast.csv"))
 cat("  Saved: Results/", MATERIAL_KEY, "_forecast.csv (", nrow(forecast_out), " rows)\n", sep = "")
 

@@ -30,7 +30,7 @@ cat("Rows:", nrow(df), "\n")
 ## Material group dictionary ---------------------------------------------------
 
 dict_mat <- readxl::read_excel("Inputs/Dict_Materials.xlsx", sheet = "Categories") %>%
-  select(Material_22, Material_group)
+  dplyr::select(Material_22, Material_group)
 
 grp_mat_order <- df %>%
   left_join(dict_mat, by = c("material_category" = "Material_22")) %>%
@@ -128,12 +128,12 @@ region_all <- df %>%
   summarise(DMC_kg = sum(DMC_Mt * 1e9, na.rm = TRUE), .groups = "drop") %>%
   left_join(df_gdp, by = c("Analysis_group" = "Region", "year")) %>%
   left_join(df_pop, by = c("Analysis_group" = "Region", "year")) %>%
-  filter(!is.na(GDP_PPP_2017USD), !is.na(population)) %>%
+  filter(!is.na(GDP_2015USD), !is.na(population)) %>%
   mutate(
-    GDP = GDP_PPP_2017USD,
+    GDP = GDP_2015USD,
     pop = population,
-    mat_gdp = DMC_kg / GDP_PPP_2017USD,
-    gdp_pc = GDP_PPP_2017USD / population
+    mat_gdp = DMC_kg / GDP_2015USD,
+    gdp_pc = GDP_2015USD / population
   ) %>%
   filter(year %in% years_5yr, !is.na(mat_gdp), !is.na(gdp_pc)) %>%
   arrange(Analysis_group, year)
@@ -142,7 +142,7 @@ region_all <- smooth_lowess(region_all, group_cols = c("Analysis_group"))
 
 
 # Region-year econ totals reused as denominator in Figures B and C
-region_econ <- region_all %>% select(year, Analysis_group, GDP, pop)
+region_econ <- region_all %>% dplyr::select(year, Analysis_group, GDP, pop)
 
 # World average: sum across all regions
 world_all <- region_all %>%
@@ -239,7 +239,7 @@ ggplot(region_all, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
   annotation_logticks(sides = "l", linewidth = 0.2, colour = "grey50") +
   coord_cartesian(clip = "off", expand = F, xlim = c(0.3, 7.4), ylim = c(NA, 100e3)) +
   theme_pb_large() +
-  labs(x = "Material Intensity (kg per 2017 USD PPP)", y = "GDP per Capita (2017 USD PPP)") +
+  labs(x = "Material Intensity (kg per 2015 USD)", y = "GDP per Capita (2015 USD)") +
   theme(legend.position = "none")
 
 # fmt: skip
@@ -289,7 +289,7 @@ iso_b <- region_grp %>%
   ) %>%
   rowwise() %>%
   mutate(iso_df = list(make_isolines(iso_levels, x_min, x_max, y_min = y_min, y_max = y_max))) %>%
-  select(Material_group, iso_df) %>%
+  dplyr::select(Material_group, iso_df) %>%
   unnest(iso_df)
 
 ggplot(region_grp, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
@@ -375,7 +375,7 @@ ggplot(region_grp, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
   annotation_logticks(sides = "l", linewidth = 0.18, colour = "grey50") +
   coord_cartesian(clip = "off", expand = F, ylim = c(NA, 100e3)) +
   theme_pb_large() +
-  labs(x = "Material Intensity (kg per 2017 USD PPP)", y = "GDP per Capita (2017 USD PPP)") +
+  labs(x = "Material Intensity (kg per 2015 USD)", y = "GDP per Capita (2015 USD)") +
   theme(legend.position = "none", axis.text.x = element_text(size = 6), axis.text.y = element_text(size = 6))
 
 # fmt: skip
@@ -441,7 +441,7 @@ iso_c <- region_mat %>%
   ) %>%
   rowwise() %>%
   mutate(iso_df = list(make_isolines(iso_levels, x_min, x_max, y_min = y_min, y_max = y_max))) %>%
-  select(mat_label, iso_df) %>%
+  dplyr::select(mat_label, iso_df) %>%
   unnest(iso_df)
 
 ggplot(region_mat, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
@@ -509,7 +509,7 @@ ggplot(region_mat, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
   annotation_logticks(sides = "l", linewidth = 0.15, colour = "grey50") +
   theme_pb_large() +
   coord_cartesian(clip = "off", expand = F, ylim = c(NA, 100e3)) +
-  labs(x = "Material Intensity (kg per 2017 USD PPP)", y = "GDP per Capita (2017 USD PPP)") +
+  labs(x = "Material Intensity (kg per 2015 USD)", y = "GDP per Capita (2015 USD)") +
   theme(legend.position = "none", axis.text.x = element_text(size = 5), axis.text.y = element_text(size = 5))
 
 # fmt: skip

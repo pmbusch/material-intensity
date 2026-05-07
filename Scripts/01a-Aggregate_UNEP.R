@@ -69,7 +69,7 @@ unep_long <- unep_raw %>%
   ) %>%
   rename(UNEP_name = Country, material_category = Category, flow_code = `Flow code`) %>%
   filter(!UNEP_name %in% REGION_AGGREGATES) %>%
-  select(UNEP_name, year, material_category, flow_code, value_Mt)
+  dplyr::select(UNEP_name, year, material_category, flow_code, value_Mt)
 
 cat("Rows after pivot + supra-national drop:", nrow(unep_long), "\n")
 
@@ -78,7 +78,7 @@ cat("Rows after pivot + supra-national drop:", nrow(unep_long), "\n")
 
 cat("\nSTEP 3: Join ISO3 and Region from UNEP_Agg\n")
 
-unep_matched <- unep_long %>% left_join(dict_unep_agg %>% select(UNEP_name, ISO3, Region), by = "UNEP_name")
+unep_matched <- unep_long %>% left_join(dict_unep_agg %>% dplyr::select(UNEP_name, ISO3, Region), by = "UNEP_name")
 
 unmatched <- unep_matched %>% filter(is.na(ISO3)) %>% distinct(UNEP_name) %>% pull() %>% sort()
 cat("UNEP names not matched in UNEP_Agg (", length(unmatched), "):", paste(unmatched, collapse = ", "), "\n")
@@ -213,7 +213,7 @@ for (fc in FLOW_CODES) {
   # ── Selected country data ───────────────────────────────────────────────────
   df_country <- df_flow %>%
     filter(ISO3 %in% COUNTRY_ISO3) %>%
-    select(ISO3, year, material_category, value_Mt) %>%
+    dplyr::select(ISO3, year, material_category, value_Mt) %>%
     rename(!!out_col := value_Mt)
 
   out_path <- paste0("Parameters/materials_country_", fc, ".csv")

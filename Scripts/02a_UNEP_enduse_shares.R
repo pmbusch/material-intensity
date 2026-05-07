@@ -111,7 +111,7 @@ miso_total <- miso_flows %>%
 shares_miso <- miso_flows %>%
   left_join(miso_total, by = c("Region", "material", "year")) %>%
   mutate(share = if_else(total_flow_Mt > 0, value_Mt / total_flow_Mt, 0)) %>%
-  select(Region, material, end_use, year, share)
+  dplyr::select(Region, material, end_use, year, share)
 head(shares_miso)
 
 # Validate: shares must sum to 1.0 ± tolerance per Region×material×year
@@ -147,10 +147,10 @@ if (length(post_miso_years) > 0) {
     "shares (LOCF)."
   ))
 
-  shares_2016 <- shares_miso %>% filter(year == miso_max_year) %>% select(-year)
+  shares_2016 <- shares_miso %>% filter(year == miso_max_year) %>% dplyr::select(-year)
 
   # Repeat 2016 shares for all post-MISO years
-  shares_extended <- expand_grid(shares_2016, year = post_miso_years) %>% select(Region, material, end_use, year, share) # restore column order
+  shares_extended <- expand_grid(shares_2016, year = post_miso_years) %>% dplyr::select(Region, material, end_use, year, share) # restore column order
 
   shares_all <- bind_rows(shares_miso, shares_extended) %>% arrange(Region, material, end_use, year)
 } else {
@@ -170,7 +170,7 @@ unep_enduse <- unep %>%
   left_join(shares_all, by = c("Region", "material", "year"), relationship = "many-to-many") %>%
   mutate(flow_Mt = flow_Mt * share) %>%
   filter(!is.na(end_use)) %>%
-  select(Region, material, end_use, year, flow_Mt)
+  dplyr::select(Region, material, end_use, year, flow_Mt)
 
 cat("UNEP by end-use:", nrow(unep_enduse), "rows\n")
 
@@ -215,7 +215,7 @@ divergence <- unep_overlap %>%
 flagged <- divergence %>% filter(flag)
 if (nrow(flagged) > 0) {
   cat("[NOTE] Divergence > ±30% for the following Region × material pairs", "(avg 1970–2016):\n")
-  print(flagged %>% select(Region, material, ratio, unep_avg_Mt, miso_avg_Mt, abs_diff))
+  print(flagged %>% dplyr::select(Region, material, ratio, unep_avg_Mt, miso_avg_Mt, abs_diff))
 } else {
   cat("  [OK] All Region × material ratios are within ±30% (1970–2016 average).\n")
 }

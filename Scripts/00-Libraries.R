@@ -6,6 +6,7 @@
 list_libraries <- c(
   "tidyverse",
   "tidyverse",
+  "geomtextpath",
   "readr",
   "readxl",
   "ggplot2",
@@ -40,6 +41,5 @@ source("Scripts/00-CommonParameters.R", encoding = "UTF-8")
 file.sources = list.files("Scripts/00-Functions", pattern = "*.R$", full.names = TRUE, ignore.case = TRUE)
 sapply(file.sources, source, .GlobalEnv)
 rm(file.sources)
-
 
 # EoF

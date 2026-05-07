@@ -1,5 +1,5 @@
 ## =============================================================================
-## 03_UNEP_stock_flow_model.R
+## 02b_UNEP_stock_flow_model.R
 ## Dynamic Stock-Flow Model (DSM): reconstruct in-use stock 1970-2024 from
 ## UNEP inflows using Weibull lifetime distributions, calibrate to MISO2
 ## stocks at 2016, and produce the 2024 age-structured stock.
@@ -28,7 +28,7 @@ lifetime_params <- tribble(
   "buildings"            ,         70 , 2.5        ,
   "civil_infrastructure" ,         50 , 2.5        ,
   "machinery"            ,         20 , 2.5        ,
-  "short_lived"          , NA         , NA # uses fixed 4-year lag instead
+  "short_lived"          ,          4 , 1.5
 )
 
 # Calibration tolerance for diagnostic flags (does not stop execution)
@@ -43,13 +43,8 @@ weibull_survival <- function(age, mean_life, k) {
   exp(-(age / lambda)^k)
 }
 
-# Dispatcher: short_lived uses a fixed 4-year lag (all mass exits after 4 years)
 get_survival <- function(ages, mean_life, k) {
-  if (is.na(mean_life)) {
-    as.numeric(ages >= 0 & ages <= 4)
-  } else {
-    ifelse(ages < 0, 0, weibull_survival(pmax(ages, 0), mean_life, k))
-  }
+  ifelse(ages < 0, 0, weibull_survival(pmax(ages, 0), mean_life, k))
 }
 
 
@@ -59,7 +54,7 @@ get_survival <- function(ages, mean_life, k) {
 # ghost_cohorts -- tibble: cohort_year (5-yr bins 1900-1970), cohort_inflow_Mt
 #                  (incremental MISO2 stock additions per bin); age-structured
 #                  pre-1970 legacy stock replacing the earlier single-lump scalar
-# mean_life, k  -- Weibull parameters (NA -> short_lived fixed lag)
+# mean_life, k  -- Weibull parameters
 #
 # Returns tibble: year, stock_Mt, outflow_Mt, ghost_stock_Mt
 
@@ -114,7 +109,7 @@ compute_age_profile_2024 <- function(df, ghost_cohorts, mean_life, k, lambda_cal
       cohort_age = as.integer(2024 - cohort_year),
       is_ghost = TRUE
     ) %>%
-    select(cohort_year, surviving_stock_Mt, cohort_age, is_ghost)
+    dplyr::select(cohort_year, surviving_stock_Mt, cohort_age, is_ghost)
 
   bind_rows(
     tibble(
@@ -159,7 +154,7 @@ ghost_cohorts_nested <- miso_stock %>%
   mutate(cohort_inflow_Mt = pmax(value_Mt - lag(value_Mt, default = 0), 0)) %>%
   ungroup() %>%
   rename(cohort_year = year) %>%
-  select(Region, material, end_use, cohort_year, cohort_inflow_Mt) %>%
+  dplyr::select(Region, material, end_use, cohort_year, cohort_inflow_Mt) %>%
   group_by(Region, material, end_use) %>%
   nest(ghost_cohorts = c(cohort_year, cohort_inflow_Mt)) %>%
   ungroup()
@@ -174,18 +169,18 @@ cat("\nSTEP 3: Build simulation input data frame\n")
 # Ensure UNEP covers at least up to 2024; if not, warn
 if (max(unep_enduse$year) < 2024) {
   warning(paste("UNEP flows only go to", max(unep_enduse$year), "-- extending last year by LOCF to 2024."))
-  last_year_data <- unep_enduse %>% filter(year == max(year)) %>% select(-year)
+  last_year_data <- unep_enduse %>% filter(year == max(year)) %>% dplyr::select(-year)
   fill_years <- seq(max(unep_enduse$year) + 1, 2024)
   unep_enduse <- bind_rows(
     unep_enduse,
-    expand_grid(last_year_data, year = fill_years) %>% select(Region, material, end_use, year, flow_Mt)
+    expand_grid(last_year_data, year = fill_years) %>% dplyr::select(Region, material, end_use, year, flow_Mt)
   )
 }
 
 sim_input <- unep_enduse %>% filter(year >= 1970, year <= 2024) %>% left_join(lifetime_params, by = "end_use")
 
 cat("  Simulation input:", nrow(sim_input), "rows\n")
-cat("  Groups (Region x material x end_use):", n_distinct(sim_input %>% select(Region, material, end_use)), "\n")
+cat("  Groups (Region x material x end_use):", n_distinct(sim_input %>% dplyr::select(Region, material, end_use)), "\n")
 
 
 # Step 4: Nest and run DSM for each group ------------------------------------
@@ -207,7 +202,7 @@ dsm_nested <- sim_input %>%
 dsm_nested <- dsm_nested %>%
   mutate(sim = purrr::pmap(list(data, ghost_cohorts, mean_life, weibull_k), run_dsm_trajectory))
 
-dsm_results <- dsm_nested %>% select(-data, -ghost_cohorts) %>% unnest(sim)
+dsm_results <- dsm_nested %>% dplyr::select(-data, -ghost_cohorts) %>% unnest(sim)
 
 cat("  DSM results:", nrow(dsm_results), "rows\n")
 
@@ -216,11 +211,13 @@ cat("  DSM results:", nrow(dsm_results), "rows\n")
 
 cat("\nSTEP 5: Calibrate simulated stocks to MISO2 at 2016\n")
 
-miso_2016 <- miso_stock %>% filter(year == 2016) %>% select(Region, material, end_use, miso_stock_2016_Mt = value_Mt)
+miso_2016 <- miso_stock %>%
+  filter(year == 2016) %>%
+  dplyr::select(Region, material, end_use, miso_stock_2016_Mt = value_Mt)
 
 calibration_scalars <- dsm_results %>%
   filter(year == 2016) %>%
-  select(Region, material, end_use, sim_stock_2016_Mt = stock_Mt) %>%
+  dplyr::select(Region, material, end_use, sim_stock_2016_Mt = stock_Mt) %>%
   left_join(miso_2016, by = c("Region", "material", "end_use")) %>%
   mutate(
     lambda_cal = case_when(
@@ -239,7 +236,10 @@ if (nrow(flagged_cal) > 0) {
     nrow(flagged_cal),
     "groups (expected -- see Script 02 divergence check):\n"
   )
-  print(flagged_cal %>% select(Region, material, end_use, lambda_cal) %>% arrange(desc(abs(lambda_cal - 1))), n = 20)
+  print(
+    flagged_cal %>% dplyr::select(Region, material, end_use, lambda_cal) %>% arrange(desc(abs(lambda_cal - 1))),
+    n = 20
+  )
 }
 cat("  Calibration scalar summary (lambda_cal):\n")
 print(summary(calibration_scalars$lambda_cal))
@@ -248,7 +248,7 @@ print(summary(calibration_scalars$lambda_cal))
 # Apply calibration: rescale entire time series uniformly
 dsm_calibrated <- dsm_results %>%
   left_join(
-    calibration_scalars %>% select(Region, material, end_use, lambda_cal),
+    calibration_scalars %>% dplyr::select(Region, material, end_use, lambda_cal),
     by = c("Region", "material", "end_use")
   ) %>%
   mutate(
@@ -257,6 +257,12 @@ dsm_calibrated <- dsm_results %>%
     ghost_stock_Mt = ghost_stock_Mt * lambda_cal
   )
 
+write_csv(
+  dsm_calibrated %>% dplyr::select(Region, material, end_use, year, stock_Mt),
+  "Parameters/Intermediate/stock_trajectory_1970_2024.csv"
+)
+cat("  Saved: Parameters/Intermediate/stock_trajectory_1970_2024.csv\n")
+range(dsm_calibrated$year)
 
 # Step 6: Compute 2024 age profile -------------------------------------------
 
@@ -265,7 +271,7 @@ cat("\nSTEP 6: Compute 2024 age-structured stock\n")
 # Join calibration scalars back to the nested sim input
 age_profile_nested <- dsm_nested %>%
   left_join(
-    calibration_scalars %>% select(Region, material, end_use, lambda_cal),
+    calibration_scalars %>% dplyr::select(Region, material, end_use, lambda_cal),
     by = c("Region", "material", "end_use")
   ) %>%
   mutate(lambda_cal = replace_na(lambda_cal, 1.0))
@@ -274,7 +280,7 @@ age_profile_list <- age_profile_nested %>%
   mutate(
     profile = purrr::pmap(list(data, ghost_cohorts, mean_life, weibull_k, lambda_cal), compute_age_profile_2024)
   ) %>%
-  select(Region, material, end_use, profile) %>%
+  dplyr::select(Region, material, end_use, profile) %>%
   unnest(profile)
 
 cat("  Age profile rows:", nrow(age_profile_list), "\n")
@@ -283,7 +289,7 @@ write_csv(age_profile_list, "Parameters/stock_2024_age_profile.csv")
 cat("  Saved: Parameters/stock_2024_age_profile.csv\n")
 
 # Total calibrated stock at 2024 (no age detail)
-stock_2024_total <- dsm_calibrated %>% filter(year == 2024) %>% select(Region, material, end_use, stock_Mt)
+stock_2024_total <- dsm_calibrated %>% filter(year == 2024) %>% dplyr::select(Region, material, end_use, stock_Mt)
 
 write_csv(stock_2024_total, "Parameters/stock_2024_total.csv")
 cat("  Saved: Parameters/stock_2024_total.csv\n")
@@ -425,6 +431,8 @@ x_lim <- pyramid_data %>%
 
 age_ticks_df <- pyramid_data %>% distinct(cohort_bin)
 
+total_stock <- pyramid_data |> group_by(end_use) |> reframe(stock_Gt = sum(stock_Gt)) |> ungroup()
+
 p_pyramid <- pyramid_data %>%
   ggplot() +
   geom_rect(
@@ -446,9 +454,9 @@ p_pyramid <- pyramid_data %>%
     colour = "grey20"
   ) +
   # fmt: skip
-  annotate("text", x = -(x_lim / 2), y = Inf, label = "Buildings",          hjust = 0.5, vjust = -0.5, fontface = "bold", size = 3, colour = "grey20") +
+  annotate("text", x = -(x_lim / 2), y = Inf, label = paste0("Buildings\n",round(filter(total_stock,end_use=="Buildings")$stock_Gt)," Gt"),          hjust = 0.5, vjust = -0.5, fontface = "bold", size = 3, colour = "grey20") +
   # fmt: skip
-  annotate("text", x =  (x_lim / 2), y = Inf, label = "Civil infrastructure", hjust = 0.5, vjust = -0.5, fontface = "bold", size = 3, colour = "grey20") +
+  annotate("text", x =  (x_lim / 2), y = Inf, label = paste0("Civil infrastructure\n",round(filter(total_stock,end_use=="Civil infrastructure")$stock_Gt)," Gt"), hjust = 0.5, vjust = -0.5, fontface = "bold", size = 3, colour = "grey20") +
   # fmt: skip
   annotate("text", x = 0,            y = Inf, label = "Age",                 hjust = 0.5, vjust = -0.5, fontface = "bold", size = 3, colour = "grey20") +
   scale_x_continuous(
