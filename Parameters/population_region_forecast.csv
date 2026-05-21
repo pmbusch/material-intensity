@@ -1,0 +1,609 @@
+Region,year,population
+East Asia,2025,2434735004
+East Asia,2026,2436895220
+East Asia,2027,2438955257
+East Asia,2028,2440544334
+East Asia,2029,2441582579
+East Asia,2030,2442132731
+East Asia,2031,2442259466
+East Asia,2032,2441899286
+East Asia,2033,2441123222
+East Asia,2034,2439889623
+East Asia,2035,2438270288
+East Asia,2036,2436218509
+East Asia,2037,2433768371
+East Asia,2038,2430968239
+East Asia,2039,2427792912
+East Asia,2040,2424188269
+East Asia,2041,2420135651
+East Asia,2042,2415616778
+East Asia,2043,2410675303
+East Asia,2044,2405305045
+East Asia,2045,2399417103
+East Asia,2046,2392927276
+East Asia,2047,2385778083
+East Asia,2048,2377970308
+East Asia,2049,2369474414
+East Asia,2050,2360200781
+East Asia,2051,2350240584
+East Asia,2052,2339469380
+East Asia,2053,2327922641
+East Asia,2054,2315736841
+East Asia,2055,2302848004
+East Asia,2056,2289342575
+East Asia,2057,2275278528
+East Asia,2058,2260751729
+East Asia,2059,2245788585
+East Asia,2060,2230484431
+East Asia,2061,2214909626
+East Asia,2062,2199177320
+East Asia,2063,2183331564
+East Asia,2064,2167479608
+East Asia,2065,2151565424
+East Asia,2066,2135669566
+East Asia,2067,2119834008
+East Asia,2068,2104034654
+East Asia,2069,2088329887
+East Asia,2070,2072699899
+East Asia,2071,2057113918
+East Asia,2072,2041596062
+East Asia,2073,2026038723
+East Asia,2074,2010442691
+East Asia,2075,1994858278
+East Asia,2076,1979216267
+East Asia,2077,1963536233
+East Asia,2078,1947729116
+East Asia,2079,1931845338
+East Asia,2080,1915828135
+East Asia,2081,1899734755
+East Asia,2082,1883611471
+East Asia,2083,1867474995
+East Asia,2084,1851355945
+East Asia,2085,1835222500
+East Asia,2086,1819161629
+East Asia,2087,1803201375
+East Asia,2088,1787346242
+East Asia,2089,1771620291
+East Asia,2090,1756005304
+East Asia,2091,1740538489
+East Asia,2092,1725214007
+East Asia,2093,1709997406
+East Asia,2094,1694888656
+East Asia,2095,1679892038
+East Asia,2096,1664979721
+East Asia,2097,1650121123
+East Asia,2098,1635346746
+East Asia,2099,1620633170
+East Asia,2100,1605987644
+Europe & Russia,2025,831852193
+Europe & Russia,2026,831314900
+Europe & Russia,2027,830537378
+Europe & Russia,2028,829668337
+Europe & Russia,2029,828697551
+Europe & Russia,2030,827605328
+Europe & Russia,2031,826441896
+Europe & Russia,2032,825137070
+Europe & Russia,2033,823824607
+Europe & Russia,2034,822478617
+Europe & Russia,2035,821087196
+Europe & Russia,2036,819654098
+Europe & Russia,2037,818174647
+Europe & Russia,2038,816661073
+Europe & Russia,2039,815121481
+Europe & Russia,2040,813519047
+Europe & Russia,2041,811927415
+Europe & Russia,2042,810326825
+Europe & Russia,2043,808704689
+Europe & Russia,2044,806987029
+Europe & Russia,2045,805223238
+Europe & Russia,2046,803392256
+Europe & Russia,2047,801516770
+Europe & Russia,2048,799510940
+Europe & Russia,2049,797396971
+Europe & Russia,2050,795136158
+Europe & Russia,2051,792772503
+Europe & Russia,2052,790294677
+Europe & Russia,2053,787716573
+Europe & Russia,2054,784940027
+Europe & Russia,2055,782073434
+Europe & Russia,2056,779070036
+Europe & Russia,2057,775984776
+Europe & Russia,2058,772847950
+Europe & Russia,2059,769652122
+Europe & Russia,2060,766392131
+Europe & Russia,2061,763148259
+Europe & Russia,2062,759872027
+Europe & Russia,2063,756592593
+Europe & Russia,2064,753318942
+Europe & Russia,2065,750054387
+Europe & Russia,2066,746807653
+Europe & Russia,2067,743621421
+Europe & Russia,2068,740498392
+Europe & Russia,2069,737394488
+Europe & Russia,2070,734319977
+Europe & Russia,2071,731286869
+Europe & Russia,2072,728292887
+Europe & Russia,2073,725368051
+Europe & Russia,2074,722466110
+Europe & Russia,2075,719594021
+Europe & Russia,2076,716827160
+Europe & Russia,2077,714103677
+Europe & Russia,2078,711387520
+Europe & Russia,2079,708736055
+Europe & Russia,2080,706119467
+Europe & Russia,2081,703556687
+Europe & Russia,2082,701058744
+Europe & Russia,2083,698564448
+Europe & Russia,2084,696108962
+Europe & Russia,2085,693674863
+Europe & Russia,2086,691236480
+Europe & Russia,2087,688827674
+Europe & Russia,2088,686474315
+Europe & Russia,2089,684143101
+Europe & Russia,2090,681802034
+Europe & Russia,2091,679459245
+Europe & Russia,2092,677169080
+Europe & Russia,2093,674871626
+Europe & Russia,2094,672606578
+Europe & Russia,2095,670362768
+Europe & Russia,2096,668080067
+Europe & Russia,2097,665763351
+Europe & Russia,2098,663444734
+Europe & Russia,2099,661133852
+Europe & Russia,2100,658781212
+Latin America,2025,665657088
+Latin America,2026,669984631
+Latin America,2027,674151771
+Latin America,2028,678198318
+Latin America,2029,682090737
+Latin America,2030,685859306
+Latin America,2031,689494321
+Latin America,2032,692998640
+Latin America,2033,696363674
+Latin America,2034,699592174
+Latin America,2035,702686988
+Latin America,2036,705634941
+Latin America,2037,708427840
+Latin America,2038,711065484
+Latin America,2039,713559131
+Latin America,2040,715881637
+Latin America,2041,718046295
+Latin America,2042,720032067
+Latin America,2043,721849408
+Latin America,2044,723485427
+Latin America,2045,724953652
+Latin America,2046,726242905
+Latin America,2047,727368145
+Latin America,2048,728332182
+Latin America,2049,729132123
+Latin America,2050,729749609
+Latin America,2051,730231232
+Latin America,2052,730544084
+Latin America,2053,730709315
+Latin America,2054,730709143
+Latin America,2055,730556724
+Latin America,2056,730261065
+Latin America,2057,729816216
+Latin America,2058,729223361
+Latin America,2059,728503670
+Latin America,2060,727633441
+Latin America,2061,726628184
+Latin America,2062,725497917
+Latin America,2063,724236134
+Latin America,2064,722849608
+Latin America,2065,721344454
+Latin America,2066,719707335
+Latin America,2067,717953353
+Latin America,2068,716089083
+Latin America,2069,714111789
+Latin America,2070,712024668
+Latin America,2071,709826740
+Latin America,2072,707531106
+Latin America,2073,705135063
+Latin America,2074,702635293
+Latin America,2075,700048474
+Latin America,2076,697369760
+Latin America,2077,694604863
+Latin America,2078,691747387
+Latin America,2079,688801836
+Latin America,2080,685777310
+Latin America,2081,682675718
+Latin America,2082,679504063
+Latin America,2083,676274730
+Latin America,2084,672987844
+Latin America,2085,669642193
+Latin America,2086,666233749
+Latin America,2087,662770116
+Latin America,2088,659267080
+Latin America,2089,655728914
+Latin America,2090,652149959
+Latin America,2091,648537742
+Latin America,2092,644901018
+Latin America,2093,641245782
+Latin America,2094,637557838
+Latin America,2095,633856902
+Latin America,2096,630140288
+Latin America,2097,626415707
+Latin America,2098,622691189
+Latin America,2099,618965073
+Latin America,2100,615248538
+Middle East & North Africa,2025,792005872
+Middle East & North Africa,2026,804197262
+Middle East & North Africa,2027,816478732
+Middle East & North Africa,2028,828677338
+Middle East & North Africa,2029,840765598
+Middle East & North Africa,2030,852762295
+Middle East & North Africa,2031,864681805
+Middle East & North Africa,2032,876632081
+Middle East & North Africa,2033,888589450
+Middle East & North Africa,2034,900556279
+Middle East & North Africa,2035,912499167
+Middle East & North Africa,2036,924417298
+Middle East & North Africa,2037,936343210
+Middle East & North Africa,2038,948233991
+Middle East & North Africa,2039,960113856
+Middle East & North Africa,2040,971961170
+Middle East & North Africa,2041,983686210
+Middle East & North Africa,2042,995339211
+Middle East & North Africa,2043,1006880734
+Middle East & North Africa,2044,1018280299
+Middle East & North Africa,2045,1029572390
+Middle East & North Africa,2046,1040748068
+Middle East & North Africa,2047,1051711423
+Middle East & North Africa,2048,1062509036
+Middle East & North Africa,2049,1073162679
+Middle East & North Africa,2050,1083675448
+Middle East & North Africa,2051,1094028811
+Middle East & North Africa,2052,1104146728
+Middle East & North Africa,2053,1114074687
+Middle East & North Africa,2054,1123874178
+Middle East & North Africa,2055,1133492604
+Middle East & North Africa,2056,1142894060
+Middle East & North Africa,2057,1152158704
+Middle East & North Africa,2058,1161180403
+Middle East & North Africa,2059,1170027483
+Middle East & North Africa,2060,1178685395
+Middle East & North Africa,2061,1187206102
+Middle East & North Africa,2062,1195475713
+Middle East & North Africa,2063,1203614687
+Middle East & North Africa,2064,1211535962
+Middle East & North Africa,2065,1219293528
+Middle East & North Africa,2066,1226875714
+Middle East & North Africa,2067,1234315125
+Middle East & North Africa,2068,1241492263
+Middle East & North Africa,2069,1248525607
+Middle East & North Africa,2070,1255329231
+Middle East & North Africa,2071,1261917467
+Middle East & North Africa,2072,1268343856
+Middle East & North Africa,2073,1274594685
+Middle East & North Africa,2074,1280641638
+Middle East & North Africa,2075,1286476751
+Middle East & North Africa,2076,1292128526
+Middle East & North Africa,2077,1297589470
+Middle East & North Africa,2078,1302780815
+Middle East & North Africa,2079,1307770972
+Middle East & North Africa,2080,1312654595
+Middle East & North Africa,2081,1317426908
+Middle East & North Africa,2082,1322020722
+Middle East & North Africa,2083,1326433983
+Middle East & North Africa,2084,1330605000
+Middle East & North Africa,2085,1334599553
+Middle East & North Africa,2086,1338501518
+Middle East & North Africa,2087,1342201547
+Middle East & North Africa,2088,1345660845
+Middle East & North Africa,2089,1349041058
+Middle East & North Africa,2090,1352226595
+Middle East & North Africa,2091,1355221944
+Middle East & North Africa,2092,1358150151
+Middle East & North Africa,2093,1360912123
+Middle East & North Africa,2094,1363514322
+Middle East & North Africa,2095,1365877435
+Middle East & North Africa,2096,1368099995
+Middle East & North Africa,2097,1370077125
+Middle East & North Africa,2098,1371839482
+Middle East & North Africa,2099,1373459202
+Middle East & North Africa,2100,1374921698
+North America,2025,386390149
+North America,2026,388555168
+North America,2027,390591220
+North America,2028,392569548
+North America,2029,394548828
+North America,2030,396443072
+North America,2031,398306182
+North America,2032,400134311
+North America,2033,401926514
+North America,2034,403674380
+North America,2035,405418421
+North America,2036,407097161
+North America,2037,408750020
+North America,2038,410375010
+North America,2039,411973375
+North America,2040,413491795
+North America,2041,414961697
+North America,2042,416384289
+North America,2043,417799517
+North America,2044,419133587
+North America,2045,420405085
+North America,2046,421635676
+North America,2047,422787927
+North America,2048,423920210
+North America,2049,424990298
+North America,2050,426020913
+North America,2051,427039061
+North America,2052,428041934
+North America,2053,429011610
+North America,2054,429968015
+North America,2055,430868004
+North America,2056,431751296
+North America,2057,432657029
+North America,2058,433619146
+North America,2059,434633635
+North America,2060,435628573
+North America,2061,436609426
+North America,2062,437650462
+North America,2063,438716753
+North America,2064,439795327
+North America,2065,440859182
+North America,2066,441955101
+North America,2067,443085841
+North America,2068,444253357
+North America,2069,445395530
+North America,2070,446564713
+North America,2071,447686878
+North America,2072,448843638
+North America,2073,449932399
+North America,2074,451017927
+North America,2075,452068314
+North America,2076,453170062
+North America,2077,454218090
+North America,2078,455210507
+North America,2079,456199620
+North America,2080,457125963
+North America,2081,458022724
+North America,2082,459012162
+North America,2083,459907628
+North America,2084,460805241
+North America,2085,461680698
+North America,2086,462489167
+North America,2087,463351918
+North America,2088,464210947
+North America,2089,465147820
+North America,2090,466028445
+North America,2091,466882941
+North America,2092,467782196
+North America,2093,468676319
+North America,2094,469557967
+North America,2095,470452339
+North America,2096,471325870
+North America,2097,472149090
+North America,2098,472999147
+North America,2099,473785966
+North America,2100,474569702
+Oceania,2025,46351526
+Oceania,2026,46867762
+Oceania,2027,47370225
+Oceania,2028,47868058
+Oceania,2029,48358248
+Oceania,2030,48835150
+Oceania,2031,49307894
+Oceania,2032,49773005
+Oceania,2033,50228953
+Oceania,2034,50680280
+Oceania,2035,51127834
+Oceania,2036,51574676
+Oceania,2037,52019454
+Oceania,2038,52453809
+Oceania,2039,52891440
+Oceania,2040,53318188
+Oceania,2041,53745834
+Oceania,2042,54175244
+Oceania,2043,54603854
+Oceania,2044,55025957
+Oceania,2045,55444995
+Oceania,2046,55864683
+Oceania,2047,56283762
+Oceania,2048,56685646
+Oceania,2049,57097164
+Oceania,2050,57492006
+Oceania,2051,57884350
+Oceania,2052,58273214
+Oceania,2053,58651669
+Oceania,2054,59026625
+Oceania,2055,59403211
+Oceania,2056,59774802
+Oceania,2057,60134904
+Oceania,2058,60492976
+Oceania,2059,60854776
+Oceania,2060,61201675
+Oceania,2061,61545004
+Oceania,2062,61884001
+Oceania,2063,62222798
+Oceania,2064,62559506
+Oceania,2065,62886151
+Oceania,2066,63217383
+Oceania,2067,63554363
+Oceania,2068,63888024
+Oceania,2069,64218306
+Oceania,2070,64541967
+Oceania,2071,64856285
+Oceania,2072,65161870
+Oceania,2073,65468168
+Oceania,2074,65769541
+Oceania,2075,66070868
+Oceania,2076,66367444
+Oceania,2077,66658790
+Oceania,2078,66954741
+Oceania,2079,67245992
+Oceania,2080,67530599
+Oceania,2081,67814860
+Oceania,2082,68102661
+Oceania,2083,68377808
+Oceania,2084,68658575
+Oceania,2085,68922894
+Oceania,2086,69187770
+Oceania,2087,69457092
+Oceania,2088,69729524
+Oceania,2089,70013296
+Oceania,2090,70283691
+Oceania,2091,70564725
+Oceania,2092,70841158
+Oceania,2093,71111052
+Oceania,2094,71371927
+Oceania,2095,71618351
+Oceania,2096,71866709
+Oceania,2097,72119778
+Oceania,2098,72373287
+Oceania,2099,72607906
+Oceania,2100,72834363
+South Asia,2025,1729422476
+South Asia,2026,1745718486
+South Asia,2027,1761885804
+South Asia,2028,1777880543
+South Asia,2029,1793683820
+South Asia,2030,1809257495
+South Asia,2031,1824520428
+South Asia,2032,1839383055
+South Asia,2033,1853798612
+South Asia,2034,1867819132
+South Asia,2035,1881323951
+South Asia,2036,1894399398
+South Asia,2037,1907049836
+South Asia,2038,1919180159
+South Asia,2039,1930783972
+South Asia,2040,1941982926
+South Asia,2041,1952778076
+South Asia,2042,1963063839
+South Asia,2043,1972792200
+South Asia,2044,1982100295
+South Asia,2045,1990954446
+South Asia,2046,1999386549
+South Asia,2047,2007457821
+South Asia,2048,2015009060
+South Asia,2049,2022143804
+South Asia,2050,2028961854
+South Asia,2051,2035261164
+South Asia,2052,2041125375
+South Asia,2053,2046692097
+South Asia,2054,2051905898
+South Asia,2055,2056675009
+South Asia,2056,2061124599
+South Asia,2057,2065199431
+South Asia,2058,2068936416
+South Asia,2059,2072213191
+South Asia,2060,2075007029
+South Asia,2061,2077433326
+South Asia,2062,2079367737
+South Asia,2063,2081019680
+South Asia,2064,2082269295
+South Asia,2065,2083151778
+South Asia,2066,2083593673
+South Asia,2067,2083556838
+South Asia,2068,2083063740
+South Asia,2069,2082226953
+South Asia,2070,2080914873
+South Asia,2071,2079271802
+South Asia,2072,2077107982
+South Asia,2073,2074578018
+South Asia,2074,2071764207
+South Asia,2075,2068490193
+South Asia,2076,2064728589
+South Asia,2077,2060689011
+South Asia,2078,2056351566
+South Asia,2079,2051635942
+South Asia,2080,2046751258
+South Asia,2081,2041483781
+South Asia,2082,2035806824
+South Asia,2083,2029923532
+South Asia,2084,2023757478
+South Asia,2085,2017535732
+South Asia,2086,2010965155
+South Asia,2087,2004071153
+South Asia,2088,1997178791
+South Asia,2089,1990013518
+South Asia,2090,1982665799
+South Asia,2091,1975227092
+South Asia,2092,1967572850
+South Asia,2093,1959817604
+South Asia,2094,1951905827
+South Asia,2095,1943868560
+South Asia,2096,1935722247
+South Asia,2097,1927524426
+South Asia,2098,1919279970
+South Asia,2099,1910932943
+South Asia,2100,1902571723
+Sub-Saharan Africa,2025,1307971238
+Sub-Saharan Africa,2026,1340115553
+Sub-Saharan Africa,2027,1372540540
+Sub-Saharan Africa,2028,1405063481
+Sub-Saharan Africa,2029,1437817274
+Sub-Saharan Africa,2030,1470890470
+Sub-Saharan Africa,2031,1504194355
+Sub-Saharan Africa,2032,1537798528
+Sub-Saharan Africa,2033,1571552705
+Sub-Saharan Africa,2034,1605484410
+Sub-Saharan Africa,2035,1639646876
+Sub-Saharan Africa,2036,1674011555
+Sub-Saharan Africa,2037,1708462241
+Sub-Saharan Africa,2038,1742984567
+Sub-Saharan Africa,2039,1777585117
+Sub-Saharan Africa,2040,1812276369
+Sub-Saharan Africa,2041,1847050169
+Sub-Saharan Africa,2042,1881852194
+Sub-Saharan Africa,2043,1916673209
+Sub-Saharan Africa,2044,1951565693
+Sub-Saharan Africa,2045,1986425819
+Sub-Saharan Africa,2046,2021213321
+Sub-Saharan Africa,2047,2055990342
+Sub-Saharan Africa,2048,2090785145
+Sub-Saharan Africa,2049,2125478260
+Sub-Saharan Africa,2050,2160064721
+Sub-Saharan Africa,2051,2194530958
+Sub-Saharan Africa,2052,2229039466
+Sub-Saharan Africa,2053,2263361140
+Sub-Saharan Africa,2054,2297482172
+Sub-Saharan Africa,2055,2331506338
+Sub-Saharan Africa,2056,2365406365
+Sub-Saharan Africa,2057,2399091566
+Sub-Saharan Africa,2058,2432500201
+Sub-Saharan Africa,2059,2465716229
+Sub-Saharan Africa,2060,2498879221
+Sub-Saharan Africa,2061,2531715206
+Sub-Saharan Africa,2062,2564370275
+Sub-Saharan Africa,2063,2596577351
+Sub-Saharan Africa,2064,2628470897
+Sub-Saharan Africa,2065,2660079734
+Sub-Saharan Africa,2066,2691364646
+Sub-Saharan Africa,2067,2722267248
+Sub-Saharan Africa,2068,2752872342
+Sub-Saharan Africa,2069,2782992201
+Sub-Saharan Africa,2070,2812777588
+Sub-Saharan Africa,2071,2842175040
+Sub-Saharan Africa,2072,2871195450
+Sub-Saharan Africa,2073,2899788877
+Sub-Saharan Africa,2074,2927903348
+Sub-Saharan Africa,2075,2955634831
+Sub-Saharan Africa,2076,2982878914
+Sub-Saharan Africa,2077,3009574470
+Sub-Saharan Africa,2078,3035935787
+Sub-Saharan Africa,2079,3061785081
+Sub-Saharan Africa,2080,3086996341
+Sub-Saharan Africa,2081,3111711418
+Sub-Saharan Africa,2082,3135859459
+Sub-Saharan Africa,2083,3159581438
+Sub-Saharan Africa,2084,3182807482
+Sub-Saharan Africa,2085,3205422660
+Sub-Saharan Africa,2086,3227620543
+Sub-Saharan Africa,2087,3249350625
+Sub-Saharan Africa,2088,3270361340
+Sub-Saharan Africa,2089,3290737272
+Sub-Saharan Africa,2090,3310722711
+Sub-Saharan Africa,2091,3330135081
+Sub-Saharan Africa,2092,3348875829
+Sub-Saharan Africa,2093,3367056923
+Sub-Saharan Africa,2094,3384684465
+Sub-Saharan Africa,2095,3401791635
+Sub-Saharan Africa,2096,3418337476
+Sub-Saharan Africa,2097,3434473108
+Sub-Saharan Africa,2098,3450003434
+Sub-Saharan Africa,2099,3465035526
+Sub-Saharan Africa,2100,3479490290

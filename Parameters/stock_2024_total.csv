@@ -1,0 +1,65 @@
+Region,material,end_use,stock_Mt
+East Asia,Metal ores,buildings,3319.260264407339
+East Asia,Metal ores,civil_infrastructure,9180.56806316294
+East Asia,Metal ores,machinery,4461.9774656179325
+East Asia,Metal ores,short_lived,432.89847322301046
+East Asia,Non-metallic minerals,buildings,416303.3671569003
+East Asia,Non-metallic minerals,civil_infrastructure,177927.57417864306
+East Asia,Non-metallic minerals,machinery,51.40757800129792
+East Asia,Non-metallic minerals,short_lived,22.602163350540767
+Europe & Russia,Metal ores,buildings,2763.3984715729207
+Europe & Russia,Metal ores,civil_infrastructure,4627.099398905339
+Europe & Russia,Metal ores,machinery,2375.577510429376
+Europe & Russia,Metal ores,short_lived,204.029686354856
+Europe & Russia,Non-metallic minerals,buildings,92866.77768084177
+Europe & Russia,Non-metallic minerals,civil_infrastructure,199000.74997860406
+Europe & Russia,Non-metallic minerals,machinery,26.09551137821256
+Europe & Russia,Non-metallic minerals,short_lived,43.812447833288026
+Latin America,Metal ores,buildings,677.1492734142091
+Latin America,Metal ores,civil_infrastructure,1249.965356483902
+Latin America,Metal ores,machinery,526.8735516155359
+Latin America,Metal ores,short_lived,65.80505672237928
+Latin America,Non-metallic minerals,buildings,30277.479445347057
+Latin America,Non-metallic minerals,civil_infrastructure,41274.46327249437
+Latin America,Non-metallic minerals,machinery,6.284717738047415
+Latin America,Non-metallic minerals,short_lived,10.457724936363046
+Middle East & North Africa,Metal ores,buildings,832.3331001589565
+Middle East & North Africa,Metal ores,civil_infrastructure,1103.5453747784509
+Middle East & North Africa,Metal ores,machinery,668.0717488202978
+Middle East & North Africa,Metal ores,short_lived,74.68121515955697
+Middle East & North Africa,Non-metallic minerals,buildings,45412.355242316335
+Middle East & North Africa,Non-metallic minerals,civil_infrastructure,50351.826388693844
+Middle East & North Africa,Non-metallic minerals,machinery,1.492737215406688
+Middle East & North Africa,Non-metallic minerals,short_lived,5.90149146382683
+North America,Metal ores,buildings,2753.884753432539
+North America,Metal ores,civil_infrastructure,2003.9105486484657
+North America,Metal ores,machinery,1053.2829116383714
+North America,Metal ores,short_lived,95.94404833655258
+North America,Non-metallic minerals,buildings,26398.02958439329
+North America,Non-metallic minerals,civil_infrastructure,132457.71111465624
+North America,Non-metallic minerals,machinery,12.221152397212727
+North America,Non-metallic minerals,short_lived,10.528285222860875
+Oceania,Metal ores,buildings,216.91386069849216
+Oceania,Metal ores,civil_infrastructure,117.13915657109818
+Oceania,Metal ores,machinery,103.02863526661214
+Oceania,Metal ores,short_lived,14.199933634649987
+Oceania,Non-metallic minerals,buildings,2936.55048942397
+Oceania,Non-metallic minerals,civil_infrastructure,4517.981419143223
+Oceania,Non-metallic minerals,machinery,0.1936912098111268
+Oceania,Non-metallic minerals,short_lived,2.1536156945591878
+South Asia,Metal ores,buildings,270.88558822521304
+South Asia,Metal ores,civil_infrastructure,696.7867239873358
+South Asia,Metal ores,machinery,735.7044373944005
+South Asia,Metal ores,short_lived,78.72875821481851
+South Asia,Non-metallic minerals,buildings,60397.477086790066
+South Asia,Non-metallic minerals,civil_infrastructure,36375.21420332653
+South Asia,Non-metallic minerals,machinery,1.4586648575421353
+South Asia,Non-metallic minerals,short_lived,5.607856194250398
+Sub-Saharan Africa,Metal ores,buildings,231.940843918581
+Sub-Saharan Africa,Metal ores,civil_infrastructure,363.7485266066719
+Sub-Saharan Africa,Metal ores,machinery,214.78396429264592
+Sub-Saharan Africa,Metal ores,short_lived,29.332144925151148
+Sub-Saharan Africa,Non-metallic minerals,buildings,17807.73760262334
+Sub-Saharan Africa,Non-metallic minerals,civil_infrastructure,11928.176523435166
+Sub-Saharan Africa,Non-metallic minerals,machinery,0.8289750070040726
+Sub-Saharan Africa,Non-metallic minerals,short_lived,2.6638151611238587
