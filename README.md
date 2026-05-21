@@ -1,4 +1,4 @@
-# Potential and limits of material efficiency and circular economy
+# Global material consumption persists despite optimal efficiency and circularity
 
 If you identify any error in the source code or have any further suggestions please contact Pablo Busch at pmbuschh@gmail.com.
 
