@@ -400,7 +400,7 @@ p3 <- ggplot() +
   scale_colour_manual(values = PALETTE_MATERIALS, guide = "none") +
   scale_fill_manual(values = PALETTE_MATERIALS) +
   panel_tag("c") +
-  labs(x = NULL, y = "DMC / GDP (kg per 2015 USD)", title = "M/G Biomass") +
+  labs(x = NULL, y = "M / GDP (kg per 2015 USD)", title = "M/G Biomass") +
   theme_pb_large() +
   FONT_BUMP
 
@@ -433,7 +433,7 @@ p4 <- ggplot() +
   scale_colour_manual(values = PALETTE_MATERIALS, guide = "none") +
   scale_fill_manual(values = PALETTE_MATERIALS) +
   panel_tag("d") +
-  labs(x = NULL, y = "DMC / GDP (kg per 2015 USD)", title = "M/G Fossil fuels") +
+  labs(x = NULL, y = "M / GDP (kg per 2015 USD)", title = "M/G Fossil fuels") +
   theme_pb_large() +
   FONT_BUMP
 
@@ -694,10 +694,65 @@ cat("G: Assembling figure\n")
 
 fig <- (p1 | p2 | p3) / (p4 | p5 | p6) / (p7 | p8 | plot_spacer())
 
-ggsave("Figures/Figure2_KayaProjection.png", fig, units = "cm", dpi = 600, width = 8.7 * 3, height = 8.7 * 3)
+ggsave("Figures/Fig2.png", fig, units = "cm", dpi = 600, width = 8.7 * 3, height = 8.7 * 3)
 
-ggsave("Figures/SVG/Figure2_KayaProjection.svg", fig, units = "cm", width = 8.7 * 3, height = 8.7 * 3)
+ggsave("Figures/SVG/Fig2.svg", fig, units = "cm", width = 8.7 * 3, height = 8.7 * 3)
 
-cat("  Saved: Figures/Figure2_KayaProjection.png\n")
+cat("  Saved: Figures/Fig2.png\n")
+
+## Save figure data ----------------------------------------------------------
+dir.create("Results/Data-Figures/", showWarnings = FALSE, recursive = TRUE)
+
+bind_rows(
+  pop_hist |> mutate(type = "historical") |> dplyr::select(year, type, value = v),
+  pop_ssp2 |> mutate(type = "SSP2") |> dplyr::select(year, type, value = v)
+) |>
+  mutate(variable = "population_billion") |>
+  write_csv("Results/Data-Figures/fig2a.csv")
+
+bind_rows(
+  gdp_cap_hist |> mutate(type = "historical") |> dplyr::select(year, type, value = v),
+  gdp_cap_ssp2 |> mutate(type = "SSP2") |> dplyr::select(year, type, value = v)
+) |>
+  mutate(variable = "gdp_per_capita_2015USD") |>
+  write_csv("Results/Data-Figures/fig2b.csv")
+
+bind_rows(
+  biomass_hist |> mutate(type = "historical") |> dplyr::select(year, type, material = material_category, mg),
+  biomass_ssp2 |> mutate(type = "SSP2") |> dplyr::select(year, type, material = category, mg)
+) |>
+  write_csv("Results/Data-Figures/fig2c.csv")
+
+bind_rows(
+  fossil_hist |> mutate(type = "historical") |> dplyr::select(year, type, material = material_category, mg),
+  fossil_ssp2 |> mutate(type = "SSP2") |> dplyr::select(year, type, material = material_category, mg)
+) |>
+  write_csv("Results/Data-Figures/fig2d.csv")
+
+bind_rows(
+  metal_hist |> mutate(type = "historical") |> dplyr::select(year, type, mg),
+  metal_ssp2 |> mutate(type = "SSP2") |> dplyr::select(year, type, mg)
+) |>
+  write_csv("Results/Data-Figures/fig2e.csv")
+
+bind_rows(
+  nonmet_hist |> mutate(type = "historical") |> dplyr::select(year, type, mg),
+  nonmet_ssp2 |> mutate(type = "SSP2") |> dplyr::select(year, type, mg)
+) |>
+  write_csv("Results/Data-Figures/fig2f.csv")
+
+bind_rows(
+  dmc_total_hist |> mutate(type = "historical") |> dplyr::select(year, type, mat_group, DMC_Gt),
+  dmc_ssp2 |> mutate(type = "SSP2", mat_group = "Total") |> dplyr::select(year, type, mat_group, DMC_Gt)
+) |>
+  write_csv("Results/Data-Figures/fig2g.csv")
+
+bind_rows(
+  stock_total_hist |> mutate(type = "historical") |> dplyr::select(year, type, end_use = end_use_label, stock_Gt),
+  stock_ssp2_total |> mutate(type = "SSP2", end_use = "Total") |> dplyr::select(year, type, end_use, stock_Gt)
+) |>
+  write_csv("Results/Data-Figures/fig2h.csv")
+
+cat("  Saved: Results/Data-Figures/fig2a-h.csv\n")
 
 # EoF

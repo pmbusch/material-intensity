@@ -18,6 +18,14 @@ cat("L1 categories:", paste(sort(unique(df_world$material_l1)), collapse = " | "
 cat("L2 categories:", length(unique(df_world$material_l2)), "\n")
 cat("L3 categories:", length(unique(df_world$material_l3)), "\n")
 
+# Share in 2024 by material -------
+df_world |> 
+  filter(year==2024) |> 
+  group_by(material_l2) |> 
+  mutate(share_mat=DE_Mt/sum(DE_Mt)) |> 
+  dplyr::select(material_l2,material_l3,DE_Mt,share_mat)
+
+
 
 # Colour palette for 61 L3 categories, shaded within each L1 family -----------
 # Each L1 group gets a hue range; within the group materials are ordered

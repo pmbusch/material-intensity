@@ -397,8 +397,15 @@ ggsave("Figures/Stocks/stock_trajectory_endUSE_1970_2024.png", ggplot2::last_plo
 
 gap <- 7 # in Gt, adjust to taste
 
+region_order <- age_profile_list %>%
+  filter(material == "Non-metallic minerals") %>%
+  group_by(Region) %>%
+  summarise(total = sum(surviving_stock_Mt, na.rm = TRUE), .groups = "drop") %>%
+  arrange(desc(total)) %>%
+  pull(Region)
+
 pyramid_data <- age_profile_list %>%
-  mutate(end_use = ENDUSE_LABELS[end_use]) |>
+  mutate(end_use = ENDUSE_LABELS[end_use], Region = factor(Region, levels = region_order)) |>
   filter(material %in% "Non-metallic minerals", end_use %in% c("Buildings", "Civil infrastructure")) %>%
   mutate(
     cohort_bin = cut(
@@ -492,6 +499,8 @@ p_pyramid
 
 # fmt: skip
 ggsave("Figures/Stocks/age_profile_2024.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
+# fmt: skip
+ggsave("Figures/SVG/age_profile_2024.svg", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
 
 
 # -- Plot 3: Annual outflow trajectory ----------------------------------------
