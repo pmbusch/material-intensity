@@ -363,6 +363,7 @@ ggplot(region_all, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
 # fmt: skip
 ggsave("Figures/FigContour_A_all.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7 * 2, height = 8.7 * 2)
 ggsave("Figures/SVG/FigContour_A_all.svg", ggplot2::last_plot(), units = 'cm', width = 8.7 * 2, height = 8.7 * 2)
+clean_svg("Figures/SVG/FigContour_A_all.svg")
 
 
 ## FIGURE B: Faceted by material group -----------------------------------------
@@ -836,8 +837,7 @@ world_9mat_proj <- bind_rows(
 ) |>
   left_join(world_gdpcap_proj |> dplyr::select(year, world_gdp, gdp_pc), by = "year") |>
   filter(!is.na(world_gdp)) |>
-  mutate(mat_gdp = DMC_kg / world_gdp,
-         mat9 = ifelse(mat9 == "Grazed biomass and fodder crops", "Grazed biomass", mat9))
+  mutate(mat_gdp = DMC_kg / world_gdp, mat9 = ifelse(mat9 == "Grazed biomass and fodder crops", "Grazed biomass", mat9))
 
 ## Palette matching Figure 1 - TimeSeries.R PALETTE_MATERIALS ------------------
 
@@ -848,7 +848,7 @@ pal_9mat <- c(
   "Crops" = "#1B5E20",
   "Crop Residues" = "#388E3C",
   "Wood" = "#558B2F",
-  "Grazed biomass"                  = "#8BC34A",
+  "Grazed biomass" = "#8BC34A",
   "Metal ores" = unname(PALETTE_MATERIAL_GROUPS["Metal ores"]),
   "Non-metallic minerals" = unname(PALETTE_MATERIAL_GROUPS["Non-metallic minerals"])
 )
@@ -1084,30 +1084,45 @@ p9mat <- ggplot() +
 
 
 ## Assemble Fig3
-fig3 <- pFig3a | p9mat
+fig3 <- (pFig3a | p9mat) &
+  theme(
+    plot.background = element_rect(fill = "transparent", color = NA),
+    panel.background = element_rect(fill = "transparent", color = NA)
+  )
 
 ggsave("Figures/Fig3.png", fig3, units = "cm", dpi = 600, width = 8.7 * 4, height = 8.7 * 2)
 ggsave("Figures/SVG/Fig3.svg", fig3, units = "cm", width = 8.7 * 4, height = 8.7 * 2)
+clean_svg("Figures/SVG/Fig3.svg")
 cat("  Saved: Figures/Fig3.png\n")
 
+# fmt: skip
 ggsave("Figures/Fig_9mat.png", p9mat, units = "cm", dpi = 600, width = 8.7 * 2.5, height = 8.7 * 2.5)
+# fmt: skip
 ggsave("Figures/SVG/Fig_9mat.svg", p9mat, units = "cm", width = 8.7 * 2.5, height = 8.7 * 2.5)
+clean_svg("Figures/SVG/Fig_9mat.svg")
 cat("  Saved: Figures/Fig_9mat.png\n")
+
 
 ## Save figure data ----------------------------------------------------------
 dir.create("Results/Data-Figures/", showWarnings = FALSE, recursive = TRUE)
 
 bind_rows(
-  region_all      |> mutate(type = "historical") |> dplyr::select(year, Analysis_group, type, mat_gdp, gdp_pc),
-  region_all_proj |> mutate(type = "SSP2")       |> dplyr::select(year, Analysis_group, type, mat_gdp, gdp_pc),
-  world_all       |> mutate(type = "historical", Analysis_group = "World") |> dplyr::select(year, Analysis_group, type, mat_gdp, gdp_pc),
-  world_all_proj  |> mutate(type = "SSP2",       Analysis_group = "World") |> dplyr::select(year, Analysis_group, type, mat_gdp, gdp_pc)
-) |> write_csv("Results/Data-Figures/fig3a.csv")
+  region_all |> mutate(type = "historical") |> dplyr::select(year, Analysis_group, type, mat_gdp, gdp_pc),
+  region_all_proj |> mutate(type = "SSP2") |> dplyr::select(year, Analysis_group, type, mat_gdp, gdp_pc),
+  world_all |>
+    mutate(type = "historical", Analysis_group = "World") |>
+    dplyr::select(year, Analysis_group, type, mat_gdp, gdp_pc),
+  world_all_proj |>
+    mutate(type = "SSP2", Analysis_group = "World") |>
+    dplyr::select(year, Analysis_group, type, mat_gdp, gdp_pc)
+) |>
+  write_csv("Results/Data-Figures/fig3a.csv")
 
 bind_rows(
   world_9mat_hist |> mutate(type = "historical") |> dplyr::select(year, mat9, type, mat_gdp, gdp_pc),
-  world_9mat_proj |> mutate(type = "SSP2")       |> dplyr::select(year, mat9, type, mat_gdp, gdp_pc)
-) |> write_csv("Results/Data-Figures/fig3b.csv")
+  world_9mat_proj |> mutate(type = "SSP2") |> dplyr::select(year, mat9, type, mat_gdp, gdp_pc)
+) |>
+  write_csv("Results/Data-Figures/fig3b.csv")
 
 cat("  Saved: Results/Data-Figures/fig3a-b.csv\n")
 

@@ -295,6 +295,7 @@ p_material
 ggsave("Figures/Fig1A_global_DMC_by_material.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7, height = 8.7)
 # fmt: skip
 ggsave("Figures/SVG/Fig1A_global_DMC_by_material.svg",ggplot2::last_plot(),units = 'cm',width = 8.7,height = 8.7)
+clean_svg("Figures/SVG/Fig1A_global_DMC_by_material.svg")
 
 
 #  Figure 1B: Global DMC by region --------------------------------------------
@@ -362,12 +363,14 @@ p_region
 # fmt: skip
 ggsave("Figures/Fig1B_global_DMC_by_region.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7, height = 8.7)
 ggsave("Figures/SVG/Fig1B_global_DMC_by_region.svg", ggplot2::last_plot(), units = 'cm', width = 8.7, height = 8.7)
+clean_svg("Figures/SVG/Fig1B_global_DMC_by_region.svg")
 
 # Merge --
 library(cowplot)
 plot_grid(p_material, p_region, ncol = 2)
 ggsave("Figures/Fig1.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7 * 2, height = 8.7)
 ggsave("Figures/SVG/Fig1.svg", ggplot2::last_plot(), units = 'cm', width = 8.7 * 2, height = 8.7)
+clean_svg("Figures/SVG/Fig1.svg")
 
 
 #  Figure 1D OLD: Global extraction by region -------------------------------------
@@ -417,6 +420,7 @@ ggplot(global_de, aes(x = year, y = DE_Gt, fill = analysis_group)) +
 # fmt: skip
 ggsave("Figures/Fig1D_global_DE_by_region.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
 ggsave("Figures/SVG/Fig1D_global_DE_by_region.svg", ggplot2::last_plot(), units = 'cm', width = 8.7 * 2, height = 8.7)
+clean_svg("Figures/SVG/Fig1D_global_DE_by_region.svg")
 
 ## Save figure data ----------------------------------------------------------
 dir.create("Results/Data-Figures/", showWarnings = FALSE, recursive = TRUE)
@@ -606,5 +610,6 @@ plot_grid(p_material_pct, p_region_pct, ncol = 2)
 
 ggsave("Figures/Fig1_stacked.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7 * 2, height = 8.7)
 ggsave("Figures/svg/Fig1_stacked.svg", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7 * 2, height = 8.7)
+clean_svg("Figures/svg/Fig1_stacked.svg")
 
 # EoF

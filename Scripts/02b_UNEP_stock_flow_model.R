@@ -488,8 +488,8 @@ p_pyramid <- pyramid_data %>%
     axis.line.y = element_blank(),
     axis.text.y = element_blank(),
     axis.line.x.bottom = element_blank(),
-    panel.background = element_rect(fill = "white", color = NA),
-    plot.background = element_rect(fill = "white", color = NA),
+    panel.background = element_rect(fill = "transparent", color = NA),
+    plot.background = element_rect(fill = "transparent", color = NA),
     axis.ticks.y = element_blank(),
     plot.margin = margin(t = 15, r = 5, b = 5, l = 5, unit = "mm")
   ) +
@@ -501,6 +501,7 @@ p_pyramid
 ggsave("Figures/Stocks/age_profile_2024.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
 # fmt: skip
 ggsave("Figures/SVG/age_profile_2024.svg", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
+clean_svg("Figures/SVG/age_profile_2024.svg")
 
 
 # -- Plot 3: Annual outflow trajectory ----------------------------------------

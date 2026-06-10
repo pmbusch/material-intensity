@@ -188,6 +188,7 @@ plot_kaya(world_kaya, title = "Global Material Consumption", subtitle = "")
 # fmt: skip
 ggsave("Figures/FigKa_global_kaya.png", last_plot(), units = 'cm', dpi = 600,width = 8.7 * 2, height = 8.7 * 1.4)
 ggsave("Figures/SVG/FigKa_global_kaya.svg", last_plot(), units = 'cm', width = 8.7 * 2, height = 8.7 * 1.4)
+clean_svg("Figures/SVG/FigKa_global_kaya.svg")
 
 
 ## Figure Kb: Kaya faceted by region -------------------------------------------
@@ -206,6 +207,7 @@ plot_kaya(region_kaya, title = "Kaya Decomposition by Region", subtitle = "All m
 # fmt: skip
 ggsave("Figures/FigKb_region_kaya.png", last_plot(), units = 'cm', dpi = 600, width = 8.7 * 3, height = 8.7 * 3.2)
 ggsave("Figures/SVG/FigKb_region_kaya.svg", last_plot(), units = 'cm', width = 8.7 * 3, height = 8.7 * 3.2)
+clean_svg("Figures/SVG/FigKb_region_kaya.svg")
 
 
 ## Figure Kc: Kaya global + faceted by material group --------------------------
@@ -235,6 +237,7 @@ plot_kaya(
 # fmt: skip
 ggsave("Figures/FigKc_materialgroup_kaya.png", last_plot(), units = 'cm', dpi = 600,width = 8.7 * 2, height = 8.7 * 2.3)
 ggsave("Figures/SVG/FigKc_materialgroup_kaya.svg", last_plot(), units = 'cm', width = 8.7 * 2, height = 8.7 * 2.3)
+clean_svg("Figures/SVG/FigKc_materialgroup_kaya.svg")
 
 
 ## Figure Kd: Kaya global + faceted by material category -----------------------
@@ -265,6 +268,7 @@ plot_kaya(
 # fmt: skip
 ggsave("Figures/FigKd_material_kaya.png", last_plot(), units = 'cm', dpi = 600,width = 8.7 * 6, height = 8.7 * 4.2)
 ggsave("Figures/SVG/FigKd_material_kaya.svg", last_plot(), units = 'cm', width = 8.7 * 6, height = 8.7 * 4.2)
+clean_svg("Figures/SVG/FigKd_material_kaya.svg")
 
 
 ## Figure Ke: PDFs — Kaya by region for each material group / category ---------

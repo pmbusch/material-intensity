@@ -117,6 +117,7 @@ p_dumb
 # fmt: skip
 ggsave("Figures/MaterialFlows/FigVal_A_dumbbell.png",       p_dumb, units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7 * 3)
 ggsave("Figures/MaterialFlows/SVG/FigVal_A_dumbbell.svg", p_dumb, units = "cm", width = 8.7 * 2, height = 8.7 * 3)
+clean_svg("Figures/MaterialFlows/SVG/FigVal_A_dumbbell.svg")
 
 
 # Figure B: Cumulative share curves — mass and value (side by side) -----------
@@ -197,6 +198,7 @@ p_cum
 # fmt: skip
 ggsave("Figures/MaterialFlows/FigVal_B_cumulative.png",     p_cum, units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7)
 ggsave("Figures/MaterialFlows/SVG/FigVal_B_cumulative.svg", p_cum, units = "cm", width = 8.7 * 2, height = 8.7)
+clean_svg("Figures/MaterialFlows/SVG/FigVal_B_cumulative.svg")
 
 
 # Figure C: Quadrant scatter — share mass (x) vs share value (y) --------------
@@ -246,6 +248,7 @@ p_quad
 # fmt: skip
 ggsave("Figures/MaterialFlows/FigVal_C_quadrant.png",     p_quad, units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7 * 2)
 ggsave("Figures/MaterialFlows/SVG/FigVal_C_quadrant.svg", p_quad, units = "cm", width = 8.7 * 2, height = 8.7 * 2)
+clean_svg("Figures/MaterialFlows/SVG/FigVal_C_quadrant.svg")
 
 
 # Figure D: Rank scatter — mass rank (x) vs value rank (y) --------------------
@@ -312,6 +315,7 @@ p_rank
 # fmt: skip
 ggsave("Figures/MaterialFlows/FigVal_D_rank_scatter.png",     p_rank, units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7 * 2)
 ggsave("Figures/MaterialFlows/SVG/FigVal_D_rank_scatter.svg", p_rank, units = "cm", width = 8.7 * 2, height = 8.7 * 2)
+clean_svg("Figures/MaterialFlows/SVG/FigVal_D_rank_scatter.svg")
 
 cat("\nAll figures saved to Figures/MaterialFlows/\n")
 

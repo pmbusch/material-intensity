@@ -692,11 +692,16 @@ p8 <- ggplot() +
 
 cat("G: Assembling figure\n")
 
-fig <- (p1 | p2 | p3) / (p4 | p5 | p6) / (p7 | p8 | plot_spacer())
+fig <- ((p1 | p2 | p3) / (p4 | p5 | p6) / (p7 | p8 | plot_spacer())) &
+  theme(
+    plot.background = element_rect(fill = "transparent", color = NA),
+    panel.background = element_rect(fill = "transparent", color = NA)
+  )
 
 ggsave("Figures/Fig2.png", fig, units = "cm", dpi = 600, width = 8.7 * 3, height = 8.7 * 3)
 
 ggsave("Figures/SVG/Fig2.svg", fig, units = "cm", width = 8.7 * 3, height = 8.7 * 3)
+clean_svg("Figures/SVG/Fig2.svg")
 
 cat("  Saved: Figures/Fig2.png\n")
 

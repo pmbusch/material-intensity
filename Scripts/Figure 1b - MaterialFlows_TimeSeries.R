@@ -233,6 +233,7 @@ for (l1 in sort(unique(df_region_plot$material_l1))) {
   # fmt: skip
   ggsave(paste0("Figures/MaterialFlows/",     out_base, ".png"), p, units = "cm", dpi = 600, width = fig_w, height = fig_h)
   ggsave(paste0("Figures/MaterialFlows/SVG/", out_base, ".svg"), p, units = "cm", width = fig_w, height = fig_h)
+  clean_svg(paste0("Figures/MaterialFlows/SVG/", out_base, ".svg"))
   cat("  Saved:", out_base, "\n")
 }
 

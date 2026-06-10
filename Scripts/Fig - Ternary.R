@@ -366,6 +366,7 @@ ggplot() +
 # fmt: skip
 ggsave("Figures/FigTernary.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7 * 2.2, height = 8.7 * 2)
 ggsave("Figures/SVG/FigTernary.svg", ggplot2::last_plot(), units = 'cm', width = 8.7 * 2.2, height = 8.7 * 2)
+clean_svg("Figures/SVG/FigTernary.svg")
 
 ## Size Mat/cap ----------------
 ggplot() +
@@ -480,5 +481,6 @@ ggplot() +
 # fmt: skip
 ggsave("Figures/FigTernary_pop.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7 * 2.2, height = 8.7 * 2)
 ggsave("Figures/SVG/FigTernary_pop.svg", ggplot2::last_plot(), units = 'cm', width = 8.7 * 2.2, height = 8.7 * 2)
+clean_svg("Figures/SVG/FigTernary_pop.svg")
 
 # EoF
