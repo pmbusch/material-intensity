@@ -41,6 +41,7 @@ PALETTE_MATERIALS <- c(
   "Oil shale and tar sands" = "#8D6E63",
   "Refined fossil fuels mainly for fuel e.g. LPG gasoline diesel" = "#A1887F",
   "Other products mainly from fossil fuels e.g. plastics" = "#BCAAA4",
+  "Other fossil fuels" = "#9E9D88",
   # — Biomass —
   "Crops" = "#F9A825",
   "Crop Residues" = "#C8A415",
@@ -49,6 +50,7 @@ PALETTE_MATERIALS <- c(
   "Wood" = "#4E342E",
   "Non-wild animal products" = "#EF6C00",
   "Products mainly from biomass nec." = "#AED581",
+  "Other biomass" = "#7BAE43",
   # — Metals —
   "Ferrous ores" = "#B71C1C",
   "Non-ferrous ores" = "#C77B00",
@@ -77,10 +79,25 @@ PALETTE_MATERIAL_GROUPS <- c(
 
 # Longest-lived at bottom of stack, shortest at top.
 PALETTE_ENDUSE <- c(
-  "Buildings" = "#2C3E7A", # dark blue
-  "Civil infrastructure" = "#5B8DB8", # medium blue
-  "Machinery" = "#E8A838", # amber
-  "Short-lived products" = "#D4583A" # red-orange
+  "Buildings"            = "#1B4F8A",
+  "Civil infrastructure" = "#7A5230",
+  "Machinery"            = "#2D6A4F",
+  "Short-lived products" = "#7B2D8B"
+)
+
+# Sub-end-use palette: 2 tones per main category, keyed by display label.
+PALETTE_SUBENDUSE <- c(
+  "Residential"           = "#1B4F8A",
+  "Residential Bldg"      = "#1B4F8A",
+  "Non-residential"       = "#5285C0",
+  "Non-residential Bldg"  = "#5285C0",
+  "Roads"                 = "#7A5230",
+  "Civil engineering"     = "#B8896A",
+  "Civil eng."            = "#B8896A",
+  "Machinery"             = "#2D6A4F",
+  "Vehicles"              = "#5DAA80",
+  "Durables"              = "#7B2D8B",
+  "Packaging"             = "#B068C0"
 )
 
 SSP_COLORS <- c("SSP1" = "#2d7d46", "SSP2" = "#8db84e", "SSP3" = "#e8a628", "SSP4" = "#d4622a", "SSP5" = "#c0392b")

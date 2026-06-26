@@ -1,5 +1,5 @@
 ## =============================================================================
-## 04b_forecast_fossil_fuels.R
+## 02b_forecast_fossil_fuels.R
 ## Forecast fossil fuel material consumption (Mt/yr) by region, fuel, and SSP
 ## scenario from 2024 to 2060 using the Kaya decomposition identity:
 ##   M = P × (GDP/P) × (E/GDP) × (M/E)
@@ -16,7 +16,7 @@
 ## =============================================================================
 
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
-source("Scripts/04_BaseAssumptions.R", encoding = "UTF-8")
+source("Scripts/model_parameters.R", encoding = "UTF-8")
 
 # ── Marker models: one per SSP scenario ───────────────────────────────────────
 SSP_MARKERS <- c(
@@ -307,8 +307,6 @@ cat("  Fuels:", paste(sort(unique(forecast$fuel)), collapse = ", "), "\n")
 # Step 10: Save output ────────────────────────────────────────────────────────
 
 cat("\nSTEP 10: Save forecast\n")
-
-
 write_csv(forecast, "Results/fossil_fuel_forecast.csv")
 cat("  Saved: Results/fossil_fuel_forecast.csv (", nrow(forecast), "rows )\n")
 

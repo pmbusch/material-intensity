@@ -177,13 +177,8 @@ ggplot(
 
 # fmt: skip
 ggsave("Figures/Fig2B_material_intensity.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7*1.5)
-ggsave(
-  "Figures/SVG/Fig2B_material_intensity.svg",
-  ggplot2::last_plot(),
-  units = 'cm',
-  width = 8.7 * 2,
-  height = 8.7 * 1.5
-)
+# fmt: skip
+ggsave("Figures/SVG/Fig2B_material_intensity.svg",ggplot2::last_plot(),units = 'cm',width = 8.7 * 2,height = 8.7 * 1.5)
 
 
 ###################
@@ -293,12 +288,50 @@ ggsave(
 
 cat("── Figure 2D ──\n")
 
-# material intesity at 2024....
-region_econ_mat |>
-  filter(year == 2024) |>
-  dplyr::select(analysis_group, material_category, intensity_kg_USD) |>
-  pivot_wider(names_from = analysis_group, values_from = intensity_kg_USD)
+# material intesity at 2024 for EXCEL BOUNDARIES
+dict_mat <- readxl::read_excel("Inputs/Dict_Materials.xlsx", sheet = "Categories") %>%
+  dplyr::select(Material_22, Material_group) |>
+  rename(material_category = Material_22)
+data_2024 <- df %>%
+  left_join(dict_mat) |>
+  mutate(
+    material_category = if_else(
+      material_category %in% selected_materials,
+      material_category,
+      paste0("Rest of ", Material_group)
+    )
+  ) %>%
+  group_by(Region, year, Material_group, material_category) %>%
+  summarise(DMC_Mt_total = sum(DMC_Mt, na.rm = TRUE), .groups = "drop") |>
+  # Join pop and GDP; region-years must have all three
+  left_join(df_pop, by = c("Region", "year")) %>%
+  left_join(df_gdp, by = c("Region", "year")) %>%
+  filter(!is.na(population), !is.na(GDP_2015USD)) %>%
+  filter(year == 2024)
+data_2024 |>
+  mutate(DMC_pc_tonnes = DMC_Mt_total * 1e6 / population, intensity_kg_USD = DMC_Mt_total * 1e9 / GDP_2015USD) %>%
+  dplyr::select(Region, Material_group, material_category, intensity_kg_USD) |>
+  arrange(Material_group, material_category, Region)
+# pivot_wider(names_from = Region, values_from = intensity_kg_USD)
 
+.Last.value %>% write.table('clipboard', sep = '\t', row.names = FALSE)
+
+# world avg
+data_2024 |>
+  group_by(Material_group, material_category) |>
+  summarise(
+    DMC_Mt_total = sum(DMC_Mt_total, na.rm = TRUE),
+    population = sum(population),
+    GDP_2015USD = sum(GDP_2015USD),
+    ,
+    .groups = "drop"
+  ) |>
+  mutate(DMC_pc_tonnes = DMC_Mt_total * 1e6 / population, intensity_kg_USD = DMC_Mt_total * 1e9 / GDP_2015USD) %>%
+  dplyr::select(Material_group, material_category, intensity_kg_USD) |>
+  arrange(Material_group, material_category) |>
+  mutate(Region = "World")
+
+.Last.value %>% write.table('clipboard', sep = '\t', row.names = FALSE)
 
 int_mat <- region_econ_mat %>% dplyr::select(year, analysis_group, material_category, intensity_kg_USD)
 

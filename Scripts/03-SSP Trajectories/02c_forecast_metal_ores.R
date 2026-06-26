@@ -1,5 +1,5 @@
 ## =============================================================================
-## 04c_forecast_metal_ores.R
+## 02c_forecast_metal_ores.R
 ## Forward Dynamic Stock Model (DSM) forecast for Metal Ores, 2025-2060.
 ## Five SSP scenarios; cohort-based; lifetime distributions from Script 02b.
 ##
@@ -19,8 +19,8 @@
 ## =============================================================================
 
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
-source("Scripts/04_BaseAssumptions.R", encoding = "UTF-8")
-source("Scripts/Functions/dsm_functions.R", encoding = "UTF-8")
+source("Scripts/model_parameters.R", encoding = "UTF-8")
+source("Scripts/00-Functions/dsm_functions.R", encoding = "UTF-8")
 
 # ── Script-specific constants ─────────────────────────────────────────────────
 
@@ -28,10 +28,6 @@ MATERIAL_LABEL <- "Metal ores"
 ASSUMPTIONS_SHEET <- "MetalOres"
 MATERIAL_KEY <- "metal_ores"
 FORECAST_START <- 2025L # DSM starts year after base year
-
-# ── Recycling parameters ──────────────────────────────────────────────────────
-sub_factor_metal <- 1.00 # metal recycling is 1:1 after losses captured in EOL-RR
-max_recycling <- 1.00 # recycling cannot exceed 100% of demand
 
 
 # Step 1: Load inputs ----------------------------------------------------------
@@ -296,7 +292,7 @@ if (nrow(unmatched_recycling) > 0) {
 summary_raw <- summary_raw |>
   left_join(recycling_eol, by = "region") |>
   mutate(
-    recovered_material_Mt = pmin(waste_Mt * Recycling_rate * sub_factor_metal, max_recycling * production_Mt),
+    recovered_material_Mt = pmin(waste_Mt * Recycling_rate, production_Mt),
     recovered_material_Mt = replace_na(recovered_material_Mt, 0),
     production_Mt = pmax(0, production_Mt - recovered_material_Mt)
   ) |>

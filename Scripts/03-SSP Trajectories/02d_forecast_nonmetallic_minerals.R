@@ -1,5 +1,5 @@
 ## =============================================================================
-## 04d_forecast_nonmetallic_minerals.R
+## 02d_forecast_nonmetallic_minerals.R
 ## Forward Dynamic Stock Model (DSM) forecast for Non-metallic Minerals, 2025-2060.
 ## Five SSP scenarios; cohort-based; lifetime distributions from Script 02b.
 ##
@@ -19,8 +19,8 @@
 ## =============================================================================
 
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
-source("Scripts/04_BaseAssumptions.R", encoding = "UTF-8")
-source("Scripts/Functions/dsm_functions.R", encoding = "UTF-8")
+source("Scripts/model_parameters.R", encoding = "UTF-8")
+source("Scripts/00-Functions/dsm_functions.R", encoding = "UTF-8")
 
 # ── Script-specific constants ─────────────────────────────────────────────────
 
@@ -29,11 +29,6 @@ ASSUMPTIONS_SHEET <- "NonMetallicMinerals"
 MATERIAL_KEY <- "nonmetallic_minerals"
 FORECAST_START <- 2025L # DSM starts year after base year
 
-# ── Downcycling / substitution parameters ─────────────────────────────────────
-sub_factor_downcycling_roads <- 0.90 # recycled aggregate replacing virgin aggregate in road base
-sub_factor_recycling_same <- 0.75 # recycled concrete replacing virgin concrete (same sector)
-sub_factor_metal <- 1.00 # metal recycling is 1:1 after losses captured in EOL-RR
-max_secondary_roads <- 0.70 # max share of road material demand that can be secondary
 
 # Step 1: Load inputs ----------------------------------------------------------
 
@@ -311,14 +306,14 @@ summary_raw <- summary_raw |>
   mutate(
     recovered_same_sector = if_else(
       str_detect(end_use, "Building"),
-      waste_Mt * Downcycling_Buildings * sub_factor_recycling_same,
+      waste_Mt * Downcycling_Buildings * SUB_FACTOR_RECYCLING_SAME,
       0
     ),
     recovered_to_roads = case_when(
-      str_detect(end_use, "Building") ~ waste_Mt * Downcycling_Roads * sub_factor_downcycling_roads,
+      str_detect(end_use, "Building") ~ waste_Mt * Downcycling_Roads * SUB_FACTOR_DOWNCYCLING_ROADS,
       str_detect(end_use, "Civil") ~ waste_Mt *
         (Downcycling_Buildings + Downcycling_Roads) *
-        sub_factor_downcycling_roads,
+        SUB_FACTOR_DOWNCYCLING_ROADS,
       TRUE ~ 0
     )
   )
@@ -331,7 +326,7 @@ road_recovery <- summary_raw |>
     road_production = sum(production_Mt[str_detect(end_use, "Civil")], na.rm = TRUE),
     .groups = "drop"
   ) |>
-  mutate(secondary_for_roads = pmin(secondary_available, max_secondary_roads * road_production)) |>
+  mutate(secondary_for_roads = pmin(secondary_available, MAX_SECONDARY_ROADS * road_production)) |>
   dplyr::select(scenario, region, year, secondary_for_roads)
 
 # Apply credits to the correct end-use row

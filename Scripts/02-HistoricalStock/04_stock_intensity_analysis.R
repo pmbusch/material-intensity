@@ -77,9 +77,7 @@ if (n_missing_gdp > 0) {
 cat("\nSTEP 3: Compute stock intensity (kg / constant 2015 USD)\n")
 
 # World GDP by year — used as denominator for global intensity
-world_gdp <- gdp %>%
-  group_by(year) %>%
-  summarise(GDP_2015USD = sum(GDP_2015USD, na.rm = TRUE), .groups = "drop")
+world_gdp <- gdp %>% group_by(year) %>% summarise(GDP_2015USD = sum(GDP_2015USD, na.rm = TRUE), .groups = "drop")
 
 # Helper: given a stock summary with columns Region + grouping_vars + year + stock_Mt,
 # return per-region and world intensity rows.
@@ -303,7 +301,7 @@ ggsave("Figures/Stocks/stock_intensity_grid_group_x_detail.png", p_D,units = "cm
 
 # at 2024
 intensity_D |> filter(year == 2024) |> dplyr::select(Region, year, material_group, material_detail, stock_intensity)
-
+.Last.value %>% write.table('clipboard', sep = '\t', row.names = FALSE)
 
 # Step 8: Summary check -------------------------------------------------------
 
@@ -339,13 +337,153 @@ for (yr in c(1970, 2000, 2024)) {
   }
 }
 
-cat(
-  "  Rows with no GDP match:",
-  n_missing_gdp,
-  "\n",
-  " Materials with no PALETTE match:",
-  if (length(unmatched_mat) == 0) "none" else paste(unmatched_mat, collapse = ", "),
-  "\n"
+
+# Step 9: Load sub-end-use trajectory (material × super_category × sub_use) ---
+
+cat("\nSTEP 9: Load sub-end-use stock trajectory\n")
+
+SUBUSE_PATH <- "Parameters/Intermediate/stock_trajectory_subenduse.csv"
+stock_sub <- read_csv(SUBUSE_PATH, show_col_types = FALSE)
+
+cat("  Rows:", nrow(stock_sub), "| Materials:", paste(sort(unique(stock_sub$material)), collapse = ", "), "\n")
+
+MATERIAL_LABELS <- c(
+  "Metal_Fe"                = "Iron & Steel (Fe)",
+  "Metal_NonFe"             = "Non-ferrous Metals",
+  "Non-metallic minerals"   = "Non-metallic Minerals"
 )
+SUPER_CAT_LABELS <- c(
+  "buildings"            = "Buildings",
+  "civil_infrastructure" = "Civil Infra.",
+  "machinery"            = "Machinery",
+  "short_lived"          = "Short-lived"
+)
+SUB_USE_LABELS_FIG <- c(
+  "residential"      = "Residential",
+  "non_residential"  = "Non-residential",
+  "roads"            = "Roads",
+  "civil_engineering" = "Civil Eng.",
+  "machinery_group"  = "Machinery",
+  "vehicles_group"   = "Vehicles",
+  "durables"         = "Durables",
+  "packaging"        = "Packaging"
+)
+
+stock_sub <- stock_sub %>%
+  mutate(
+    material_label   = MATERIAL_LABELS[material],
+    super_cat_label  = SUPER_CAT_LABELS[super_category],
+    sub_use_label    = SUB_USE_LABELS_FIG[sub_use]
+  )
+
+
+# Step 10: Figure E – facet_grid(material × super_category) -------------------
+
+cat("\nSTEP 10: Figure E — material × super_category intensity\n")
+
+stock_E_reg <- stock_sub %>%
+  group_by(Region, material_label, super_cat_label, year) %>%
+  summarise(stock_Mt = sum(stock_Mt, na.rm = TRUE), .groups = "drop") %>%
+  left_join(gdp, by = c("Region", "year")) %>%
+  filter(!is.na(GDP_2015USD)) %>%
+  mutate(stock_intensity = stock_Mt * 1e9 / GDP_2015USD)
+
+stock_E_wld <- stock_sub %>%
+  group_by(material_label, super_cat_label, year) %>%
+  summarise(stock_Mt = sum(stock_Mt, na.rm = TRUE), .groups = "drop") %>%
+  left_join(world_gdp, by = "year") %>%
+  filter(!is.na(GDP_2015USD)) %>%
+  mutate(stock_intensity = stock_Mt * 1e9 / GDP_2015USD, Region = "World")
+
+mat_order_E <- c("Iron & Steel (Fe)", "Non-ferrous Metals", "Non-metallic Minerals")
+sc_order_E  <- c("Buildings", "Civil Infra.", "Machinery", "Short-lived")
+
+stock_E_reg <- stock_E_reg %>%
+  mutate(
+    material_label  = factor(material_label,  levels = mat_order_E),
+    super_cat_label = factor(super_cat_label, levels = sc_order_E)
+  )
+stock_E_wld <- stock_E_wld %>%
+  mutate(
+    material_label  = factor(material_label,  levels = mat_order_E),
+    super_cat_label = factor(super_cat_label, levels = sc_order_E)
+  )
+
+p_E <- ggplot() +
+  geom_line(data = stock_E_reg %>% filter(Region != "World"),
+            aes(x = year, y = stock_intensity, colour = Region), linewidth = 0.4) +
+  geom_line(data = stock_E_wld,
+            aes(x = year, y = stock_intensity), colour = "black", linewidth = 0.8) +
+  facet_grid(material_label ~ super_cat_label, scales = "free_y") +
+  scale_colour_manual(values = PALETTE_REGIONS, na.value = "#999999") +
+  scale_x_continuous(breaks = seq(1970, 2024, 20)) +
+  coord_cartesian(expand = FALSE, clip = "off") +
+  labs(
+    x = "Year",
+    y = "Stock intensity (kg / constant 2015 USD)",
+    colour = NULL
+  ) +
+  theme_pb_large() +
+  theme(legend.position = "none", strip.text = element_text(size = 6))
+p_E
+
+# fmt: skip
+ggsave("Figures/Stocks/stock_intensity_material_x_supercategory.png", p_E,
+       units = "cm", dpi = 600, width = 17, height = 13)
+
+
+# Step 11: Figure F – facet_grid(material × sub_use) -------------------------
+
+cat("\nSTEP 11: Figure F — material × sub_use intensity\n")
+
+stock_F_reg <- stock_sub %>%
+  group_by(Region, material_label, sub_use_label, year) %>%
+  summarise(stock_Mt = sum(stock_Mt, na.rm = TRUE), .groups = "drop") %>%
+  left_join(gdp, by = c("Region", "year")) %>%
+  filter(!is.na(GDP_2015USD)) %>%
+  mutate(stock_intensity = stock_Mt * 1e9 / GDP_2015USD)
+
+stock_F_wld <- stock_sub %>%
+  group_by(material_label, sub_use_label, year) %>%
+  summarise(stock_Mt = sum(stock_Mt, na.rm = TRUE), .groups = "drop") %>%
+  left_join(world_gdp, by = "year") %>%
+  filter(!is.na(GDP_2015USD)) %>%
+  mutate(stock_intensity = stock_Mt * 1e9 / GDP_2015USD, Region = "World")
+
+sub_order_F <- unname(SUB_USE_LABELS_FIG)
+
+stock_F_reg <- stock_F_reg %>%
+  mutate(
+    material_label = factor(material_label, levels = mat_order_E),
+    sub_use_label  = factor(sub_use_label,  levels = sub_order_F)
+  )
+stock_F_wld <- stock_F_wld %>%
+  mutate(
+    material_label = factor(material_label, levels = mat_order_E),
+    sub_use_label  = factor(sub_use_label,  levels = sub_order_F)
+  )
+
+p_F <- ggplot() +
+  geom_line(data = stock_F_reg %>% filter(Region != "World"),
+            aes(x = year, y = stock_intensity, colour = Region), linewidth = 0.4) +
+  geom_line(data = stock_F_wld,
+            aes(x = year, y = stock_intensity), colour = "black", linewidth = 0.8) +
+  facet_grid(material_label ~ sub_use_label, scales = "free_y") +
+  scale_colour_manual(values = PALETTE_REGIONS, na.value = "#999999") +
+  scale_x_continuous(breaks = seq(1970, 2024, 20)) +
+  coord_cartesian(expand = FALSE, clip = "off") +
+  labs(
+    x = "Year",
+    y = "Stock intensity (kg / constant 2015 USD)",
+    colour = NULL
+  ) +
+  theme_pb_large() +
+  theme(legend.position = "none", strip.text = element_text(size = 5.5))
+p_F
+
+# fmt: skip
+ggsave("Figures/Stocks/stock_intensity_material_x_subuse.png", p_F,
+       units = "cm", dpi = 600, width = 17, height = 13)
+
 
 # EoF

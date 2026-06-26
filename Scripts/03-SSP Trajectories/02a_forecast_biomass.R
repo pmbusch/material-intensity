@@ -1,5 +1,5 @@
 ## =============================================================================
-## 04a_forecast_biomass.R
+## 02a_forecast_biomass.R
 ## Forecast biomass material consumption (Mt/yr) by region, category, and SSP
 ## scenario from 2024 to 2060 using the Kaya decomposition identity:
 ##   M = P × (GDP/P) × (M/G)
@@ -15,7 +15,7 @@
 ## =============================================================================
 
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
-source("Scripts/04_BaseAssumptions.R", encoding = "UTF-8")
+source("Scripts/model_parameters.R", encoding = "UTF-8")
 
 
 # Step 1: Load SSP drivers ─────────────────────────────────────────────────────
@@ -53,7 +53,10 @@ cat("\nSTEP 3: Build M/G ratio index (linear 2024 –", TARGET_YEAR, ", flat aft
 
 forecast_years <- seq(FORECAST_START, FORECAST_END)
 
-mg_long <- mg_raw |> pivot_longer(cols = all_of(SSP_COLS), names_to = "scenario", values_to = "mg_2050")
+mg_long <- mg_raw |>
+  pivot_longer(cols = all_of(SSP_COLS), names_to = "scenario", values_to = "mg_2050") |>
+  mutate(mg_2050 = as.numeric(mg_2050)) |>
+  filter(!is.na(mg_2050))
 
 mg_annual <- mg_long |>
   crossing(year = forecast_years) |>
@@ -76,8 +79,6 @@ cat("  Categories:", paste(sort(unique(mg_annual$category)), collapse = ", "), "
 # Step 4: Load base-year material anchor from UNEP domestic extraction ─────────
 
 cat("\nSTEP 4: Load M_2024 from UNEP DE data\n")
-
-BIOMASS_CATEGORIES <- c("Crops", "Crop Residues", "Grazed biomass and fodder crops", "Wood")
 
 unep_dmc <- read_csv("Parameters/materials_region_DMC.csv", show_col_types = FALSE)
 cat("  UNEP DE rows:", nrow(unep_dmc), "| year range:", min(unep_dmc$year), "-", max(unep_dmc$year), "\n")

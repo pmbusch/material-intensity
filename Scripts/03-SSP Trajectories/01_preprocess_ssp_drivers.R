@@ -1,5 +1,5 @@
 ## =============================================================================
-## 03a_preprocess_ssp_drivers.R
+## 01_preprocess_ssp_drivers.R
 ## Produces a clean annual GDP and population dataframe by region and SSP
 ## scenario, reusable by all material forecast modules.
 ##
@@ -15,6 +15,7 @@
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
 
 DRIVER_VARIABLES <- c("Population", "GDP|PPP [per capita]", "GDP|PPP")
+UNIT_VARIABLES <- c("million", "billion USD_2015/yr", "USD_2015/yr") # GDP comes with different base years
 BASE_YEAR <- 2024L
 
 
@@ -34,6 +35,7 @@ str(iiasa_raw)
 
 cat("Year columns:", paste(yr_cols, collapse = ", "), "\n")
 unique(iiasa_raw$variable)
+unique(iiasa_raw$unit)
 
 # Step 2: Filter to SSP marker models and driver variables ────────────────────
 
@@ -49,7 +51,7 @@ cat("Historical scenario(s) detected:", paste(HIST_SCENARIO, collapse = ", "), "
 cat("SSP scenarios detected:", paste(SSP_SCENARIOS, collapse = ", "), "\n")
 
 iiasa_filtered <- iiasa_raw %>%
-  filter(variable %in% DRIVER_VARIABLES, scenario %in% c(HIST_SCENARIO, SSP_SCENARIOS)) %>%
+  filter(variable %in% DRIVER_VARIABLES, scenario %in% c(HIST_SCENARIO, SSP_SCENARIOS), unit %in% UNIT_VARIABLES) %>%
   mutate(ssp = scenario)
 
 cat("Rows after model + variable filter:", nrow(iiasa_filtered), "\n")
@@ -126,18 +128,53 @@ cat("Rows after dropping unmatched regions:", nrow(iiasa_long), "\n")
 
 cat("\nSTEP 5: Aggregate to project regions by summing country values\n")
 
+# Recompute GDP per capita (as we summed over countries to agg to regions)
 iiasa_region <- iiasa_long %>%
+  filter(variable %in% c("Population", "GDP|PPP")) %>% # drop per-capita from sum
   group_by(ssp, Region, variable, year) %>%
   summarise(value = sum(value, na.rm = TRUE), .groups = "drop")
+
+gdp_percap_region <- iiasa_region %>%
+  pivot_wider(names_from = variable, values_from = value) %>%
+  mutate(
+    value = `GDP|PPP` * 1000 / Population, # billion / million = thousand per capita
+    variable = "GDP|PPP [per capita]"
+  ) %>%
+  dplyr::select(ssp, Region, variable, year, value)
+
+iiasa_region <- bind_rows(iiasa_region, gdp_percap_region)
 
 cat("Regional rows:", nrow(iiasa_region), "\n")
 cat("Regions:", paste(sort(unique(iiasa_region$Region)), collapse = ", "), "\n")
 
 head(iiasa_region)
 
-# Step 6: Interpolate 5-year grid to annual resolution (linear) ───────────────
+# # Step 6: Interpolate 5-year grid to annual resolution (linear) ───────────────
 
-cat("\nSTEP 6: Interpolate 5-year intervals to annual (linear)\n")
+# cat("\nSTEP 6: Interpolate 5-year intervals to annual (linear)\n")
+
+# annual_years <- seq(min(iiasa_region$year), max(iiasa_region$year))
+
+# iiasa_annual <- iiasa_region %>%
+#   group_by(ssp, Region, variable) %>%
+#   nest() %>%
+#   mutate(
+#     annual_df = purrr::map(data, function(d) {
+#       d <- d %>% arrange(year)
+#       interp <- approx(x = d$year, y = d$value, xout = annual_years, method = "linear", rule = 2)
+#       tibble(year = as.integer(interp$x), value = interp$y)
+#     })
+#   ) %>%
+#   dplyr::select(-data) %>%
+#   unnest(annual_df) %>%
+#   ungroup()
+
+# cat("Annual rows:", nrow(iiasa_annual), "\n")
+# cat("Year range:", min(iiasa_annual$year), "-", max(iiasa_annual$year), "\n")
+
+# Step 6: Interpolate quinquennial grid to annual via monotone cubic on log(value) ─
+
+cat("\nSTEP 6: Interpolate 5-year intervals to annual (monotone cubic on log)\n")
 
 annual_years <- seq(min(iiasa_region$year), max(iiasa_region$year))
 
@@ -146,9 +183,20 @@ iiasa_annual <- iiasa_region %>%
   nest() %>%
   mutate(
     annual_df = purrr::map(data, function(d) {
-      d <- d %>% arrange(year)
-      interp <- approx(x = d$year, y = d$value, xout = annual_years, method = "linear", rule = 2)
-      tibble(year = as.integer(interp$x), value = interp$y)
+      d <- d %>% arrange(year) %>% filter(value > 0)
+      if (nrow(d) < 2) {
+        return(tibble(year = annual_years, value = NA_real_))
+      }
+      # Interpolate within node range; outside use boundary value (rule = 2 analog)
+      x_in <- annual_years >= min(d$year) & annual_years <= max(d$year)
+      x_lo <- annual_years < min(d$year)
+      x_hi <- annual_years > max(d$year)
+      val <- numeric(length(annual_years))
+      f <- splinefun(d$year, log(d$value), method = "monoH.FC")
+      val[x_in] <- exp(f(annual_years[x_in]))
+      val[x_lo] <- d$value[which.min(d$year)]
+      val[x_hi] <- d$value[which.max(d$year)]
+      tibble(year = annual_years, value = val)
     })
   ) %>%
   dplyr::select(-data) %>%
@@ -157,6 +205,20 @@ iiasa_annual <- iiasa_region %>%
 
 cat("Annual rows:", nrow(iiasa_annual), "\n")
 cat("Year range:", min(iiasa_annual$year), "-", max(iiasa_annual$year), "\n")
+
+# match?
+inner_join(
+  iiasa_region |>
+    filter(year %in% seq(2025, 2060, 5), variable == "GDP|PPP", ssp == "SSP2") |>
+    rename(original = value),
+  iiasa_annual |>
+    filter(year %in% seq(2025, 2060, 5), variable == "GDP|PPP", ssp == "SSP2") |>
+    rename(interpolated = value),
+  by = c("ssp", "Region", "variable", "year")
+) |>
+  mutate(diff_pct = (interpolated - original) / original * 100) |>
+  arrange(Region, year) |>
+  print(n = Inf)
 
 
 # Step 7: Compute index normalised to BASE_YEAR = 1 ───────────────────────────
@@ -181,7 +243,6 @@ if (na_index > 0) {
 # Step 8: Save outputs ────────────────────────────────────────────────────────
 
 cat("\nSTEP 8: Save outputs to Parameters/IIASA/\n")
-
 
 write_csv(iiasa_indexed, "Parameters/IIASA/ssp_drivers.csv")
 cat("  Saved: Parameters/IIASA/ssp_drivers.csv (", nrow(iiasa_indexed), "rows )\n")

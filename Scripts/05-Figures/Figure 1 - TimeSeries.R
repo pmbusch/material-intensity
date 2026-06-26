@@ -65,7 +65,7 @@ ggplot(global_grp_mat, aes(x = year, y = DMC_Gt, fill = Material_group)) +
     aes(x = 2008, y = mid_y, label = Material_group_label),
     hjust = 0, size = 1.8, inherit.aes = FALSE
   ) +
-  event_lines +
+  # event_lines +
   scale_fill_manual(values = PALETTE_MATERIAL_GROUPS, name = NULL) +
   scale_x_continuous(breaks = seq(1970, 2024, 10), expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
@@ -274,7 +274,7 @@ p_material <- ggplot(global_mat, aes(x = year, y = DMC_Gt, fill = material_categ
   angle = 90, hjust = 0.5,
   clip = "off",vjust=0.9
 ) +
-  event_lines +
+  # event_lines +
   # fmt: skip
   annotate("text",x = -Inf, y = Inf,label = "a",hjust = -1, vjust = 1,fontface = "bold",size = 14 * 5 / 14 * 0.8,colour = "black") +
   scale_fill_manual(values = PALETTE_MATERIALS, name = NULL) +
@@ -343,7 +343,7 @@ p_region <- ggplot(global_grp, aes(x = year, y = DMC_Gt, fill = analysis_group))
     size = 1.8,
     inherit.aes = FALSE
   ) +
-  event_lines +
+  # event_lines +
   # fmt: skip
   annotate("text",x = -Inf, y = Inf,label = "b",hjust = -1, vjust = 1.2,fontface = "bold",size = 14 * 5 / 14 * 0.8,colour = "black") +
   scale_fill_manual(values = PALETTE_REGIONS, name = NULL) +
@@ -403,7 +403,7 @@ ggplot(global_de, aes(x = year, y = DE_Gt, fill = analysis_group)) +
   geom_text(data = labels_1d,
             aes(x = 2008, y = mid_y, label = analysis_group),
             hjust = 0, size = 1.8, inherit.aes = FALSE) +
-  event_lines +
+  # event_lines +
   scale_fill_manual(values = PALETTE_REGIONS, name = NULL) +
   scale_colour_manual(values = PALETTE_REGIONS, guide = "none") +
   scale_x_continuous(breaks = seq(1970, 2024, 10), expand = c(0, 0)) +
