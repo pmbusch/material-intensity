@@ -9,8 +9,8 @@
 source("Scripts/model_parameters.R", encoding = "UTF-8")
 
 # -- MC run control ------------------------------------------------------------
-# N_RUNS <- 10000L
-N_RUNS <- 100L # DEBUG
+N_RUNS <- 10000L
+N_RUNS <- 200L # DEBUG
 GLOBAL_SEED <- 12062026L
 
 # READ ALL MONTECARLO PARAMETERS BOUNDS FROM ASSUMPTIONS

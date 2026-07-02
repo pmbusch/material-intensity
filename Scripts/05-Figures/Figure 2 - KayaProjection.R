@@ -43,6 +43,15 @@ RIBBON_ALPHA <- 0.22
 HIST_LW <- 0.65
 PROJ_LW <- 0.65
 
+SSP_COLORS_PROJ <- c(
+  "SSP1" = "#2ca25f",
+  "SSP2" = "#8856a7",
+  "SSP3" = "#d7301f",
+  "SSP4" = "#f16913",
+  "SSP5" = "#756bb1"
+)
+SSP_LW <- 0.6
+
 LABEL_SZ <- 2.8
 FONT_TITLE <- 11.5
 FONT_AXIS_T <- 9.5
@@ -405,9 +414,19 @@ nonmet_hist_labels <- nonmet_hist_eu |> filter(year == HIST_LABEL_YEAR, end_use_
 
 pop_hist <- pop_world_hist |> filter(year <= HIST_END) |> mutate(v = population / 1e9)
 
+pop_ssp_proj <- pop_world_proj |>
+  filter(year >= HIST_END) |>
+  mutate(v = world_pop / 1e9)
+
 p1 <- ggplot() +
   geom_ribbon(data = pop_env, aes(x = year, ymin = p05, ymax = p95), fill = POP_COLOR, alpha = RIBBON_ALPHA) +
   geom_line(data = pop_hist, aes(x = year, y = v), colour = POP_COLOR, linewidth = HIST_LW) +
+  geom_line(
+    data = pop_ssp_proj,
+    aes(x = year, y = v, colour = ssp_label),
+    linewidth = SSP_LW
+  ) +
+  scale_colour_manual(values = SSP_COLORS_PROJ, guide = "none") +
   geom_line(
     data = pop_env |> filter(year >= HIST_END),
     aes(x = year, y = p50),
@@ -443,9 +462,26 @@ gdp_cap_hist <- gdp_world_hist |>
   mutate(v = GDP_2015USD / population / 1e3)
 
 
+gdpcap_ssp_proj <- gdpcap_world_proj |>
+  filter(year >= HIST_END)
+
+gdpcap_ssp_labels <- gdpcap_ssp_proj |>
+  filter(year == PROJ_END)
+
 p2 <- ggplot() +
   geom_ribbon(data = gdpcap_env, aes(x = year, ymin = p05, ymax = p95), fill = GDPCAP_COLOR, alpha = RIBBON_ALPHA) +
   geom_line(data = gdp_cap_hist, aes(x = year, y = v), colour = GDPCAP_COLOR, linewidth = HIST_LW) +
+  geom_line(
+    data = gdpcap_ssp_proj,
+    aes(x = year, y = gdpcap, colour = ssp_label),
+    linewidth = SSP_LW
+  ) +
+  geom_text(
+    data = gdpcap_ssp_labels,
+    aes(x = PROJ_END + 0.5, y = gdpcap, label = ssp_label, colour = ssp_label),
+    hjust = 0, size = LABEL_SZ, show.legend = FALSE
+  ) +
+  scale_colour_manual(values = SSP_COLORS_PROJ, guide = "none") +
   geom_line(
     data = gdpcap_env |> filter(year >= HIST_END),
     aes(x = year, y = p50),
@@ -456,7 +492,7 @@ p2 <- ggplot() +
   present_line_top +
   x_sc +
   y_sc +
-  co +
+  coord_cartesian(xlim = c(1970, PROJ_END + 4), ylim = c(0, NA), clip = "off", expand = FALSE) +
   scale_y_continuous(labels = scales::comma, expand = expansion(mult = c(0, 0.05))) +
   panel_tag("b") +
   labs(x = NULL, y = "GDP per capita (thousands USD 2015)", title = "GDP per capita") +

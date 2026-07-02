@@ -27,6 +27,7 @@ cat("Loading MC results...\n")
 results <- arrow::read_parquet("Results/MC/mc_results.parquet") |>
   mutate(material_group = ifelse(material_group %in% c("metal_fe", "metal_nonfe"), "metal_ores", material_group))
 input_matrix <- read_csv("Parameters/MC/mc_input_matrix.csv", show_col_types = FALSE)
+dmc_hist <- read_csv("Parameters/materials_region_DMC.csv", show_col_types = FALSE)
 
 n_runs <- n_distinct(results$run_id)
 cat("  Runs:", n_runs, "| Rows:", format(nrow(results), big.mark = ","), "\n")
@@ -79,7 +80,7 @@ ggplot(conv_long, aes(n, Mt, colour = percentile)) +
   theme(legend.position = c(0.88, 0.5))
 
 # fmt: skip
-ggsave("Figures/MC/convergence.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7)
+ggsave("Figures/MC/03_convergence.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7)
 
 # fmt: skip
 cat("  P01 / P50 / P99 at N =",n_runs,":",round(tail(conv_data$p01, 1)/1e3, 0),"/",round(tail(conv_data$p50, 1)/1e3, 0),"/",round(tail(conv_data$p99, 1)/1e3, 0),"Gt\n\n")
@@ -150,7 +151,7 @@ ggplot(top_srrc, aes(srrc, label, fill = family)) +
   theme(legend.position = "right", axis.text.y = element_text(size = 7))
 
 # fmt: skip
-ggsave("Figures/MC/srrc_sensitivity.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2.5, height = 8.7 * 2)
+ggsave("Figures/MC/03_srrc_sensitivity.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2.5, height = 8.7 * 2)
 cat("  Saved: Figures/MC/srrc_sensitivity.png\n")
 cat("  Top 5 parameters by |SRRC|:\n")
 print(head(srrc |> dplyr::select(parameter, srrc, p_value), 5))
@@ -162,6 +163,45 @@ cat("\n")
 # =============================================================================
 
 cat("DIAGNOSTIC 3: Output envelope\n")
+
+HIST_END <- 2024L
+
+# Historical DMC aggregated to material group × year
+hist_envelope <- dmc_hist |>
+  mutate(
+    material_group = case_when(
+      material_category %in%
+        c(
+          "Crops",
+          "Crop Residues",
+          "Grazed biomass and fodder crops",
+          "Wood",
+          "Other biomass",
+          "Wild catch and harvest",
+          "Non-wild animal products",
+          "Products mainly from biomass nec."
+        ) ~ "Biomass",
+      material_category %in%
+        c(
+          "Coal",
+          "Natural Gas",
+          "Petroleum",
+          "Oil shale and tar sands",
+          "Refined fossil fuels mainly for fuel e.g. LPG gasoline diesel",
+          "Other products mainly from fossil fuels e.g. plastics"
+        ) ~ "Fossil fuels",
+      material_category %in% c("Ferrous ores", "Non-ferrous ores") ~ "Metal ores",
+      material_category %in%
+        c(
+          "Non-metallic minerals - construction dominant",
+          "Non-metallic minerals - industrial or agricultural dominant"
+        ) ~ "Non-metallic minerals",
+      TRUE ~ NA_character_
+    )
+  ) |>
+  filter(!is.na(material_group), year <= HIST_END) |>
+  group_by(year, material_group) |>
+  summarise(global_Gt = sum(DMC_Mt, na.rm = TRUE) / 1e3, .groups = "drop")
 
 envelope <- results |>
   group_by(material_group, year) |>
@@ -207,41 +247,55 @@ envelope_global <- results |>
     )
   )
 
-ggplot(envelope_global, aes(x = year)) +
-  # Full logical-bounds range (min-max)
-  geom_ribbon(aes(ymin = p_min, ymax = p_max), fill = "grey85", alpha = 0.6) +
-  # P5-P95 band
-  geom_ribbon(aes(ymin = p05, ymax = p95), fill = "steelblue", alpha = 0.45) +
-  # P25-P75 band
-  geom_ribbon(aes(ymin = p25, ymax = p75), fill = "steelblue", alpha = 0.55) +
-  # Median line
-  geom_line(aes(y = p50), colour = "#1a1a1a", linewidth = 0.7) +
+ggplot() +
+  # MC uncertainty bands (projection)
+  geom_ribbon(data = envelope_global, aes(x = year, ymin = p_min, ymax = p_max), fill = "grey85", alpha = 0.6) +
+  geom_ribbon(data = envelope_global, aes(x = year, ymin = p05, ymax = p95), fill = "steelblue", alpha = 0.45) +
+  geom_ribbon(data = envelope_global, aes(x = year, ymin = p25, ymax = p75), fill = "steelblue", alpha = 0.55) +
+  # MC median (dashed, projection style)
+  geom_line(data = envelope_global, aes(x = year, y = p50), colour = "#1a1a1a", linewidth = 0.7, linetype = "dashed") +
+  # Historical solid line
+  geom_line(data = hist_envelope, aes(x = year, y = global_Gt), colour = "steelblue", linewidth = 0.65) +
+  # Present boundary
+  geom_vline(xintercept = HIST_END, colour = "grey45", linewidth = 0.3, linetype = "dotted") +
+  annotate(
+    "text",
+    x = HIST_END - 2,
+    y = Inf,
+    label = "Present (2024)",
+    hjust = 1.05,
+    vjust = 0.5,
+    size = 2.2,
+    colour = "grey45",
+    angle = 90
+  ) +
   # Band labels (right margin of last year)
   geom_text(
     data = envelope_global |> filter(year == max(year)),
-    aes(y = p_max, label = "Min–Max"), hjust = 0, size = 2.2, nudge_x = 0.5, colour = "grey50"
+    aes(x = year, y = p_max, label = "Min–Max"), hjust = 0, size = 2.2, nudge_x = 0.5, colour = "grey50"
   ) +
   geom_text(
     data = envelope_global |> filter(year == max(year)),
-    aes(y = p95, label = "P5–P95"), hjust = 0, size = 2.2, nudge_x = 0.5, colour = "steelblue"
+    aes(x = year, y = p95, label = "P5–P95"), hjust = 0, size = 2.2, nudge_x = 0.5, colour = "steelblue"
   ) +
   geom_text(
     data = envelope_global |> filter(year == max(year)),
-    aes(y = p50, label = "P50"), hjust = 0, size = 2.2, nudge_x = 0.5, colour = "#1a1a1a"
+    aes(x = year, y = p50, label = "P50"), hjust = 0, size = 2.2, nudge_x = 0.5, colour = "#1a1a1a"
   ) +
   facet_wrap(~material_group, scales = "free_y", ncol = 2) +
+  scale_x_continuous(breaks = seq(1970, 2060, 20)) +
   scale_y_continuous(labels = scales::comma, limits = c(0, NA)) +
   coord_cartesian(expand = FALSE, clip = "off") +
   labs(
-    title = "MC output envelope: global primary consumption 2025–2060",
+    title = "MC output envelope: global primary consumption 1970–2060",
     x = "Year",
-    y = "Primary consumption (Mt/yr)"
+    y = "Primary consumption (Gt/yr)"
   ) +
   theme_pb_large() +
   theme(plot.margin = margin(5.5, 40, 5.5, 5.5))
 
 # fmt: skip
-ggsave("Figures/MC/output_envelope.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7 * 2)
+ggsave("Figures/MC/03_output_envelope.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7 * 2)
 cat("  Saved: Figures/MC/output_envelope.png\n")
 
 # Save envelope data

@@ -127,6 +127,19 @@ run_forward_dsm <- function(
     replacement <- min(waste_total, production)
     new_additions <- production - replacement
 
+    # BUG FIX: the full production enters the stock as an age-0 cohort.
+    # Previously only new_additions was registered, so replacement mass
+    # vanished from the stock: reported stock = target - replacement, and
+    # subsequent years' waste/production were computed against a stock
+    # missing all past replacement cohorts. The new/replacement split is
+    # an accounting split of production, not a physical one.
+    if (production > 0) {
+      all_cohorts <- dplyr::bind_rows(
+        all_cohorts,
+        tibble::tibble(cohort_year = t, base_stock_Mt = production, surv_base = 1.0)
+      )
+    }
+
     # Register new cohort (surv_base = 1 at age 0)
     if (new_additions > 0) {
       all_cohorts <- dplyr::bind_rows(
@@ -136,19 +149,18 @@ run_forward_dsm <- function(
     }
 
     # Previous-year stocks for next iteration (include new cohort at age 0)
-    prev_cohort_stocks <- if (new_additions > 0) {
+    prev_cohort_stocks <- if (production > 0) {
       dplyr::bind_rows(
         curr_pre |> dplyr::select(cohort_year, stock_Mt),
-        tibble::tibble(cohort_year = t, stock_Mt = new_additions)
+        tibble::tibble(cohort_year = t, stock_Mt = production)
       )
     } else {
       curr_pre |> dplyr::select(cohort_year, stock_Mt)
     }
 
-    # Fix 3: character key avoids integer-arithmetic indexing bugs
     results_list[[as.character(t)]] <- tibble::tibble(
       year = t,
-      total_stock_Mt = total_surviving + new_additions,
+      total_stock_Mt = total_surviving + production, # was + new_additions
       new_additions_Mt = new_additions,
       replacement_Mt = replacement,
       production_Mt = production,
@@ -156,8 +168,8 @@ run_forward_dsm <- function(
     )
 
     if (t %in% snapshot_years) {
-      new_row <- if (new_additions > 0) {
-        tibble::tibble(cohort_year = t, cohort_age = 0L, surviving_stock_Mt = new_additions)
+      new_row <- if (production > 0) {
+        tibble::tibble(cohort_year = t, cohort_age = 0L, surviving_stock_Mt = production)
       } else {
         tibble::tibble(cohort_year = integer(), cohort_age = integer(), surviving_stock_Mt = double())
       }
@@ -176,26 +188,45 @@ run_forward_dsm <- function(
 
 # -- Forward DSM (pure numeric) — used by MC ──────────────────────────────────
 #
+# Splice method: Nelson's Cumulative Exposure Model (CEM).
+# Each legacy cohort (placed before start_year) is relabelled to the equivalent
+# age s* on the new sampled Weibull curve where the cumulative fraction-failed
+# matches what the cohort actually reached under the historical distribution:
+#   S_new(s*) = S_hist(a),  a = start_year − cohort_year
+# For Weibull this is closed-form:
+#   s* = λ_new · (a / λ_hist)^(k_hist / k_new)
+#   where λ = mean_life / Γ(1 + 1/k)
+# Effective placement:  O_eff = cohort_stock_2024 / S_new(s*)
+# Future stock:         stock(t) = O_eff · S_new((t − start_year) + s*)
+#
+# (a) CEM preserves stock-level continuity at the 2024→2025 seam by matching
+#     fraction-failed rather than chronological age, eliminating the spike that
+#     the old back-calculation O = stock/S_new(a) produced for short-lifetime
+#     runs (where S_new(a) ≈ 0 for old cohorts → huge O → spike in waste).
+# (b) CEM does NOT force the outflow rate to be perfectly continuous: for
+#     equal-shape Weibull a residual step of mean_life_hist/mean_life_new
+#     remains at the seam. This is the intended physical signal — a shorter
+#     sampled lifetime raises the retirement rate — not an artifact.
+# (c) When mean_life_new == mean_life_hist and k_new == k_hist, s* = a and CEM
+#     reduces exactly to direct aging, reproducing a smooth historical continuation.
+#
 # Args (all plain numeric vectors / scalars, NO tibbles):
 #   cohort_years        integer vector: years of pre-base cohorts (e.g. 1925..2024)
-#   cohort_stocks_2024  numeric vector: surviving stock at start_year, same length as cohort_years
-#   target_stock        numeric vector of length (end_year - start_year):
+#   cohort_stocks_2024  numeric vector: surviving stock at start_year
+#   target_stock        numeric vector length (end_year - start_year):
 #                         target stock for years (start_year+1) .. end_year
-#   mean_life, k        Weibull params (scalars)
+#   mean_life, k        Weibull params for the SAMPLED (new) distribution
+#   mean_life_hist, k_hist  Weibull params for the HISTORICAL distribution
+#                           (central values from Lifetimes sheet used in
+#                            03_UNEP_stock_flow_model.R to build the age profile)
 #   start_year          base year (default 2024)
 #   end_year            last year (default 2060)
 #
-# Returns a list of 5 numeric vectors, length (end_year - start_year):
+# Returns a list of 6 elements: year + 5 numeric vectors of length (end_year - start_year):
 #   total_stock, new_additions, replacement, production, waste
 #
-# Math:
-#   O(c) = effective original placement of cohort c
-#        = cohort_stock_2024(c) / S(start_year - c)     for pre-base cohorts
-#        = new_additions(t)                              for cohort placed at year t (S(0)=1)
-#   stock(c, t) = O(c) * S(t - c)
-#   waste(c, t) = O(c) * [S(t-1-c) - S(t-c)]    (monotone decreasing ⇒ always ≥ 0)
-#
-# No dplyr, no tibbles, no joins. Inner loop is ~10 lines of vector arithmetic.
+# No dplyr, no tibbles, no joins. Pre-base cohorts use direct exp() formula
+# (non-integer s*); new cohorts use integer-age S_grid lookup.
 
 run_forward_dsm_fast <- function(
   cohort_years,
@@ -203,50 +234,42 @@ run_forward_dsm_fast <- function(
   target_stock,
   mean_life,
   k,
+  mean_life_hist,
+  k_hist,
   start_year = 2024L,
   end_year = 2060L
 ) {
-  n_years <- end_year - start_year # number of simulated years
-  sim_years <- seq.int(start_year + 1L, end_year) # years 2025..2060
+  n_years <- end_year - start_year
+  sim_years <- seq.int(start_year + 1L, end_year)
 
-  # Output buffers
   total_stock <- numeric(n_years)
   new_additions <- numeric(n_years)
   replacement <- numeric(n_years)
   production <- numeric(n_years)
   waste <- numeric(n_years)
 
-  # Pre-compute Weibull scale once
-  lambda <- mean_life / gamma(1 + 1 / k)
+  lambda_new <- mean_life / gamma(1 + 1 / k)
+  lambda_hist_val <- mean_life_hist / gamma(1 + 1 / k_hist)
 
-  # Survival lookup: S[age + 1] = survival at given age (age 0..n_max)
-  # Max possible age: (end_year - min(cohort_years))
-  max_age <- end_year - min(cohort_years)
-  ages_grid <- 0:max_age
-  S_grid <- exp(-(ages_grid / lambda)^k) # length max_age + 1
+  S_grid <- exp(-(seq.int(0L, n_years) / lambda_new)^k)
 
-  # Filter near-zero starting cohorts and compute effective placement O(c)
   keep <- cohort_stocks_2024 > 1e-9
-  cy_pre <- cohort_years[keep]
-  age_at_base <- start_year - cy_pre # ≥ 0
-  S_at_base <- S_grid[age_at_base + 1L]
-  # Guard against tiny S_at_base (very old cohorts blow up division)
-  ok <- S_at_base > 1e-3
-  cy_pre <- cy_pre[ok]
-  O_pre <- cohort_stocks_2024[keep][ok] / S_at_base[ok]
+  cy <- cohort_years[keep]
+  cs <- cohort_stocks_2024[keep]
+  a <- start_year - cy
 
-  # Storage for cohort placements as they accumulate.
-  # Pre-allocate generously: pre-base cohorts + one per sim year.
-  max_cohorts <- length(cy_pre) + n_years
-  cohort_yr <- integer(max_cohorts)
-  cohort_O <- numeric(max_cohorts)
-  cohort_yr[seq_along(cy_pre)] <- cy_pre
-  cohort_O[seq_along(cy_pre)] <- O_pre
-  n_c <- length(cy_pre) # active count
+  sstar <- lambda_new * (a / lambda_hist_val)^(k_hist / k)
+  S_at_sstar <- exp(-(sstar / lambda_new)^k)
 
-  # Stock at start_year per cohort = O * S(start_year - c) = original stocks
-  # We track prev-year stocks for waste calc.
-  prev_stock <- cohort_stocks_2024[keep][ok] # = O_pre * S_at_base
+  ok <- S_at_sstar > 1e-3
+  pre_O <- cs[ok] / S_at_sstar[ok]
+  pre_sstar <- sstar[ok]
+  prev_pre <- cs[ok]
+
+  new_yr <- integer(n_years)
+  new_O <- numeric(n_years)
+  n_new <- 0L
+  prev_new <- numeric(0)
 
   for (i in seq_len(n_years)) {
     t <- sim_years[i]
@@ -255,36 +278,49 @@ run_forward_dsm_fast <- function(
       next
     }
 
-    # Vectorized stock at year t for all active cohorts
-    ages_t <- t - cohort_yr[seq_len(n_c)]
-    S_t <- S_grid[ages_t + 1L]
-    stock_t <- cohort_O[seq_len(n_c)] * S_t
+    dt <- t - start_year
 
-    # Waste = prev_stock - stock_t (cohort-wise, ≥ 0 since S is monotone)
-    # prev_stock has length matching the n_c BEFORE adding new cohort
-    waste_t <- sum(prev_stock - stock_t[seq_along(prev_stock)])
+    eff_ages_pre <- dt + pre_sstar
+    S_pre_t <- exp(-(eff_ages_pre / lambda_new)^k)
+    stock_pre_t <- pre_O * S_pre_t
+
+    if (n_new > 0L) {
+      ages_new <- t - new_yr[seq_len(n_new)]
+      stock_new_t <- new_O[seq_len(n_new)] * S_grid[ages_new + 1L]
+    } else {
+      stock_new_t <- numeric(0)
+    }
+
+    waste_pre_t <- sum(prev_pre - stock_pre_t)
+    waste_new_t <- if (n_new > 0L) sum(prev_new - stock_new_t) else 0
+    waste_t <- waste_pre_t + waste_new_t
     if (waste_t < 0) {
       waste_t <- 0
-    } # numerical safety
+    }
 
-    total_surviving <- sum(stock_t)
+    total_surviving <- sum(stock_pre_t) + sum(stock_new_t)
 
-    # Production logic
     prod_t <- max(0, target_t - total_surviving)
     repl_t <- min(waste_t, prod_t)
     new_t <- prod_t - repl_t
 
-    # Register new cohort if any production
-    if (new_t > 0) {
-      n_c <- n_c + 1L
-      cohort_yr[n_c] <- t
-      cohort_O[n_c] <- new_t # O = new_t since S(0) = 1
-      prev_stock <- c(stock_t, new_t)
+    # BUG FIX: the full production enters the stock as an age-0 cohort.
+    # Previously only new_t was registered, so the replacement mass vanished:
+    # stock(t) = target - replacement, and later years' waste/production were
+    # computed against a stock missing all past replacement cohorts.
+    # new/replacement is an ACCOUNTING split of prod_t, not a physical one.
+    if (prod_t > 0) {
+      n_new <- n_new + 1L
+      new_yr[n_new] <- t
+      new_O[n_new] <- prod_t
+      prev_new <- c(stock_new_t, prod_t)
     } else {
-      prev_stock <- stock_t
+      prev_new <- stock_new_t
     }
+    prev_pre <- stock_pre_t
 
-    total_stock[i] <- total_surviving + new_t
+    # Stock now equals target whenever target >= surviving (prod_t closes the gap)
+    total_stock[i] <- total_surviving + prod_t
     new_additions[i] <- new_t
     replacement[i] <- repl_t
     production[i] <- prod_t

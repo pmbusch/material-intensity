@@ -12,7 +12,7 @@
 BASE_YEAR <- 2024L
 FORECAST_START <- 2024L # 04c/04d override to 2025L after sourcing
 FORECAST_END <- 2060L
-TARGET_YEAR <- 2050L # intensity convergence: linear BASE_YEAR→TARGET_YEAR, flat after
+TARGET_YEAR <- 2050L # intensity convergence: log-linear BASE_YEAR→TARGET_YEAR, flat after
 SNAPSHOT_YEARS <- c(2030L, 2040L, 2050L, 2060L)
 
 # -- SSP -----------------------------------------------------------------------

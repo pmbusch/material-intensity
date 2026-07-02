@@ -385,13 +385,21 @@ lambda_join <- calibration_scalars %>%
   ) %>%
   filter(material != "Metal ores") # remove the original "Metal ores" row (not in dsm_results)
 
-dsm_calibrated <- dsm_results %>%
+# Scale UNEP inflows and ghost cohort masses by lambda_cal, then re-run DSM.
+# DSM linearity: stock = Σ inflow × S(age), so scaling all inflows by λ
+# scales stock by λ at every year — 2016 MISO match preserved with no iteration,
+# and outflow_Mt is now derived from calibrated inflows (mass-consistent).
+dsm_nested_cal <- dsm_nested %>%
   left_join(lambda_join, by = c("Region", "material", "super_category")) %>%
   mutate(
-    stock_Mt = stock_Mt * lambda_cal,
-    outflow_Mt = outflow_Mt * lambda_cal,
-    ghost_stock_Mt = ghost_stock_Mt * lambda_cal
-  )
+    lambda_cal = replace_na(lambda_cal, 1.0),
+    data = purrr::map2(data, lambda_cal, ~ mutate(.x, flow_Mt = flow_Mt * .y)),
+    ghost_cohorts = purrr::map2(ghost_cohorts, lambda_cal, ~ mutate(.x, cohort_inflow_Mt = cohort_inflow_Mt * .y))
+  ) %>%
+  dplyr::select(-lambda_cal) %>%
+  mutate(sim = purrr::pmap(list(data, ghost_cohorts, mean_life, weibull_k), run_dsm_trajectory))
+
+dsm_calibrated <- dsm_nested_cal %>% dplyr::select(-data, -ghost_cohorts) %>% unnest(sim)
 
 write.csv(
   dsm_calibrated %>% dplyr::select(Region, material, super_category, sub_use, year, stock_Mt),
@@ -400,13 +408,38 @@ write.csv(
 )
 cat("  Year range:", range(dsm_calibrated$year), "\n")
 
+# -- Verify (1): calibrated stock@2016 == MISO@2016 within float tolerance -----
+cal_check_2016 <- dsm_calibrated %>%
+  filter(year == 2016) %>%
+  mutate(material_cal = recode(material, Metal_Fe = "Metal ores", Metal_NonFe = "Metal ores")) %>%
+  group_by(Region, material_cal, super_category) %>%
+  summarise(cal_stock_2016_Mt = sum(stock_Mt, na.rm = TRUE), .groups = "drop") %>%
+  rename(material = material_cal) %>%
+  left_join(miso_2016, by = c("Region", "material", "super_category")) %>%
+  filter(!is.na(miso_stock_2016_Mt), miso_stock_2016_Mt > 0) %>%
+  mutate(ratio = cal_stock_2016_Mt / miso_stock_2016_Mt)
+cat("[VERIFY 1] Calibrated stock@2016 / MISO@2016 ratio (should be ≈1.0 for all groups):\n")
+print(summary(cal_check_2016$ratio))
+
+# -- Verify (3): outflow@2024 for Metal_NonFe, North America (high-lambda group) --
+na_nonfe_out <- dsm_calibrated %>%
+  filter(year == 2024, material == "Metal_NonFe", Region == "North America") %>%
+  group_by(Region, material, super_category) %>%
+  summarise(outflow_2024_Mt = sum(outflow_Mt, na.rm = TRUE), stock_2024_Mt = sum(stock_Mt, na.rm = TRUE), .groups = "drop")
+cat("[VERIFY 3] Metal_NonFe North America: outflow@2024 with inflow-side calibration (lambda ~3 → outflow should be ~3× pre-cal):\n")
+print(na_nonfe_out)
+cat("  Lambda_cal for these groups:\n")
+print(lambda_join %>% filter(material == "Metal_NonFe", Region == "North America") %>%
+  dplyr::select(Region, material, super_category, lambda_cal))
+
 # Step 6: Compute 2024 age profile -------------------------------------------
 
 cat("\nSTEP 6: Compute 2024 age-structured stock\n")
 
-age_profile_nested <- dsm_nested %>%
-  left_join(lambda_join, by = c("Region", "material", "super_category")) %>%
-  mutate(lambda_cal = replace_na(lambda_cal, 1.0))
+# Inflows in dsm_nested_cal are already lambda-scaled; pass lambda_cal = 1.0
+# to compute_age_profile_2024 to avoid double-scaling.
+age_profile_nested <- dsm_nested_cal %>%
+  mutate(lambda_cal = 1.0)
 
 age_profile_list <- age_profile_nested %>%
   mutate(

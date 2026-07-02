@@ -9,16 +9,20 @@
 ##                     applied proportionally across sub_uses.
 ##
 ## UNITS NOTE (important):
-##   metals  -> *_metal_Mt columns are in METAL mass; primary/secondary_*_Mt are
-##              ore-equivalent (metal / grade). Both pairs are now mass-consistent.
-##   non-metals/biomass/fossil -> carrier == reported mass, so *_metal_Mt mirror
-##              the headline columns (no ore conversion).
+##   metals  -> base *_Mt columns (primary_consumption_Mt, secondary_supply_Mt,
+##              new_additions_Mt, replacement_Mt, waste_Mt) are ORE-equivalent
+##              (metal / grade); the matching *_Mt_pure columns are METAL mass.
+##              Both forms are mass-consistent (base = pure / grade).
+##   non-metals/biomass/fossil -> carrier == reported mass (no separate ore
+##              stage, grade == 1), so *_Mt_pure mirrors the base columns.
 ##
 ## Output: Results/MC/mc_results.parquet
 ##   key: run_id, ssp_label, region, material_group, material_key, year
 ##   value: total_inflow_Mt, in_use_stock_Mt,
-##          primary_consumption_Mt, secondary_supply_Mt            (ore-equiv for metals)
-##          primary_consumption_metal_Mt, secondary_supply_metal_Mt (metal mass)
+##          primary_consumption_Mt, secondary_supply_Mt,
+##          new_additions_Mt, replacement_Mt, waste_Mt          (ore-equiv for metals)
+##          primary_consumption_Mt_pure, secondary_supply_Mt_pure,
+##          new_additions_Mt_pure, replacement_Mt_pure, waste_Mt_pure (metal mass)
 ##          secondary_spilled_Mt        (recyclable mass with no demand to absorb it)
 ##          run_neg_primary, run_total_spill_Mt  (per-run diagnostic flags)
 ## =============================================================================
@@ -549,10 +553,12 @@ lifetime_dr <- mc_input_matrix |>
   rename(u_mean = mean, u_k = k) |>
   left_join(LIFETIME_SAMPLE_PARAMS, by = c("super_cat" = "super_category")) |>
   mutate(
+    mean_life_hist = mean_life, # central value from Lifetimes sheet (used by CEM)
+    k_hist = weibull_k,
     mean_life = pmax(LIFETIME_MIN, mean_life_min + u_mean * (mean_life_max - mean_life_min)),
     weibull_k = pmax(0.1, k_min + u_k * (k_max - k_min))
   ) |>
-  dplyr::select(run_id, sub_use, mean_life, weibull_k)
+  dplyr::select(run_id, sub_use, mean_life, weibull_k, mean_life_hist, k_hist)
 lifetime_by_run <- split(lifetime_dr, lifetime_dr$run_id)
 
 # -- Ore grade (metal -> ore conversion for primary AND avoided-ore secondary) -
@@ -623,13 +629,14 @@ run_one <- function(i) {
   gdppc_i <- gdppc_mat[[ssp]]
 
   yr_vec <- YEARS_DSM
-  # alpha: linear 0->1 interpolation weight from 2024 intensity to endpoint
+  # alpha: 0->1 time weight; intensities ramp log-linearly (geometrically) from
+  # 2024 value to endpoint as int_2024 * (endpoint / int_2024)^alpha
   alpha <- pmin(1, pmax(0, (yr_vec - 2024L) / (target_year_vec[i] - 2024L)))
 
   out_list <- list()
 
   # Helper to emit a Kaya flow row. For non-metals carrier == reported mass, so
-  # the *_metal_Mt columns mirror the headline columns and spill is 0.
+  # the *_Mt_pure columns mirror the headline columns and spill is 0.
   emit_flow <- function(rg, mg, key, M_Mt) {
     data.frame(
       run_id = i,
@@ -642,12 +649,15 @@ run_one <- function(i) {
       in_use_stock_Mt = NA_real_,
       primary_consumption_Mt = M_Mt,
       secondary_supply_Mt = 0,
-      primary_consumption_metal_Mt = M_Mt,
-      secondary_supply_metal_Mt = 0,
+      primary_consumption_Mt_pure = M_Mt,
+      secondary_supply_Mt_pure = 0,
       secondary_spilled_Mt = 0,
       new_additions_Mt = NA_real_,
       replacement_Mt = NA_real_,
       waste_Mt = NA_real_,
+      new_additions_Mt_pure = NA_real_,
+      replacement_Mt_pure = NA_real_,
+      waste_Mt_pure = NA_real_,
       target_stock_Mt = NA_real_
     )
   }
@@ -660,7 +670,10 @@ run_one <- function(i) {
 
   for (j in seq_len(nrow(bio))) {
     rg <- bio$region[j]
-    mg_ratio <- bio$int_2024[j] + (bio$endpoint[j] - bio$int_2024[j]) * alpha
+    # log-linear ramp: geometric interpolation from 2024 intensity to endpoint
+    int_2024_j <- max(bio$int_2024[j], 1e-12)
+    endpoint_j <- max(bio$endpoint[j], 1e-12)
+    mg_ratio <- int_2024_j * (endpoint_j / int_2024_j)^alpha
     mg_index <- mg_ratio / max(abs(bio$int_2024[j]), 1e-12)
     M_Mt <- bio$M_2024_Mt[j] * pop_i[rg, ] * gdppc_i[rg, ] * mg_index
     if (any(is.na(M_Mt))) {
@@ -678,7 +691,9 @@ run_one <- function(i) {
     if (length(cr) == 0) {
       next
     }
-    mg_ratio <- crops_rows$int_2024[j] + (crops_rows$endpoint[j] - crops_rows$int_2024[j]) * alpha
+    int_2024_j <- max(crops_rows$int_2024[j], 1e-12)
+    endpoint_j <- max(crops_rows$endpoint[j], 1e-12)
+    mg_ratio <- int_2024_j * (endpoint_j / int_2024_j)^alpha
     mg_index <- mg_ratio / max(abs(crops_rows$int_2024[j]), 1e-12)
     M_Mt <- cr * pop_i[rg, ] * gdppc_i[rg, ] * mg_index
     out_list[[length(out_list) + 1L]] <- emit_flow(rg, "biomass", "Crop Residues", M_Mt)
@@ -692,7 +707,9 @@ run_one <- function(i) {
       next
     }
     int_base <- fos$int_2024[j]
-    mg_ratio <- int_base + (fos$endpoint[j] - int_base) * alpha
+    int_base_j <- max(int_base, 1e-12)
+    endpoint_j <- max(fos$endpoint[j], 1e-12)
+    mg_ratio <- int_base_j * (endpoint_j / int_base_j)^alpha
     mg_index <- if (abs(int_base) < 1e-12) rep(1.0, N_YR) else mg_ratio / int_base
     M_Mt <- fos$M_2024_Mt[j] * pop_i[rg, ] * gdppc_i[rg, ] * mg_index
     out_list[[length(out_list) + 1L]] <- emit_flow(rg, "fossil_fuels", FOSSIL_LABEL[fos$mat_key[j]], M_Mt)
@@ -701,8 +718,8 @@ run_one <- function(i) {
   # -- DSM for one metal material (Fe or NonFe) --------------------------------
   # Recycling only, no quality loss. Secondary cannot exceed demand; unabsorbed
   # scrap is recorded as spill (not silently dropped). Primary >= 0 by construction.
-  # Reported primary/secondary_*_Mt are ore-equivalent (metal / grade);
-  # *_metal_Mt keep metal mass.
+  # Reported base *_Mt columns are ore-equivalent (metal / grade);
+  # matching *_Mt_pure columns keep metal mass.
   run_dsm_metal <- function(mat_label, age_lookup, rec_i, grade) {
     ie_g <- ie_i |> filter(material_group == "metal_ores") |> mutate(mat_key_super = mat_key)
 
@@ -715,8 +732,9 @@ run_one <- function(i) {
         next
       }
 
-      stock_intensity_index <- (ie_g$int_2024[j] + (ie_g$endpoint[j] - ie_g$int_2024[j]) * alpha) /
-        max(abs(ie_g$int_2024[j]), 1e-12)
+      int_2024_j <- max(ie_g$int_2024[j], 1e-12)
+      endpoint_j <- max(ie_g$endpoint[j], 1e-12)
+      stock_intensity_index <- (int_2024_j * (endpoint_j / int_2024_j)^alpha) / max(abs(ie_g$int_2024[j]), 1e-12)
 
       for (su in su_list) {
         age <- age_lookup[[rg]][[su]]
@@ -738,6 +756,8 @@ run_one <- function(i) {
           target_stock = target_stock,
           mean_life = lp_row$mean_life[1],
           k = lp_row$weibull_k[1],
+          mean_life_hist = lp_row$mean_life_hist[1],
+          k_hist = lp_row$k_hist[1],
           start_year = 2024L,
           end_year = FORECAST_END
         )
@@ -782,12 +802,15 @@ run_one <- function(i) {
       in_use_stock_Mt = sr$total_stock_Mt,
       primary_consumption_Mt = primary_metal / grade_safe, # ore extracted
       secondary_supply_Mt = secondary_metal / grade_safe, # ore avoided
-      primary_consumption_metal_Mt = primary_metal,
-      secondary_supply_metal_Mt = secondary_metal,
+      primary_consumption_Mt_pure = primary_metal,
+      secondary_supply_Mt_pure = secondary_metal,
       secondary_spilled_Mt = spilled_metal,
-      new_additions_Mt = sr$new_additions_Mt,
-      replacement_Mt = sr$replacement_Mt,
-      waste_Mt = sr$waste_Mt,
+      new_additions_Mt = sr$new_additions_Mt / grade_safe, # ore
+      replacement_Mt = sr$replacement_Mt / grade_safe,
+      waste_Mt = sr$waste_Mt / grade_safe,
+      new_additions_Mt_pure = sr$new_additions_Mt, # metal
+      replacement_Mt_pure = sr$replacement_Mt,
+      waste_Mt_pure = sr$waste_Mt,
       target_stock_Mt = sr$target_stock_Mt
     )
   }
@@ -812,8 +835,9 @@ run_one <- function(i) {
     if (is.null(su_list)) {
       next
     }
-    stock_intensity_index <- (ie_g_nm$int_2024[j] + (ie_g_nm$endpoint[j] - ie_g_nm$int_2024[j]) * alpha) /
-      max(abs(ie_g_nm$int_2024[j]), 1e-12)
+    int_2024_j <- max(ie_g_nm$int_2024[j], 1e-12)
+    endpoint_j <- max(ie_g_nm$endpoint[j], 1e-12)
+    stock_intensity_index <- (int_2024_j * (endpoint_j / int_2024_j)^alpha) / max(abs(ie_g_nm$int_2024[j]), 1e-12)
 
     for (su in su_list) {
       age <- age_lookup_nonmet[[rg]][[su]]
@@ -835,6 +859,8 @@ run_one <- function(i) {
         target_stock = target_stock,
         mean_life = lp_row$mean_life[1],
         k = lp_row$weibull_k[1],
+        mean_life_hist = lp_row$mean_life_hist[1],
+        k_hist = lp_row$k_hist[1],
         start_year = 2024L,
         end_year = FORECAST_END
       )
@@ -946,12 +972,15 @@ run_one <- function(i) {
       in_use_stock_Mt = nm_sr$total_stock_Mt,
       primary_consumption_Mt = nm_sr$production_Mt,
       secondary_supply_Mt = recovered,
-      primary_consumption_metal_Mt = nm_sr$production_Mt, # carrier == mass (no ore conv.)
-      secondary_supply_metal_Mt = recovered,
+      primary_consumption_Mt_pure = nm_sr$production_Mt, # carrier == mass (no ore conv.)
+      secondary_supply_Mt_pure = recovered,
       secondary_spilled_Mt = spilled,
       new_additions_Mt = nm_sr$new_additions_Mt,
       replacement_Mt = nm_sr$replacement_Mt,
       waste_Mt = nm_sr$waste_Mt,
+      new_additions_Mt_pure = nm_sr$new_additions_Mt, # carrier == mass (no ore conv.)
+      replacement_Mt_pure = nm_sr$replacement_Mt,
+      waste_Mt_pure = nm_sr$waste_Mt,
       target_stock_Mt = nm_sr$target_stock_Mt
     )
   }
@@ -971,6 +1000,7 @@ run_one <- function(i) {
 # =============================================================================
 cat("\nSTEP 6: Run", N_RUNS, "simulations\n")
 
+options(future.globals.maxSize = 2 * 1024^3) # 2 GiB; default is 500 MiB
 if (.Platform$OS.type == "windows") {
   future::plan(multisession, workers = max(1, parallel::detectCores() - 1))
 } else {
