@@ -99,7 +99,11 @@ cat("\nStep 2: build LHS column names\n")
 lifetime_super_cats <- sort(unique(LIFETIME_SAMPLE_PARAMS$super_category))
 
 lhs_col_names <- c(
-  "ssp_u",
+  # Continuous SSP position (independent draws): 02-RunSimulations.R locates
+  # the two bracketing SSPs at FORECAST_END and blends their full trajectory
+  # by the resulting share -- no discrete SSP label is assigned here.
+  "pop_ssp_u",
+  "gdppc_ssp_u",
   "target_year_u",
   # Global intensity draws (one per material/group, all in [0,1])
   paste0("intensity_", biomass_mats_sampled, "_global"),
@@ -144,11 +148,11 @@ lhs_mat <- lhs::randomLHS(n = N_RUNS, k = n_cols)
 colnames(lhs_mat) <- lhs_col_names
 
 mc_input_matrix <- tibble::as_tibble(lhs_mat) |>
-  mutate(run_id = seq_len(N_RUNS), ssp_label = SSP_LABELS[floor(ssp_u * length(SSP_LABELS)) + 1L]) |>
-  dplyr::select(run_id, ssp_label, everything(), -ssp_u)
+  mutate(run_id = seq_len(N_RUNS)) |>
+  dplyr::select(run_id, everything())
 
 cat("  Matrix:", nrow(mc_input_matrix), "×", ncol(mc_input_matrix), "\n")
-cat("  SSP draw counts:", paste(table(mc_input_matrix$ssp_label), collapse = " / "), "\n")
+cat("  pop_ssp_u / gdppc_ssp_u: continuous [0,1], interpolated between SSPs downstream\n")
 
 
 # =============================================================================

@@ -1,7 +1,10 @@
 ## =============================================================================
 ## 00-CommonParameters.R
 ## Shared named colour palettes for regions, material categories, and material
-## groups. Sourced automatically via 00-Libraries.R.
+## groups, plus the central projection-horizon parameter. Sourced
+## automatically via 00-Libraries.R -- this is the FIRST config file every
+## script gets, before any figure- or simulation-specific sourcing, so
+## FORECAST_END is guaranteed to already be in scope everywhere.
 ##
 ## Usage in ggplot:
 ##   scale_fill_manual(values = PALETTE_REGIONS)
@@ -10,6 +13,14 @@
 ##
 ## Unknown categories fall back to grey via na.value = "#999999".
 ## =============================================================================
+
+# ── Projection horizon (central parameter) ─────────────────────────────────────
+# Single source of truth for how far every projected simulation (MC + the
+# deterministic DSM forecast scripts) and every projected figure runs.
+# Change this ONE number to extend/shorten the horizon everywhere downstream.
+# BASE_YEAR and TARGET_YEAR (intensity convergence, held at 2050 as a modelling
+# choice independent of the horizon) live in Scripts/model_parameters.R.
+FORECAST_END <- 2100L
 
 # ── Regions (Analysis_group, 8 levels) ────────────────────────────────────────
 # Based on Paul Tol's Vibrant palette with geographic-semantic adjustments.
@@ -101,3 +112,17 @@ PALETTE_SUBENDUSE <- c(
 )
 
 SSP_COLORS <- c("SSP1" = "#2d7d46", "SSP2" = "#8db84e", "SSP3" = "#e8a628", "SSP4" = "#d4622a", "SSP5" = "#c0392b")
+
+# ── Decoupling classification (4 levels) ──────────────────────────────────────
+# Used by 19-Decoupling.R, 19b-Decoupling-ScenarioDiscovery.R and Figure 3.
+# "Peak decoupling": per-capita material consumption peaks before TARGET_YEAR
+# and is declining by TARGET_YEAR, but the endpoint-to-endpoint CAGR is still
+# >= 0 (net level at TARGET_YEAR still above BASE_YEAR) -- distinct from
+# "Absolute decoupling", which requires a net decrease over the full window.
+
+PALETTE_DECOUPLING <- c(
+  "Absolute decoupling" = "#1B7837",
+  "Peak decoupling" = "#74C476",
+  "Relative decoupling" = "#D9A404",
+  "No decoupling" = "#B2182B"
+)

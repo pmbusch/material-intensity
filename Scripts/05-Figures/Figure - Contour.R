@@ -179,16 +179,16 @@ pop_2024_region <- df_pop |>
   rename(region = Region) |>
   dplyr::select(region, pop_2024 = population)
 
-# World GDP/pop projections (SSP2, 2024–2060)
+# World GDP/pop projections (SSP2, HIST_END-FORECAST_END)
 world_gdp_proj <- ssp_drivers |>
-  filter(variable == "GDP|PPP", scenario == CENTRAL_SSP, year >= HIST_END, year <= 2060) |>
+  filter(variable == "GDP|PPP", scenario == CENTRAL_SSP, year >= HIST_END, year <= FORECAST_END) |>
   left_join(gdp_2024_region, by = "region") |>
   mutate(gdp = gdp_2024 * index) |>
   group_by(year) |>
   summarise(world_gdp = sum(gdp, na.rm = TRUE), .groups = "drop")
 
 world_pop_proj <- ssp_drivers |>
-  filter(variable == "Population", scenario == CENTRAL_SSP, year >= HIST_END, year <= 2060) |>
+  filter(variable == "Population", scenario == CENTRAL_SSP, year >= HIST_END, year <= FORECAST_END) |>
   left_join(pop_2024_region, by = "region") |>
   mutate(pop = pop_2024 * index) |>
   group_by(year) |>
@@ -196,14 +196,14 @@ world_pop_proj <- ssp_drivers |>
 
 world_gdpcap_proj <- world_gdp_proj |> left_join(world_pop_proj, by = "year") |> mutate(gdp_pc = world_gdp / world_pop)
 
-# Regional GDP and pop: 2024 (historical) + 2025–2060 (SSP2 indexed)
+# Regional GDP and pop: 2024 (historical) + 2025-FORECAST_END (SSP2 indexed)
 gdp_region_proj <- bind_rows(
   df_gdp |>
     filter(year == HIST_END) |>
     rename(region = Region, gdp_proj = GDP_2015USD) |>
     dplyr::select(region, year, gdp_proj),
   ssp_drivers |>
-    filter(variable == "GDP|PPP", scenario == CENTRAL_SSP, year > HIST_END, year <= 2060) |>
+    filter(variable == "GDP|PPP", scenario == CENTRAL_SSP, year > HIST_END, year <= FORECAST_END) |>
     left_join(gdp_2024_region, by = "region") |>
     mutate(gdp_proj = gdp_2024 * index) |>
     dplyr::select(region, year, gdp_proj)
@@ -215,7 +215,7 @@ pop_region_proj <- bind_rows(
     rename(region = Region, pop_proj = population) |>
     dplyr::select(region, year, pop_proj),
   ssp_drivers |>
-    filter(variable == "Population", scenario == CENTRAL_SSP, year > HIST_END, year <= 2060) |>
+    filter(variable == "Population", scenario == CENTRAL_SSP, year > HIST_END, year <= FORECAST_END) |>
     left_join(pop_2024_region, by = "region") |>
     mutate(pop_proj = pop_2024 * index) |>
     dplyr::select(region, year, pop_proj)
@@ -227,25 +227,25 @@ hist_metal_nonmet_2024 <- df |>
   group_by(region = Analysis_group, year) |>
   summarise(M_Mt = sum(DMC_Mt, na.rm = TRUE), .groups = "drop")
 
-# Total material by region (2024–2060, SSP2)
+# Total material by region (2024-FORECAST_END, SSP2)
 # At 2024: bio/fossil from forecast, metal/nonmet from historical DMC
 # At 2025+: all four from forecast
 total_mat_region_proj <- bind_rows(
   biomass_fc |>
-    filter(scenario == CENTRAL_SSP, year >= HIST_END, year <= 2060) |>
+    filter(scenario == CENTRAL_SSP, year >= HIST_END, year <= FORECAST_END) |>
     group_by(region, year) |>
     summarise(M_Mt = sum(M_Mt, na.rm = TRUE), .groups = "drop"),
   fossil_fc |>
-    filter(scenario == CENTRAL_SSP, year >= HIST_END, year <= 2060) |>
+    filter(scenario == CENTRAL_SSP, year >= HIST_END, year <= FORECAST_END) |>
     group_by(region, year) |>
     summarise(M_Mt = sum(M_Mt, na.rm = TRUE), .groups = "drop"),
   hist_metal_nonmet_2024,
   metal_fc |>
-    filter(scenario == CENTRAL_SSP, year > HIST_END, year <= 2060) |>
+    filter(scenario == CENTRAL_SSP, year > HIST_END, year <= FORECAST_END) |>
     group_by(region, year) |>
     summarise(M_Mt = sum(production_Mt, na.rm = TRUE), .groups = "drop"),
   nonmet_flow_fc |>
-    filter(scenario == CENTRAL_SSP, year > HIST_END, year <= 2060) |>
+    filter(scenario == CENTRAL_SSP, year > HIST_END, year <= FORECAST_END) |>
     group_by(region, year) |>
     summarise(M_Mt = sum(production_Mt, na.rm = TRUE), .groups = "drop")
 ) |>
@@ -259,7 +259,7 @@ region_all_proj <- total_mat_region_proj |>
   rename(Analysis_group = region) |>
   mutate(DMC_kg = M_Mt * 1e9, mat_gdp = DMC_kg / gdp_proj, gdp_pc = gdp_proj / pop_proj)
 
-# World average projection (2024–2060)
+# World average projection (2024-FORECAST_END)
 world_all_proj <- region_all_proj |>
   group_by(year) |>
   summarise(
@@ -513,12 +513,12 @@ ggsave(
 world_grp_proj <- bind_rows(
   # Biomass and fossil: forecast starts at 2024 (continuous)
   biomass_fc |>
-    filter(scenario == CENTRAL_SSP, year >= HIST_END, year <= 2060) |>
+    filter(scenario == CENTRAL_SSP, year >= HIST_END, year <= FORECAST_END) |>
     group_by(year) |>
     summarise(DMC_kg = sum(M_Mt, na.rm = TRUE) * 1e9, .groups = "drop") |>
     mutate(Material_group = "Biomass"),
   fossil_fc |>
-    filter(scenario == CENTRAL_SSP, year >= HIST_END, year <= 2060) |>
+    filter(scenario == CENTRAL_SSP, year >= HIST_END, year <= FORECAST_END) |>
     group_by(year) |>
     summarise(DMC_kg = sum(M_Mt, na.rm = TRUE) * 1e9, .groups = "drop") |>
     mutate(Material_group = "Fossil fuels"),
@@ -528,7 +528,7 @@ world_grp_proj <- bind_rows(
     summarise(DMC_kg = sum(DMC_Mt, na.rm = TRUE) * 1e9) |>
     mutate(Material_group = "Metal ores", year = HIST_END),
   metal_fc |>
-    filter(scenario == CENTRAL_SSP, year > HIST_END, year <= 2060) |>
+    filter(scenario == CENTRAL_SSP, year > HIST_END, year <= FORECAST_END) |>
     group_by(year) |>
     summarise(DMC_kg = sum(production_Mt, na.rm = TRUE) * 1e9, .groups = "drop") |>
     mutate(Material_group = "Metal ores"),
@@ -538,7 +538,7 @@ world_grp_proj <- bind_rows(
     summarise(DMC_kg = sum(DMC_Mt, na.rm = TRUE) * 1e9) |>
     mutate(Material_group = "Non-metallic minerals", year = HIST_END),
   nonmet_flow_fc |>
-    filter(scenario == CENTRAL_SSP, year > HIST_END, year <= 2060) |>
+    filter(scenario == CENTRAL_SSP, year > HIST_END, year <= FORECAST_END) |>
     group_by(year) |>
     summarise(DMC_kg = sum(production_Mt, na.rm = TRUE) * 1e9, .groups = "drop") |>
     mutate(Material_group = "Non-metallic minerals")
@@ -748,14 +748,14 @@ ggplot() +
     segment.colour = "grey60",
     min.segment.length = 0.2
   ) +
-  # Year annotations: 1970 and 2024 (historical), 2060 (projection)
+  # Year annotations: 1970 and 2024 (historical), FORECAST_END (projection)
   geom_text(
     data = filter(world_grp_hist, year == 1970),
     aes(x = mat_gdp, y = gdp_pc, colour = Material_group, label = year),
     vjust = 1.5, hjust = -0.2, fontface = "bold", size = 2.2, show.legend = FALSE
   ) +
   geom_text(
-    data = filter(world_grp_proj_full, year == 2060),
+    data = filter(world_grp_proj_full, year == FORECAST_END),
     aes(x = mat_gdp, y = gdp_pc, colour = Material_group, label = year),
     vjust = -0.6, hjust = 0.5, fontface = "bold", size = 2.2, show.legend = FALSE
   ) +
@@ -809,28 +809,28 @@ world_9mat_hist <- world_mat |>
   mutate(mat_gdp = DMC_kg / GDP, gdp_pc = GDP / pop) |>
   filter(year <= HIST_END)
 
-## 9-material projection (SSP2 2024–2060) -------------------------------------
+## 9-material projection (SSP2 2024-FORECAST_END) ------------------------------
 # Bio/fossil: forecast starts at 2024. Metal/nonmet: 2024 historical bridge + 2025+ forecast.
 
 world_9mat_proj <- bind_rows(
   biomass_fc |>
-    filter(scenario == CENTRAL_SSP, year >= HIST_END, year <= 2060) |>
+    filter(scenario == CENTRAL_SSP, year >= HIST_END, year <= FORECAST_END) |>
     group_by(mat9 = category, year) |>
     summarise(DMC_kg = sum(M_Mt, na.rm = TRUE) * 1e9, .groups = "drop"),
   fossil_fc |>
-    filter(scenario == CENTRAL_SSP, year >= HIST_END, year <= 2060) |>
+    filter(scenario == CENTRAL_SSP, year >= HIST_END, year <= FORECAST_END) |>
     mutate(mat9 = FUEL_LABEL[fuel]) |>
     group_by(mat9, year) |>
     summarise(DMC_kg = sum(M_Mt, na.rm = TRUE) * 1e9, .groups = "drop"),
   world_9mat_hist |> filter(year == HIST_END, mat9 == "Metal ores") |> dplyr::select(mat9, year, DMC_kg),
   metal_fc |>
-    filter(scenario == CENTRAL_SSP, year > HIST_END, year <= 2060) |>
+    filter(scenario == CENTRAL_SSP, year > HIST_END, year <= FORECAST_END) |>
     group_by(year) |>
     summarise(DMC_kg = sum(production_Mt, na.rm = TRUE) * 1e9, .groups = "drop") |>
     mutate(mat9 = "Metal ores"),
   world_9mat_hist |> filter(year == HIST_END, mat9 == "Non-metallic minerals") |> dplyr::select(mat9, year, DMC_kg),
   nonmet_flow_fc |>
-    filter(scenario == CENTRAL_SSP, year > HIST_END, year <= 2060) |>
+    filter(scenario == CENTRAL_SSP, year > HIST_END, year <= FORECAST_END) |>
     group_by(year) |>
     summarise(DMC_kg = sum(production_Mt, na.rm = TRUE) * 1e9, .groups = "drop") |>
     mutate(mat9 = "Non-metallic minerals")
@@ -967,7 +967,7 @@ pFig3a <- ggplot(region_all, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_grou
     segment.size = 0.3,
     segment.colour = "grey40"
   ) +
-  # Year labels for world avg: 1970, 2024, 2060
+  # Year labels for world avg: 1970, 2024, FORECAST_END
   geom_text(
     data = filter(world_all, year == 1970),
     aes(label = year), vjust = 1.5, hjust = -0.2,
@@ -980,7 +980,7 @@ pFig3a <- ggplot(region_all, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_grou
     fontface = "bold", colour = "black", size = 4.0, show.legend = FALSE, inherit.aes = FALSE
   ) +
   geom_text(
-    data = filter(world_all_proj, year == 2060),
+    data = filter(world_all_proj, year == FORECAST_END),
     aes(x = mat_gdp, y = gdp_pc, label = year),
     vjust = -0.6, hjust = 0.5,
     fontface = "bold", colour = "black", size = 4.0, show.legend = FALSE, inherit.aes = FALSE
@@ -1010,10 +1010,10 @@ iso_9mat <- make_isolines(
   y_max = Y_LIM_FIG3[2]
 )
 
-# Year labels on Non-metallic minerals line: 1970, 2024, 2060
+# Year labels on Non-metallic minerals line: 1970, 2024, FORECAST_END
 lbl_nonmet_1970 <- filter(world_9mat_hist, year == 1970, mat9 == "Non-metallic minerals")
 lbl_nonmet_2024 <- filter(world_9mat_proj, year == HIST_END, mat9 == "Non-metallic minerals")
-lbl_nonmet_2060 <- filter(world_9mat_proj, year == 2060, mat9 == "Non-metallic minerals")
+lbl_nonmet_end <- filter(world_9mat_proj, year == FORECAST_END, mat9 == "Non-metallic minerals")
 
 p9mat <- ggplot() +
   geom_textline(
@@ -1067,7 +1067,7 @@ p9mat <- ggplot() +
     vjust = 0, hjust = 1.5, fontface = "bold", size = 4.2, show.legend = FALSE
   ) +
   geom_text(
-    data = lbl_nonmet_2060,
+    data = lbl_nonmet_end,
     aes(x = mat_gdp, y = gdp_pc, colour = mat9, label = year),
     vjust = -0.6, hjust = 0.5, fontface = "bold", size = 4.2, show.legend = FALSE
   ) +

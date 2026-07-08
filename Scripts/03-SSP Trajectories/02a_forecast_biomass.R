@@ -1,7 +1,7 @@
 ## =============================================================================
 ## 02a_forecast_biomass.R
 ## Forecast biomass material consumption (Mt/yr) by region, category, and SSP
-## scenario from 2024 to 2060 using the Kaya decomposition identity:
+## scenario from 2024 to FORECAST_END using the Kaya decomposition identity:
 ##   M = P × (GDP/P) × (M/G)
 ##
 ## Inputs:
@@ -196,7 +196,7 @@ cat("  NA check — M_Mt:", sum(is.na(forecast$M_Mt)), "\n")
 cat("\n  Total global biomass M (Mt) at selected years:\n")
 print(
   forecast |>
-    filter(year %in% c(2024, 2030, 2040, 2050, 2060)) |>
+    filter(year %in% c(2024, SNAPSHOT_YEARS)) |>
     group_by(scenario, category, year) |>
     summarise(M_Mt = round(sum(M_Mt, na.rm = TRUE), 1), .groups = "drop") |>
     pivot_wider(names_from = year, values_from = M_Mt) |>

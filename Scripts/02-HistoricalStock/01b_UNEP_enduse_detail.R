@@ -449,7 +449,7 @@ for (sc in unique(share_plot_data$super_category)) {
     theme_pb_large() +
     theme(legend.position = "none")
 
-  fname <- file.path(FIG_DIR, paste0("subenduse_shares_", sc, ".png"))
+  fname <- file.path(FIG_DIR, paste0("01b-subenduse_shares_", sc, ".png"))
   # fmt: skip
   ggsave(fname, ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7)
   cat("  Saved:", fname, "\n")
@@ -491,7 +491,7 @@ ggplot(cv_plot_data, aes(x = year, y = share_inversion, colour = sub_use_label, 
   theme(legend.position = "right", panel.spacing = unit(0.8, "lines"))
 
 # fmt: skip
-ggsave(file.path(FIG_DIR, "subenduse_shares_cv_sensitivity.png"), ggplot2::last_plot(),
+ggsave(file.path(FIG_DIR, "01b-subenduse_shares_cv_sensitivity.png"), ggplot2::last_plot(),
        units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7 * 2)
 cat("  Saved:", file.path(FIG_DIR, "subenduse_shares_cv_sensitivity.png"), "\n")
 

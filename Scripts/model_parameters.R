@@ -9,11 +9,13 @@
 ## =============================================================================
 
 # -- Temporal ------------------------------------------------------------------
+# FORECAST_END (the projection horizon) is defined in Scripts/00-CommonParameters.R
+# -- sourced before this file in every entry point -- so it's a single global
+# knob shared by every simulation and figure, not redefined here.
 BASE_YEAR <- 2024L
 FORECAST_START <- 2024L # 04c/04d override to 2025L after sourcing
-FORECAST_END <- 2060L
 TARGET_YEAR <- 2050L # intensity convergence: log-linear BASE_YEAR→TARGET_YEAR, flat after
-SNAPSHOT_YEARS <- c(2030L, 2040L, 2050L, 2060L)
+SNAPSHOT_YEARS <- seq(2030L, FORECAST_END, by = 10L)
 
 # -- SSP -----------------------------------------------------------------------
 SSP_LABELS <- c("SSP1", "SSP2", "SSP3", "SSP4", "SSP5")

@@ -4,11 +4,18 @@
 ## UNEP inflows using Weibull lifetime distributions, calibrate to MISO2
 ## stocks at 2016, and produce the 2024 age-structured stock.
 ##
+## Metal inflows are scope-corrected by A = MISO/UNEP (script 02c): historical
+## metal "inflow" is TOTAL metal entering use (primary + secondary + embodied
+## trade), MISO-consistent. Historical primary ore for reporting stays raw
+## UNEP DMC. Non-metallic minerals are NOT corrected.
+##
 ## Input:
 ##   Parameters/Intermediate/UNEP_flows_subenduse.parquet  -- from Script 01b (8 sub-uses)
 ##   Parameters/materials_region_DMC.csv                   -- UNEP raw DMC for Fe/NonFe split
 ##   Parameters/MISO/MISO_stock_regional.csv               -- calibration anchor (super-cat level)
-##   Parameters/MISO/metal_grade_ore.csv                   -- ore→metal conversion factor g
+##   Parameters/MISO/metal_grade_ore.csv                   -- ore→metal conversion factor g (to 2016)
+##   Inputs/MC_Assumptions.xlsx (sheet Parameters)          -- 2024 grade "now" target (ramp anchor)
+##   Parameters/Intermediate/miso_unep_scope_factor_A.csv  -- from Script 02c
 ##
 ## Outputs:
 ##   Parameters/Intermediate/stock_trajectory_subenduse.parquet  -- stock by sub-use + Fe/NonFe
@@ -23,13 +30,9 @@
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
 
 # -- Lifetime parameters per sub-end-use (MISO mean, Weibull k) ----------------
-# Super-categories from script 01 are disaggregated into 8 sub-uses via script 01b.
-# Metal ores are further split into Metal_Fe / Metal_NonFe in Step 1 below.
 lifetime_params <- read_excel("Inputs/MC_Assumptions.xlsx", sheet = "Lifetimes") |>
   dplyr::select(sub_use, super_category, mean_life, weibull_k)
 
-
-# Sub-end-use display labels (used in plots) --------
 SUBENDUSE_LABELS <- c(
   residential = "Residential",
   non_residential = "Non-residential",
@@ -41,13 +44,11 @@ SUBENDUSE_LABELS <- c(
   packaging = "Packaging"
 )
 
-# Calibration tolerance for diagnostic flags (does not stop execution)
 CAL_TOLERANCE <- 0.3
 
 
 # -- Survival functions -------------------------------------------------------
 
-# Weibull scale derived from mean: mean = lambda * Gamma(1 + 1/k)
 weibull_survival <- function(age, mean_life, k) {
   lambda <- mean_life / gamma(1 + 1 / k)
   exp(-(age / lambda)^k)
@@ -59,14 +60,6 @@ get_survival <- function(ages, mean_life, k) {
 
 
 # -- DSM function: trajectory 1970-2024 for one (Region x material x end_use) -
-#
-# df            -- tibble: year (sorted), flow_Mt (calibrated inflows)
-# ghost_cohorts -- tibble: cohort_year (5-yr bins 1900-1970), cohort_inflow_Mt
-#                  (incremental MISO2 stock additions per bin); age-structured
-#                  pre-1970 legacy stock replacing the earlier single-lump scalar
-# mean_life, k  -- Weibull parameters
-#
-# Returns tibble: year, stock_Mt, outflow_Mt, ghost_stock_Mt
 
 run_dsm_trajectory <- function(df, ghost_cohorts, mean_life, k) {
   df <- df %>% arrange(year)
@@ -74,16 +67,13 @@ run_dsm_trajectory <- function(df, ghost_cohorts, mean_life, k) {
   n <- length(years)
   inflows <- df$flow_Mt
 
-  # age_mat[i, j] = age of cohort i observed at simulation year j (years[j] - years[i])
   age_mat <- outer(years, years, function(cohort, sim) sim - cohort)
   surv_mat <- matrix(get_survival(as.vector(age_mat), mean_life, k), n, n)
-  surv_mat[age_mat < 0] <- 0 # cohort i cannot contribute before year years[i]
+  surv_mat[age_mat < 0] <- 0
 
-  # Stock from each cohort: row i x inflows[i], column = simulation year
   cohort_stock_mat <- sweep(surv_mat, 1, inflows, "*")
   cohort_stock <- colSums(cohort_stock_mat)
 
-  # Ghost cohorts: sum survival-weighted contributions from each pre-1970 cohort bin
   ghost_stock <- vapply(
     years,
     function(sim_yr) {
@@ -93,21 +83,18 @@ run_dsm_trajectory <- function(df, ghost_cohorts, mean_life, k) {
   )
 
   total_stock <- cohort_stock + ghost_stock
-
-  # Mass balance: outflow(t) = stock(t-1) - stock(t) + inflow(t)
-  # undefined at t=1970 because stock(1969) is unknown
   outflow <- c(NA_real_, total_stock[-n] - total_stock[-1] + inflows[-1])
 
   tibble(year = years, stock_Mt = total_stock, outflow_Mt = outflow, ghost_stock_Mt = ghost_stock)
 }
 
 
-# -- Age profile at 2024: one row per cohort for a single group ---------------
+# -- Age profile at 2024 ------------------------------------------------------
 
 compute_age_profile_2024 <- function(df, ghost_cohorts, mean_life, k, lambda_cal) {
   df <- df %>% arrange(year)
   years <- df$year
-  inflows <- df$flow_Mt * lambda_cal # scale to calibrated inflows
+  inflows <- df$flow_Mt * lambda_cal
 
   ages_2024 <- 2024 - years
   surv_2024 <- get_survival(ages_2024, mean_life, k)
@@ -137,7 +124,6 @@ compute_age_profile_2024 <- function(df, ghost_cohorts, mean_life, k, lambda_cal
 
 cat("STEP 1: Load inputs\n")
 
-# Sub-end-use UNEP flows from script 01b (still in ore mass for Metal ores)
 unep_sub <- read.csv("Parameters/Intermediate/UNEP_flows_subenduse.csv")
 cat(
   "UNEP sub-end-use flows:",
@@ -155,13 +141,9 @@ miso_stock <- read_csv("Parameters/MISO/MISO_stock_regional.csv", show_col_types
 cat("MISO stock:", nrow(miso_stock), "rows |", "years:", min(miso_stock$year), "-", max(miso_stock$year), "\n")
 
 # -- Fe/NonFe split and ore-to-metal conversion (Metal ores only) --------------
-# UNEP DMC reports metals in ore mass; stocks are in metal mass.
-# Multiply by ore grade g (from script 02) to convert ore → metal.
-# Secondary flows are already in metal mass (no g correction needed).
 
 unep_raw <- read_csv("Parameters/materials_region_DMC.csv", show_col_types = FALSE)
 
-# Compute regional fe_share = Ferrous / (Ferrous + Non-ferrous) by year
 fe_share_rt <- unep_raw %>%
   filter(material_category %in% c("Ferrous ores", "Non-ferrous ores")) %>%
   group_by(Region, year, material_category) %>%
@@ -177,26 +159,44 @@ fe_share_rt <- unep_raw %>%
     )
   )
 
-# Ore grade g: year × group (Ferrous / Non-ferrous) → g value
 grade_raw <- read_csv("Parameters/MISO/metal_grade_ore.csv", show_col_types = FALSE)
 
 grade_wide <- grade_raw %>%
   pivot_wider(names_from = group, values_from = g) %>%
   rename(g_Fe = Ferrous, g_NonFe = `Non-ferrous`)
 
-# Extend g backward and forward via LOCF to cover all UNEP years
+# MC_Assumptions "mid" (= (min+max)/2) grade -- same value used as the 2024
+# "now" baseline for the MC ore-grade convergence ramp in
+# Scripts/04-Simulation/02-RunSimulations.R (GRADE_ORE_FE_NOW / GRADE_ORE_NONFE_NOW).
+grade_mc_bounds <- read_excel("Inputs/MC_Assumptions.xlsx", sheet = "Parameters") %>%
+  filter(parameter_name %in% c("GRADE_ORE_FE", "GRADE_ORE_NONFE"))
+grade_mid_fe <- with(grade_mc_bounds, mean(c(min[parameter_name == "GRADE_ORE_FE"], max[parameter_name == "GRADE_ORE_FE"])))
+grade_mid_nonfe <- with(
+  grade_mc_bounds,
+  mean(c(min[parameter_name == "GRADE_ORE_NONFE"], max[parameter_name == "GRADE_ORE_NONFE"]))
+)
+
 yr_min <- min(unep_sub$year)
 yr_max <- max(unep_sub$year)
 grade_early <- grade_wide %>% filter(year == min(year)) %>% dplyr::select(-year)
-grade_late <- grade_wide %>% filter(year == max(year)) %>% dplyr::select(-year)
+grade_last_yr <- max(grade_wide$year)
+grade_last_row <- grade_wide %>% filter(year == grade_last_yr) %>% dplyr::select(-year)
 if (min(grade_wide$year) > yr_min) {
   grade_wide <- bind_rows(expand_grid(grade_early, year = seq(yr_min, min(grade_wide$year) - 1)), grade_wide)
 }
-if (max(grade_wide$year) < yr_max) {
-  grade_wide <- bind_rows(grade_wide, expand_grid(grade_late, year = seq(max(grade_wide$year) + 1, yr_max)))
+if (grade_last_yr < yr_max) {
+  # Ramp linearly from the last observed grade (2016) to the MC "now" mid
+  # value, landing at 2024; hold at the mid value for any years beyond 2024.
+  ramp_years <- seq(grade_last_yr + 1, yr_max)
+  ramp_alpha <- pmin(1, (ramp_years - grade_last_yr) / (2024L - grade_last_yr))
+  grade_ramp <- tibble(
+    year = ramp_years,
+    g_Fe = grade_last_row$g_Fe + (grade_mid_fe - grade_last_row$g_Fe) * ramp_alpha,
+    g_NonFe = grade_last_row$g_NonFe + (grade_mid_nonfe - grade_last_row$g_NonFe) * ramp_alpha
+  )
+  grade_wide <- bind_rows(grade_wide, grade_ramp)
 }
 
-# Split Metal ores rows into Metal_Fe and Metal_NonFe; apply g
 metal_ore_flows <- unep_sub %>%
   filter(material == "Metal ores") %>%
   left_join(fe_share_rt %>% dplyr::select(Region, year, fe_share), by = c("Region", "year")) %>%
@@ -211,9 +211,7 @@ metal_nonfe <- metal_ore_flows %>%
   mutate(material = "Metal_NonFe", flow_Mt = flow_Mt * (1 - fe_share) * g_NonFe) %>%
   dplyr::select(-fe_share, -g_Fe, -g_NonFe)
 
-# Combine: metal mass flows for Fe/NonFe + unchanged non-metallic flows
 unep_all <- bind_rows(metal_fe, metal_nonfe, unep_sub %>% filter(material != "Metal ores"))
-unique(unep_all$material)
 cat(sprintf(
   "  After Fe/NonFe split + g correction: %d rows | materials: %s\n",
   nrow(unep_all),
@@ -221,14 +219,48 @@ cat(sprintf(
 ))
 
 
+# Step 1c: Apply MISO/UNEP scope factor A to metal inflows --------------------
+#
+# A = MISO_inflow / UNEP_metal_inflow (Region x super_category x year), from
+# script 02c. Corrects UNEP's scope gap (recycled scrap + embodied trade,
+# undecomposed). After this, flow_Mt for Metal_Fe/Metal_NonFe = TOTAL metal
+# entering use, MISO-consistent. Ghost cohorts NOT corrected (built from MISO
+# stock, already MISO scope). Non-metallic minerals NOT corrected.
+
+cat("\nSTEP 1c: Apply MISO/UNEP scope factor A to metal inflows\n")
+
+A_factor <- read_csv("Parameters/Intermediate/miso_unep_scope_factor_A.csv", show_col_types = FALSE)
+
+if (max(A_factor$year) < max(unep_all$year[unep_all$year <= 2024])) {
+  warning("Scope factor A does not cover all years to 2024 -- uncovered years get A = 1.")
+}
+
+pre_metal_2016 <- unep_all %>%
+  filter(material %in% c("Metal_Fe", "Metal_NonFe"), year == 2016) %>%
+  summarise(Mt = sum(flow_Mt)) %>%
+  pull(Mt)
+
+unep_all <- unep_all %>%
+  left_join(A_factor, by = c("Region", "super_category", "year")) %>%
+  mutate(A = if_else(material %in% c("Metal_Fe", "Metal_NonFe"), replace_na(A, 1.0), 1.0), flow_Mt = flow_Mt * A) %>%
+  dplyr::select(-A)
+
+post_metal_2016 <- unep_all %>%
+  filter(material %in% c("Metal_Fe", "Metal_NonFe"), year == 2016) %>%
+  summarise(Mt = sum(flow_Mt)) %>%
+  pull(Mt)
+
+cat(sprintf(
+  "  Global metal inflow 2016: %.0f Mt (UNEP) -> %.0f Mt (x A; should be near MISO ~1455 Mt)\n",
+  pre_metal_2016,
+  post_metal_2016
+))
+
+
 # Step 2: Build pre-1970 ghost cohort table from MISO2 stock series -----------
 
 cat("\nSTEP 2: Build pre-1970 ghost cohort table from MISO2 stock series (5-year bins)\n")
 
-# Ghost cohorts built at super_category level (MISO has no sub-use detail),
-# then scaled to sub-use level using the 1970 inflow shares from script 01b.
-
-# Super-category ghost cohorts from MISO (Material ores in metal mass already)
 ghost_super <- miso_stock %>%
   filter(year >= 1900, year <= 1970, year %% 5 == 0) %>%
   arrange(Region, material, end_use, year) %>%
@@ -238,21 +270,17 @@ ghost_super <- miso_stock %>%
   rename(cohort_year = year, super_category = end_use) %>%
   dplyr::select(Region, material, super_category, cohort_year, cohort_inflow_Mt)
 
-# 1970 inflow shares from 01b (global → same for all regions; take first region as proxy)
 shares_1970_sub <- unep_sub %>%
   filter(year == 1970) %>%
   group_by(material, super_category, sub_use) %>%
   summarise(inflow_share = mean(inflow_share, na.rm = TRUE), .groups = "drop")
 
-# 1970 regional fe_share for metal ghost cohort splitting
 fe_share_1970 <- fe_share_rt %>% filter(year == 1970) %>% dplyr::select(Region, fe_share_1970 = fe_share)
 
-# Scale super-category ghost cohorts to sub-use level using 1970 shares
 ghost_cohorts_nested <- ghost_super %>%
   left_join(shares_1970_sub, by = c("material", "super_category"), relationship = "many-to-many") %>%
   mutate(cohort_inflow_Mt = cohort_inflow_Mt * inflow_share) %>%
   dplyr::select(Region, material, super_category, sub_use, cohort_year, cohort_inflow_Mt) %>%
-  # Split Metal ores into Metal_Fe / Metal_NonFe using 1970 fe_share
   {
     metal_gc <- filter(., material == "Metal ores") %>%
       left_join(fe_share_1970, by = "Region") %>%
@@ -273,11 +301,10 @@ ghost_cohorts_nested <- ghost_super %>%
 cat("  Ghost cohort groups:", nrow(ghost_cohorts_nested), "| bins per group: 1900, 1905, ..., 1970\n")
 
 
-# Step 3: Build simulation input -- UNEP flows + lifetime params --------------
+# Step 3: Build simulation input -- corrected flows + lifetime params ---------
 
 cat("\nSTEP 3: Build simulation input data frame\n")
 
-# Ensure coverage to 2024 (01b parquet should already extend via LOCF; warn if not)
 if (max(unep_all$year) < 2024) {
   warning(paste("UNEP sub-use flows only go to", max(unep_all$year), "-- extending by LOCF to 2024."))
   last_yr_data <- unep_all %>% filter(year == max(year)) %>% dplyr::select(-year)
@@ -291,7 +318,7 @@ if (max(unep_all$year) < 2024) {
 
 sim_input <- unep_all %>%
   filter(year >= 1970, year <= 2024) %>%
-  dplyr::select(-mean_life, -inflow_share) %>% # drop 01b lognormal mean_life; Weibull params from lifetime_params
+  dplyr::select(-mean_life, -inflow_share) %>%
   left_join(
     lifetime_params %>% dplyr::select(sub_use, super_category, mean_life, weibull_k),
     by = c("sub_use", "super_category")
@@ -316,7 +343,6 @@ dsm_nested <- sim_input %>%
     })
   )
 
-# purrr::pmap runs run_dsm_trajectory for each row of the nested data frame
 dsm_nested <- dsm_nested %>%
   mutate(sim = purrr::pmap(list(data, ghost_cohorts, mean_life, weibull_k), run_dsm_trajectory))
 
@@ -326,22 +352,14 @@ cat("  DSM results:", nrow(dsm_results), "rows\n")
 
 
 # Step 5: Calibrate to MISO2 stock at 2016 -----------------------------------
-#
-# Calibration is at the (Region, material, super_category) level because MISO
-# only tracks the 4 original end-use groups.  λ is then inherited by all
-# sub-uses within each super-category group.  For metals, Metal_Fe and
-# Metal_NonFe share the λ computed against MISO "Metal ores" total.
 
 cat("\nSTEP 5: Calibrate simulated stocks to MISO2 at 2016\n")
 
-# MISO reference: super_category level (rename end_use → super_category)
 miso_2016 <- miso_stock %>%
   filter(year == 2016) %>%
   rename(super_category = end_use) %>%
   dplyr::select(Region, material, super_category, miso_stock_2016_Mt = value_Mt)
 
-# Aggregate DSM to (Region, material_cal, super_category) level for comparison
-# Metal_Fe and Metal_NonFe combined back to "Metal ores" for calibration
 dsm_2016_super <- dsm_results %>%
   filter(year == 2016) %>%
   mutate(material_cal = recode(material, Metal_Fe = "Metal ores", Metal_NonFe = "Metal ores")) %>%
@@ -362,11 +380,7 @@ calibration_scalars <- dsm_2016_super %>%
 
 flagged_cal <- calibration_scalars %>% filter(flag_large_adj)
 if (nrow(flagged_cal) > 0) {
-  cat(
-    "[DIAGNOSTIC] lambda_cal outside [0.7, 1.3] for",
-    nrow(flagged_cal),
-    "groups (expected -- see Script 01 divergence check):\n"
-  )
+  cat("[DIAGNOSTIC] lambda_cal outside [0.7, 1.3] for", nrow(flagged_cal), "groups:\n")
   print(
     flagged_cal %>% dplyr::select(Region, material, super_category, lambda_cal) %>% arrange(desc(abs(lambda_cal - 1))),
     n = 20
@@ -375,20 +389,36 @@ if (nrow(flagged_cal) > 0) {
 cat("  Calibration scalar summary (lambda_cal):\n")
 print(summary(calibration_scalars$lambda_cal))
 
-# Apply λ: join back by super_category (Metal_Fe and Metal_NonFe get the Metal ores λ)
+# -- Verify (2): with scope factor A applied, metal lambda_cal should collapse
+# toward ~1 (residual = lifetime/shape mismatch only, not scope). If any metal
+# group still has lambda > 1.5 or < 0.6, A and the calibration disagree there.
+cat("[VERIFY 2] lambda_cal for Metal ores groups after scope correction (expect ~0.8-1.2):\n")
+print(
+  calibration_scalars %>%
+    filter(material == "Metal ores") %>%
+    summarise(
+      min = min(lambda_cal),
+      p25 = quantile(lambda_cal, .25),
+      median = median(lambda_cal),
+      p75 = quantile(lambda_cal, .75),
+      max = max(lambda_cal)
+    )
+)
+worst_metal <- calibration_scalars %>% filter(material == "Metal ores", lambda_cal > 1.5 | lambda_cal < 0.6)
+if (nrow(worst_metal) > 0) {
+  cat("[VERIFY 2 - FLAG] metal groups still far from 1:\n")
+  print(worst_metal %>% dplyr::select(Region, super_category, lambda_cal) %>% arrange(desc(abs(lambda_cal - 1))))
+}
+
 lambda_join <- calibration_scalars %>%
   dplyr::select(Region, material, super_category, lambda_cal) %>%
-  # duplicate Metal ores λ for both material_detail codes
   bind_rows(
     filter(., material == "Metal ores") %>% mutate(material = "Metal_Fe"),
     filter(., material == "Metal ores") %>% mutate(material = "Metal_NonFe")
   ) %>%
-  filter(material != "Metal ores") # remove the original "Metal ores" row (not in dsm_results)
+  filter(material != "Metal ores")
 
-# Scale UNEP inflows and ghost cohort masses by lambda_cal, then re-run DSM.
-# DSM linearity: stock = Σ inflow × S(age), so scaling all inflows by λ
-# scales stock by λ at every year — 2016 MISO match preserved with no iteration,
-# and outflow_Mt is now derived from calibrated inflows (mass-consistent).
+# Scale inflows and ghost cohorts by lambda_cal, then re-run DSM (linearity).
 dsm_nested_cal <- dsm_nested %>%
   left_join(lambda_join, by = c("Region", "material", "super_category")) %>%
   mutate(
@@ -408,7 +438,7 @@ write.csv(
 )
 cat("  Year range:", range(dsm_calibrated$year), "\n")
 
-# -- Verify (1): calibrated stock@2016 == MISO@2016 within float tolerance -----
+# -- Verify (1): calibrated stock@2016 == MISO@2016 ----------------------------
 cal_check_2016 <- dsm_calibrated %>%
   filter(year == 2016) %>%
   mutate(material_cal = recode(material, Metal_Fe = "Metal ores", Metal_NonFe = "Metal ores")) %>%
@@ -418,28 +448,78 @@ cal_check_2016 <- dsm_calibrated %>%
   left_join(miso_2016, by = c("Region", "material", "super_category")) %>%
   filter(!is.na(miso_stock_2016_Mt), miso_stock_2016_Mt > 0) %>%
   mutate(ratio = cal_stock_2016_Mt / miso_stock_2016_Mt)
-cat("[VERIFY 1] Calibrated stock@2016 / MISO@2016 ratio (should be ≈1.0 for all groups):\n")
+cat("[VERIFY 1] Calibrated stock@2016 / MISO@2016 ratio (should be ~1.0):\n")
 print(summary(cal_check_2016$ratio))
 
-# -- Verify (3): outflow@2024 for Metal_NonFe, North America (high-lambda group) --
-na_nonfe_out <- dsm_calibrated %>%
-  filter(year == 2024, material == "Metal_NonFe", Region == "North America") %>%
-  group_by(Region, material, super_category) %>%
-  summarise(outflow_2024_Mt = sum(outflow_Mt, na.rm = TRUE), stock_2024_Mt = sum(stock_Mt, na.rm = TRUE), .groups = "drop")
-cat("[VERIFY 3] Metal_NonFe North America: outflow@2024 with inflow-side calibration (lambda ~3 → outflow should be ~3× pre-cal):\n")
-print(na_nonfe_out)
-cat("  Lambda_cal for these groups:\n")
-print(lambda_join %>% filter(material == "Metal_NonFe", Region == "North America") %>%
-  dplyr::select(Region, material, super_category, lambda_cal))
+# -- Verify (4): global metal stock growth 2014-2024 ---------------------------
+# THE seam-relevant number. Pre-correction: NonFe ~0.8%/yr (vs imposed ~2.7%
+# at 2025 -> 2x jump). With MISO-scope inflows the slope should rise toward
+# ~2-3%/yr, and the 2025 discontinuity in scripts 02/02b should mostly close.
+cat("[VERIFY 4] Global metal stock growth (2014-2024, %/yr):\n")
+print(
+  dsm_calibrated %>%
+    filter(material %in% c("Metal_Fe", "Metal_NonFe"), year >= 2013) %>%
+    group_by(material, year) %>%
+    summarise(S = sum(stock_Mt, na.rm = TRUE), .groups = "drop") %>%
+    group_by(material) %>%
+    arrange(year) %>%
+    mutate(growth_pct = 100 * (S / lag(S) - 1)) %>%
+    filter(year >= 2014),
+  n = 30
+)
+# Step 5b: Compute 2024 non-primary share (Region x material) ----------------
+#
+# Anchor for the forward MC recycling trajectories (Scripts/04-Simulation/02
+# and 02b): s_2024 = 1 - primary_metal_Mt / inflow_Mt, where inflow_Mt is the
+# MISO-scope-corrected metal inflow (post scope factor A, post lambda_cal) and
+# primary_metal_Mt is raw UNEP DMC (uncorrected -- true domestic mining) times
+# 2024 ore grade. The gap between them is the same undecomposed scrap +
+# embodied-trade wedge that A corrects for on the inflow side; this fixes it
+# on the supply-split side. A itself is untouched.
+
+cat("\nSTEP 5b: Compute 2024 non-primary share (Region x material)\n")
+
+inflow_2024 <- dsm_nested_cal %>%
+  dplyr::select(Region, material, data) %>%
+  tidyr::unnest(data) %>%
+  filter(year == 2024, material %in% c("Metal_Fe", "Metal_NonFe")) %>%
+  group_by(Region, material) %>%
+  summarise(inflow_Mt = sum(flow_Mt, na.rm = TRUE), .groups = "drop")
+
+grade_2024 <- grade_wide %>% filter(year == 2024)
+
+primary_2024 <- unep_raw %>%
+  filter(material_category %in% c("Ferrous ores", "Non-ferrous ores"), year == 2024) %>%
+  group_by(Region, material_category) %>%
+  summarise(DMC_Mt = sum(DMC_Mt, na.rm = TRUE), .groups = "drop") %>%
+  mutate(
+    material = if_else(material_category == "Ferrous ores", "Metal_Fe", "Metal_NonFe"),
+    primary_metal_Mt = if_else(material == "Metal_Fe", DMC_Mt * grade_2024$g_Fe, DMC_Mt * grade_2024$g_NonFe)
+  ) %>%
+  dplyr::select(Region, material, primary_metal_Mt)
+
+nonprimary_share_2024 <- inflow_2024 %>%
+  full_join(primary_2024, by = c("Region", "material")) %>%
+  mutate(
+    s_2024 = case_when(
+      !is.finite(inflow_Mt) | inflow_Mt <= 0 ~ NA_real_,
+      !is.finite(primary_metal_Mt) | primary_metal_Mt < 0 ~ NA_real_,
+      TRUE ~ 1 - primary_metal_Mt / inflow_Mt
+    )
+  ) %>%
+  dplyr::select(Region, material, inflow_Mt, primary_metal_Mt, s_2024) %>%
+  arrange(material, Region)
+
+write.csv(nonprimary_share_2024, "Parameters/Intermediate/nonprimary_share_2024.csv", row.names = FALSE)
+cat("  2024 non-primary share (s_2024 = 1 - primary_metal_Mt / inflow_Mt), by Region x material:\n")
+print(nonprimary_share_2024, n = Inf)
+
 
 # Step 6: Compute 2024 age profile -------------------------------------------
 
 cat("\nSTEP 6: Compute 2024 age-structured stock\n")
 
-# Inflows in dsm_nested_cal are already lambda-scaled; pass lambda_cal = 1.0
-# to compute_age_profile_2024 to avoid double-scaling.
-age_profile_nested <- dsm_nested_cal %>%
-  mutate(lambda_cal = 1.0)
+age_profile_nested <- dsm_nested_cal %>% mutate(lambda_cal = 1.0)
 
 age_profile_list <- age_profile_nested %>%
   mutate(
@@ -465,15 +545,10 @@ cat("  Saved: Parameters/stock_2024_total.csv\n")
 
 cat("\nSTEP 7: Save validation plots to Figures/Stocks/\n")
 
-
-# -- Plot 1: Simulated vs MISO2 stock trajectory ------------------------------
-
 miso_traj <- miso_stock %>% rename(stock_Mt = value_Mt)
-
 
 library(geomtextpath)
 p_traj <- dsm_calibrated %>%
-  # NEED TO remove Fe and NonFe for stock comparison
   mutate(material = if_else(str_detect(material, "_Fe|NonFe"), "Metal ores", material)) |>
   group_by(Region, material, year) %>%
   summarise(stock_Mt = sum(stock_Mt, na.rm = TRUE), .groups = "drop") %>%
@@ -487,13 +562,12 @@ p_traj <- dsm_calibrated %>%
     shape = 1, size = 0.5
   ) +
   geom_textline(
-    # replaces geom_line; draws label along path
     aes(label = Region),
     linewidth = 0,
     size = 2,
     fontface = "bold",
     hjust = 0.95,
-    offset = unit(3, "pt"), # lift text off the line
+    offset = unit(3, "pt"),
     show.legend = FALSE
   ) +
   geom_text(
@@ -525,11 +599,9 @@ SUPER_LABELS <- c(
   "short_lived" = "Short-lived products"
 )
 
-# For trajectory comparison plot, aggregate DSM to super_category for MISO comparison
 miso_traj_super <- miso_traj %>% rename(super_category = end_use)
 
 p_traj2 <- dsm_calibrated %>%
-  # NEED TO remove Fe and NonFe for stock comparison
   mutate(material = if_else(str_detect(material, "_Fe|NonFe"), "Metal ores", material)) |>
   group_by(Region, material, year, super_category) %>%
   summarise(stock_Mt = sum(stock_Mt, na.rm = TRUE), .groups = "drop") %>%

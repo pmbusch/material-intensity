@@ -1,7 +1,7 @@
 ## =============================================================================
 ## 02b_forecast_fossil_fuels.R
 ## Forecast fossil fuel material consumption (Mt/yr) by region, fuel, and SSP
-## scenario from 2024 to 2060 using the Kaya decomposition identity:
+## scenario from 2024 to FORECAST_END using the Kaya decomposition identity:
 ##   M = P × (GDP/P) × (E/GDP) × (M/E)
 ##
 ## Inputs:
@@ -232,9 +232,9 @@ cat("  E/GDP index rows:", nrow(e_gdp_index), "\n")
 # Figure E/GDP trajectory
 e_gdp_index |>
   mutate(fuel = FUEL_UNEP_MAP[fuel]) |>
-  filter(year <= 2060) |>
+  filter(year <= FORECAST_END) |>
   ggplot(aes(year, e_gdp_index)) +
-  # Projections (2024–2060): colored by scenario
+  # Projections (2024-FORECAST_END): colored by scenario
   geom_line(data = ~ filter(.x, year >= 2024), aes(col = scenario)) +
   # Labels only on East Asia facet
   geom_textline(
@@ -345,7 +345,7 @@ mg_full <- bind_rows(
 )
 
 mg_full |>
-  filter(year <= 2060) |>
+  filter(year <= FORECAST_END) |>
   ggplot(aes(year, mg_ratio, col = scenario)) +
   geom_line() +
   geom_textline(
@@ -387,7 +387,7 @@ cat("  NA check — M_Mt:", sum(is.na(forecast$M_Mt)), "\n")
 cat("\n  Total global fossil fuel M (Mt) at selected years:\n")
 print(
   forecast %>%
-    filter(year %in% c(2024, 2030, 2040, 2050, 2060)) %>%
+    filter(year %in% c(2024, SNAPSHOT_YEARS)) %>%
     group_by(scenario, fuel, year) %>%
     summarise(M_Mt = round(sum(M_Mt, na.rm = TRUE), 1), .groups = "drop") %>%
     pivot_wider(names_from = year, values_from = M_Mt) %>%
@@ -399,7 +399,7 @@ forecast |>
   group_by(scenario, fuel, year) |>
   reframe(M_Gt = sum(M_Mt) / 1e3) |>
   ggplot(aes(year, M_Gt)) +
-  # Projections (2024–2060): colored by scenario
+  # Projections (2024-FORECAST_END): colored by scenario
   geom_line(aes(col = scenario)) +
   # Labels only on East Asia facet
   geom_textline(

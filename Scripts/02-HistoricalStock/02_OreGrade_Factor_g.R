@@ -190,7 +190,7 @@ ggplot(global_g_long, aes(year, g, colour = group)) +
   theme(panel.spacing = unit(0.8, "lines"))
 
 # fmt: skip
-ggsave(file.path(FIG_DIR, "ore_grade_g_global.png"), ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7)
+ggsave(file.path(FIG_DIR, "02-ore_grade_g_global.png"), ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7)
 cat("  Saved: ore_grade_g_global.png\n")
 
 
@@ -226,7 +226,7 @@ ggplot(sens_df, aes(year, g, colour = rr_label)) +
   theme(legend.position = "right", panel.spacing = unit(0.8, "lines"))
 
 # fmt: skip
-ggsave(file.path(FIG_DIR, "ore_grade_g_sensitivity.png"), ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7)
+ggsave(file.path(FIG_DIR, "02-ore_grade_g_sensitivity.png"), ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7)
 cat("  Saved: ore_grade_g_sensitivity.png\n")
 
 
@@ -309,7 +309,7 @@ ggplot(region_g_long, aes(year, g, colour = Region)) +
   )
 
 # fmt: skip
-ggsave(file.path(FIG_DIR, "ore_grade_g_regional.png"), ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7 * 3)
+ggsave(file.path(FIG_DIR, "02-ore_grade_g_regional.png"), ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7 * 3)
 cat("  Saved: ore_grade_g_regional.png\n")
 
 

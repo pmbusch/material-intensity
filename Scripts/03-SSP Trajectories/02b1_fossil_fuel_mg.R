@@ -10,6 +10,10 @@
 ##   Parameters/fossil_fuel_mg_trajectories.csv  -- M/G by region x fuel x year x scenario
 ##   Parameters/fossil_fuel_mg_assumptions.csv   -- template for FossilFuels Excel sheet
 ##                                                  (2024 base + SSP1-5 targets at TARGET_YEAR)
+##   Results/fossil_fuel_mg_bounds.csv           -- bound (min/max) of the M/G target implied
+##                                                  by any region x SSP1-5 combination at
+##                                                  TARGET_YEAR -- cross-check against
+##                                                  MC_Assumptions.xlsx "Intensity" sheet
 ##   Figures/Assumptions/FossilFuelMG_Decomposed.png
 ## =============================================================================
 
@@ -74,7 +78,6 @@ mg_base <- projected_mg |>
   dplyr::select(region, fuel, mg_base_2024 = mg_kgUSD) |>
   distinct()
 
-TARGET_YEAR
 mg_targets <- projected_mg |>
   filter(year == TARGET_YEAR) |>
   dplyr::select(scenario, region, fuel, mg_target = mg_kgUSD) |>
@@ -94,7 +97,7 @@ assumptions_template <- mg_base |>
   arrange(fuel, Region)
 
 # Round to two decimals
-assumptions_template |>
+assumptions_rounded <- assumptions_template |>
   mutate(
     SSP1 = round(SSP1, 2),
     SSP2 = round(SSP2, 2),
@@ -103,6 +106,111 @@ assumptions_template |>
     SSP5 = round(SSP5, 2)
   )
 
-.Last.value %>% write.table('clipboard-16384', sep = '\t', row.names = FALSE)
+write_csv(assumptions_rounded, "Parameters/fossil_fuel_mg_assumptions.csv")
+cat("  Saved: Parameters/fossil_fuel_mg_assumptions.csv\n")
+
+# Manual paste target: FossilFuels sheet in MatIntensity_Assumptions.xlsx
+assumptions_rounded %>% write.table('clipboard-16384', sep = '\t', row.names = FALSE)
+
+
+# Step 4: Global (world-aggregate) M/G trajectory per SSP scenario ------------
+# Region-level M and GDP summed first, then divided -- one size-weighted world
+# M/G line per SSP (distinct from the per-region x SSP envelope in Step 5).
+
+cat("\nSTEP 4: Global M/G trajectory per SSP scenario\n")
+
+global_mg <- forecast |>
+  filter(year >= BASE_YEAR, year <= FORECAST_END) |>
+  group_by(scenario, fuel, year) |>
+  summarise(M_Mt = sum(M_Mt), .groups = "drop") |>
+  left_join(
+    gdp_full |> group_by(scenario, year) |> summarise(gdp_billion_usd = sum(gdp_billion_usd), .groups = "drop"),
+    by = c("scenario", "year")
+  ) |>
+  mutate(mg_kgUSD = M_Mt / gdp_billion_usd, fuel = FUEL_LABEL[fuel]) |>
+  dplyr::select(scenario, fuel, year, mg_kgUSD)
+
+cat("  Global M/G rows:", nrow(global_mg), "\n")
+
+
+# Step 5: Bound of implied M/G targets -----------------------------------------
+# mg_envelope: min/max across every region x SSP1-5 combination, by year --
+#   drawn as the figure's shaded band (visual only, not saved).
+# mg_bounds: same min/max but frozen at TARGET_YEAR -- the summary result,
+#   directly comparable to MC_Assumptions.xlsx "Intensity" sheet min/max.
+
+cat("\nSTEP 5: Bound of implied M/G targets across region x SSP\n")
+
+mg_envelope <- projected_mg |>
+  mutate(fuel = FUEL_LABEL[fuel]) |>
+  group_by(fuel, year) |>
+  summarise(mg_min = min(mg_kgUSD), mg_max = max(mg_kgUSD), .groups = "drop")
+
+mg_bounds <- projected_mg |>
+  filter(year == TARGET_YEAR) |>
+  mutate(fuel = FUEL_LABEL[fuel]) |>
+  group_by(fuel) |>
+  summarise(
+    mg_min = min(mg_kgUSD),
+    region_min = region[which.min(mg_kgUSD)],
+    scenario_min = scenario[which.min(mg_kgUSD)],
+    mg_max = max(mg_kgUSD),
+    region_max = region[which.max(mg_kgUSD)],
+    scenario_max = scenario[which.max(mg_kgUSD)],
+    .groups = "drop"
+  ) |>
+  arrange(fuel)
+
+print(mg_bounds)
+
+write_csv(mg_bounds, "Results/fossil_fuel_mg_bounds.csv")
+cat("  Saved: Results/fossil_fuel_mg_bounds.csv\n")
+
+
+# Step 6: Figure -- embedded M/G assumptions per fossil fuel -------------------
+# Shaded band = full region x SSP spread; colored lines = global SSP trajectory;
+# dotted marker + direct labels = the TARGET_YEAR bound saved above.
+
+cat("\nSTEP 6: Build FossilFuelMG_Decomposed figure\n")
+
+target_labels <- mg_bounds |>
+  mutate(
+    label_min = paste0("Min ", round(mg_min, 2), " (", scenario_min, ", ", region_min, ")"),
+    label_max = paste0("Max ", round(mg_max, 2), " (", scenario_max, ", ", region_max, ")")
+  )
+
+ggplot() +
+  geom_ribbon(data = mg_envelope, aes(year, ymin = mg_min, ymax = mg_max), fill = "grey50", alpha = 0.18) +
+  geom_line(data = global_mg, aes(year, mg_kgUSD, col = scenario)) +
+  geom_textline(
+    data = global_mg |> filter(fuel == "Coal"),
+    aes(year, mg_kgUSD, col = scenario, label = scenario),
+    hjust = 0.85,
+    vjust = -0.1,
+    text_smoothing = 30,
+    show.legend = FALSE,
+    linewidth = NA
+  ) +
+  geom_vline(xintercept = TARGET_YEAR, linetype = "dotted", colour = "grey40", linewidth = 0.3) +
+  geom_text(
+    data = target_labels,
+    aes(x = TARGET_YEAR, y = mg_max, label = label_max),
+    hjust = -0.05, vjust = 0, size = pb_annot_size("largeFont"), colour = "grey30"
+  ) +
+  geom_text(
+    data = target_labels,
+    aes(x = TARGET_YEAR, y = mg_min, label = label_min),
+    hjust = -0.05, vjust = 1, size = pb_annot_size("largeFont"), colour = "grey30"
+  ) +
+  facet_wrap(~fuel, scales = "free_y") +
+  scale_color_manual(values = SSP_COLORS) +
+  coord_cartesian(clip = "off") +
+  labs(x = "Year", y = "M / GDP (kg per USD)", col = "") +
+  theme_pb_large() +
+  theme(legend.position = "none", plot.margin = margin(5.5, 70, 5.5, 5.5))
+
+# fmt: skip
+ggsave("Figures/Assumptions/FossilFuelMG_Decomposed.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 3, height = 8.7 * 1.4)
+cat("  Saved: Figures/Assumptions/FossilFuelMG_Decomposed.png\n")
 
 # EoF

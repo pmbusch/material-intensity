@@ -92,11 +92,10 @@ cat("  P01 / P50 / P99 at N =",n_runs,":",round(tail(conv_data$p01, 1)/1e3, 0),"
 
 cat("DIAGNOSTIC 2: SRRC sensitivity\n")
 
-# Encode SSP as numeric (1-5) for rank regression
+# pop_ssp_u / gdppc_ssp_u are already continuous [0,1] draws -> used as-is
 inputs_num <- input_matrix |>
   arrange(run_id) |>
-  mutate(ssp_numeric = as.integer(stringr::str_extract(ssp_label, "[0-9]+"))) |>
-  dplyr::select(-ssp_label, -run_id)
+  dplyr::select(-run_id)
 
 # Rank-transform inputs and output
 x_rnk <- apply(as.matrix(inputs_num), 2, rank) / nrow(inputs_num) # normalised [0,1]
@@ -112,7 +111,7 @@ srrc <- tibble(parameter = rownames(coef_sum), srrc = coef_sum[, "Estimate"], p_
     abs_srrc = abs(srrc),
     # Classify parameter family for colour
     family = dplyr::case_when(
-      parameter == "x_rnkssp_numeric" ~ "SSP choice",
+      parameter %in% c("x_rnkpop_ssp_u", "x_rnkgdppc_ssp_u") ~ "SSP choice",
       stringr::str_detect(parameter, "rho") ~ "Variance split (rho)",
       stringr::str_detect(parameter, "target_year|intensity|g_int|delta_int") ~ "Intensity",
       stringr::str_detect(parameter, "circ|conv_year") ~ "Circularity",
@@ -247,6 +246,23 @@ envelope_global <- results |>
     )
   )
 
+# Anchor MC envelope to the actual 2024 historical value (per material group) so the
+# projected median/band connects explicitly instead of jumping from the MC's own
+# reconstructed 2024 estimate
+envelope_global <- envelope_global |>
+  mutate(material_group = as.character(material_group)) |>
+  filter(year > HIST_END) |>
+  bind_rows(
+    hist_envelope |>
+      filter(year == HIST_END) |>
+      transmute(
+        material_group, year,
+        p05 = global_Gt, p25 = global_Gt, p50 = global_Gt, p75 = global_Gt, p95 = global_Gt,
+        p_min = global_Gt, p_max = global_Gt
+      )
+  ) |>
+  mutate(material_group = factor(material_group, levels = c("Biomass", "Fossil fuels", "Metal ores", "Non-metallic minerals")))
+
 ggplot() +
   # MC uncertainty bands (projection)
   geom_ribbon(data = envelope_global, aes(x = year, ymin = p_min, ymax = p_max), fill = "grey85", alpha = 0.6) +
@@ -283,11 +299,11 @@ ggplot() +
     aes(x = year, y = p50, label = "P50"), hjust = 0, size = 2.2, nudge_x = 0.5, colour = "#1a1a1a"
   ) +
   facet_wrap(~material_group, scales = "free_y", ncol = 2) +
-  scale_x_continuous(breaks = seq(1970, 2060, 20)) +
+  scale_x_continuous(breaks = seq(1970, FORECAST_END, 20)) +
   scale_y_continuous(labels = scales::comma, limits = c(0, NA)) +
   coord_cartesian(expand = FALSE, clip = "off") +
   labs(
-    title = "MC output envelope: global primary consumption 1970–2060",
+    title = paste0("MC output envelope: global primary consumption 1970-", FORECAST_END),
     x = "Year",
     y = "Primary consumption (Gt/yr)"
   ) +

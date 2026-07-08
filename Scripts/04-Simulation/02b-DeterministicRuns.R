@@ -476,7 +476,22 @@ recyc_conv_yr <- mc_input_matrix |>
 
 lambda_rates <- mc_input_matrix |> dplyr::select(run_id, lambda = gap_persistence_rates)
 
-make_recycling_traj <- function(recycling_now, G_col, min_rate, max_rate) {
+# -- 2024 non-primary share anchor (empirical; script 03, MISO-scope) ---------
+nonprimary_share_2024 <- readr::read_csv(
+  "Parameters/Intermediate/nonprimary_share_2024.csv",
+  show_col_types = FALSE
+) |>
+  dplyr::rename(region = Region)
+anchor_2024_fe <- nonprimary_share_2024 |> dplyr::filter(material == "Metal_Fe") |> dplyr::select(region, s_2024)
+anchor_2024_nonfe <- nonprimary_share_2024 |> dplyr::filter(material == "Metal_NonFe") |> dplyr::select(region, s_2024)
+
+# 2024 anchor is the empirical non-primary share from script 03
+# (nonprimary_share_2024.csv, MISO-scope consistent: scrap + embodied net
+# imports, undecomposed). Convergence to the Excel-rate-based endpoint implies
+# embodied-trade imbalances fade to zero by the convergence year -- documented
+# model assumption. The endpoint's deviation term still uses the Excel
+# rate_now (unaffected by this anchor change).
+make_recycling_traj <- function(recycling_now, G_col, min_rate, max_rate, anchor_now, mat_label) {
   wavg <- recycling_now |>
     left_join(gdp_base_vals |> rename(GDP = GDP_2015USD), by = "region") |>
     summarise(rate_mean = weighted.mean(rate_now, w = GDP, na.rm = TRUE)) |>
@@ -485,6 +500,16 @@ make_recycling_traj <- function(recycling_now, G_col, min_rate, max_rate) {
     dplyr::select(run_id, u = all_of(G_col)) |>
     mutate(G = min_rate + u * (max_rate - min_rate)) |>
     dplyr::select(run_id, G)
+  recycling_now <- recycling_now |>
+    left_join(anchor_now, by = "region") |>
+    mutate(anchor_2024 = dplyr::if_else(is.na(s_2024), rate_now, s_2024))
+  fell_back <- recycling_now$region[is.na(recycling_now$s_2024)]
+  if (length(fell_back) > 0) {
+    cat(
+      "  [make_recycling_traj]", mat_label, "-- no s_2024, fell back to Excel rate_now for:",
+      paste(fell_back, collapse = ", "), "\n"
+    )
+  }
   ep <- recycling_now |>
     tidyr::crossing(run_id = seq_len(N_RUNS)) |>
     left_join(G_df, by = "run_id") |>
@@ -497,9 +522,8 @@ make_recycling_traj <- function(recycling_now, G_col, min_rate, max_rate) {
       recycling_rate = if_else(
         year >= recyc_convergence_yr,
         recycling_endpoint,
-        rate_now + (recycling_endpoint - rate_now) * (year - 2024L) / pmax(1L, recyc_convergence_yr - 2024L)
-      ),
-      recycling_rate = pmax(min_rate, pmin(max_rate, recycling_rate))
+        anchor_2024 + (recycling_endpoint - anchor_2024) * (year - 2024L) / pmax(1L, recyc_convergence_yr - 2024L)
+      )
     ) |>
     dplyr::select(run_id, region, year, recycling_rate)
 }
@@ -508,13 +532,17 @@ recycling_traj_fe <- make_recycling_traj(
   recycling_now_fe,
   "recycling_Fe_global",
   RECYCLING_RATE_FE_MIN,
-  RECYCLING_RATE_FE_MAX
+  RECYCLING_RATE_FE_MAX,
+  anchor_2024_fe,
+  "Metal_Fe"
 )
 recycling_traj_nonfe <- make_recycling_traj(
   recycling_now_nonfe,
   "recycling_NonFe_global",
   RECYCLING_RATE_NONFE_MIN,
-  RECYCLING_RATE_NONFE_MAX
+  RECYCLING_RATE_NONFE_MAX,
+  anchor_2024_nonfe,
+  "Metal_NonFe"
 )
 recycling_by_run_fe <- split(recycling_traj_fe, recycling_traj_fe$run_id)
 recycling_by_run_nonfe <- split(recycling_traj_nonfe, recycling_traj_nonfe$run_id)
@@ -576,6 +604,12 @@ lifetime_dr <- mc_input_matrix |>
   ) |>
   dplyr::select(run_id, sub_use, mean_life, weibull_k, mean_life_hist, k_hist)
 lifetime_by_run <- split(lifetime_dr, lifetime_dr$run_id)
+
+# grade_ore_fe/nonfe is the per-run sampled TARGET (endpoint); each run ramps
+# linearly from the 2024 baseline (GRADE_ORE_*_NOW) to this target, over the
+# same convergence year drawn for intensity (target_year_vec, built below).
+GRADE_ORE_FE_NOW <- (GRADE_ORE_FE_MIN + GRADE_ORE_FE_MAX) / 2
+GRADE_ORE_NONFE_NOW <- (GRADE_ORE_NONFE_MIN + GRADE_ORE_NONFE_MAX) / 2
 
 grade_params <- mc_input_matrix |>
   dplyr::select(run_id, grade_ore_fe_u, grade_ore_nonfe_u) |>
@@ -640,6 +674,14 @@ run_one <- function(i) {
   # alpha: 0->1 time weight; intensities ramp log-linearly (geometrically) from
   # 2024 value to endpoint as int_2024 * (endpoint / int_2024)^alpha
   alpha <- pmin(1, pmax(0, (yr_vec - 2024L) / (target_year_vec[i] - 2024L)))
+
+  # Ore grade: linear ramp from the 2024 baseline to the sampled target, using
+  # the same convergence year (alpha) as intensity.
+  grade_ore_fe_traj <- setNames(GRADE_ORE_FE_NOW + (gr_i$grade_ore_fe - GRADE_ORE_FE_NOW) * alpha, as.character(yr_vec))
+  grade_ore_nonfe_traj <- setNames(
+    GRADE_ORE_NONFE_NOW + (gr_i$grade_ore_nonfe - GRADE_ORE_NONFE_NOW) * alpha,
+    as.character(yr_vec)
+  )
 
   out_list <- list()
 
@@ -735,7 +777,7 @@ run_one <- function(i) {
   }
 
   # ── DSM for one metal material (Fe or NonFe) --------------------------------
-  run_dsm_metal <- function(mat_label, age_lookup, rec_i, grade) {
+  run_dsm_metal <- function(mat_label, age_lookup, rec_i, grade_traj) {
     ie_g <- ie_i |> filter(material_group == "metal_ores") |> mutate(mat_key_super = mat_key)
 
     sr_rows <- list()
@@ -793,12 +835,14 @@ run_one <- function(i) {
     }
     sr <- do.call(rbind, sr_rows)
     sr <- merge(sr, rec_i, by = c("region", "year"), all.x = TRUE)
-    recyc_rate <- sr$recycling_rate
-    recyc_rate[is.na(recyc_rate)] <- 0
+    nonprimary_share <- sr$recycling_rate
+    nonprimary_share[is.na(nonprimary_share)] <- 0
     prod_metal <- pmax(0, sr$production_Mt)
-    recovered <- pmin(sr$waste_Mt * recyc_rate, prod_metal) # metal mass
-    primary_metal_Mt <- prod_metal - recovered # metal mass
-    grade_safe <- max(grade, 1e-6)
+    # non-primary metal mass (scrap + embodied net imports, undecomposed)
+    recovered <- prod_metal * nonprimary_share
+    recovered <- ifelse(nonprimary_share <= 1, pmin(recovered, prod_metal), recovered)
+    primary_metal_Mt <- prod_metal - recovered # domestically mined; can exceed prod_metal for net embodied exporters
+    grade_safe <- pmax(grade_traj[as.character(sr$year)], 1e-6)
     primary_ore_Mt <- primary_metal_Mt / grade_safe
     secondary_ore_Mt <- recovered / grade_safe
     data.frame(
@@ -810,8 +854,8 @@ run_one <- function(i) {
       year = sr$year,
       total_inflow_Mt = sr$replacement_Mt + sr$new_additions_Mt,
       in_use_stock_Mt = sr$total_stock_Mt,
-      primary_consumption_Mt = primary_ore_Mt, # ore extracted
-      secondary_supply_Mt = secondary_ore_Mt, # ore avoided
+      primary_consumption_Mt = primary_ore_Mt, # ore extracted; domestically mined
+      secondary_supply_Mt = secondary_ore_Mt, # ore avoided; non-primary (scrap + embodied net imports, undecomposed)
       primary_consumption_Mt_pure = primary_metal_Mt,
       secondary_supply_Mt_pure = recovered,
       new_additions_Mt = sr$new_additions_Mt / grade_safe, # ore
@@ -824,8 +868,8 @@ run_one <- function(i) {
     )
   }
 
-  fe_out <- run_dsm_metal("Metal_Fe", age_lookup_fe, rec_fe_i, gr_i$grade_ore_fe)
-  nonfe_out <- run_dsm_metal("Metal_NonFe", age_lookup_nonfe, rec_nonfe_i, gr_i$grade_ore_nonfe)
+  fe_out <- run_dsm_metal("Metal_Fe", age_lookup_fe, rec_fe_i, grade_ore_fe_traj)
+  nonfe_out <- run_dsm_metal("Metal_NonFe", age_lookup_nonfe, rec_nonfe_i, grade_ore_nonfe_traj)
   if (!is.null(fe_out)) {
     out_list[[length(out_list) + 1L]] <- fe_out
   }

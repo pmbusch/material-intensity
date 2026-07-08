@@ -45,8 +45,8 @@ run_forward_dsm <- function(
   mean_life,
   k,
   start_year = 2024L,
-  end_year = 2060L,
-  snapshot_years = c(2024L, 2030L, 2040L, 2050L, 2060L)
+  end_year = FORECAST_END,
+  snapshot_years = c(2024L, SNAPSHOT_YEARS)
 ) {
   # cohorts_2024 contains cohort_year + surviving_stock_Mt at start_year
   # Age each cohort forward directly — no back-calculation needed
@@ -237,7 +237,7 @@ run_forward_dsm_fast <- function(
   mean_life_hist,
   k_hist,
   start_year = 2024L,
-  end_year = 2060L
+  end_year = FORECAST_END
 ) {
   n_years <- end_year - start_year
   sim_years <- seq.int(start_year + 1L, end_year)

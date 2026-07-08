@@ -56,7 +56,7 @@ ggplot(ratio_global, aes(year, ratio, colour = end_use)) +
   )
 
 # fmt: skip
-ggsave(file.path(FIG_DIR, "minerals_metals_ratio_global.png"),  ggplot2::last_plot(),  width = 8.7,  height = 8.7,  units = "cm",  dpi = 300)
+ggsave(file.path(FIG_DIR, "02a-minerals_metals_ratio_global.png"),  ggplot2::last_plot(),  width = 8.7,  height = 8.7,  units = "cm",  dpi = 300)
 cat("Saved: minerals_metals_ratio_global.png\n")
 
 
@@ -89,5 +89,5 @@ ggplot(ratio_region, aes(year, ratio, colour = end_use)) +
   )
 
 # fmt: skip
-ggsave(file.path(FIG_DIR, "minerals_metals_ratio_region.png"),ggplot2::last_plot(),width = 17,height = 14,units = "cm",dpi = 300)
+ggsave(file.path(FIG_DIR, "02a-minerals_metals_ratio_region.png"),ggplot2::last_plot(),width = 17,height = 14,units = "cm",dpi = 300)
 cat("Saved: minerals_metals_ratio_region.png\n")

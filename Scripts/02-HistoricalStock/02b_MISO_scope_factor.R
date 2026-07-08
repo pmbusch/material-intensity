@@ -1,5 +1,5 @@
 ## =============================================================================
-## 02c_MISO_scope_factor.R
+## 02b_MISO_scope_factor.R
 ## Empirical MISO/UNEP scope-correction factor A for metal inflows.
 ##
 ## UNEP DMC counts ore extracted + traded raw materials. Regional stock is
@@ -137,13 +137,19 @@ A_smooth <- A_raw %>%
     flag_clipped = A_smooth < A_CLIP_MIN | A_smooth > A_CLIP_MAX
   )
 
-# hold at MISO_LAST_YEAR value for the bridge years
+# hold at MISO_LAST_YEAR value for the bridge years (A plus its two raw
+# inflow components, so downstream scripts can rebuild the MISO-scope wedge
+# -- MISO_inflow - UNEP_inflow -- without re-deriving the Fe/NonFe + grade
+# conversion from scratch; see Script 03c)
 A_hold <- A_smooth %>%
   filter(year == MISO_LAST_YEAR) %>%
-  dplyr::select(Region, super_category, A_clipped) %>%
+  dplyr::select(Region, super_category, A_clipped, unep_inflow_Mt, miso_inflow_Mt) %>%
   tidyr::crossing(year = seq(MISO_LAST_YEAR + 1L, A_EXTEND_TO))
 
-A_factor <- bind_rows(A_smooth %>% dplyr::select(Region, super_category, year, A_clipped), A_hold) %>%
+A_factor <- bind_rows(
+  A_smooth %>% dplyr::select(Region, super_category, year, A_clipped, unep_inflow_Mt, miso_inflow_Mt),
+  A_hold
+) %>%
   rename(A = A_clipped) %>%
   arrange(Region, super_category, year)
 
@@ -203,7 +209,7 @@ p_A <- A_factor %>%
   theme_pb_large()
 p_A
 # fmt: skip
-ggsave("Figures/Stocks/scope_factor_A.png", p_A, units = "cm", dpi = 600, width = 8.7*2, height = 8.7*1.5)
+ggsave("Figures/Stocks/02b-scope_factor_A.png", p_A, units = "cm", dpi = 600, width = 8.7*2, height = 8.7*1.5)
 cat("  Saved: Figures/Stocks/scope_factor_A.png\n")
 
 cat("\n=== Scope factor A complete ===\n")

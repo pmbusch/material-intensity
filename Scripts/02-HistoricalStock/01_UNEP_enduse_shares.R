@@ -150,7 +150,8 @@ if (length(post_miso_years) > 0) {
   shares_2016 <- shares_miso %>% filter(year == miso_max_year) %>% dplyr::select(-year)
 
   # Repeat 2016 shares for all post-MISO years
-  shares_extended <- expand_grid(shares_2016, year = post_miso_years) %>% dplyr::select(Region, material, end_use, year, share) # restore column order
+  shares_extended <- expand_grid(shares_2016, year = post_miso_years) %>%
+    dplyr::select(Region, material, end_use, year, share) # restore column order
 
   shares_all <- bind_rows(shares_miso, shares_extended) %>% arrange(Region, material, end_use, year)
 } else {
@@ -322,7 +323,7 @@ p_world <- world_shares %>%
 p_world
 
 # fmt: skip
-ggsave("Figures/MISO/enduse_shares_world.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
+ggsave("Figures/MISO/01-enduse_shares_world.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
 
 # ── Fig 10b: By region — facet_grid(Region ~ material) ───────────────────────
 
@@ -379,6 +380,6 @@ p_region <- region_shares %>%
   )
 p_region
 # fmt: skip
-ggsave("Figures/MISO/enduse_shares_region.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*3, height = 8.7*3)
+ggsave("Figures/MISO/01-enduse_shares_region.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*3, height = 8.7*3)
 
 # EoF

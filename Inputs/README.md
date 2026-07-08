@@ -40,3 +40,4 @@ Units: Constant 2015 international dollars, PPP-adjusted
 Note: PPP-adjusted GDP used (not nominal) to enable cross-country material intensity comparisons
 Citation: World Bank (2024). World Development Indicators. Washington, D.C.: The World Bank.
 
+Country classification: https://datahelpdesk.worldbank.org/knowledgebase/articles/906519

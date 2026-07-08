@@ -17,7 +17,7 @@
 ##              stage, grade == 1), so *_Mt_pure mirrors the base columns.
 ##
 ## Output: Results/MC/mc_results.parquet
-##   key: run_id, ssp_label, region, material_group, material_key, year
+##   key: run_id, region, material_group, material_key, year
 ##   value: total_inflow_Mt, in_use_stock_Mt,
 ##          primary_consumption_Mt, secondary_supply_Mt,
 ##          new_additions_Mt, replacement_Mt, waste_Mt          (ore-equiv for metals)
@@ -25,6 +25,9 @@
 ##          new_additions_Mt_pure, replacement_Mt_pure, waste_Mt_pure (metal mass)
 ##          secondary_spilled_Mt        (recyclable mass with no demand to absorb it)
 ##          run_neg_primary, run_total_spill_Mt  (per-run diagnostic flags)
+##          pop_ssp_lo/hi, pop_ssp_share_lo, gdppc_ssp_lo/hi, gdppc_ssp_share_lo
+##            (continuous SSP blend used for this run's population/GDP-percap;
+##             no discrete ssp_label -- see STEP 3/4 for the interpolation)
 ## =============================================================================
 
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
@@ -325,6 +328,34 @@ make_mat <- function(df, val_col) {
 pop_mat <- make_mat(pop_idx, "pop_index")
 gdppc_mat <- make_mat(gdp_percap_idx, "gdp_percap_index")
 
+# World aggregate (population-weighted) ranking of the 5 SSPs at FORECAST_END --
+# used only to locate the two bracketing SSPs for the continuous pop/GDP-percap
+# draws below; the region-level blend itself uses pop_mat/gdppc_mat above.
+world_agg <- ssp_drivers |>
+  filter(variable %in% c("Population", "GDP|PPP"), year %in% c(2024L, FORECAST_END)) |>
+  dplyr::select(scenario, region, variable, year, value) |>
+  tidyr::pivot_wider(names_from = variable, values_from = value) |>
+  dplyr::group_by(scenario, year) |>
+  dplyr::summarise(pop_world = sum(Population, na.rm = TRUE), gdp_world = sum(`GDP|PPP`, na.rm = TRUE), .groups = "drop") |>
+  dplyr::mutate(gdppc_world = gdp_world / pop_world)
+
+world_2024 <- world_agg |> dplyr::filter(year == 2024L) |> dplyr::select(scenario, pop_base = pop_world, gdppc_base = gdppc_world)
+world_end <- world_agg |>
+  dplyr::filter(year == FORECAST_END) |>
+  dplyr::select(scenario, pop_end = pop_world, gdppc_end = gdppc_world)
+
+ssp_rank_pop <- world_end |>
+  dplyr::left_join(world_2024, by = "scenario") |>
+  dplyr::mutate(val = pop_end / pop_base) |>
+  dplyr::arrange(val) |>
+  dplyr::select(scenario, val)
+
+ssp_rank_gdp <- world_end |>
+  dplyr::left_join(world_2024, by = "scenario") |>
+  dplyr::mutate(val = gdppc_end / gdppc_base) |>
+  dplyr::arrange(val) |>
+  dplyr::select(scenario, val)
+
 cat("  Static data loaded.\n")
 
 
@@ -451,9 +482,25 @@ recyc_conv_yr <- mc_input_matrix |>
 
 lambda_rates <- mc_input_matrix |> dplyr::select(run_id, lambda = gap_persistence_rates)
 
+# -- 2024 non-primary share anchor (empirical; script 03, MISO-scope) ---------
+nonprimary_share_2024 <- readr::read_csv(
+  "Parameters/Intermediate/nonprimary_share_2024.csv",
+  show_col_types = FALSE
+) |>
+  dplyr::rename(region = Region)
+anchor_2024_fe <- nonprimary_share_2024 |> dplyr::filter(material == "Metal_Fe") |> dplyr::select(region, s_2024)
+anchor_2024_nonfe <- nonprimary_share_2024 |> dplyr::filter(material == "Metal_NonFe") |> dplyr::select(region, s_2024)
+
 # Same convergence shape as intensity, but on rates: ramp to endpoint by
 # recyc_convergence_yr, hold after, clip to [min, max] throughout.
-make_recycling_traj <- function(recycling_now, G_col, min_rate, max_rate) {
+#
+# 2024 anchor is the empirical non-primary share from script 03
+# (nonprimary_share_2024.csv, MISO-scope consistent: scrap + embodied net
+# imports, undecomposed). Convergence to the Excel-rate-based endpoint implies
+# embodied-trade imbalances fade to zero by the convergence year -- documented
+# model assumption. The endpoint's deviation term still uses the Excel
+# rate_now (unaffected by this anchor change).
+make_recycling_traj <- function(recycling_now, G_col, min_rate, max_rate, anchor_now, mat_label) {
   wavg <- recycling_now |>
     left_join(gdp_base_vals |> rename(GDP = GDP_2015USD), by = "region") |>
     summarise(rate_mean = weighted.mean(rate_now, w = GDP, na.rm = TRUE)) |>
@@ -462,6 +509,16 @@ make_recycling_traj <- function(recycling_now, G_col, min_rate, max_rate) {
     dplyr::select(run_id, u = all_of(G_col)) |>
     mutate(G = min_rate + u * (max_rate - min_rate)) |>
     dplyr::select(run_id, G)
+  recycling_now <- recycling_now |>
+    left_join(anchor_now, by = "region") |>
+    mutate(anchor_2024 = dplyr::if_else(is.na(s_2024), rate_now, s_2024))
+  fell_back <- recycling_now$region[is.na(recycling_now$s_2024)]
+  if (length(fell_back) > 0) {
+    cat(
+      "  [make_recycling_traj]", mat_label, "-- no s_2024, fell back to Excel rate_now for:",
+      paste(fell_back, collapse = ", "), "\n"
+    )
+  }
   ep <- recycling_now |>
     tidyr::crossing(run_id = seq_len(N_RUNS)) |>
     left_join(G_df, by = "run_id") |>
@@ -474,9 +531,8 @@ make_recycling_traj <- function(recycling_now, G_col, min_rate, max_rate) {
       recycling_rate = if_else(
         year >= recyc_convergence_yr,
         recycling_endpoint,
-        rate_now + (recycling_endpoint - rate_now) * (year - 2024L) / pmax(1L, recyc_convergence_yr - 2024L)
-      ),
-      recycling_rate = pmax(min_rate, pmin(max_rate, recycling_rate))
+        anchor_2024 + (recycling_endpoint - anchor_2024) * (year - 2024L) / pmax(1L, recyc_convergence_yr - 2024L)
+      )
     ) |>
     dplyr::select(run_id, region, year, recycling_rate)
 }
@@ -485,13 +541,17 @@ recycling_traj_fe <- make_recycling_traj(
   recycling_now_fe,
   "recycling_Fe_global",
   RECYCLING_RATE_FE_MIN,
-  RECYCLING_RATE_FE_MAX
+  RECYCLING_RATE_FE_MAX,
+  anchor_2024_fe,
+  "Metal_Fe"
 )
 recycling_traj_nonfe <- make_recycling_traj(
   recycling_now_nonfe,
   "recycling_NonFe_global",
   RECYCLING_RATE_NONFE_MIN,
-  RECYCLING_RATE_NONFE_MAX
+  RECYCLING_RATE_NONFE_MAX,
+  anchor_2024_nonfe,
+  "Metal_NonFe"
 )
 recycling_by_run_fe <- split(recycling_traj_fe, recycling_traj_fe$run_id)
 recycling_by_run_nonfe <- split(recycling_traj_nonfe, recycling_traj_nonfe$run_id)
@@ -562,6 +622,12 @@ lifetime_dr <- mc_input_matrix |>
 lifetime_by_run <- split(lifetime_dr, lifetime_dr$run_id)
 
 # -- Ore grade (metal -> ore conversion for primary AND avoided-ore secondary) -
+# grade_ore_fe/nonfe here is the per-run sampled TARGET (endpoint); each run
+# ramps linearly from the 2024 baseline (GRADE_ORE_*_NOW) to this target, over
+# the same convergence year drawn for intensity (target_year_vec, built below).
+GRADE_ORE_FE_NOW <- (GRADE_ORE_FE_MIN + GRADE_ORE_FE_MAX) / 2
+GRADE_ORE_NONFE_NOW <- (GRADE_ORE_NONFE_MIN + GRADE_ORE_NONFE_MAX) / 2
+
 grade_params <- mc_input_matrix |>
   dplyr::select(run_id, grade_ore_fe_u, grade_ore_nonfe_u) |>
   mutate(
@@ -608,7 +674,32 @@ scalar_by_run <- split(scalar_params, scalar_params$run_id)
 target_year_vec <- as.integer(round(
   TARGET_YEAR_MIN + mc_input_matrix$target_year_u * (TARGET_YEAR_MAX - TARGET_YEAR_MIN)
 ))
-ssp_labels_vec <- mc_input_matrix$ssp_label
+
+# -- Continuous SSP interpolation (population & GDP per capita, independent) --
+# For each run's [0,1] draw, locate where it falls in the FORECAST_END world
+# index range and the two bracketing SSPs, then blend their FULL trajectory by
+# the resulting share for every region and year (see ssp_rank_pop/gdp, STEP 3).
+locate_ssp_bracket <- function(u, ranked) {
+  target <- min(ranked$val) + u * (max(ranked$val) - min(ranked$val))
+  k <- findInterval(target, ranked$val, all.inside = TRUE)
+  data.frame(
+    ssp_lo = ranked$scenario[k],
+    ssp_hi = ranked$scenario[k + 1],
+    share_lo = (ranked$val[k + 1] - target) / (ranked$val[k + 1] - ranked$val[k])
+  )
+}
+
+pop_bracket <- purrr::map_dfr(mc_input_matrix$pop_ssp_u, locate_ssp_bracket, ranked = ssp_rank_pop)
+gdp_bracket <- purrr::map_dfr(mc_input_matrix$gdppc_ssp_u, locate_ssp_bracket, ranked = ssp_rank_gdp)
+
+pop_ssp_lo_vec <- pop_bracket$ssp_lo
+pop_ssp_hi_vec <- pop_bracket$ssp_hi
+pop_share_lo_vec <- pop_bracket$share_lo
+
+gdppc_ssp_lo_vec <- gdp_bracket$ssp_lo
+gdppc_ssp_hi_vec <- gdp_bracket$ssp_hi
+gdppc_share_lo_vec <- gdp_bracket$share_lo
+
 cat("  Trajectories rebuilt.\n")
 
 
@@ -616,7 +707,6 @@ cat("  Trajectories rebuilt.\n")
 # STEP 5: Single-run worker
 # =============================================================================
 run_one <- function(i) {
-  ssp <- ssp_labels_vec[i]
   ie_i <- intensity_by_run[[i]]
   lp_i <- lifetime_by_run[[i]]
   rec_fe_i <- recycling_by_run_fe[[i]]
@@ -625,13 +715,25 @@ run_one <- function(i) {
   sc_i <- scalar_by_run[[i]]
   gr_i <- grade_by_run[[i]]
 
-  pop_i <- pop_mat[[ssp]]
-  gdppc_i <- gdppc_mat[[ssp]]
+  # Continuous SSP blend: convex combination of the two bracketing SSPs'
+  # region x year matrices, independently for population and GDP per capita.
+  pop_i <- pop_share_lo_vec[i] * pop_mat[[pop_ssp_lo_vec[i]]] +
+    (1 - pop_share_lo_vec[i]) * pop_mat[[pop_ssp_hi_vec[i]]]
+  gdppc_i <- gdppc_share_lo_vec[i] * gdppc_mat[[gdppc_ssp_lo_vec[i]]] +
+    (1 - gdppc_share_lo_vec[i]) * gdppc_mat[[gdppc_ssp_hi_vec[i]]]
 
   yr_vec <- YEARS_DSM
   # alpha: 0->1 time weight; intensities ramp log-linearly (geometrically) from
   # 2024 value to endpoint as int_2024 * (endpoint / int_2024)^alpha
   alpha <- pmin(1, pmax(0, (yr_vec - 2024L) / (target_year_vec[i] - 2024L)))
+
+  # Ore grade: linear ramp from the 2024 baseline to the sampled target, using
+  # the same convergence year (alpha) as intensity.
+  grade_ore_fe_traj <- setNames(GRADE_ORE_FE_NOW + (gr_i$grade_ore_fe - GRADE_ORE_FE_NOW) * alpha, as.character(yr_vec))
+  grade_ore_nonfe_traj <- setNames(
+    GRADE_ORE_NONFE_NOW + (gr_i$grade_ore_nonfe - GRADE_ORE_NONFE_NOW) * alpha,
+    as.character(yr_vec)
+  )
 
   out_list <- list()
 
@@ -640,7 +742,6 @@ run_one <- function(i) {
   emit_flow <- function(rg, mg, key, M_Mt) {
     data.frame(
       run_id = i,
-      ssp_label = ssp,
       region = rg,
       material_group = mg,
       material_key = key,
@@ -720,7 +821,7 @@ run_one <- function(i) {
   # scrap is recorded as spill (not silently dropped). Primary >= 0 by construction.
   # Reported base *_Mt columns are ore-equivalent (metal / grade);
   # matching *_Mt_pure columns keep metal mass.
-  run_dsm_metal <- function(mat_label, age_lookup, rec_i, grade) {
+  run_dsm_metal <- function(mat_label, age_lookup, rec_i, grade_traj) {
     ie_g <- ie_i |> filter(material_group == "metal_ores") |> mutate(mat_key_super = mat_key)
 
     sr_rows <- list()
@@ -780,31 +881,31 @@ run_one <- function(i) {
     sr <- do.call(rbind, sr_rows)
 
     sr <- merge(sr, rec_i, by = c("region", "year"), all.x = TRUE)
-    recyc_rate <- sr$recycling_rate
-    recyc_rate[is.na(recyc_rate)] <- 0
+    nonprimary_share <- sr$recycling_rate
+    nonprimary_share[is.na(nonprimary_share)] <- 0
 
     prod_metal <- pmax(0, sr$production_Mt) # guard against DSM negatives
-    recoverable <- sr$waste_Mt * recyc_rate # metal mass, no quality loss
-    secondary_metal <- pmin(recoverable, prod_metal) # cannot exceed demand
-    spilled_metal <- recoverable - secondary_metal # recyclable but unabsorbed
-    primary_metal <- prod_metal - secondary_metal # >= 0 by construction
+    # non-primary metal mass (scrap + embodied net imports, undecomposed)
+    recovered <- prod_metal * nonprimary_share
+    recovered <- ifelse(nonprimary_share <= 1, pmin(recovered, prod_metal), recovered)
+    primary_metal <- prod_metal - recovered # domestically mined; can exceed prod_metal for net embodied exporters
 
-    grade_safe <- max(grade, 1e-6)
+    grade_safe <- pmax(grade_traj[as.character(sr$year)], 1e-6)
 
     data.frame(
       run_id = i,
-      ssp_label = ssp,
       region = sr$region,
       material_group = if (mat_label == "Metal_Fe") "metal_fe" else "metal_nonfe",
       material_key = SUB_USE_LABELS[sr$sub_use],
       year = sr$year,
       total_inflow_Mt = sr$replacement_Mt + sr$new_additions_Mt,
       in_use_stock_Mt = sr$total_stock_Mt,
-      primary_consumption_Mt = primary_metal / grade_safe, # ore extracted
-      secondary_supply_Mt = secondary_metal / grade_safe, # ore avoided
+      primary_consumption_Mt = primary_metal / grade_safe, # ore extracted; domestically mined
+      secondary_supply_Mt = recovered / grade_safe, # ore avoided; non-primary (scrap + embodied net imports, undecomposed)
       primary_consumption_Mt_pure = primary_metal,
-      secondary_supply_Mt_pure = secondary_metal,
-      secondary_spilled_Mt = spilled_metal,
+      secondary_supply_Mt_pure = recovered,
+      secondary_spilled_Mt = 0, # no waste-capacity ceiling under the non-primary-share supply split
+
       new_additions_Mt = sr$new_additions_Mt / grade_safe, # ore
       replacement_Mt = sr$replacement_Mt / grade_safe,
       waste_Mt = sr$waste_Mt / grade_safe,
@@ -815,8 +916,8 @@ run_one <- function(i) {
     )
   }
 
-  fe_out <- run_dsm_metal("Metal_Fe", age_lookup_fe, rec_fe_i, gr_i$grade_ore_fe)
-  nonfe_out <- run_dsm_metal("Metal_NonFe", age_lookup_nonfe, rec_nonfe_i, gr_i$grade_ore_nonfe)
+  fe_out <- run_dsm_metal("Metal_Fe", age_lookup_fe, rec_fe_i, grade_ore_fe_traj)
+  nonfe_out <- run_dsm_metal("Metal_NonFe", age_lookup_nonfe, rec_nonfe_i, grade_ore_nonfe_traj)
   if (!is.null(fe_out)) {
     out_list[[length(out_list) + 1L]] <- fe_out
   }
@@ -963,7 +1064,6 @@ run_one <- function(i) {
 
     out_list[[length(out_list) + 1L]] <- data.frame(
       run_id = i,
-      ssp_label = ssp,
       region = nm_sr$region,
       material_group = "nonmetallic_minerals",
       material_key = SUB_USE_LABELS[nm_sr$sub_use],
@@ -986,6 +1086,15 @@ run_one <- function(i) {
   }
 
   out <- bind_rows(out_list)
+
+  # Continuous SSP blend used by this run (replaces the discrete ssp_label) --
+  # exact reconstruction of pop_i/gdppc_i requires only these six values.
+  out$pop_ssp_lo <- pop_ssp_lo_vec[i]
+  out$pop_ssp_hi <- pop_ssp_hi_vec[i]
+  out$pop_ssp_share_lo <- pop_share_lo_vec[i]
+  out$gdppc_ssp_lo <- gdppc_ssp_lo_vec[i]
+  out$gdppc_ssp_hi <- gdppc_ssp_hi_vec[i]
+  out$gdppc_ssp_share_lo <- gdppc_share_lo_vec[i]
 
   # Per-run physical-sanity flags (kept, not filtered) -> screen pathological
   # runs downstream before SHAP/Sobol rather than letting them contaminate.
