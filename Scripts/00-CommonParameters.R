@@ -20,7 +20,7 @@
 # Change this ONE number to extend/shorten the horizon everywhere downstream.
 # BASE_YEAR and TARGET_YEAR (intensity convergence, held at 2050 as a modelling
 # choice independent of the horizon) live in Scripts/model_parameters.R.
-FORECAST_END <- 2100L
+FORECAST_END <- 2060L
 
 # ── Regions (Analysis_group, 8 levels) ────────────────────────────────────────
 # Based on Paul Tol's Vibrant palette with geographic-semantic adjustments.
@@ -90,25 +90,25 @@ PALETTE_MATERIAL_GROUPS <- c(
 
 # Longest-lived at bottom of stack, shortest at top.
 PALETTE_ENDUSE <- c(
-  "Buildings"            = "#1B4F8A",
+  "Buildings" = "#1B4F8A",
   "Civil infrastructure" = "#7A5230",
-  "Machinery"            = "#2D6A4F",
+  "Machinery" = "#2D6A4F",
   "Short-lived products" = "#7B2D8B"
 )
 
 # Sub-end-use palette: 2 tones per main category, keyed by display label.
 PALETTE_SUBENDUSE <- c(
-  "Residential"           = "#1B4F8A",
-  "Residential Bldg"      = "#1B4F8A",
-  "Non-residential"       = "#5285C0",
-  "Non-residential Bldg"  = "#5285C0",
-  "Roads"                 = "#7A5230",
-  "Civil engineering"     = "#B8896A",
-  "Civil eng."            = "#B8896A",
-  "Machinery"             = "#2D6A4F",
-  "Vehicles"              = "#5DAA80",
-  "Durables"              = "#7B2D8B",
-  "Packaging"             = "#B068C0"
+  "Residential" = "#1B4F8A",
+  "Residential Bldg" = "#1B4F8A",
+  "Non-residential" = "#5285C0",
+  "Non-residential Bldg" = "#5285C0",
+  "Roads" = "#7A5230",
+  "Civil engineering" = "#B8896A",
+  "Civil eng." = "#B8896A",
+  "Machinery" = "#2D6A4F",
+  "Vehicles" = "#5DAA80",
+  "Durables" = "#7B2D8B",
+  "Packaging" = "#B068C0"
 )
 
 SSP_COLORS <- c("SSP1" = "#2d7d46", "SSP2" = "#8db84e", "SSP3" = "#e8a628", "SSP4" = "#d4622a", "SSP5" = "#c0392b")

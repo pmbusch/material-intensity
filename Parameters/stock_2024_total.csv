@@ -1,65 +1,193 @@
-Region,material,end_use,stock_Mt
-East Asia,Metal ores,buildings,3319.260264407339
-East Asia,Metal ores,civil_infrastructure,9180.56806316294
-East Asia,Metal ores,machinery,4461.9774656179325
-East Asia,Metal ores,short_lived,432.89847322301046
-East Asia,Non-metallic minerals,buildings,416303.3671569003
-East Asia,Non-metallic minerals,civil_infrastructure,177927.57417864306
-East Asia,Non-metallic minerals,machinery,51.40757800129792
-East Asia,Non-metallic minerals,short_lived,22.602163350540767
-Europe & Russia,Metal ores,buildings,2763.3984715729207
-Europe & Russia,Metal ores,civil_infrastructure,4627.099398905339
-Europe & Russia,Metal ores,machinery,2375.577510429376
-Europe & Russia,Metal ores,short_lived,204.029686354856
-Europe & Russia,Non-metallic minerals,buildings,92866.77768084177
-Europe & Russia,Non-metallic minerals,civil_infrastructure,199000.74997860406
-Europe & Russia,Non-metallic minerals,machinery,26.09551137821256
-Europe & Russia,Non-metallic minerals,short_lived,43.812447833288026
-Latin America,Metal ores,buildings,677.1492734142091
-Latin America,Metal ores,civil_infrastructure,1249.965356483902
-Latin America,Metal ores,machinery,526.8735516155359
-Latin America,Metal ores,short_lived,65.80505672237928
-Latin America,Non-metallic minerals,buildings,30277.479445347057
-Latin America,Non-metallic minerals,civil_infrastructure,41274.46327249437
-Latin America,Non-metallic minerals,machinery,6.284717738047415
-Latin America,Non-metallic minerals,short_lived,10.457724936363046
-Middle East & North Africa,Metal ores,buildings,832.3331001589565
-Middle East & North Africa,Metal ores,civil_infrastructure,1103.5453747784509
-Middle East & North Africa,Metal ores,machinery,668.0717488202978
-Middle East & North Africa,Metal ores,short_lived,74.68121515955697
-Middle East & North Africa,Non-metallic minerals,buildings,45412.355242316335
-Middle East & North Africa,Non-metallic minerals,civil_infrastructure,50351.826388693844
-Middle East & North Africa,Non-metallic minerals,machinery,1.492737215406688
-Middle East & North Africa,Non-metallic minerals,short_lived,5.90149146382683
-North America,Metal ores,buildings,2753.884753432539
-North America,Metal ores,civil_infrastructure,2003.9105486484657
-North America,Metal ores,machinery,1053.2829116383714
-North America,Metal ores,short_lived,95.94404833655258
-North America,Non-metallic minerals,buildings,26398.02958439329
-North America,Non-metallic minerals,civil_infrastructure,132457.71111465624
-North America,Non-metallic minerals,machinery,12.221152397212727
-North America,Non-metallic minerals,short_lived,10.528285222860875
-Oceania,Metal ores,buildings,216.91386069849216
-Oceania,Metal ores,civil_infrastructure,117.13915657109818
-Oceania,Metal ores,machinery,103.02863526661214
-Oceania,Metal ores,short_lived,14.199933634649987
-Oceania,Non-metallic minerals,buildings,2936.55048942397
-Oceania,Non-metallic minerals,civil_infrastructure,4517.981419143223
-Oceania,Non-metallic minerals,machinery,0.1936912098111268
-Oceania,Non-metallic minerals,short_lived,2.1536156945591878
-South Asia,Metal ores,buildings,270.88558822521304
-South Asia,Metal ores,civil_infrastructure,696.7867239873358
-South Asia,Metal ores,machinery,735.7044373944005
-South Asia,Metal ores,short_lived,78.72875821481851
-South Asia,Non-metallic minerals,buildings,60397.477086790066
-South Asia,Non-metallic minerals,civil_infrastructure,36375.21420332653
-South Asia,Non-metallic minerals,machinery,1.4586648575421353
-South Asia,Non-metallic minerals,short_lived,5.607856194250398
-Sub-Saharan Africa,Metal ores,buildings,231.940843918581
-Sub-Saharan Africa,Metal ores,civil_infrastructure,363.7485266066719
-Sub-Saharan Africa,Metal ores,machinery,214.78396429264592
-Sub-Saharan Africa,Metal ores,short_lived,29.332144925151148
-Sub-Saharan Africa,Non-metallic minerals,buildings,17807.73760262334
-Sub-Saharan Africa,Non-metallic minerals,civil_infrastructure,11928.176523435166
-Sub-Saharan Africa,Non-metallic minerals,machinery,0.8289750070040726
-Sub-Saharan Africa,Non-metallic minerals,short_lived,2.6638151611238587
+Region,material,super_category,sub_use,stock_Mt
+East Asia,Metal_Fe,buildings,non_residential,1258.3634463063563
+East Asia,Metal_Fe,buildings,residential,1667.398324097613
+East Asia,Metal_Fe,civil_infrastructure,civil_engineering,3778.4046786354534
+East Asia,Metal_Fe,civil_infrastructure,roads,4647.650917064041
+East Asia,Metal_Fe,machinery,machinery_group,2761.1221318622993
+East Asia,Metal_Fe,machinery,vehicles_group,1331.1694785562859
+East Asia,Metal_Fe,short_lived,durables,419.7167292458731
+East Asia,Metal_Fe,short_lived,packaging,58.24937097233803
+Europe & Russia,Metal_Fe,buildings,non_residential,969.3897553195992
+Europe & Russia,Metal_Fe,buildings,residential,1336.6839707352206
+Europe & Russia,Metal_Fe,civil_infrastructure,civil_engineering,1976.2038800799467
+Europe & Russia,Metal_Fe,civil_infrastructure,roads,2114.8099369751912
+Europe & Russia,Metal_Fe,machinery,machinery_group,1549.6170325716948
+Europe & Russia,Metal_Fe,machinery,vehicles_group,616.6790638850264
+Europe & Russia,Metal_Fe,short_lived,durables,161.53516267404203
+Europe & Russia,Metal_Fe,short_lived,packaging,20.719768540588834
+Latin America,Metal_Fe,buildings,non_residential,165.81248642915224
+Latin America,Metal_Fe,buildings,residential,214.9159525184238
+Latin America,Metal_Fe,civil_infrastructure,civil_engineering,299.7185036188656
+Latin America,Metal_Fe,civil_infrastructure,roads,373.224196326304
+Latin America,Metal_Fe,machinery,machinery_group,188.9892329739667
+Latin America,Metal_Fe,machinery,vehicles_group,71.68416661250026
+Latin America,Metal_Fe,short_lived,durables,28.735456700376236
+Latin America,Metal_Fe,short_lived,packaging,2.8251746139808316
+Middle East & North Africa,Metal_Fe,buildings,non_residential,306.83665266150354
+Middle East & North Africa,Metal_Fe,buildings,residential,403.8261072587315
+Middle East & North Africa,Metal_Fe,civil_infrastructure,civil_engineering,430.6619566271566
+Middle East & North Africa,Metal_Fe,civil_infrastructure,roads,522.9270658004541
+Middle East & North Africa,Metal_Fe,machinery,machinery_group,388.4497673705611
+Middle East & North Africa,Metal_Fe,machinery,vehicles_group,190.46071053849457
+Middle East & North Africa,Metal_Fe,short_lived,durables,61.002426452368944
+Middle East & North Africa,Metal_Fe,short_lived,packaging,9.406161581143174
+North America,Metal_Fe,buildings,non_residential,759.744622260577
+North America,Metal_Fe,buildings,residential,1026.4236210783915
+North America,Metal_Fe,civil_infrastructure,civil_engineering,659.148504705363
+North America,Metal_Fe,civil_infrastructure,roads,677.96182098593
+North America,Metal_Fe,machinery,machinery_group,591.0178037566036
+North America,Metal_Fe,machinery,vehicles_group,226.67085592385007
+North America,Metal_Fe,short_lived,durables,67.57233195435549
+North America,Metal_Fe,short_lived,packaging,8.5025859344151
+Oceania,Metal_Fe,buildings,non_residential,92.40724981637375
+Oceania,Metal_Fe,buildings,residential,124.88400487093611
+Oceania,Metal_Fe,civil_infrastructure,civil_engineering,60.331519750569875
+Oceania,Metal_Fe,civil_infrastructure,roads,71.94918326922074
+Oceania,Metal_Fe,machinery,machinery_group,110.00763388518243
+Oceania,Metal_Fe,machinery,vehicles_group,63.70847323933722
+Oceania,Metal_Fe,short_lived,durables,24.125008293144262
+Oceania,Metal_Fe,short_lived,packaging,4.921787589571972
+South Asia,Metal_Fe,buildings,non_residential,114.38822025221063
+South Asia,Metal_Fe,buildings,residential,154.85240507206964
+South Asia,Metal_Fe,civil_infrastructure,civil_engineering,326.72504883420817
+South Asia,Metal_Fe,civil_infrastructure,roads,397.36732955135375
+South Asia,Metal_Fe,machinery,machinery_group,517.4828033316923
+South Asia,Metal_Fe,machinery,vehicles_group,267.6471536287394
+South Asia,Metal_Fe,short_lived,durables,76.75272246012038
+South Asia,Metal_Fe,short_lived,packaging,12.465136807707294
+Sub-Saharan Africa,Metal_Fe,buildings,non_residential,46.181987954681766
+Sub-Saharan Africa,Metal_Fe,buildings,residential,59.52864988358028
+Sub-Saharan Africa,Metal_Fe,civil_infrastructure,civil_engineering,64.99372317027814
+Sub-Saharan Africa,Metal_Fe,civil_infrastructure,roads,76.7458998264775
+Sub-Saharan Africa,Metal_Fe,machinery,machinery_group,52.33162072415643
+Sub-Saharan Africa,Metal_Fe,machinery,vehicles_group,18.977496758407597
+Sub-Saharan Africa,Metal_Fe,short_lived,durables,6.616631843139483
+Sub-Saharan Africa,Metal_Fe,short_lived,packaging,1.0468756494755237e-12
+East Asia,Metal_NonFe,buildings,non_residential,62.57097339528181
+East Asia,Metal_NonFe,buildings,residential,101.24369738554853
+East Asia,Metal_NonFe,civil_infrastructure,civil_engineering,148.7130088476225
+East Asia,Metal_NonFe,civil_infrastructure,roads,155.79989138379878
+East Asia,Metal_NonFe,machinery,machinery_group,90.94042994275922
+East Asia,Metal_NonFe,machinery,vehicles_group,44.6068752126524
+East Asia,Metal_NonFe,short_lived,durables,14.114123005931132
+East Asia,Metal_NonFe,short_lived,packaging,1.9585618835291791
+Europe & Russia,Metal_NonFe,buildings,non_residential,111.51310015107973
+Europe & Russia,Metal_NonFe,buildings,residential,236.15202011213458
+Europe & Russia,Metal_NonFe,civil_infrastructure,civil_engineering,303.3934154433101
+Europe & Russia,Metal_NonFe,civil_infrastructure,roads,133.76242979338332
+Europe & Russia,Metal_NonFe,machinery,machinery_group,96.3513184088032
+Europe & Russia,Metal_NonFe,machinery,vehicles_group,46.141193130877625
+Europe & Russia,Metal_NonFe,short_lived,durables,11.82919827106967
+Europe & Russia,Metal_NonFe,short_lived,packaging,1.5947709362327271
+Latin America,Metal_NonFe,buildings,non_residential,77.15144119397333
+Latin America,Metal_NonFe,buildings,residential,112.18900333225147
+Latin America,Metal_NonFe,civil_infrastructure,civil_engineering,183.41219624003418
+Latin America,Metal_NonFe,civil_infrastructure,roads,212.47412829316133
+Latin America,Metal_NonFe,machinery,machinery_group,122.35442671255363
+Latin America,Metal_NonFe,machinery,vehicles_group,61.022519499145005
+Latin America,Metal_NonFe,short_lived,durables,24.651777532441393
+Latin America,Metal_NonFe,short_lived,packaging,3.306346852172788
+Middle East & North Africa,Metal_NonFe,buildings,non_residential,12.166013731628627
+Middle East & North Africa,Metal_NonFe,buildings,residential,18.846897397118276
+Middle East & North Africa,Metal_NonFe,civil_infrastructure,civil_engineering,19.24821692557443
+Middle East & North Africa,Metal_NonFe,civil_infrastructure,roads,19.759535432392987
+Middle East & North Africa,Metal_NonFe,machinery,machinery_group,15.293826833900349
+Middle East & North Africa,Metal_NonFe,machinery,vehicles_group,8.169895440008323
+Middle East & North Africa,Metal_NonFe,short_lived,durables,2.609891036740606
+Middle East & North Africa,Metal_NonFe,short_lived,packaging,0.39664013989741537
+North America,Metal_NonFe,buildings,non_residential,270.3667390505674
+North America,Metal_NonFe,buildings,residential,503.31652543729354
+North America,Metal_NonFe,civil_infrastructure,civil_engineering,371.8561299749973
+North America,Metal_NonFe,civil_infrastructure,roads,196.9965114064022
+North America,Metal_NonFe,machinery,machinery_group,180.66615691703475
+North America,Metal_NonFe,machinery,vehicles_group,80.30716215654442
+North America,Metal_NonFe,short_lived,durables,23.478960825609164
+North America,Metal_NonFe,short_lived,packaging,2.906377316834757
+Oceania,Metal_NonFe,buildings,non_residential,39.04804289322124
+Oceania,Metal_NonFe,buildings,residential,56.540175531920866
+Oceania,Metal_NonFe,civil_infrastructure,civil_engineering,26.283624863730275
+Oceania,Metal_NonFe,civil_infrastructure,roads,26.58426948109871
+Oceania,Metal_NonFe,machinery,machinery_group,37.08712217192808
+Oceania,Metal_NonFe,machinery,vehicles_group,18.246188432627783
+Oceania,Metal_NonFe,short_lived,durables,6.5123731346157046
+Oceania,Metal_NonFe,short_lived,packaging,0.9181275987013839
+South Asia,Metal_NonFe,buildings,non_residential,2.455044073229756
+South Asia,Metal_NonFe,buildings,residential,4.706588343310209
+South Asia,Metal_NonFe,civil_infrastructure,civil_engineering,6.146565265921856
+South Asia,Metal_NonFe,civil_infrastructure,roads,4.84958392754145
+South Asia,Metal_NonFe,machinery,machinery_group,6.152646313981814
+South Asia,Metal_NonFe,machinery,vehicles_group,3.2581130419745383
+South Asia,Metal_NonFe,short_lived,durables,0.9223908521013675
+South Asia,Metal_NonFe,short_lived,packaging,0.13769534367055813
+Sub-Saharan Africa,Metal_NonFe,buildings,non_residential,48.70000233268907
+Sub-Saharan Africa,Metal_NonFe,buildings,residential,70.28173292667024
+Sub-Saharan Africa,Metal_NonFe,civil_infrastructure,civil_engineering,97.46168166877345
+Sub-Saharan Africa,Metal_NonFe,civil_infrastructure,roads,108.97476018213035
+Sub-Saharan Africa,Metal_NonFe,machinery,machinery_group,84.30886255191974
+Sub-Saharan Africa,Metal_NonFe,machinery,vehicles_group,43.15637823954768
+Sub-Saharan Africa,Metal_NonFe,short_lived,durables,15.592990085699244
+Sub-Saharan Africa,Metal_NonFe,short_lived,packaging,2.2791153478368638
+East Asia,Non-metallic minerals,buildings,non_residential,179134.9858661514
+East Asia,Non-metallic minerals,buildings,residential,235990.7772091455
+East Asia,Non-metallic minerals,civil_infrastructure,civil_engineering,80886.569368946
+East Asia,Non-metallic minerals,civil_infrastructure,roads,97539.60036646597
+East Asia,Non-metallic minerals,machinery,machinery_group,35.24315129546989
+East Asia,Non-metallic minerals,machinery,vehicles_group,16.130130333572477
+East Asia,Non-metallic minerals,short_lived,durables,21.343304314490112
+East Asia,Non-metallic minerals,short_lived,packaging,3.030480486659624
+Europe & Russia,Non-metallic minerals,buildings,non_residential,38422.21751846117
+Europe & Russia,Non-metallic minerals,buildings,residential,53848.669370319076
+Europe & Russia,Non-metallic minerals,civil_infrastructure,civil_engineering,99291.87553111326
+Europe & Russia,Non-metallic minerals,civil_infrastructure,roads,101457.85962341815
+Europe & Russia,Non-metallic minerals,machinery,machinery_group,17.642568821028313
+Europe & Russia,Non-metallic minerals,machinery,vehicles_group,8.52482032946007
+Europe & Russia,Non-metallic minerals,short_lived,durables,40.3666905068014
+Europe & Russia,Non-metallic minerals,short_lived,packaging,5.683318932800829
+Latin America,Non-metallic minerals,buildings,non_residential,12971.912877030358
+Latin America,Non-metallic minerals,buildings,residential,17226.187135601413
+Latin America,Non-metallic minerals,civil_infrastructure,civil_engineering,19423.12877974377
+Latin America,Non-metallic minerals,civil_infrastructure,roads,22035.667978504756
+Latin America,Non-metallic minerals,machinery,machinery_group,4.346650224097404
+Latin America,Non-metallic minerals,machinery,vehicles_group,1.9116620247417755
+Latin America,Non-metallic minerals,short_lived,durables,9.449860157586167
+Latin America,Non-metallic minerals,short_lived,packaging,1.29221848398865
+Middle East & North Africa,Non-metallic minerals,buildings,non_residential,19545.81601267053
+Middle East & North Africa,Non-metallic minerals,buildings,residential,25737.146099696274
+Middle East & North Africa,Non-metallic minerals,civil_infrastructure,civil_engineering,22962.178409191427
+Middle East & North Africa,Non-metallic minerals,civil_infrastructure,roads,27351.035505350308
+Middle East & North Africa,Non-metallic minerals,machinery,machinery_group,1.0479407956760771
+Middle East & North Africa,Non-metallic minerals,machinery,vehicles_group,0.4372970042905795
+Middle East & North Africa,Non-metallic minerals,short_lived,durables,4.932589889834913
+Middle East & North Africa,Non-metallic minerals,short_lived,packaging,0.6989101275202291
+North America,Non-metallic minerals,buildings,non_residential,10980.169690208684
+North America,Non-metallic minerals,buildings,residential,15168.57078000857
+North America,Non-metallic minerals,civil_infrastructure,civil_engineering,66028.30308668897
+North America,Non-metallic minerals,civil_infrastructure,roads,67069.23989427437
+North America,Non-metallic minerals,machinery,machinery_group,8.56031275170788
+North America,Non-metallic minerals,machinery,vehicles_group,3.8034208395837474
+North America,Non-metallic minerals,short_lived,durables,9.169170868246871
+North America,Non-metallic minerals,short_lived,packaging,1.085251898242894
+Oceania,Non-metallic minerals,buildings,non_residential,1247.756683078841
+Oceania,Non-metallic minerals,buildings,residential,1676.7529760085135
+Oceania,Non-metallic minerals,civil_infrastructure,civil_engineering,2160.345997586365
+Oceania,Non-metallic minerals,civil_infrastructure,roads,2382.3359600106664
+Oceania,Non-metallic minerals,machinery,machinery_group,0.1414020027810952
+Oceania,Non-metallic minerals,machinery,vehicles_group,0.05418002682709471
+Oceania,Non-metallic minerals,short_lived,durables,1.773332139114861
+Oceania,Non-metallic minerals,short_lived,packaging,0.23911282672220552
+South Asia,Non-metallic minerals,buildings,non_residential,25658.13888757852
+South Asia,Non-metallic minerals,buildings,residential,34738.55702698209
+South Asia,Non-metallic minerals,civil_infrastructure,civil_engineering,16503.855192420826
+South Asia,Non-metallic minerals,civil_infrastructure,roads,19969.85745453133
+South Asia,Non-metallic minerals,machinery,machinery_group,0.9643230987130963
+South Asia,Non-metallic minerals,machinery,vehicles_group,0.5094425087120569
+South Asia,Non-metallic minerals,short_lived,durables,4.771307393419732
+South Asia,Non-metallic minerals,short_lived,packaging,0.6981330918263695
+Sub-Saharan Africa,Non-metallic minerals,buildings,non_residential,7621.449352154266
+Sub-Saharan Africa,Non-metallic minerals,buildings,residential,10155.453133744317
+Sub-Saharan Africa,Non-metallic minerals,civil_infrastructure,civil_engineering,5665.366429860771
+Sub-Saharan Africa,Non-metallic minerals,civil_infrastructure,roads,6405.904920743395
+Sub-Saharan Africa,Non-metallic minerals,machinery,machinery_group,0.5865782669825035
+Sub-Saharan Africa,Non-metallic minerals,machinery,vehicles_group,0.2563208402124592
+Sub-Saharan Africa,Non-metallic minerals,short_lived,durables,2.442767049320856
+Sub-Saharan Africa,Non-metallic minerals,short_lived,packaging,0.31728092461435503

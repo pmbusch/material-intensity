@@ -1,5 +1,5 @@
 ## =============================================================================
-## Figure 4 - Cascade.R
+## Cascade.R
 ## Twelve-panel Kaya cascade-waterfall: 4 big material categories (columns) x
 ## 3 scenario selections (rows: median of all MC runs, top 10% decoupling
 ## subset, absolute-decoupling subset), each panel a waterfall chart
@@ -7,8 +7,8 @@
 ## Population, GDP/P, intensity (M/GDP or S/GDP) and -- for stocks -- Secondary
 ## material effects.
 ##
-## Input: Parameters/Intermediate/Figure4_Cascade.csv (from Figure 4 - PrepareData.R)
-## Output: Figures/Fig4.png / Figures/SVG/Fig4.svg
+## Input: Parameters/Intermediate/Cascade.csv (from Cascade_PrepareData.R)
+## Output: Figures/Other/Fig_Cascade.png / Figures/Other/SVG/Fig_Cascade.svg
 ## =============================================================================
 
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
@@ -16,14 +16,14 @@ library(patchwork)
 
 pb_set_geom_defaults("largeFont")
 
-cat("=== Figure 4 - Cascade ===\n\n")
+cat("=== Cascade ===\n\n")
 
 
 # STEP 1: Load prepared data & convert to Gt -----------------------------------
 
 cat("STEP 1: Load prepared data\n")
 
-bars <- read_csv("Parameters/Intermediate/Figure4_Cascade.csv", show_col_types = FALSE)
+bars <- read_csv("Parameters/Intermediate/Cascade.csv", show_col_types = FALSE)
 
 bars <- bars |>
   mutate(
@@ -32,8 +32,8 @@ bars <- bars |>
       levels = c("Biomass", "Fossil fuels", "Metal ores", "Non-metallic minerals")
     ),
     selection = factor(selection, levels = c("median", "top10", "absdecoupling")),
-    # Mt -> Gt for display only; the decomposition itself (Figure 4 -
-    # PrepareData.R) stays in Mt, this just rescales the plotted y-positions.
+    # Mt -> Gt for display only; the decomposition itself (Cascade_PrepareData.R)
+    # stays in Mt, this just rescales the plotted y-positions.
     across(c(ymin, ymax, col_y_min, col_y_max, label_y_top), ~ . / 1000)
   )
 
@@ -44,7 +44,7 @@ SELECTION_TITLE <- c("median" = "Median", "top10" = "Top 10% decoupling", "absde
 # Each effect driver gets ONE fixed colour reused across all 12 panels; the
 # BASE_YEAR total bar uses the column's own material colour, TARGET_YEAR uses
 # a LIGHTER TINT of that same material colour (blend-toward-white, factor 0.6
-# -- the same technique Figure 3 - PrepareData.R uses for its family_pal
+# -- the same technique Figure 4 - PrepareData.R uses for its family_pal
 # shades) so the outcome bar still reads as belonging to its column while
 # staying visually distinct from the BASE_YEAR bar. Scenario-row labels reuse
 # this project's PALETTE_DECOUPLING colours (00-CommonParameters.R) where they
@@ -55,10 +55,10 @@ SELECTION_TITLE <- c("median" = "Median", "top10" = "Top 10% decoupling", "absde
 
 cat("STEP 2: Colour system\n")
 
-POP_COLOR <- "#1F618D" # Figure 2 - KayaProjection.R:44
-GDPCAP_COLOR <- "#117A65" # Figure 2 - KayaProjection.R:45
-INTENSITY_COLOR <- "#e31a1c" # "Intensity" family, Figure 3 - PrepareData.R family_pal
-SECONDARY_COLOR <- "#33a02c" # "Material recovery" family, Figure 3 - PrepareData.R family_pal
+POP_COLOR <- "#1F618D" # Figure 2 - ProjectionMethod.R:44
+GDPCAP_COLOR <- "#117A65" # Figure 2 - ProjectionMethod.R:45
+INTENSITY_COLOR <- "#e31a1c" # "Intensity" family, Figure 4 - PrepareData.R family_pal
+SECONDARY_COLOR <- "#33a02c" # "Material recovery" family, Figure 4 - PrepareData.R family_pal
 
 # Lighter tint of each material's own PALETTE_MATERIAL_GROUPS colour,
 # hardcoded directly as literal hex (blend-toward-white 0.6, computed by hand,
@@ -307,11 +307,11 @@ cat("STEP 4: Assemble & save\n")
 fig <- patchwork::wrap_plots(p_a, p_b, p_c, p_d, p_e, p_f, p_g, p_h, p_i, p_j, p_k, p_l, ncol = 4) &
   theme(plot.background = element_rect(fill = "transparent", color = NA))
 
-ggsave("Figures/Fig4.png", fig, units = "cm", dpi = 600, width = 18, height = 12)
-ggsave("Figures/SVG/Fig4.svg", fig, units = "cm", width = 18, height = 12)
-clean_svg("Figures/SVG/Fig4.svg")
+ggsave("Figures/Other/Fig_Cascade.png", fig, units = "cm", dpi = 600, width = 18, height = 12)
+ggsave("Figures/Other/SVG/Fig_Cascade.svg", fig, units = "cm", width = 18, height = 12)
+clean_svg("Figures/Other/SVG/Fig_Cascade.svg")
 
-cat("  Saved: Figures/Fig4.png\n\n")
-cat("=== Figure 4 - Cascade done ===\n")
+cat("  Saved: Figures/Other/Fig_Cascade.png\n\n")
+cat("=== Cascade done ===\n")
 
 # EoF

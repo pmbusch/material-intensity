@@ -1,7 +1,7 @@
 ## =============================================================================
-## Figure 2 - MaterialFlows_TimeSeries.R
+## MaterialFlows_TimeSeries.R
 ## Stacked area charts of domestic extraction (DE) at Level 3 material detail.
-## Reads from Parameters/MaterialFlows/; saves figures to Figures/
+## Reads from Parameters/MaterialFlows/; saves figures to Figures/Other/MaterialFlows/
 ## =============================================================================
 
 source('Scripts/00-Libraries.R', encoding = 'UTF-8')
@@ -115,9 +115,9 @@ ggplot(world_l3, aes(x = year, y = DE_Gt, fill = material_l3)) +
   )
 
 # fmt: skip
-ggsave("Figures/MaterialFlows/Fig1A_world_DE_L3_sorted_by_size.png",     last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7)
+ggsave("Figures/Other/MaterialFlows/Fig1A_world_DE_L3_sorted_by_size.png",     last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7)
 ggsave(
-  "Figures/MaterialFlows/SVG/Fig1A_world_DE_L3_sorted_by_size.svg",
+  "Figures/Other/MaterialFlows/SVG/Fig1A_world_DE_L3_sorted_by_size.svg",
   last_plot(),
   units = "cm",
   width = 8.7 * 2,
@@ -170,9 +170,9 @@ ggplot(world_l3_2b, aes(x = year, y = DE_Gt, fill = material_l3)) +
   )
 
 # fmt: skip
-ggsave("Figures/MaterialFlows/Fig1B_world_DE_L3_sorted_by_L1group.png",     last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7)
+ggsave("Figures/Other/MaterialFlows/Fig1B_world_DE_L3_sorted_by_L1group.png",     last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7)
 ggsave(
-  "Figures/MaterialFlows/SVG/Fig1B_world_DE_L3_sorted_by_L1group.svg",
+  "Figures/Other/MaterialFlows/SVG/Fig1B_world_DE_L3_sorted_by_L1group.svg",
   last_plot(),
   units = "cm",
   width = 8.7 * 2,
@@ -231,9 +231,9 @@ for (l1 in sort(unique(df_region_plot$material_l1))) {
 
   out_base <- paste0("Fig1C_DE_region_facet_L3_", l1_tag)
   # fmt: skip
-  ggsave(paste0("Figures/MaterialFlows/",     out_base, ".png"), p, units = "cm", dpi = 600, width = fig_w, height = fig_h)
-  ggsave(paste0("Figures/MaterialFlows/SVG/", out_base, ".svg"), p, units = "cm", width = fig_w, height = fig_h)
-  clean_svg(paste0("Figures/MaterialFlows/SVG/", out_base, ".svg"))
+  ggsave(paste0("Figures/Other/MaterialFlows/",     out_base, ".png"), p, units = "cm", dpi = 600, width = fig_w, height = fig_h)
+  ggsave(paste0("Figures/Other/MaterialFlows/SVG/", out_base, ".svg"), p, units = "cm", width = fig_w, height = fig_h)
+  clean_svg(paste0("Figures/Other/MaterialFlows/SVG/", out_base, ".svg"))
   cat("  Saved:", out_base, "\n")
 }
 
@@ -279,9 +279,9 @@ ggplot(world_l3_2d, aes(x = year, y = DE_Gt, fill = material_l3)) +
   )
 
 # fmt: skip
-ggsave("Figures/MaterialFlows/Fig1D_world_DE_L3_facet_L2.png",     last_plot(), units = "cm", dpi = 600, width = 8.7 * 4, height = 8.7 * 4)
+ggsave("Figures/Other/MaterialFlows/Fig1D_world_DE_L3_facet_L2.png",     last_plot(), units = "cm", dpi = 600, width = 8.7 * 4, height = 8.7 * 4)
 ggsave(
-  "Figures/MaterialFlows/SVG/Fig1D_world_DE_L3_facet_L2.svg",
+  "Figures/Other/MaterialFlows/SVG/Fig1D_world_DE_L3_facet_L2.svg",
   last_plot(),
   units = "cm",
   width = 8.7 * 4,

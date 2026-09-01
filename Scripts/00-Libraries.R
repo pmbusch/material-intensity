@@ -53,9 +53,10 @@ clean_svg <- function(filename, output = filename) {
   writeLines(svg_content, output)
 }
 
-group_svg_layers <- function(input, output = input, flat = FALSE) {
+group_svg_layers <- function(input, output = input) {
   doc <- xml2::read_xml(input)
   xml2::xml_set_attr(xml2::xml_root(doc), "xmlns:inkscape", "http://www.inkscape.org/namespaces/inkscape")
+  root_g <- xml2::xml_find_first(doc, "/*[local-name()='svg']/*[local-name()='g'][@class='svglite']")
 
   classify <- function(node) {
     tag <- xml2::xml_name(node)
@@ -65,57 +66,46 @@ group_svg_layers <- function(input, output = input, flat = FALSE) {
     }
     switch(
       tag,
-      text = "labels",
-      polygon = "data",
-      circle = "data",
-      path = "data",
-      rect = "frame",
-      line = "frame",
+      text = "Labels",
+      polygon = "Data",
+      circle = "Data",
+      path = "Data",
+      rect = "Grid",
+      line = "Grid",
       polyline = {
         if (grepl("stroke-dasharray", sty)) {
-          "grids"
+          "Grid"
         } else {
           n <- length(strsplit(trimws(xml2::xml_attr(node, "points")), "\\s+")[[1]])
-          if (n <= 2) "frame" else "data"
+          if (n <= 2) "Grid" else "Data"
         }
       },
       NA_character_
     )
   }
 
-  # Panel content groups: <g> children of <g class='svglite'> with >2 elements
-  groups <- xml2::xml_find_all(doc, "/*[local-name()='svg']/*[local-name()='g']/*[local-name()='g']")
-  panels <- groups[vapply(
-    groups,
-    function(g) {
-      length(xml2::xml_children(g)) > 2
-    },
-    logical(1)
-  )]
+  elems <- xml2::xml_find_all(root_g, "./*[local-name()='g']/*[not(local-name()='g')]")
+  cats <- vapply(elems, classify, character(1))
 
-  cat_order <- c("frame", "grids", "data", "labels")
-
-  for (i in seq_along(panels)) {
-    p <- panels[[i]]
-    kids <- xml2::xml_children(p)
-    cats <- vapply(kids, classify, character(1))
-
-    for (cat in cat_order) {
-      idx <- which(cats == cat)
-      if (!length(idx)) {
-        next
-      }
-      gname <- if (flat) cat else sprintf("panel%d.%s", i, cat)
-      wrapper <- xml2::xml_add_child(p, "g")
-      xml2::xml_set_attr(wrapper, "id", gname)
-      xml2::xml_set_attr(wrapper, "inkscape:label", gname)
-      xml2::xml_set_attr(wrapper, "inkscape:groupmode", "layer")
-      for (k in idx) {
-        xml2::xml_add_child(wrapper, kids[[k]], .copy = TRUE)
-        xml2::xml_remove(kids[[k]])
-      } # moves node
-    }
+  wrappers <- list()
+  for (cat in c("Grid", "Data", "Labels")) {
+    w <- xml2::xml_add_child(root_g, "g") # inside g597
+    xml2::xml_set_attr(w, "id", cat)
+    xml2::xml_set_attr(w, "inkscape:label", cat)
+    xml2::xml_set_attr(w, "inkscape:groupmode", "layer")
+    wrappers[[cat]] <- w
   }
+
+  for (i in seq_along(elems)) {
+    if (is.na(cats[i])) {
+      next
+    }
+    xml2::xml_add_child(wrappers[[cats[i]]], elems[[i]])
+    xml2::xml_remove(elems[[i]])
+  }
+
+  empties <- xml2::xml_find_all(root_g, "./*[local-name()='g'][not(*)][not(@inkscape:label)]")
+  xml2::xml_remove(empties)
 
   xml2::write_xml(doc, output)
   clean_svg(output)

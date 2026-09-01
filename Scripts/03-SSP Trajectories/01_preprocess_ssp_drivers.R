@@ -209,10 +209,10 @@ cat("Year range:", min(iiasa_annual$year), "-", max(iiasa_annual$year), "\n")
 # match?
 inner_join(
   iiasa_region |>
-    filter(year %in% seq(2025, 2060, 5), variable == "GDP|PPP", ssp == "SSP2") |>
+    filter(year %in% seq(2025, FORECAST_END, 5), variable == "GDP|PPP", ssp == "SSP2") |>
     rename(original = value),
   iiasa_annual |>
-    filter(year %in% seq(2025, 2060, 5), variable == "GDP|PPP", ssp == "SSP2") |>
+    filter(year %in% seq(2025, FORECAST_END, 5), variable == "GDP|PPP", ssp == "SSP2") |>
     rename(interpolated = value),
   by = c("ssp", "Region", "variable", "year")
 ) |>
@@ -281,14 +281,14 @@ library(geomtextpath)
 library(geomtextpath)
 
 iiasa_indexed |>
-  filter(year <= 2060) |>
+  filter(year <= FORECAST_END) |>
   filter(year >= 1970) |>
   filter(variable != "GDP|PPP") |>
   mutate(variable = factor(variable, levels = c("Population", "GDP|PPP [per capita]"))) |>
   ggplot(aes(year, index)) +
-  # Historical line (1960–2024): black, all scenarios overlap so just use SSP1 to avoid duplication
+  # Historical line (1960-2024): black, all scenarios overlap so just use SSP1 to avoid duplication
   geom_line(data = ~ filter(.x, year <= 2024, scenario == "SSP1"), color = "black") +
-  # Projections (2024–2060): colored by scenario
+  # Projections (2024-FORECAST_END): colored by scenario
   geom_line(data = ~ filter(.x, year >= 2024), aes(col = scenario)) +
   # Labels only on East Asia facet
   geom_textline(

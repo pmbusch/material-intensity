@@ -1,7 +1,7 @@
 ## =============================================================================
-## Figure 2 - Drivers.R
+## Drivers.R
 ## Line charts of DMC per capita and material intensity by region.
-## Reads pre-aggregated regional files from Parameters/; saves to Figures/
+## Reads pre-aggregated regional files from Parameters/; saves to Figures/Other/
 ## =============================================================================
 
 source('Scripts/00-Libraries.R', encoding = 'UTF-8')
@@ -118,9 +118,9 @@ ggplot(pc_grp_h, aes(x = year, y = DMC_pc_tonnes, colour = analysis_group, label
   theme(legend.position = "none", plot.title = element_text(hjust = 0.5))
 
 # fmt: skip
-ggsave("Figures/Fig2A_DMC_per_capita_by_region.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7*1.5)
+ggsave("Figures/Other/Fig2A_DMC_per_capita_by_region.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7*1.5)
 ggsave(
-  "Figures/SVG/Fig2A_DMC_per_capita_by_region.svg",
+  "Figures/Other/SVG/Fig2A_DMC_per_capita_by_region.svg",
   ggplot2::last_plot(),
   units = 'cm',
   width = 8.7 * 2,
@@ -176,9 +176,9 @@ ggplot(
   theme(legend.position = "none", plot.title = element_text(hjust = 0.5))
 
 # fmt: skip
-ggsave("Figures/Fig2B_material_intensity.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7*1.5)
+ggsave("Figures/Other/Fig2B_material_intensity.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7*1.5)
 # fmt: skip
-ggsave("Figures/SVG/Fig2B_material_intensity.svg",ggplot2::last_plot(),units = 'cm',width = 8.7 * 2,height = 8.7 * 1.5)
+ggsave("Figures/Other/SVG/Fig2B_material_intensity.svg",ggplot2::last_plot(),units = 'cm',width = 8.7 * 2,height = 8.7 * 1.5)
 
 
 ###################
@@ -274,9 +274,9 @@ ggplot(pc_mat_h, aes(x = year, y = DMC_pc_tonnes, colour = analysis_group, label
   theme(legend.position = "none", plot.title = element_text(hjust = 0.5))
 
 # fmt: skip
-ggsave("Figures/Fig2C_DMC_per_capita_by_material.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*4, height = 8.7*4)
+ggsave("Figures/Other/Fig2C_DMC_per_capita_by_material.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*4, height = 8.7*4)
 ggsave(
-  "Figures/SVG/Fig2C_DMC_per_capita_by_material.svg",
+  "Figures/Other/SVG/Fig2C_DMC_per_capita_by_material.svg",
   ggplot2::last_plot(),
   units = 'cm',
   width = 8.7 * 4,
@@ -390,9 +390,9 @@ ggplot(
   theme(legend.position = "none", plot.title = element_text(hjust = 0.5))
 
 # fmt: skip
-ggsave("Figures/Fig2D_material_intensity_byMaterial.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*4, height = 8.7*4)
+ggsave("Figures/Other/Fig2D_material_intensity_byMaterial.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*4, height = 8.7*4)
 ggsave(
-  "Figures/SVG/Fig2D_material_intensity_byMaterial.svg",
+  "Figures/Other/SVG/Fig2D_material_intensity_byMaterial.svg",
   ggplot2::last_plot(),
   units = 'cm',
   width = 8.7 * 4,
@@ -446,9 +446,9 @@ ggplot(mat_region_stacked, aes(x = year, y = DMC_Mt, fill = analysis_group)) +
   )
 
 # fmt: skip
-ggsave("Figures/Fig2F_small_multiples_material_region.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*4, height = 8.7*3)
+ggsave("Figures/Other/Fig2F_small_multiples_material_region.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*4, height = 8.7*3)
 ggsave(
-  "Figures/SVG/Fig2F_small_multiples_material_region.svg",
+  "Figures/Other/SVG/Fig2F_small_multiples_material_region.svg",
   ggplot2::last_plot(),
   units = 'cm',
   width = 8.7 * 4,

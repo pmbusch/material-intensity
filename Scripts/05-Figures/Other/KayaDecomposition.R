@@ -1,5 +1,5 @@
 ## =============================================================================
-## Figure Kaya - Kaya Identity Decomposition.R
+## KayaDecomposition.R
 ## Decomposes global material consumption (DMC) into Kaya drivers:
 ##   Mat = Population × (GDP / Population) × (Mat / GDP)
 ## All four drivers expressed as % change relative to 1970 (base = 0 %).
@@ -12,7 +12,7 @@
 ##   Ke1 — PDF: facet by region, one page per material group  (6 pages)
 ##   Ke2 — PDF: facet by region, one page per material category (~22 pages)
 ##
-## Reads from Parameters/ and Inputs/; saves to Figures/
+## Reads from Parameters/ and Inputs/; saves to Figures/Other/
 ## =============================================================================
 
 source('Scripts/00-Libraries.R', encoding = 'UTF-8')
@@ -186,9 +186,9 @@ world_kaya <- compute_kaya_idx(world_agg)
 plot_kaya(world_kaya, title = "Global Material Consumption", subtitle = "")
 
 # fmt: skip
-ggsave("Figures/FigKa_global_kaya.png", last_plot(), units = 'cm', dpi = 600,width = 8.7 * 2, height = 8.7 * 1.4)
-ggsave("Figures/SVG/FigKa_global_kaya.svg", last_plot(), units = 'cm', width = 8.7 * 2, height = 8.7 * 1.4)
-clean_svg("Figures/SVG/FigKa_global_kaya.svg")
+ggsave("Figures/Other/FigKa_global_kaya.png", last_plot(), units = 'cm', dpi = 600,width = 8.7 * 2, height = 8.7 * 1.4)
+ggsave("Figures/Other/SVG/FigKa_global_kaya.svg", last_plot(), units = 'cm', width = 8.7 * 2, height = 8.7 * 1.4)
+clean_svg("Figures/Other/SVG/FigKa_global_kaya.svg")
 
 
 ## Figure Kb: Kaya faceted by region -------------------------------------------
@@ -205,9 +205,9 @@ plot_kaya(region_kaya, title = "Kaya Decomposition by Region", subtitle = "All m
   facet_wrap(~analysis_group, nrow = 3, scales = "free_y")
 
 # fmt: skip
-ggsave("Figures/FigKb_region_kaya.png", last_plot(), units = 'cm', dpi = 600, width = 8.7 * 3, height = 8.7 * 3.2)
-ggsave("Figures/SVG/FigKb_region_kaya.svg", last_plot(), units = 'cm', width = 8.7 * 3, height = 8.7 * 3.2)
-clean_svg("Figures/SVG/FigKb_region_kaya.svg")
+ggsave("Figures/Other/FigKb_region_kaya.png", last_plot(), units = 'cm', dpi = 600, width = 8.7 * 3, height = 8.7 * 3.2)
+ggsave("Figures/Other/SVG/FigKb_region_kaya.svg", last_plot(), units = 'cm', width = 8.7 * 3, height = 8.7 * 3.2)
+clean_svg("Figures/Other/SVG/FigKb_region_kaya.svg")
 
 
 ## Figure Kc: Kaya global + faceted by material group --------------------------
@@ -235,9 +235,9 @@ plot_kaya(
   facet_wrap(~Material_group, nrow = 2, scales = "free_y")
 
 # fmt: skip
-ggsave("Figures/FigKc_materialgroup_kaya.png", last_plot(), units = 'cm', dpi = 600,width = 8.7 * 2, height = 8.7 * 2.3)
-ggsave("Figures/SVG/FigKc_materialgroup_kaya.svg", last_plot(), units = 'cm', width = 8.7 * 2, height = 8.7 * 2.3)
-clean_svg("Figures/SVG/FigKc_materialgroup_kaya.svg")
+ggsave("Figures/Other/FigKc_materialgroup_kaya.png", last_plot(), units = 'cm', dpi = 600,width = 8.7 * 2, height = 8.7 * 2.3)
+ggsave("Figures/Other/SVG/FigKc_materialgroup_kaya.svg", last_plot(), units = 'cm', width = 8.7 * 2, height = 8.7 * 2.3)
+clean_svg("Figures/Other/SVG/FigKc_materialgroup_kaya.svg")
 
 
 ## Figure Kd: Kaya global + faceted by material category -----------------------
@@ -266,9 +266,9 @@ plot_kaya(
   facet_wrap(~material_category, nrow = 4, scales = "free_y")
 
 # fmt: skip
-ggsave("Figures/FigKd_material_kaya.png", last_plot(), units = 'cm', dpi = 600,width = 8.7 * 6, height = 8.7 * 4.2)
-ggsave("Figures/SVG/FigKd_material_kaya.svg", last_plot(), units = 'cm', width = 8.7 * 6, height = 8.7 * 4.2)
-clean_svg("Figures/SVG/FigKd_material_kaya.svg")
+ggsave("Figures/Other/FigKd_material_kaya.png", last_plot(), units = 'cm', dpi = 600,width = 8.7 * 6, height = 8.7 * 4.2)
+ggsave("Figures/Other/SVG/FigKd_material_kaya.svg", last_plot(), units = 'cm', width = 8.7 * 6, height = 8.7 * 4.2)
+clean_svg("Figures/Other/SVG/FigKd_material_kaya.svg")
 
 
 ## Figure Ke: PDFs — Kaya by region for each material group / category ---------
@@ -277,7 +277,7 @@ cat("── Figure Ke ──\n")
 
 # -- Part 1: one page per material group (6 pages) ----------------------------
 
-pdf_path_e1 <- "Figures/FigKe1_kaya_region_by_materialgroup.pdf"
+pdf_path_e1 <- "Figures/Other/FigKe1_kaya_region_by_materialgroup.pdf"
 pdf(
   pdf_path_e1,
   width = 8.7 * 3 / 2.54, # cm → inches
@@ -322,7 +322,7 @@ cat("  Saved:", pdf_path_e1, "\n")
 
 # -- Part 2: one page per material category (~22 pages) -----------------------
 
-pdf_path_e2 <- "Figures/FigKe2_kaya_region_by_material.pdf"
+pdf_path_e2 <- "Figures/Other/FigKe2_kaya_region_by_material.pdf"
 pdf(pdf_path_e2, width = 8.7 * 3 / 2.54, height = 8.7 * 3 / 2.54)
 
 for (mat in mat_order) {

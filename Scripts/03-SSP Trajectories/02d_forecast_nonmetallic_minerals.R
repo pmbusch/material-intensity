@@ -1,6 +1,6 @@
 ## =============================================================================
 ## 02d_forecast_nonmetallic_minerals.R
-## Forward Dynamic Stock Model (DSM) forecast for Non-metallic Minerals, 2025-2060.
+## Forward Dynamic Stock Model (DSM) forecast for Non-metallic Minerals, 2025-FORECAST_END.
 ## Five SSP scenarios; cohort-based; lifetime distributions from Script 02b.
 ##
 ## Inputs:
@@ -139,7 +139,7 @@ stock_2024_cal <- read_csv("Parameters/stock_2024_total.csv", show_col_types = F
 cat("  Calibrated global stock 2024 (Script 02b):", round(stock_2024_cal / 1e3, 1), "Gt\n")
 
 
-# Step 2: Build target stock intensity trajectory (2024-2060) ------------------
+# Step 2: Build target stock intensity trajectory (2024-FORECAST_END) ----------
 
 cat("\nSTEP 2: Build stock intensity trajectory\n")
 
@@ -394,7 +394,7 @@ cat("  Saved: Results/", MATERIAL_KEY, "_forecast.csv (", nrow(forecast_out), " 
 cat("\nSTEP 8: Save validation plots to Figures/Forecast/\n")
 
 
-# -- Plot A: Historical (1970-2024) + SSP forecast fan (2025-2060) by region ---
+# -- Plot A: Historical (1970-2024) + SSP forecast fan (2025-FORECAST_END) by region --
 
 hist_traj <- read_csv("Parameters/Intermediate/stock_trajectory_1970_2024.csv", show_col_types = FALSE) |>
   rename(region = Region) |>
@@ -462,7 +462,10 @@ p_traj <- ggplot() +
   scale_colour_manual(values = c(PALETTE_REGIONS, "Global" = "black"), na.value = "#999999") +
   scale_fill_manual(values = c(PALETTE_REGIONS, "Global" = "black"), na.value = "#999999") +
   coord_cartesian(expand = FALSE, clip = "off") +
-  labs(title = paste(MATERIAL_LABEL, "— In-use stock trajectory 1970–2060"), x = "Year", y = "In-use stock (Gt)") +
+  labs(
+    title = paste0(MATERIAL_LABEL, " - In-use stock trajectory 1970-", FORECAST_END),
+    x = "Year", y = "In-use stock (Gt)"
+  ) +
   theme_pb_large() +
   theme(legend.position = "none")
 p_traj
@@ -471,7 +474,7 @@ p_traj
 ggsave(paste0("Figures/Stocks/", MATERIAL_KEY, "_stock_trajectory.png"),p_traj,units = "cm",dpi = 600,width = 8.7 * 2,height = 8.7 * 2)
 
 
-# -- Plot B: Production 2025-2060 (SSP2), stacked replacement vs new, by region -
+# -- Plot B: Production 2025-FORECAST_END (SSP2), stacked replacement vs new, by region --
 
 prod_plot <- forecast_out |>
   filter(scenario == "SSP2") |>
@@ -494,7 +497,7 @@ p_prod <- prod_plot |>
   scale_fill_manual(values = c("New additions" = "#2C7BB6", "Replacement" = "#D7191C"), name = NULL) +
   coord_cartesian(expand = FALSE, clip = "off", ylim = c(0, NA)) +
   labs(
-    title = paste(MATERIAL_LABEL, "— Production requirements 2025–2060 (SSP2)"),
+    title = paste0(MATERIAL_LABEL, " - Production requirements 2025-", FORECAST_END, " (SSP2)"),
     x = "Year",
     y = "Production (Mt/yr)"
   ) +
@@ -523,7 +526,7 @@ cat(
 cat("\n  Global production (Mt) under SSP2:\n")
 print(
   summary_raw |>
-    filter(scenario == "SSP2", year %in% c(2030, 2050, 2060)) |>
+    filter(scenario == "SSP2", year %in% c(2030, 2050, FORECAST_END)) |>
     group_by(year) |>
     summarise(production_Mt = round(sum(production_Mt, na.rm = TRUE), 1), .groups = "drop")
 )

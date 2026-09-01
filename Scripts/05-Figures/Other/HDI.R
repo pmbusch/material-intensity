@@ -1,10 +1,10 @@
 ## =============================================================================
-## Figure-HDI.R
+## HDI.R
 ## HDI vs DMC per capita country trajectories, 1990–2023
 ## Y: Human Development Index; X: Domestic Material Consumption per capita (t/cap)
 ## ~35 countries as paths; colour by country (semantically grouped by region);
 ## alpha gradient on decade dots; arrow at path end; direct country labels.
-## Reads from Parameters/ and Inputs/; saves to Figures/
+## Reads from Parameters/ and Inputs/; saves to Figures/Other/
 ## =============================================================================
 
 source('Scripts/00-Libraries.R', encoding = 'UTF-8')
@@ -240,8 +240,8 @@ ggplot(df_sel, aes(x = dmc_pc, y = hdi, colour = ISO3, group = ISO3)) +
   theme(legend.position = "none")
 
 # fmt: skip
-ggsave("Figures/Fig-HDI.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 , height = 8.7 )
-ggsave("Figures/SVG/Fig-HDI.svg", ggplot2::last_plot(), units = "cm", width = 8.7, height = 8.7)
-clean_svg("Figures/SVG/Fig-HDI.svg")
+ggsave("Figures/Other/Fig-HDI.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 , height = 8.7 )
+ggsave("Figures/Other/SVG/Fig-HDI.svg", ggplot2::last_plot(), units = "cm", width = 8.7, height = 8.7)
+clean_svg("Figures/Other/SVG/Fig-HDI.svg")
 
 # EoF

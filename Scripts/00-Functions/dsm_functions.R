@@ -25,13 +25,13 @@ get_survival <- function(ages, mean_life, k) {
 }
 
 
-# -- Forward DSM: 2025-2060 for one (region x end_use x scenario) group -------
+# -- Forward DSM: 2025-FORECAST_END for one (region x end_use x scenario) group ----
 #
 # cohorts_2024      tibble: cohort_year, surviving_stock_Mt (age profile at start_year)
 # target_stock_traj tibble: year, target_stock_Mt (annual targets; must cover start+1..end)
 # mean_life, k      Weibull parameters
 # start_year        simulation anchor year (default 2024)
-# end_year          last simulation year (default 2060)
+# end_year          last simulation year (default FORECAST_END, Scripts/00-CommonParameters.R)
 # snapshot_years    years to record full cohort age profile
 #
 # Returns list:
@@ -220,7 +220,7 @@ run_forward_dsm <- function(
 #                           (central values from Lifetimes sheet used in
 #                            03_UNEP_stock_flow_model.R to build the age profile)
 #   start_year          base year (default 2024)
-#   end_year            last year (default 2060)
+#   end_year            last year (default FORECAST_END, Scripts/00-CommonParameters.R)
 #
 # Returns a list of 6 elements: year + 5 numeric vectors of length (end_year - start_year):
 #   total_stock, new_additions, replacement, production, waste

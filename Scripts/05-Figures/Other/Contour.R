@@ -1,5 +1,5 @@
 ## =============================================================================
-## Fig - Contour.R
+## Contour.R
 ## Phase-space trajectories: Mat/GDP (x) vs GDP/Person (y) by region, 1970–2023
 ## Each path traces one region every 5 years; iso-lines show constant Mat/capita.
 ## X axis: linear (Mat/GDP).  Y axis: log (GDP/capita).
@@ -8,7 +8,7 @@
 ##   A — all materials summed
 ##   B — faceted by material group  (6 groups, same classification as Fig 1C)
 ##   C — faceted by all 22 material categories
-## Reads from Parameters/ and Inputs/; saves figures to Figures/
+## Reads from Parameters/ and Inputs/; saves figures to Figures/Other/
 ## =============================================================================
 
 source('Scripts/00-Libraries.R', encoding = 'UTF-8')
@@ -361,9 +361,9 @@ ggplot(region_all, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
   theme(legend.position = "none")
 
 # fmt: skip
-ggsave("Figures/FigContour_A_all.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7 * 2, height = 8.7 * 2)
-ggsave("Figures/SVG/FigContour_A_all.svg", ggplot2::last_plot(), units = 'cm', width = 8.7 * 2, height = 8.7 * 2)
-clean_svg("Figures/SVG/FigContour_A_all.svg")
+ggsave("Figures/Other/FigContour_A_all.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7 * 2, height = 8.7 * 2)
+ggsave("Figures/Other/SVG/FigContour_A_all.svg", ggplot2::last_plot(), units = 'cm', width = 8.7 * 2, height = 8.7 * 2)
+clean_svg("Figures/Other/SVG/FigContour_A_all.svg")
 
 
 ## FIGURE B: Faceted by material group -----------------------------------------
@@ -498,9 +498,9 @@ ggplot(region_grp, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
   theme(legend.position = "none", axis.text.x = element_text(size = 6), axis.text.y = element_text(size = 6))
 
 # fmt: skip
-ggsave("Figures/FigContour_B_material_group.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7 * 3, height = 8.7 * 2)
+ggsave("Figures/Other/FigContour_B_material_group.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7 * 3, height = 8.7 * 2)
 ggsave(
-  "Figures/SVG/FigContour_B_material_group.svg",
+  "Figures/Other/SVG/FigContour_B_material_group.svg",
   ggplot2::last_plot(),
   units = 'cm',
   width = 8.7 * 3,
@@ -676,9 +676,9 @@ ggplot(region_mat, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_group)) +
   theme(legend.position = "none", axis.text.x = element_text(size = 5), axis.text.y = element_text(size = 5))
 
 # fmt: skip
-ggsave("Figures/FigContour_C_22_materials.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7 * 4, height = 8.7 * 3)
+ggsave("Figures/Other/FigContour_C_22_materials.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7 * 4, height = 8.7 * 3)
 ggsave(
-  "Figures/SVG/FigContour_C_22_materials.svg",
+  "Figures/Other/SVG/FigContour_C_22_materials.svg",
   ggplot2::last_plot(),
   units = 'cm',
   width = 8.7 * 4,
@@ -770,9 +770,9 @@ ggplot() +
   theme(legend.position = "none")
 
 # fmt: skip
-ggsave("Figures/FigContour_D_material_groups.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7 * 2, height = 8.7 * 2)
+ggsave("Figures/Other/FigContour_D_material_groups.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7 * 2, height = 8.7 * 2)
 ggsave(
-  "Figures/SVG/FigContour_D_material_groups.svg",
+  "Figures/Other/SVG/FigContour_D_material_groups.svg",
   ggplot2::last_plot(),
   units = 'cm',
   width = 8.7 * 2,
@@ -1090,17 +1090,17 @@ fig3 <- (pFig3a | p9mat) &
     panel.background = element_rect(fill = "transparent", color = NA)
   )
 
-ggsave("Figures/Fig3.png", fig3, units = "cm", dpi = 600, width = 8.7 * 4, height = 8.7 * 2)
-ggsave("Figures/SVG/Fig3.svg", fig3, units = "cm", width = 8.7 * 4, height = 8.7 * 2)
-clean_svg("Figures/SVG/Fig3.svg")
-cat("  Saved: Figures/Fig3.png\n")
+ggsave("Figures/Other/FigContour_F_MaterialIntensityGDP.png", fig3, units = "cm", dpi = 600, width = 8.7 * 4, height = 8.7 * 2)
+ggsave("Figures/Other/SVG/FigContour_F_MaterialIntensityGDP.svg", fig3, units = "cm", width = 8.7 * 4, height = 8.7 * 2)
+clean_svg("Figures/Other/SVG/FigContour_F_MaterialIntensityGDP.svg")
+cat("  Saved: Figures/Other/FigContour_F_MaterialIntensityGDP.png\n")
 
 # fmt: skip
-ggsave("Figures/Fig_9mat.png", p9mat, units = "cm", dpi = 600, width = 8.7 * 2.5, height = 8.7 * 2.5)
+ggsave("Figures/Other/FigContour_E_9mat.png", p9mat, units = "cm", dpi = 600, width = 8.7 * 2.5, height = 8.7 * 2.5)
 # fmt: skip
-ggsave("Figures/SVG/Fig_9mat.svg", p9mat, units = "cm", width = 8.7 * 2.5, height = 8.7 * 2.5)
-clean_svg("Figures/SVG/Fig_9mat.svg")
-cat("  Saved: Figures/Fig_9mat.png\n")
+ggsave("Figures/Other/SVG/FigContour_E_9mat.svg", p9mat, units = "cm", width = 8.7 * 2.5, height = 8.7 * 2.5)
+clean_svg("Figures/Other/SVG/FigContour_E_9mat.svg")
+cat("  Saved: Figures/Other/FigContour_E_9mat.png\n")
 
 
 ## Save figure data ----------------------------------------------------------

@@ -33,7 +33,13 @@
 ##
 ## Output:
 ##   Parameters/Intermediate/historical_secondary_flows.csv
-##     columns: Region, material_group, year, primary_Mt, secondary_Mt
+##     columns: Region, material_group, year, primary_Mt, secondary_Mt,
+##       waste_Mt, recovered_Mt
+##     waste_Mt/recovered_Mt (added for Figure 5's contour version, panels
+##     c/d's historical recycling/downcycling anchor) are the pre-ore-grade-
+##     conversion mass pair recovered_Mt/waste_Mt already computed in Step 5
+##     below (secondary_Mt_carrier/waste_Mt) -- i.e. real recovered-outflow
+##     mass over real total-outflow mass, not a literature rate average.
 ## =============================================================================
 
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
@@ -251,12 +257,21 @@ secondary_super <- secondary_super %>%
 
 
 # Step 7: Aggregate to Region x material_group x year -------------------------
+# waste_Mt/recovered_Mt are also carried through here (pre-ore-grade-
+# conversion mass, i.e. Step 5's own units) so the recovered/total-outflow
+# ratio survives aggregation intact -- Figure 5's contour version uses this
+# ratio directly as its historical recycling/downcycling rate.
 
 cat("\nSTEP 7: Aggregate secondary flow to Region x material_group x year\n")
 
 secondary_hist <- secondary_super %>%
   group_by(Region, material_group, year) %>%
-  summarise(secondary_Mt = sum(secondary_Mt, na.rm = TRUE), .groups = "drop")
+  summarise(
+    secondary_Mt = sum(secondary_Mt, na.rm = TRUE),
+    waste_Mt = sum(waste_Mt, na.rm = TRUE),
+    recovered_Mt = sum(secondary_Mt_carrier, na.rm = TRUE),
+    .groups = "drop"
+  )
 
 
 # Step 8: Historical primary flow (raw UNEP DMC extraction) ------------------
@@ -282,7 +297,11 @@ cat("\nSTEP 9: Combine and save\n")
 
 historical_secondary_flows <- primary_hist %>%
   full_join(secondary_hist, by = c("Region", "material_group", "year")) %>%
-  mutate(secondary_Mt = replace_na(secondary_Mt, 0)) %>%
+  mutate(
+    secondary_Mt = replace_na(secondary_Mt, 0),
+    waste_Mt = replace_na(waste_Mt, 0),
+    recovered_Mt = replace_na(recovered_Mt, 0)
+  ) %>%
   arrange(material_group, Region, year)
 
 write_csv(historical_secondary_flows, "Parameters/Intermediate/historical_secondary_flows.csv")

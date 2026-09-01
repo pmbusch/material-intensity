@@ -1,5 +1,6 @@
 ## =============================================================================
-## Figure 3 - VariableImportance.R
+## VariableImportance_v2.R
+## Deprecated original, superseded by "Figure 4 - VariableImportance.R".
 ## Top: flipped parameter-importance panel from 04-VariableImportance.R (SHAP
 ##   on DMC 2050, parameter contribution % vs consumption) next to a GDP/capita
 ##   vs consumption scatter, coloured by the 3-class CAGR-based decoupling
@@ -10,10 +11,10 @@
 ##   bar chart for that same subset, re-keyed on the average value of the
 ##   selected subset's draws (instead of the share of draws above 0.5).
 ##
-## No modelling here -- all inputs are cached by "Figure 3 - PrepareData.R"
+## No modelling here -- all inputs are cached by "Figure 4 - PrepareData.R"
 ## in Parameters/Intermediate/, so this script only loads CSVs and plots.
 ##
-## Output: Figures/Fig3.png / Figures/SVG/Fig3.svg
+## Output: Figures/Fig_VariableImportance_v2.png / Figures/SVG/Fig_VariableImportance_v2.svg
 ## =============================================================================
 
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
@@ -22,12 +23,12 @@ library(patchwork)
 
 pb_set_geom_defaults("largeFont") # floor size for every geom_text/label unless overridden via pb_annot_size()
 
-cat("=== Figure 3 - Variable Importance & Decoupling ===\n\n")
+cat("=== Variable Importance & Decoupling (v2, deprecated) ===\n\n")
 
 GDPCAP_COLOR <- "#117A65"
 vline_x <- 106.3 # 2024 actual primary consumption (Gt), see 05-Exploratory/04-VariableImportance.R -- panel a only
 DECOUPLE_PLOT_COLORS <- c(PALETTE_DECOUPLING, "Not classified" = "grey70", "Top 10%" = "black")
-ALPHA_SIG <- 0.05 # matches Figure 3 - PrepareData.R's significance threshold (t-test of subset mean vs 0.5)
+ALPHA_SIG <- 0.05 # matches Figure 4 - PrepareData.R's significance threshold (t-test of subset mean vs 0.5)
 
 
 # STEP 1: Load prepared data -----------------------------------------------------
@@ -95,7 +96,7 @@ p_left_flipped <- ggplot(plot_df, aes(x = x_gt, y = pct, fill = display_label)) 
 
 # STEP 3: Top-right panel - GDP/capita vs consumption growth, coloured by decoupling class ---
 # Both axes are per-capita CAGR, 2025-2050 (main_2050 variant), read straight
-# from mat_pc_cagr/gdp_pc_cagr (Figure 3 - PrepareData.R, sourced from
+# from mat_pc_cagr/gdp_pc_cagr (Figure 4 - PrepareData.R, sourced from
 # 19-Decoupling.R) -- growth is now the PRIMARY axis (previously a derived
 # sec_axis() bolted onto level axes, and the old y-axis was TOTAL consumption
 # growth, not per-capita, so the two growth rates weren't actually comparable).
@@ -104,7 +105,7 @@ p_left_flipped <- ggplot(plot_df, aes(x = x_gt, y = pct, fill = display_label)) 
 # Point colour comes from 19-Decoupling.R's rigorous CAGR classification (Total
 # material group, "main_2050" variant: window 2025-2050, actual population
 # weights) -- chosen specifically to end at 2050, matching this panel's
-# snapshot year (see Figure 3 - PrepareData.R STEP 3 for why a window ending
+# snapshot year (see Figure 4 - PrepareData.R STEP 3 for why a window ending
 # at 2060 instead would let colour and position disagree).
 # The percentile-rank `selected` subset (top 10% high GDP/capita & low
 # consumption, same one the bar panel below is conditioned on) is layered on
@@ -341,10 +342,10 @@ fig <- (p_left_flipped | p_right_flipped) /
   patchwork::plot_annotation(tag_levels = "a") &
   theme(plot.tag.position = c(0.95, 0.95))
 
-ggsave("Figures/Fig3.png", fig, units = "cm", dpi = 600, width = 18, height = 8.7 * 3)
-ggsave("Figures/SVG/Fig3.svg", fig, units = "cm", width = 18, height = 8.7 * 3)
-clean_svg("Figures/SVG/Fig3.svg")
-cat("  Saved: Figures/Fig3.png\n\n")
+ggsave("Figures/Fig_VariableImportance_v2.png", fig, units = "cm", dpi = 600, width = 18, height = 8.7 * 3)
+ggsave("Figures/SVG/Fig_VariableImportance_v2.svg", fig, units = "cm", width = 18, height = 8.7 * 3)
+clean_svg("Figures/SVG/Fig_VariableImportance_v2.svg")
+cat("  Saved: Figures/Fig_VariableImportance_v2.png\n\n")
 
 cat("=== Done ===\n")
 
