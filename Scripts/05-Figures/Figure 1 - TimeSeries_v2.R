@@ -1,0 +1,734 @@
+## =============================================================================
+## Figure 1 - TimeSeries_v2.R
+## Variant of Figure 1 - TimeSeries.R: panels a/b are identical (DMC by region
+## and by material, stacked areas). Panels c/d swap the phase-space X axis from
+## Material/GDP (kg/$) to GDP/Material ($/kg) — i.e. GDP generated per unit of
+## material consumed, instead of material consumed per unit of GDP.
+## Reads from Parameters/; saves the figure to Figures/ and per-panel data to
+## Figures/RawData/ (suffixed _v2 to avoid overwriting the original Figure 1).
+## =============================================================================
+
+source('Scripts/00-Libraries.R', encoding = 'UTF-8')
+
+# Materials (DMC) — already aggregated to Region by 01a-Aggregate_UNEP.R
+# Columns: Region, year, material_category, DMC_Mt
+df <- read_csv("Parameters/materials_region_DMC.csv", show_col_types = FALSE)
+df <- df |> filter(abs(DMC_Mt) > 0.1)
+cat("Rows:", nrow(df), "\n")
+
+## Colour palettes — defined in 00-CommonParameters.R -------------------------
+# PALETTE_REGIONS          : 8 regions
+# PALETTE_MATERIALS        : 21 material categories
+# PALETTE_MATERIAL_GROUPS  : 6 material groups
+
+# Panel b: Global DMC by material category -------------------------------------
+
+global_mat <- df %>%
+  filter(DMC_Mt > 0) |>
+  filter(!str_detect(material_category, "Waste for ")) |>
+  mutate(
+    material_group = case_when(
+      material_category %in%
+        c(
+          "Coal",
+          "Natural Gas",
+          "Petroleum",
+          "Oil shale and tar sands",
+          "Refined fossil fuels mainly for fuel e.g. LPG gasoline diesel",
+          "Other products mainly from fossil fuels e.g. plastics"
+        ) ~ "Fossil fuels",
+      material_category %in%
+        c(
+          "Crops",
+          "Crop Residues",
+          "Wood",
+          "Grazed biomass and fodder crops",
+          "Non-wild animal products",
+          "Wild catch and harvest",
+          "Products mainly from biomass nec.",
+          "Mixed / complex products nec."
+        ) ~ "Biomass",
+      material_category %in% c("Ferrous ores", "Non-ferrous ores", "Products mainly from metals nec.") ~ "Metal ores",
+      material_category %in%
+        c(
+          "Non-metallic minerals - construction dominant",
+          "Non-metallic minerals - industrial or agricultural dominant",
+          "Products mainly from non-metallic minerals"
+        ) ~ "Non-metallic minerals",
+
+      TRUE ~ NA_character_ # flags anything unclassified
+    )
+  ) |>
+  mutate(
+    material_category_plot = case_when(
+      material_category == "Coal" ~ "Coal",
+      material_category == "Natural Gas" ~ "Natural Gas",
+      material_category == "Petroleum" ~ "Petroleum",
+      material_category == "Crops" ~ "Crops",
+      material_category == "Crop Residues" ~ "Crop Residues",
+      material_category == "Wood" ~ "Wood",
+      material_category == "Grazed biomass and fodder crops" ~ "Grazed biomass",
+      material_category == "Ferrous ores" ~ "Ferrous ores",
+      material_category == "Non-ferrous ores" ~ "Non-ferrous ores",
+      material_category == "Non-metallic minerals - construction dominant" ~ "Construction minerals",
+      material_category == "Non-metallic minerals - industrial or agricultural dominant" ~ "Industrial minerals",
+      material_group == "Fossil fuels" ~ "Other - Fossil fuels",
+      material_group == "Biomass" ~ "Other - Biomass",
+      material_group == "Metal ores" ~ "Other - Metal ores",
+      material_group == "Non-metallic minerals" ~ "Other - Non-metallic minerals",
+      TRUE ~ "Other"
+    )
+  ) |>
+  group_by(year, material_group, material_category_plot) %>%
+  summarise(DMC_Gt = sum(DMC_Mt, na.rm = TRUE) / 1e3, .groups = "drop") |>
+  mutate(
+    material_group = factor(
+      material_group,
+      levels = rev(c("Non-metallic minerals", "Biomass", "Fossil fuels", "Metal ores"))
+    )
+  )
+
+PALETTE_MATERIALS <- c(
+  # Fossil fuels — brown family
+  "Coal" = "#3E2723",
+  "Natural Gas" = "#6D4C41",
+  "Petroleum" = "#A1887F",
+  "Other - Fossil fuels" = "#D7CCC8",
+  # Biomass — green family
+  "Crops" = "#1B5E20",
+  "Crop Residues" = "#388E3C",
+  "Wood" = "#558B2F",
+  "Grazed biomass" = "#8BC34A",
+  "Other - Biomass" = "#DCEDC8",
+  # Metal ores — red family
+  "Ferrous ores" = "#B71C1C",
+  "Non-ferrous ores" = "#E57373",
+  "Other - Metal ores" = "#FFCDD2",
+  # Non-metallic minerals — grey-blue family
+  "Construction minerals" = "#455A64",
+  "Industrial minerals" = "#90A4AE",
+  "Other - Non-metallic minerals" = "#CFD8DC"
+)
+
+mat_totals_1a <- global_mat %>%
+  group_by(material_group, material_category_plot) %>%
+  summarise(total = sum(DMC_Gt), .groups = "drop") %>%
+  arrange(material_group, total)
+
+global_mat <- global_mat %>%
+  mutate(material_category_plot = factor(material_category_plot, levels = mat_totals_1a$material_category_plot))
+
+labels_1a <- global_mat %>%
+  filter(year == 1995) %>%
+  arrange(desc(material_category_plot)) %>%
+  mutate(top = cumsum(DMC_Gt), bot = lag(top, default = 0), mid_y = (top + bot) / 2) %>%
+  mutate(material_category_label = if_else(DMC_Gt > 0.5, material_category_plot, NA_character_))
+
+group_boundaries <- global_mat %>%
+  arrange(year, desc(material_category_plot)) %>%
+  group_by(year) %>%
+  mutate(top = cumsum(DMC_Gt)) %>%
+  group_by(year, material_group) %>%
+  summarise(boundary_y = max(top), .groups = "drop") %>%
+  filter(material_group != last(levels(global_mat$material_category_plot))) # drop top
+
+group_labels <- group_boundaries %>%
+  arrange(year, desc(material_group)) %>%
+  filter(year == max(year)) %>%
+  mutate(bot = lag(boundary_y, default = 0), mid_y = (boundary_y + bot) / 2) |>
+  mutate(
+    material_group_label = case_when(
+      material_group == "Fossil fuels" ~ "Fossil\nfuels",
+      material_group == "Metal ores" ~ "Metal\nores",
+      TRUE ~ material_group
+    )
+  )
+
+p_material <- ggplot(global_mat, aes(x = year, y = DMC_Gt, fill = material_category_plot)) +
+  geom_area(colour = "black", linewidth = 0.05, alpha = 0.9) +
+  geom_text(
+    data = labels_1a |>
+      filter(
+        !material_category_plot %in%
+          c("Coal", "Crops", "Industrial minerals", "Construction minerals", "Ferrous ores", "Other - Fossil fuels")
+      ),
+    aes(x = year, y = mid_y, label = material_category_label),
+    colour = "black",
+    angle = 30,
+    hjust = 0.5,
+    size = 2.0,
+    inherit.aes = FALSE
+  ) +
+  geom_text(
+    data = labels_1a |>
+      filter(material_category_plot %in% c("Coal", "Crops")),
+    aes(x = year, y = mid_y, label = material_category_label),
+    colour = "white",
+    angle = 30,
+    hjust = 0.5,
+    size = 2.0,
+    inherit.aes = FALSE
+  ) +
+  geom_text(
+    data = labels_1a |> filter(material_category_plot == "Construction minerals"),
+    aes(x = year, y = mid_y, label = material_category_label),
+    colour = "white",
+    angle = 0,
+    hjust = 0.5,
+    size = 2.0,
+    inherit.aes = FALSE
+  ) +
+  geom_text(
+    data = labels_1a |> filter(material_category_plot == "Industrial minerals"),
+    aes(x = year, y = mid_y, label = material_category_label),
+    colour = PALETTE_MATERIALS["Industrial minerals"],
+    angle = 30,
+    hjust = 0.5,
+    size = 2.0,
+    nudge_y = -4,
+    inherit.aes = FALSE
+  ) +
+  geom_text(
+    data = labels_1a |> filter(material_category_plot == "Ferrous ores"),
+    aes(x = year, y = mid_y, label = material_category_label),
+    colour = PALETTE_MATERIALS["Ferrous ores"],
+    angle = 30,
+    hjust = 0.5,
+    size = 2.0,
+    nudge_y = 4,
+    inherit.aes = FALSE
+  ) +
+  geom_text(
+    data = labels_1a |> filter(material_category_plot == "Other - Fossil fuels"),
+    aes(x = year, y = mid_y, label = material_category_label),
+    colour = PALETTE_MATERIALS["Other - Fossil fuels"],
+    angle = 30,
+    hjust = 0.5,
+    size = 2.0,
+    inherit.aes = FALSE
+  ) +
+  annotate(
+    "text",
+    x = 2015,
+    y = 90,
+    label = "Other - Fossil fuels",
+    colour = PALETTE_MATERIALS["Other - Fossil fuels"],
+    angle = 30,
+    hjust = 0.5,
+    size = 2.0
+  ) +
+  geom_line(
+    data = group_boundaries,
+    aes(x = year, y = boundary_y, group = material_group),
+    colour = "black",
+    linewidth = 0.5,
+    inherit.aes = FALSE
+  ) +
+  geom_text(
+  data = group_labels,
+  aes(x = 2025, y = mid_y, label = material_group_label,color=material_group),
+  inherit.aes = FALSE, lineheight = 0.8,
+  fontface = "bold", size = 2.2,
+  angle = 90, hjust = 0.5,
+  clip = "off",vjust=0.9
+) +
+  # fmt: skip
+  annotate("text",x = -Inf, y = Inf,label = "b",hjust = -1, vjust = 1.2,fontface = "bold",size = 14 * 5 / 14 * 0.8,colour = "black") +
+  scale_fill_manual(values = PALETTE_MATERIALS, name = NULL) +
+  scale_colour_manual(values = PALETTE_MATERIAL_GROUPS, guide = "none") +
+  scale_x_continuous(breaks = seq(1970, 2024, 10), expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
+  coord_cartesian(clip = "off", xlim = c(1970, 2024)) +
+  theme_pb_large() +
+  labs(title = "Material", x = "Year", y = "Material Consumption (Gt)") +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(hjust = 0.5),
+    axis.title.x = element_text(margin = margin(t = 1)),
+    axis.text.x = element_text(margin = margin(t = 1)),
+    plot.margin = margin(t = 5, r = 15, b = 0, l = 5, unit = "pt")
+  )
+p_material
+
+
+# Panel a: Global DMC by region -------------------------------------------------
+
+# Data is already at region level — just rename for plot aesthetics
+global_grp <- df %>%
+  filter(DMC_Mt > 0) |>
+  filter(!str_detect(material_category, "Waste for ")) |>
+  rename(analysis_group = Region) %>%
+  filter(!is.na(analysis_group)) %>%
+  group_by(year, analysis_group) %>%
+  summarise(DMC_Gt = sum(DMC_Mt, na.rm = TRUE) / 1e3, .groups = "drop")
+
+grp_totals_1b <- global_grp %>%
+  group_by(analysis_group) %>%
+  summarise(total = sum(DMC_Gt), .groups = "drop") %>%
+  arrange(total)
+
+global_grp <- global_grp %>% mutate(analysis_group = factor(analysis_group, levels = grp_totals_1b$analysis_group))
+
+labels_1b <- global_grp %>%
+  filter(year == 1995) %>%
+  arrange(desc(analysis_group)) %>%
+  mutate(top = cumsum(DMC_Gt), bot = lag(top, default = 0), mid_y = (top + bot) / 2) %>%
+  mutate(label = if_else(DMC_Gt > 0.5, analysis_group, NA_character_))
+
+# Thicker black boundary between each region (regions have no further sub-grouping,
+# so every region gets the separator treatment analogous to the material-group
+# boundaries in panel b)
+region_boundaries <- global_grp %>%
+  arrange(year, desc(analysis_group)) %>%
+  group_by(year) %>%
+  mutate(top = cumsum(DMC_Gt)) %>%
+  group_by(year, analysis_group) %>%
+  summarise(boundary_y = max(top), .groups = "drop")
+
+p_region <- ggplot(global_grp, aes(x = year, y = DMC_Gt, fill = analysis_group)) +
+  geom_area(colour = "black", linewidth = 0.05, alpha = 0.9) +
+  geom_line(
+    data = region_boundaries,
+    aes(x = year, y = boundary_y, group = analysis_group),
+    colour = "black",
+    linewidth = 0.3,
+    inherit.aes = FALSE
+  ) +
+  geom_text(
+    data = labels_1b |> filter(!analysis_group %in% c("Oceania", "North America", "East Asia", "Middle East & North Africa")),
+    aes(x = year, y = mid_y, label = label),
+    colour = "black",
+    angle = 30,
+    size = 2.0,
+    inherit.aes = FALSE
+  ) +
+  geom_text(
+    data = labels_1b |> filter(analysis_group == "East Asia"),
+    aes(x = year, y = mid_y, label = label),
+    colour = "black",
+    angle = 0,
+    size = 2.0,
+    inherit.aes = FALSE
+  ) +
+  geom_text(
+    data = labels_1b |> filter(analysis_group == "North America"),
+    aes(x = year, y = mid_y, label = label),
+    colour = "white",
+    angle = 30,
+    size = 2.0,
+    inherit.aes = FALSE
+  ) +
+  geom_text(
+    data = labels_1b |> filter(analysis_group == "Oceania"),
+    aes(x = year, y = mid_y, label = label),
+    colour = PALETTE_REGIONS["Oceania"],
+    angle = 30,
+    size = 2.0,
+    nudge_y = 4,
+    inherit.aes = FALSE
+  ) +
+  geom_text(
+    data = labels_1b |> filter(analysis_group == "Middle East & North Africa"),
+    aes(x = year, y = mid_y, label = label),
+    colour = PALETTE_REGIONS["Middle East & North Africa"],
+    angle = 30,
+    size = 2.0,
+    nudge_y = 4,
+    inherit.aes = FALSE
+  ) +
+  # fmt: skip
+  annotate("text",x = -Inf, y = Inf,label = "a",hjust = -1, vjust = 1.2,fontface = "bold",size = 14 * 5 / 14 * 0.8,colour = "black") +
+  scale_fill_manual(values = PALETTE_REGIONS, name = NULL) +
+  scale_colour_manual(values = PALETTE_REGIONS, guide = "none") +
+  scale_x_continuous(breaks = seq(1970, 2024, 10), expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
+  coord_cartesian(clip = "off") +
+  theme_pb_large() +
+  labs(title = "Region", x = "Year", y = "Material Consumption (Gt)") +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(hjust = 0.5),
+    axis.title.x = element_text(margin = margin(t = 1)),
+    axis.text.x = element_text(margin = margin(t = 1)),
+    plot.margin = margin(t = 5, r = 10, b = 0, l = 5, unit = "pt")
+  )
+p_region
+
+
+# Panels c & d: phase-space contours (GDP/Material vs GDP/capita), 1970-2024 --
+# Variant of the original c/d panels: X axis is now GDP per unit Material
+# (gdp_mat = GDP / DMC_kg, $/kg) instead of Material per GDP (mat_gdp, kg/$).
+# Historical only (no SSP projection). Column alignment: c (regions) sits
+# under a (regions), d (region groups x material groups) sits under b (material).
+
+HIST_END <- 2024L
+
+df_gdp <- read_csv("Parameters/gdp_region.csv", show_col_types = FALSE)
+df_pop <- read_csv("Parameters/population_region_historical.csv", show_col_types = FALSE)
+
+## Helper: build iso-line dataframe -------------------------------------------
+# Mat/cap = Mat/GDP x GDP/cap. With X = GDP/Material (gdp_mat = 1/mat_gdp), this
+# becomes Mat/cap = GDP/cap / gdp_mat, i.e. y = x / iso_level_kg... rearranged
+# for a fixed Mat/cap level: y = iso_level_kg * x (straight ray through the
+# origin, rather than the hyperbola used when X = Material/GDP).
+make_isolines <- function(iso_levels_t, x_min, x_max, y_min = -Inf, y_max = Inf, n = 200) {
+  x_min <- max(x_min, 1e-10, na.rm = TRUE)
+  x_max <- max(x_max, x_min * 2, na.rm = TRUE)
+  x_seq <- 10^seq(log10(x_min), log10(x_max), length.out = n)
+  expand.grid(iso_t = iso_levels_t, x = x_seq) %>%
+    mutate(y = (iso_t * 1e3) * x, iso_label = paste0(iso_t, " t/cap")) %>%
+    filter(y >= y_min, y <= y_max)
+}
+
+## Helper: auto-pick iso-line levels that bracket a mat/cap range --------------
+NICE_LEVELS_T <- sort(c(outer(c(1, 2, 3, 4, 5), 10^(-3:3))))
+
+pick_iso_levels <- function(mat_pc_vals_kg, n_max = 5) {
+  min_t <- min(mat_pc_vals_kg, na.rm = TRUE) / 1000
+  max_t <- max(mat_pc_vals_kg, na.rm = TRUE) / 1000
+  in_range <- NICE_LEVELS_T[NICE_LEVELS_T >= min_t * 0.4 & NICE_LEVELS_T <= max_t * 2.5]
+  if (length(in_range) == 0) {
+    return(c(min_t, max_t))
+  }
+  if (length(in_range) > n_max) {
+    idx <- round(seq(1, length(in_range), length.out = n_max))
+    in_range <- in_range[idx]
+  }
+  in_range
+}
+
+## LOWESS smoothing: avoid annual noise while preserving endpoints ------------
+smooth_lowess <- function(df, group_cols = NULL, frac = 0.18181818, year_col = "year") {
+  split_df <- if (is.null(group_cols)) list(df) else split(df, df[group_cols], drop = TRUE)
+  out <- lapply(split_df, function(d) {
+    x <- d[[year_col]]
+    for (col in c("mat_gdp", "gdp_pc")) {
+      y <- d[[col]]
+      d[[paste0(col, "_raw")]] <- y
+      ok <- is.finite(x) & is.finite(y)
+      if (sum(ok) < 5) {
+        d[[col]] <- y
+        next
+      }
+      fit <- tryCatch(loess(y[ok] ~ x[ok], span = frac, na.action = na.exclude), error = function(e) NULL)
+      if (is.null(fit)) {
+        d[[col]] <- y
+      } else {
+        pred <- tryCatch(predict(fit, newdata = x), error = function(e) rep(NA_real_, length(x)))
+        d[[col]] <- pred
+      }
+    }
+    d
+  })
+  do.call(rbind, out)
+}
+
+## Panel c data: regions, all materials summed --------------------------------
+
+region_all <- df %>%
+  rename(Analysis_group = Region) %>%
+  filter(!is.na(Analysis_group)) %>%
+  group_by(year, Analysis_group) %>%
+  summarise(DMC_kg = sum(DMC_Mt * 1e9, na.rm = TRUE), .groups = "drop") %>%
+  left_join(df_gdp, by = c("Analysis_group" = "Region", "year")) %>%
+  left_join(df_pop, by = c("Analysis_group" = "Region", "year")) %>%
+  filter(!is.na(GDP_2015USD), !is.na(population)) %>%
+  mutate(GDP = GDP_2015USD, pop = population, mat_gdp = DMC_kg / GDP_2015USD, gdp_pc = GDP_2015USD / population) %>%
+  filter(year >= 1970, year <= HIST_END, !is.na(mat_gdp), !is.na(gdp_pc)) %>%
+  arrange(Analysis_group, year)
+
+region_all <- smooth_lowess(region_all, group_cols = c("Analysis_group"))
+region_all <- region_all %>% mutate(gdp_mat = 1 / mat_gdp)
+
+region_econ <- region_all %>% dplyr::select(year, Analysis_group, GDP, pop)
+
+world_all <- region_all %>%
+  group_by(year) %>%
+  summarise(DMC_kg = sum(DMC_kg), GDP = sum(GDP), pop = sum(pop), .groups = "drop") %>%
+  mutate(mat_gdp = DMC_kg / GDP, gdp_pc = GDP / pop)
+world_all <- smooth_lowess(world_all)
+world_all <- world_all %>% mutate(gdp_mat = 1 / mat_gdp)
+
+## Panel d data: 3 region groups x 4 material groups ---------------------------
+# Computed here (ahead of both panels' plots) so panels c & d can share one
+# common Y range (GDP per capita) below.
+
+BIOMASS_CATS <- c("Crops", "Crop Residues", "Grazed biomass and fodder crops", "Wood")
+FOSSIL_CATS <- c("Coal", "Natural Gas", "Petroleum")
+METAL_CATS <- c("Ferrous ores", "Non-ferrous ores")
+NONMET_CATS <- c(
+  "Non-metallic minerals - construction dominant",
+  "Non-metallic minerals - industrial or agricultural dominant"
+)
+
+# 3 region groups (Europe/N.America/Oceania, East+South Asia, rest) — colour in
+# panel d is carried by material (see below), region group is carried by linewidth.
+REGION_GROUP3 <- c(
+  "Europe & Russia" = "Advanced Economies",
+  "North America" = "Advanced Economies",
+  "Oceania" = "Advanced Economies",
+  "East Asia" = "Asia",
+  "South Asia" = "Asia",
+  "Latin America" = "Rest of World",
+  "Sub-Saharan Africa" = "Rest of World",
+  "Middle East & North Africa" = "Rest of World"
+)
+REGION_GROUP3_LEVELS <- c("Advanced Economies", "Asia", "Rest of World")
+REGION_GROUP3_LINEWIDTHS <- c("Advanced Economies" = 1.0, "Asia" = 0.6, "Rest of World" = 0.3)
+
+group_econ3 <- region_econ %>%
+  mutate(region_group3 = REGION_GROUP3[Analysis_group]) %>%
+  group_by(year, region_group3) %>%
+  summarise(GDP = sum(GDP), pop = sum(pop), .groups = "drop")
+
+world_4mat_hist <- df %>%
+  filter(material_category %in% c(BIOMASS_CATS, FOSSIL_CATS, METAL_CATS, NONMET_CATS)) %>%
+  mutate(
+    mat4 = case_when(
+      material_category %in% BIOMASS_CATS ~ "Biomass",
+      material_category %in% FOSSIL_CATS ~ "Fossil fuels",
+      material_category %in% METAL_CATS ~ "Metal ores",
+      material_category %in% NONMET_CATS ~ "Non-metallic minerals"
+    ),
+    region_group3 = REGION_GROUP3[Region]
+  ) %>%
+  group_by(year, region_group3, mat4) %>%
+  summarise(DMC_kg = sum(DMC_Mt * 1e9, na.rm = TRUE), .groups = "drop") %>%
+  left_join(group_econ3, by = c("year", "region_group3")) %>%
+  filter(!is.na(GDP), year >= 1970, year <= HIST_END) %>%
+  mutate(
+    mat_gdp = DMC_kg / GDP,
+    gdp_pc = GDP / pop,
+    region_group3 = factor(region_group3, levels = REGION_GROUP3_LEVELS)
+  )
+
+world_4mat_hist <- smooth_lowess(world_4mat_hist, group_cols = c("region_group3", "mat4"))
+world_4mat_hist <- world_4mat_hist %>% mutate(gdp_mat = 1 / mat_gdp)
+# Colour comes directly from PALETTE_MATERIAL_GROUPS (keys already match mat4)
+
+## Shared axis bounds for panels c & d -----------------------------------------
+# Panel c/d windows and the shared Y range are fixed per the project's figure
+# design (rather than data-driven), so the two panels line up exactly. Bounds
+# below are the reciprocal of the original Mat/GDP windows (x_lim_c was
+# c(0, 5.5) kg/$, x_lim_d was c(0, 1.7) kg/$), widened slightly and switched to
+# a log scale since GDP/Material blows up as Material/GDP -> 0.
+x_lim_c <- c(0.15, 3)
+x_lim_d <- c(0.5, 25)
+y_lim_cd <- c(600, 1e5)
+
+# Iso-lines computed across the FULL displayed panel (not just the tight data
+# range) so the dashed rays span edge-to-edge instead of stopping short.
+iso_c <- make_isolines(
+  iso_levels_t = c(0.5, 1, 2, 5, 10, 20, 30, 40),
+  x_min = x_lim_c[1],
+  x_max = x_lim_c[2],
+  y_min = y_lim_cd[1],
+  y_max = y_lim_cd[2]
+)
+
+iso_d <- make_isolines(
+  # Drop levels that clutter panel d without adding readable separation
+  iso_levels_t = setdiff(
+    pick_iso_levels(world_4mat_hist$mat_gdp * world_4mat_hist$gdp_pc, n_max = 12),
+    c(0.2, 0.3, 0.4, 3, 4)
+  ),
+  x_min = x_lim_d[1],
+  x_max = x_lim_d[2],
+  y_min = y_lim_cd[1],
+  y_max = y_lim_cd[2]
+)
+
+pFig1c <- ggplot(region_all, aes(x = gdp_mat, y = gdp_pc, colour = Analysis_group)) +
+  geom_textline(
+    data = iso_c,
+    aes(x = x, y = y, group = iso_label, label = iso_label),
+    colour = "grey60",
+    linetype = "dashed",
+    linewidth = 0.22,
+    size = 2.0,
+    hjust = 0.82,
+    inherit.aes = FALSE
+  ) +
+  geom_path(
+    aes(group = Analysis_group),
+    arrow = arrow(length = unit(0.16, "cm"), type = "closed", ends = "last"),
+    linewidth = 0.45
+  ) +
+  geom_path(
+    data = world_all,
+    aes(x = gdp_mat, y = gdp_pc, group = 1),
+    colour = "black",
+    linewidth = 0.9,
+    arrow = arrow(length = unit(0.2, "cm"), type = "closed", ends = "last"),
+    inherit.aes = FALSE
+  ) +
+  geom_point(
+    data = filter(world_all, year %in% seq(1970, 2010, by = 10)),
+    aes(x = gdp_mat, y = gdp_pc, alpha = year),
+    colour = "black", shape = 16, size = 1.9, inherit.aes = FALSE
+  ) +
+  geom_point(
+    data = filter(region_all, year %in% seq(1970, 2020, by = 10)),
+    shape = 16, size = 1.6, colour = "white", alpha = 1
+  ) +
+  geom_point(
+    data = filter(region_all, year %in% seq(1970, 2020, by = 10)),
+    aes(alpha = year), shape = 16, size = 1.4
+  ) +
+  geom_text_repel(
+    data = filter(region_all, year == HIST_END),
+    aes(label = Analysis_group),
+    size = 1.9,
+    show.legend = FALSE,
+    max.overlaps = Inf,
+    seed = 42,
+    segment.size = 0.25,
+    segment.colour = "grey60",
+    min.segment.length = 0.2
+  ) +
+  geom_text_repel(
+    data = filter(world_all, year == HIST_END),
+    aes(x = gdp_mat, y = gdp_pc, label = "World avg"),
+    colour = "black",
+    fontface = "bold",
+    size = 2.0,
+    show.legend = FALSE,
+    inherit.aes = FALSE,
+    segment.size = 0.25,
+    segment.colour = "grey40"
+  ) +
+  geom_text(
+    data = filter(world_all, year %in% c(1970, HIST_END)),
+    aes(label = year, vjust = c(1.5, 0), hjust = c(-0.2, 1.5)),
+    fontface = "bold", colour = "black", size = 2.0, show.legend = FALSE
+  ) +
+  # fmt: skip
+  annotate("text",x = Inf, y = Inf,label = "c",hjust = 1.5, vjust = 1.2,fontface = "bold",size = 14 * 5 / 14 * 0.8,colour = "black") +
+  scale_colour_manual(values = PALETTE_REGIONS, name = NULL) +
+  scale_alpha_continuous(range = c(0.4, 1), guide = "none") +
+  scale_x_log10(breaks = c(0.2, 0.5, 1, 2, 3), labels = label_dollar(accuracy = 0.01)) +
+  scale_y_log10(labels = label_dollar(accuracy = 1)) +
+  annotation_logticks(sides = "bl", linewidth = 0.18, colour = "grey50") +
+  coord_cartesian(clip = "off", expand = FALSE, xlim = x_lim_c, ylim = y_lim_cd) +
+  theme_pb_large() +
+  labs(title = " ", x = "GDP per Material ($/kg)", y = "GDP per Capita  ($/p)") +
+  theme(
+    legend.position = "none",
+    axis.text = element_text(size = 6),
+    plot.margin = margin(t = 0, r = 10, b = 5, l = 5, unit = "pt")
+  )
+pFig1c
+
+## Panel d plot: region groups x material groups --------------------------------
+# (data computed above, alongside panel c, so the shared Y range could be built)
+
+# Year labels anchored on the Non-metallic minerals
+# (solid, least cluttered)
+lbl_anchor_1970 <- filter(world_4mat_hist, year == 1970, mat4 == "Non-metallic minerals", region_group3 == "Asia")
+lbl_anchor_end <- filter(world_4mat_hist, year == HIST_END, mat4 == "Non-metallic minerals", region_group3 == "Asia")
+
+pFig1d <- ggplot() +
+  geom_textline(
+    data = iso_d,
+    aes(x = x, y = y, group = iso_label, label = iso_label),
+    colour = "grey60",
+    linetype = "dashed",
+    linewidth = 0.2,
+    size = 2.0,
+    hjust = 0.82,
+    inherit.aes = FALSE
+  ) +
+  geom_path(
+    data = world_4mat_hist,
+    aes(x = gdp_mat, y = gdp_pc, colour = mat4, linewidth = region_group3, group = interaction(mat4, region_group3)),
+    arrow = arrow(length = unit(0.16, "cm"), type = "closed", ends = "last")
+  ) +
+  geom_point(
+    data = filter(world_4mat_hist, year %in% seq(1970, 2020, by = 10)),
+    aes(x = gdp_mat, y = gdp_pc, colour = mat4, alpha = year, group = interaction(mat4, region_group3)),
+    shape = 16, size = 1.4
+  ) +
+  # Material labelled once per colour, on the solid (Advanced Economies) line
+  geom_text_repel(
+    data = filter(world_4mat_hist, year == HIST_END, region_group3 == "Advanced Economies"),
+    aes(x = gdp_mat, y = gdp_pc, label = mat4, colour = mat4),
+    size = 1.9,
+    show.legend = FALSE,
+    max.overlaps = Inf,
+    seed = 42,
+    segment.size = 0.2,
+    segment.colour = "grey60",
+    min.segment.length = 0.2
+  ) +
+  geom_text(
+    data = lbl_anchor_1970,
+    aes(x = gdp_mat, y = gdp_pc, colour = mat4, label = year),
+    vjust = 1.5, hjust = -0.2, fontface = "bold", size = 2.0, show.legend = FALSE
+  ) +
+  geom_text(
+    data = lbl_anchor_end,
+    aes(x = gdp_mat, y = gdp_pc, colour = mat4, label = year),
+    vjust = 0, hjust = 1.5, fontface = "bold", size = 2.0, show.legend = FALSE
+  ) +
+  # Region-group labels: repositioned for the new X axis. Advanced Economies has
+  # the lowest Material/GDP, so under this inverted axis it now sits at HIGH
+  # gdp_mat (right side) rather than low mat_gdp (left side, as in the original).
+  annotate("text", x = 8, y = 50e3, label = "Advanced Economies", fontface = "bold", size = 2) +
+  annotate("text", x = 1.5, y = 10e3, label = "Asia", size = 2) +
+  annotate("text", x = 1.5, y = 3e3, label = "Rest of World", size = 1.6) +
+  # fmt: skip
+  annotate("text",x = Inf, y = Inf,label = "d",hjust = 1.5, vjust = 1.2,fontface = "bold",size = 14 * 5 / 14 * 0.8,colour = "black") +
+  scale_colour_manual(values = PALETTE_MATERIAL_GROUPS, name = NULL, guide = "none") +
+  scale_linewidth_manual(values = REGION_GROUP3_LINEWIDTHS, name = NULL) +
+  scale_alpha_continuous(range = c(0.4, 1), guide = "none") +
+  scale_x_log10(breaks = c(0.5, 1, 2, 5, 10, 20), labels = label_dollar(accuracy = 0.1)) +
+  scale_y_log10(labels = label_dollar(accuracy = 1)) +
+  annotation_logticks(sides = "bl", linewidth = 0.18, colour = "grey50") +
+  coord_cartesian(clip = "off", expand = FALSE, xlim = x_lim_d, ylim = y_lim_cd) +
+  theme_pb_large() +
+  labs(title = " ", x = "GDP per Material ($/kg)", y = "GDP per Capita ($/p)") +
+  theme(
+    legend.position = "none",
+    legend.justification = c(0, 0),
+    legend.text = element_text(size = 6),
+    legend.key.size = unit(0.5, "lines"),
+    legend.background = element_rect(fill = alpha("white", 0.75), colour = NA),
+    axis.text = element_text(size = 6),
+    plot.margin = margin(t = 0, r = 10, b = 5, l = 5, unit = "pt")
+  )
+pFig1d
+
+
+# Merge: final 2x2 figure (a=regions, b=material, c=regions contour, d=material contour)
+
+library(cowplot)
+# align="hv" kept for clean column alignment. Panels c/d get a blank title below
+# (matching a/b's plot.title row) so cowplot doesn't pad them to compensate for
+# a mismatched gtable structure, which otherwise widens the row gap.
+fig1_v2 <- plot_grid(p_region, p_material, pFig1c, pFig1d, ncol = 2, nrow = 2, align = "hv")
+ggsave("Figures/Fig1_v2.png", fig1_v2, units = 'cm', dpi = 600, width = 17.4, height = 17.4)
+ggsave("Figures/SVG/Fig1_v2.svg", fig1_v2, units = 'cm', width = 17.4, height = 17.4)
+group_svg_layers("Figures/SVG/Fig1_v2.svg")
+
+
+## Save figure data, one file per panel ----------------------------------------
+
+dir.create("Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+
+write_csv(global_grp |> dplyr::select(year, region = analysis_group, DMC_Gt), "Figures/RawData/fig1a_v2.csv")
+write_csv(
+  global_mat |> dplyr::select(year, material_group, material = material_category_plot, DMC_Gt),
+  "Figures/RawData/fig1b_v2.csv"
+)
+write_csv(
+  region_all |> dplyr::select(year, region = Analysis_group, GDP, pop, mat_gdp, gdp_mat, gdp_pc),
+  "Figures/RawData/fig1c_v2.csv"
+)
+write_csv(
+  world_4mat_hist |>
+    dplyr::select(year, region_group = region_group3, material_group = mat4, GDP, pop, mat_gdp, gdp_mat, gdp_pc),
+  "Figures/RawData/fig1d_v2.csv"
+)
+cat("  Saved: Figures/RawData/fig1a_v2.csv, fig1b_v2.csv, fig1c_v2.csv, fig1d_v2.csv\n")
+
+# EoF

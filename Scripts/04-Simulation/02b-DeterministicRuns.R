@@ -476,22 +476,17 @@ recyc_conv_yr <- mc_input_matrix |>
 
 lambda_rates <- mc_input_matrix |> dplyr::select(run_id, lambda = gap_persistence_rates)
 
-# -- 2024 non-primary share anchor (empirical; script 03, MISO-scope) ---------
-nonprimary_share_2024 <- readr::read_csv(
-  "Parameters/Intermediate/nonprimary_share_2024.csv",
-  show_col_types = FALSE
-) |>
-  dplyr::rename(region = Region)
-anchor_2024_fe <- nonprimary_share_2024 |> dplyr::filter(material == "Metal_Fe") |> dplyr::select(region, s_2024)
-anchor_2024_nonfe <- nonprimary_share_2024 |> dplyr::filter(material == "Metal_NonFe") |> dplyr::select(region, s_2024)
-
-# 2024 anchor is the empirical non-primary share from script 03
-# (nonprimary_share_2024.csv, MISO-scope consistent: scrap + embodied net
-# imports, undecomposed). Convergence to the Excel-rate-based endpoint implies
-# embodied-trade imbalances fade to zero by the convergence year -- documented
-# model assumption. The endpoint's deviation term still uses the Excel
-# rate_now (unaffected by this anchor change).
-make_recycling_traj <- function(recycling_now, G_col, min_rate, max_rate, anchor_now, mat_label) {
+# 2024 anchor is the Excel end-of-life recycling rate itself (rate_now, from
+# the "Recycling_EOL" sheet -- fraction of end-of-life waste recovered). This
+# is applied to waste_Mt downstream, not to production, so it stays a
+# physical recovery-from-scrap rate throughout. (Previously anchored to
+# Parameters/Intermediate/nonprimary_share_2024.csv, an empirical share of
+# PRODUCTION that bundles domestic recycling with embodied net imports of
+# already-processed metal -- a different, trade-based quantity that does not
+# belong in a waste-based recycling rate; this model makes no trade
+# assumptions, so that anchor has been dropped. See Scripts/04-Simulation/
+# 02-RunSimulations.R for the matching MC-runner fix.)
+make_recycling_traj <- function(recycling_now, G_col, min_rate, max_rate, mat_label) {
   wavg <- recycling_now |>
     left_join(gdp_base_vals |> rename(GDP = GDP_2015USD), by = "region") |>
     summarise(rate_mean = weighted.mean(rate_now, w = GDP, na.rm = TRUE)) |>
@@ -500,16 +495,7 @@ make_recycling_traj <- function(recycling_now, G_col, min_rate, max_rate, anchor
     dplyr::select(run_id, u = all_of(G_col)) |>
     mutate(G = min_rate + u * (max_rate - min_rate)) |>
     dplyr::select(run_id, G)
-  recycling_now <- recycling_now |>
-    left_join(anchor_now, by = "region") |>
-    mutate(anchor_2024 = dplyr::if_else(is.na(s_2024), rate_now, s_2024))
-  fell_back <- recycling_now$region[is.na(recycling_now$s_2024)]
-  if (length(fell_back) > 0) {
-    cat(
-      "  [make_recycling_traj]", mat_label, "-- no s_2024, fell back to Excel rate_now for:",
-      paste(fell_back, collapse = ", "), "\n"
-    )
-  }
+  recycling_now <- recycling_now |> mutate(anchor_2024 = rate_now)
   ep <- recycling_now |>
     tidyr::crossing(run_id = seq_len(N_RUNS)) |>
     left_join(G_df, by = "run_id") |>
@@ -533,7 +519,6 @@ recycling_traj_fe <- make_recycling_traj(
   "recycling_Fe_global",
   RECYCLING_RATE_FE_MIN,
   RECYCLING_RATE_FE_MAX,
-  anchor_2024_fe,
   "Metal_Fe"
 )
 recycling_traj_nonfe <- make_recycling_traj(
@@ -541,7 +526,6 @@ recycling_traj_nonfe <- make_recycling_traj(
   "recycling_NonFe_global",
   RECYCLING_RATE_NONFE_MIN,
   RECYCLING_RATE_NONFE_MAX,
-  anchor_2024_nonfe,
   "Metal_NonFe"
 )
 recycling_by_run_fe <- split(recycling_traj_fe, recycling_traj_fe$run_id)
@@ -835,13 +819,18 @@ run_one <- function(i) {
     }
     sr <- do.call(rbind, sr_rows)
     sr <- merge(sr, rec_i, by = c("region", "year"), all.x = TRUE)
-    nonprimary_share <- sr$recycling_rate
-    nonprimary_share[is.na(nonprimary_share)] <- 0
+    recycling_rate <- sr$recycling_rate
+    recycling_rate[is.na(recycling_rate)] <- 0
     prod_metal <- pmax(0, sr$production_Mt)
-    # non-primary metal mass (scrap + embodied net imports, undecomposed)
-    recovered <- prod_metal * nonprimary_share
-    recovered <- ifelse(nonprimary_share <= 1, pmin(recovered, prod_metal), recovered)
-    primary_metal_Mt <- prod_metal - recovered # domestically mined; can exceed prod_metal for net embodied exporters
+    waste_metal <- pmax(0, sr$waste_Mt)
+    # Secondary = the recycling rate applied to actual end-of-life waste (not
+    # production), capped at what current production can absorb; recovered
+    # scrap beyond that is spilled (no trade/import assumption -- this model
+    # only tracks domestic recovery from local waste).
+    recovered_raw <- waste_metal * recycling_rate
+    recovered <- pmin(recovered_raw, prod_metal)
+    spilled <- recovered_raw - recovered
+    primary_metal_Mt <- prod_metal - recovered # always >= 0: recovered is capped at prod_metal
     grade_safe <- pmax(grade_traj[as.character(sr$year)], 1e-6)
     primary_ore_Mt <- primary_metal_Mt / grade_safe
     secondary_ore_Mt <- recovered / grade_safe
@@ -854,10 +843,11 @@ run_one <- function(i) {
       year = sr$year,
       total_inflow_Mt = sr$replacement_Mt + sr$new_additions_Mt,
       in_use_stock_Mt = sr$total_stock_Mt,
-      primary_consumption_Mt = primary_ore_Mt, # ore extracted; domestically mined
-      secondary_supply_Mt = secondary_ore_Mt, # ore avoided; non-primary (scrap + embodied net imports, undecomposed)
+      primary_consumption_Mt = primary_ore_Mt, # ore extracted
+      secondary_supply_Mt = secondary_ore_Mt, # ore avoided; recycled from end-of-life waste
       primary_consumption_Mt_pure = primary_metal_Mt,
       secondary_supply_Mt_pure = recovered,
+      secondary_spilled_Mt = spilled / grade_safe, # recovered scrap beyond what current demand could absorb
       new_additions_Mt = sr$new_additions_Mt / grade_safe, # ore
       replacement_Mt = sr$replacement_Mt / grade_safe,
       waste_Mt = sr$waste_Mt / grade_safe,

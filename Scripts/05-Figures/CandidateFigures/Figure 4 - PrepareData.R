@@ -5,18 +5,18 @@
 ##
 ## Merges the data pipelines of:
 ##   Scripts/05-Exploratory/04-VariableImportance.R (Part B: LightGBM/TreeSHAP
-##     variable importance on DMC 2050 -- only the pieces behind its "flipped"
+##     variable importance on DMC 2060 -- only the pieces behind its "flipped"
 ##     panel, STEP 9B; the SRRC part and the XGBoost interaction analysis are
 ##     not used by Figure 4 and are skipped here)
 ##   Scripts/05-Exploratory/14-LowHighConsumptionParameters.R (decoupling
-##     subset: top 10% of runs with jointly high 2050 GDP/capita and low 2050
+##     subset: top 10% of runs with jointly high 2060 GDP/capita and low 2060
 ##     primary consumption per capita)
-## Both scripts reconstruct the same per-run 2050 world GDP/capita from the
+## Both scripts reconstruct the same per-run 2060 world GDP/capita from the
 ## continuous SSP blend; that reconstruction is done once here.
 ##
 ## Output (Parameters/Intermediate/):
 ##   Figure3_RunScatter.csv      - per-run DMC/GDP-per-capita, per-capita CAGRs
-##                                 (mat_pc_cagr/gdp_pc_cagr, 2025-2050) + decoupling flag
+##                                 (mat_pc_cagr/gdp_pc_cagr, 2025-2060) + decoupling flag
 ##   Figure3_ParamImportance.csv - SHAP stacked-area data (flipped panel)
 ##   Figure3_ParamLabels.csv     - stacked-area in-panel label positions
 ##   Figure3_ParamBars.csv       - decoupling-subset parameter bar stats
@@ -36,6 +36,12 @@ ALPHA_SIG <- 0.05
 N_TOP <- 12L
 N_BINS <- 20L
 
+# This figure's own snapshot year/window -- independent of the model's global
+# intensity-convergence TARGET_YEAR (2050, model_parameters.R), which stays
+# unchanged; mc_results.parquet already spans through FORECAST_END (2060).
+FIG_YEAR <- 2060L
+FIG_VARIANT_ID <- "window_2025_2060" # decoupling variant matching FIG_YEAR (was "main_2050")
+
 
 # STEP 1: Load data -------------------------------------------------------------
 
@@ -47,21 +53,21 @@ gdp_region_hist <- read_csv("Parameters/gdp_region.csv", show_col_types = FALSE)
 pop_region_hist <- read_csv("Parameters/population_region_historical.csv", show_col_types = FALSE)
 ssp_drivers <- read_csv("Parameters/IIASA/ssp_drivers.csv", show_col_types = FALSE)
 
-results_target <- results |> filter(year == TARGET_YEAR)
+results_target <- results |> filter(year == FIG_YEAR)
 
 cat("  Runs:", n_distinct(results_target$run_id), "\n\n")
 
 
-# STEP 2: Per-run 2050 DMC, world GDP/capita & population ------------------------
+# STEP 2: Per-run 2060 DMC, world GDP/capita & population ------------------------
 # Same SSP-blend reconstruction that 04-VariableImportance.R (STEP 1B) and
 # 14-LowHighConsumptionParameters.R (STEP 2) each did independently -- done
 # once here, shared by the scatter panel and the decoupling selection below.
 
-cat("STEP 2: Per-run 2050 DMC, GDP/capita & population\n")
+cat("STEP 2: Per-run 2060 DMC, GDP/capita & population\n")
 
-dmc_2050 <- results_target |>
+dmc_2060 <- results_target |>
   group_by(run_id) |>
-  summarise(DMC_2050_Mt = sum(primary_consumption_Mt, na.rm = TRUE), .groups = "drop")
+  summarise(DMC_2060_Mt = sum(primary_consumption_Mt, na.rm = TRUE), .groups = "drop")
 
 run_ssp <- results_target |>
   distinct(run_id, pop_ssp_lo, pop_ssp_hi, pop_ssp_share_lo, gdppc_ssp_lo, gdppc_ssp_hi, gdppc_ssp_share_lo)
@@ -77,11 +83,11 @@ pop_2024_region <- pop_region_hist |>
   dplyr::select(region, pop_2024)
 
 pop_idx_region <- ssp_drivers |>
-  filter(variable == "Population", year == TARGET_YEAR) |>
+  filter(variable == "Population", year == FIG_YEAR) |>
   dplyr::select(scenario, region, pop_idx = index)
 
 gdppc_idx_region <- ssp_drivers |>
-  filter(variable == "GDP|PPP [per capita]", year == TARGET_YEAR) |>
+  filter(variable == "GDP|PPP [per capita]", year == FIG_YEAR) |>
   dplyr::select(scenario, region, gdppc_idx = index)
 
 pop_idx_blend <- run_ssp |>
@@ -108,25 +114,25 @@ run_gdp_pop <- pop_idx_blend |>
   mutate(pop_run = pop_2024 * pop_idx_blend, gdp_run = gdp_2024 * pop_idx_blend * gdppc_idx_blend) |>
   group_by(run_id) |>
   summarise(world_pop = sum(pop_run, na.rm = TRUE), world_gdp = sum(gdp_run, na.rm = TRUE), .groups = "drop") |>
-  mutate(GDPcap_2050 = world_gdp / world_pop / 1e3) |> # '000 USD per person
-  dplyr::select(run_id, world_pop, GDPcap_2050)
+  mutate(GDPcap_2060 = world_gdp / world_pop / 1e3) |> # '000 USD per person
+  dplyr::select(run_id, world_pop, GDPcap_2060)
 
-run_data <- dmc_2050 |>
+run_data <- dmc_2060 |>
   left_join(run_gdp_pop, by = "run_id") |>
-  filter(!is.na(GDPcap_2050)) |>
-  mutate(primary_percap_t = DMC_2050_Mt * 1e6 / world_pop) # tonnes per capita
+  filter(!is.na(GDPcap_2060)) |>
+  mutate(primary_percap_t = DMC_2060_Mt * 1e6 / world_pop) # tonnes per capita
 
 cat(
-  "  GDP/capita 2050 range: [",
-  round(min(run_data$GDPcap_2050)),
+  "  GDP/capita 2060 range: [",
+  round(min(run_data$GDPcap_2060)),
   ",",
-  round(max(run_data$GDPcap_2050)),
+  round(max(run_data$GDPcap_2060)),
   "] k USD\n\n"
 )
 
-# 2024 world GDP/capita anchor (same units as GDPcap_2050), for the scatter's
+# 2024 world GDP/capita anchor (same units as GDPcap_2060), for the scatter's
 # "today" reference line -- world totals from the same 2024 region tables used
-# to reconstruct GDPcap_2050 above, not run-dependent so it's a single number.
+# to reconstruct GDPcap_2060 above, not run-dependent so it's a single number.
 gdpcap_2024_kUSD <- sum(gdp_2024_region$gdp_2024) / sum(pop_2024_region$pop_2024) / 1e3
 run_data <- run_data |> mutate(gdpcap_2024_kUSD = gdpcap_2024_kUSD)
 cat("  GDP/capita 2024 (world):", round(gdpcap_2024_kUSD), "k USD\n\n")
@@ -139,7 +145,7 @@ cat("STEP 3: Select top", SELECT_FRACTION * 100, "% decoupling subset\n")
 # Composite percentile rank: high GDP/capita + low consumption per capita, each in [0, 1]
 run_data <- run_data |>
   mutate(
-    pctile_gdppc = percent_rank(GDPcap_2050),
+    pctile_gdppc = percent_rank(GDPcap_2060),
     pctile_low_consumption = percent_rank(desc(primary_percap_t)),
     decoupling_score = pctile_gdppc + pctile_low_consumption
   )
@@ -150,19 +156,19 @@ run_data <- run_data |> mutate(selected = run_id %in% selected_ids)
 cat("  Selected:", length(selected_ids), "of", nrow(run_data), "runs\n\n")
 
 # Join the rigorous CAGR-based decoupling classification (Total material group,
-# "main_2050" variant: window 2025-2050, actual population weights) from
-# 19-Decoupling.R, for Figure 4's scatter colour -- additive column, independent
-# of the percentile-rank `selected` flag above. Uses the 2025-2050 variant (not
+# FIG_VARIANT_ID variant: window 2025-2060, actual population weights) from
+# 04-Decoupling.R, for Figure 4's scatter colour -- additive column, independent
+# of the percentile-rank `selected` flag above. Uses the 2025-2060 variant (not
 # the 2040-2060 main_actual variant) so the classification window ends at the
-# same year the scatter plots (2050) -- comparing CAGR through 2060 against a
-# 2050 snapshot is why a "No decoupling" point can otherwise sit to the left of
-# a "Relative decoupling" one: level (this scatter) and growth-rate (CAGR
-# through a different endpoint) are different comparisons.
-# mat_pc_cagr/gdp_pc_cagr are pulled straight from 19-Decoupling.R rather than
+# same year the scatter plots (2060) -- comparing CAGR through a different
+# endpoint against this snapshot is why a "No decoupling" point can otherwise
+# sit to the left of a "Relative decoupling" one: level (this scatter) and
+# growth-rate (CAGR through a different endpoint) are different comparisons.
+# mat_pc_cagr/gdp_pc_cagr are pulled straight from 04-Decoupling.R rather than
 # re-derived here, so Figure 4 panel b's growth-rate axes are numerically
 # identical to the CAGRs the colour classification itself is based on.
 decoupling_total <- arrow::read_parquet("Results/MC/mc_decoupling.parquet") |>
-  filter(variant_id == "main_2050", material_group == "Total") |>
+  filter(variant_id == FIG_VARIANT_ID, material_group == "Total") |>
   dplyr::select(run_id, decoupling_class, mat_pc_cagr = mf_percap_cagr, gdp_pc_cagr = gdp_percap_cagr)
 
 run_data <- run_data |> left_join(decoupling_total, by = "run_id")
@@ -172,17 +178,17 @@ write_csv(run_data, "Parameters/Intermediate/Figure3_RunScatter.csv")
 cat("  Saved: Parameters/Intermediate/Figure3_RunScatter.csv\n\n")
 
 
-# STEP 4: Fit LightGBM surrogate on DMC 2050 -------------------------------------
+# STEP 4: Fit LightGBM surrogate on DMC 2060 -------------------------------------
 
 cat("STEP 4: Fit LightGBM surrogate (80/20 split, seed =", GLOBAL_SEED, ")\n")
 
 feature_cols <- input_matrix |> dplyr::select(-run_id) |> names()
 
-df_model <- input_matrix |> arrange(run_id) |> left_join(dmc_2050, by = "run_id")
-stopifnot(sum(is.na(df_model$DMC_2050_Mt)) == 0L)
+df_model <- input_matrix |> arrange(run_id) |> left_join(dmc_2060, by = "run_id")
+stopifnot(sum(is.na(df_model$DMC_2060_Mt)) == 0L)
 
 X <- as.matrix(df_model[, feature_cols])
-y <- df_model$DMC_2050_Mt
+y <- df_model$DMC_2060_Mt
 
 set.seed(GLOBAL_SEED)
 n <- nrow(X)
@@ -217,7 +223,7 @@ if (r2 < 0.80) {
 }
 
 
-# STEP 5: Compute TreeSHAP & bin by DMC 2050 -------------------------------------
+# STEP 5: Compute TreeSHAP & bin by DMC 2060 -------------------------------------
 
 cat("STEP 5: Compute TreeSHAP (full dataset,", n, "rows)\n")
 

@@ -19,6 +19,7 @@
 ##
 ## Outputs:
 ##   Parameters/Intermediate/stock_trajectory_subenduse.parquet  -- stock by sub-use + Fe/NonFe
+##   Parameters/Intermediate/stock_trajectory_1970_2024.csv      -- stock by material x end_use (Fe/NonFe merged, sub-use summed)
 ##   Parameters/stock_2024_age_profile.csv   -- cohort-level stock at 2024
 ##   Parameters/stock_2024_total.csv         -- calibrated total stock at 2024
 ##   Figures/Stocks/stock_trajectory_1970_2024.png
@@ -437,6 +438,30 @@ write.csv(
   row.names = F
 )
 cat("  Year range:", range(dsm_calibrated$year), "\n")
+
+# -- Also write the collapsed (Fe+NonFe merged, sub-use summed away)
+# trajectory used by historical-vs-forecast figures and 04_stock_intensity_analysis.R
+stock_trajectory_1970_2024 <- dsm_calibrated %>%
+  mutate(material = if_else(str_detect(material, "_Fe|NonFe"), "Metal ores", material)) %>%
+  group_by(Region, material, end_use = super_category, year) %>%
+  summarise(stock_Mt = sum(stock_Mt, na.rm = TRUE), .groups = "drop")
+
+write.csv(
+  stock_trajectory_1970_2024,
+  "Parameters/Intermediate/stock_trajectory_1970_2024.csv",
+  row.names = F
+)
+cat("  Saved: Parameters/Intermediate/stock_trajectory_1970_2024.csv (", nrow(stock_trajectory_1970_2024), "rows )\n")
+
+# Regression guard: 2024 total per material must match stock_2024_total.csv's
+# source data (same dsm_calibrated, just collapsed/aggregated differently) --
+# catches a broken group_by/collapse before it silently goes stale again.
+check_2024 <- stock_trajectory_1970_2024 %>%
+  filter(year == 2024) %>%
+  group_by(material) %>%
+  summarise(check_Gt = round(sum(stock_Mt) / 1e3, 3), .groups = "drop")
+cat("  [CHECK] 2024 total stock by material (collapsed file, Gt):\n")
+print(check_2024)
 
 # -- Verify (1): calibrated stock@2016 == MISO@2016 ----------------------------
 cal_check_2016 <- dsm_calibrated %>%

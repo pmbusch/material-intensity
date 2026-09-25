@@ -4,7 +4,7 @@
 ## Top: flipped parameter-importance panel from 04-VariableImportance.R (SHAP
 ##   on DMC 2050, parameter contribution % vs consumption) next to a GDP/capita
 ##   vs consumption scatter, coloured by the 3-class CAGR-based decoupling
-##   classification from 19-Decoupling.R (absolute / relative / no decoupling,
+##   classification from Scripts/04-Simulation/04-Decoupling.R (absolute / relative / no decoupling,
 ##   Total material group, 2025-2050, actual population weights -- matches
 ##   this panel's 2050 snapshot, see STEP 3 note).
 ## Bottom: 14-LowHighConsumptionParameters.R's mirrored parameter-conditions
@@ -97,12 +97,12 @@ p_left_flipped <- ggplot(plot_df, aes(x = x_gt, y = pct, fill = display_label)) 
 # STEP 3: Top-right panel - GDP/capita vs consumption growth, coloured by decoupling class ---
 # Both axes are per-capita CAGR, 2025-2050 (main_2050 variant), read straight
 # from mat_pc_cagr/gdp_pc_cagr (Figure 4 - PrepareData.R, sourced from
-# 19-Decoupling.R) -- growth is now the PRIMARY axis (previously a derived
+# 04-Decoupling.R) -- growth is now the PRIMARY axis (previously a derived
 # sec_axis() bolted onto level axes, and the old y-axis was TOTAL consumption
 # growth, not per-capita, so the two growth rates weren't actually comparable).
 # The level framing (GDP/capita 2050, '000 USD) is kept only as small
 # reference numbers near the x-axis, not a full continuous secondary scale.
-# Point colour comes from 19-Decoupling.R's rigorous CAGR classification (Total
+# Point colour comes from 04-Decoupling.R's rigorous CAGR classification (Total
 # material group, "main_2050" variant: window 2025-2050, actual population
 # weights) -- chosen specifically to end at 2050, matching this panel's
 # snapshot year (see Figure 4 - PrepareData.R STEP 3 for why a window ending

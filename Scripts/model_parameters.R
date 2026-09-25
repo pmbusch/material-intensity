@@ -1,4 +1,4 @@
-﻿## =============================================================================
+## =============================================================================
 ## model_parameters.R
 ## Deterministic model configuration: temporal bounds, SSP labels, material
 ## classification, sub-factors, and lifetime anchors.

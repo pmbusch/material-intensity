@@ -301,7 +301,7 @@ ggsave("Figures/Stocks/stock_intensity_grid_group_x_detail.png", p_D,units = "cm
 
 # at 2024
 intensity_D |> filter(year == 2024) |> dplyr::select(Region, year, material_group, material_detail, stock_intensity)
-.Last.value %>% write.table('clipboard', sep = '\t', row.names = FALSE)
+# .Last.value %>% write.table('clipboard', sep = '\t', row.names = FALSE)
 
 # Step 8: Summary check -------------------------------------------------------
 
@@ -348,32 +348,32 @@ stock_sub <- read_csv(SUBUSE_PATH, show_col_types = FALSE)
 cat("  Rows:", nrow(stock_sub), "| Materials:", paste(sort(unique(stock_sub$material)), collapse = ", "), "\n")
 
 MATERIAL_LABELS <- c(
-  "Metal_Fe"                = "Iron & Steel (Fe)",
-  "Metal_NonFe"             = "Non-ferrous Metals",
-  "Non-metallic minerals"   = "Non-metallic Minerals"
+  "Metal_Fe" = "Iron & Steel (Fe)",
+  "Metal_NonFe" = "Non-ferrous Metals",
+  "Non-metallic minerals" = "Non-metallic Minerals"
 )
 SUPER_CAT_LABELS <- c(
-  "buildings"            = "Buildings",
+  "buildings" = "Buildings",
   "civil_infrastructure" = "Civil Infra.",
-  "machinery"            = "Machinery",
-  "short_lived"          = "Short-lived"
+  "machinery" = "Machinery",
+  "short_lived" = "Short-lived"
 )
 SUB_USE_LABELS_FIG <- c(
-  "residential"      = "Residential",
-  "non_residential"  = "Non-residential",
-  "roads"            = "Roads",
+  "residential" = "Residential",
+  "non_residential" = "Non-residential",
+  "roads" = "Roads",
   "civil_engineering" = "Civil Eng.",
-  "machinery_group"  = "Machinery",
-  "vehicles_group"   = "Vehicles",
-  "durables"         = "Durables",
-  "packaging"        = "Packaging"
+  "machinery_group" = "Machinery",
+  "vehicles_group" = "Vehicles",
+  "durables" = "Durables",
+  "packaging" = "Packaging"
 )
 
 stock_sub <- stock_sub %>%
   mutate(
-    material_label   = MATERIAL_LABELS[material],
-    super_cat_label  = SUPER_CAT_LABELS[super_category],
-    sub_use_label    = SUB_USE_LABELS_FIG[sub_use]
+    material_label = MATERIAL_LABELS[material],
+    super_cat_label = SUPER_CAT_LABELS[super_category],
+    sub_use_label = SUB_USE_LABELS_FIG[sub_use]
   )
 
 
@@ -396,33 +396,31 @@ stock_E_wld <- stock_sub %>%
   mutate(stock_intensity = stock_Mt * 1e9 / GDP_2015USD, Region = "World")
 
 mat_order_E <- c("Iron & Steel (Fe)", "Non-ferrous Metals", "Non-metallic Minerals")
-sc_order_E  <- c("Buildings", "Civil Infra.", "Machinery", "Short-lived")
+sc_order_E <- c("Buildings", "Civil Infra.", "Machinery", "Short-lived")
 
 stock_E_reg <- stock_E_reg %>%
   mutate(
-    material_label  = factor(material_label,  levels = mat_order_E),
+    material_label = factor(material_label, levels = mat_order_E),
     super_cat_label = factor(super_cat_label, levels = sc_order_E)
   )
 stock_E_wld <- stock_E_wld %>%
   mutate(
-    material_label  = factor(material_label,  levels = mat_order_E),
+    material_label = factor(material_label, levels = mat_order_E),
     super_cat_label = factor(super_cat_label, levels = sc_order_E)
   )
 
 p_E <- ggplot() +
-  geom_line(data = stock_E_reg %>% filter(Region != "World"),
-            aes(x = year, y = stock_intensity, colour = Region), linewidth = 0.4) +
-  geom_line(data = stock_E_wld,
-            aes(x = year, y = stock_intensity), colour = "black", linewidth = 0.8) +
+  geom_line(
+    data = stock_E_reg %>% filter(Region != "World"),
+    aes(x = year, y = stock_intensity, colour = Region),
+    linewidth = 0.4
+  ) +
+  geom_line(data = stock_E_wld, aes(x = year, y = stock_intensity), colour = "black", linewidth = 0.8) +
   facet_grid(material_label ~ super_cat_label, scales = "free_y") +
   scale_colour_manual(values = PALETTE_REGIONS, na.value = "#999999") +
   scale_x_continuous(breaks = seq(1970, 2024, 20)) +
   coord_cartesian(expand = FALSE, clip = "off") +
-  labs(
-    x = "Year",
-    y = "Stock intensity (kg / constant 2015 USD)",
-    colour = NULL
-  ) +
+  labs(x = "Year", y = "Stock intensity (kg / constant 2015 USD)", colour = NULL) +
   theme_pb_large() +
   theme(legend.position = "none", strip.text = element_text(size = 6))
 p_E
@@ -455,28 +453,26 @@ sub_order_F <- unname(SUB_USE_LABELS_FIG)
 stock_F_reg <- stock_F_reg %>%
   mutate(
     material_label = factor(material_label, levels = mat_order_E),
-    sub_use_label  = factor(sub_use_label,  levels = sub_order_F)
+    sub_use_label = factor(sub_use_label, levels = sub_order_F)
   )
 stock_F_wld <- stock_F_wld %>%
   mutate(
     material_label = factor(material_label, levels = mat_order_E),
-    sub_use_label  = factor(sub_use_label,  levels = sub_order_F)
+    sub_use_label = factor(sub_use_label, levels = sub_order_F)
   )
 
 p_F <- ggplot() +
-  geom_line(data = stock_F_reg %>% filter(Region != "World"),
-            aes(x = year, y = stock_intensity, colour = Region), linewidth = 0.4) +
-  geom_line(data = stock_F_wld,
-            aes(x = year, y = stock_intensity), colour = "black", linewidth = 0.8) +
+  geom_line(
+    data = stock_F_reg %>% filter(Region != "World"),
+    aes(x = year, y = stock_intensity, colour = Region),
+    linewidth = 0.4
+  ) +
+  geom_line(data = stock_F_wld, aes(x = year, y = stock_intensity), colour = "black", linewidth = 0.8) +
   facet_grid(material_label ~ sub_use_label, scales = "free_y") +
   scale_colour_manual(values = PALETTE_REGIONS, na.value = "#999999") +
   scale_x_continuous(breaks = seq(1970, 2024, 20)) +
   coord_cartesian(expand = FALSE, clip = "off") +
-  labs(
-    x = "Year",
-    y = "Stock intensity (kg / constant 2015 USD)",
-    colour = NULL
-  ) +
+  labs(x = "Year", y = "Stock intensity (kg / constant 2015 USD)", colour = NULL) +
   theme_pb_large() +
   theme(legend.position = "none", strip.text = element_text(size = 5.5))
 p_F
@@ -484,6 +480,5 @@ p_F
 # fmt: skip
 ggsave("Figures/Stocks/stock_intensity_material_x_subuse.png", p_F,
        units = "cm", dpi = 600, width = 17, height = 13)
-
 
 # EoF
