@@ -12,7 +12,7 @@ All raw inputs sit in this folder, in the sub-folders listed below. Files under 
 | `MISO/miso2_global_data_v1.csv` | yes | MISO2 model data, https://zenodo.org/records/12794253 | `01-PrepareData/05_Aggregate_MISO.R` |
 | `MISO/SI_Wiedenhofer2024_globalStocks.xlsx` | yes | Supporting information of Wiedenhofer et al. (2024), https://onlinelibrary.wiley.com/doi/10.1111/jiec.13575 | `02-HistoricalStock/01b_UNEP_enduse_detail.R` |
 | `IIASA_SSP/ssp_basic_drivers_release_3.2_full.xlsx` | **no (60 MB)** | IIASA SSP Scenario Database v3.2, https://data.ece.iiasa.ac.at/ssp (Downloads > basic drivers release 3.2) | `03-SSP Trajectories/00_preprocess_ssp_drivers.R` |
-| `IIASA_SSP/2026-MIP-CMIP7/*.csv` (6 files) | yes | ScenarioMIP for CMIP7 IAM scenarios, IIASA Scenario Explorer, https://data.ece.iiasa.ac.at/ (TODO: add exact project link) | `03-SSP Trajectories/01_load_and_check.R`, `05_climate_figures.R`, `05-Figures/Figure 4 - Climate*.R` |
+| `IIASA_SSP/2026-MIP-CMIP7/*.csv` (6 files) | yes | ScenarioMIP for CMIP7 IAM scenarios, IIASA ScenarioMIP Scenario Explorer, https://scenariomip.apps.ece.iiasa.ac.at/ | `03-SSP Trajectories/01_load_and_check.R`, `05_climate_figures.R`, `05-Figures/Figure 4 - Climate*.R` |
 | `MC_Assumptions.xlsx` | yes | project assumptions: Monte Carlo sampling bounds (Parameters, Stock_Bounds, Lifetimes sheets) | `04-Simulation/*`, figures |
 | `MatIntensity_Assumptions.xlsx` | yes | project assumptions: material-intensity bounds by material group | `04-Simulation/*`, figures |
 | `Recycling_Assumptions.xlsx` | yes | project assumptions: end-of-life recycling and downcycling rates | `04-Simulation/*`, figures |
@@ -27,4 +27,4 @@ Not used by the main pipeline: `UNDP/hdr-data.xlsx` (exploratory HDI figure), `W
 3. **GDP.** World Bank (2024). World Development Indicators, NY.GDP.MKTP.KD, GDP in constant 2015 US$ (market exchange rates). Regional aggregates are built from World Bank regions with country corrections. Country classification: https://datahelpdesk.worldbank.org/knowledgebase/articles/906519
 4. **Material stocks (MISO2).** Wiedenhofer, D. et al. (2024). *Journal of Industrial Ecology*. https://doi.org/10.1111/jiec.13575. Data: https://zenodo.org/records/12794253
 5. **SSP drivers.** IIASA SSP Scenario Database, release 3.2 (population and GDP projections). https://data.ece.iiasa.ac.at/ssp
-6. **ScenarioMIP (CMIP7).** IAM scenario data (energy, capacity, food, regional, climate variables) from the IIASA Scenario Explorer.
+6. **ScenarioMIP (CMIP7).** IAM scenario data (energy, capacity, food, regional, climate variables) from the IIASA ScenarioMIP Scenario Explorer, https://scenariomip.apps.ece.iiasa.ac.at/
