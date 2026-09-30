@@ -4,14 +4,14 @@
 ## using MISO2 flow shares as the disaggregation key.
 ##
 ## Input:
-##   Parameters/materials_region_DMC.csv       — UNEP DMC by Region × material_category × year
-##   Parameters/MISO/MISO_flows_regional.csv   — MISO2 inflows by Region × material × end_use × year
+##   Parameters/UNEP-Materials/materials_region_DMC.csv       — UNEP DMC by Region × material_category × year
+##   Parameters/MISO-Stock/MISO_flows_regional.csv   — MISO2 inflows by Region × material × end_use × year
 ##
 ## Output:
 ##   Parameters/Intermediate/UNEP_flows_enduse.csv
 ##     columns: Region, material, end_use, year, flow_Mt
 ##
-## Figures (Figures/MISO/):
+## Figures (Figures/Inputs/MISO/):
 ##   enduse_shares_world.png   — world total, 100% stacked area, facet by material
 ##   enduse_shares_region.png  — by region, facet_grid(Region ~ material)
 ## =============================================================================
@@ -60,7 +60,7 @@ SHARE_TOLERANCE <- 0.001
 
 cat("STEP 1: Load UNEP DMC flows\n")
 
-unep_raw <- read_csv("Parameters/materials_region_DMC.csv", show_col_types = FALSE)
+unep_raw <- read_csv("Parameters/UNEP-Materials/materials_region_DMC.csv", show_col_types = FALSE)
 cat("UNEP raw:", nrow(unep_raw), "x", ncol(unep_raw), "\n")
 cat("Column names:\n")
 print(names(unep_raw))
@@ -73,7 +73,7 @@ cat("Material categories:", paste(sort(unique(unep_raw$material_category)), coll
 
 cat("\nSTEP 2: Load MISO2 inflows\n")
 
-miso_flows <- read_csv("Parameters/MISO/MISO_flows_regional.csv", show_col_types = FALSE)
+miso_flows <- read_csv("Parameters/MISO-Stock/MISO_flows_regional.csv", show_col_types = FALSE)
 cat("MISO flows:", nrow(miso_flows), "x", ncol(miso_flows), "\n")
 cat("Column names:", paste(names(miso_flows), collapse = ", "), "\n")
 
@@ -323,7 +323,9 @@ p_world <- world_shares %>%
 p_world
 
 # fmt: skip
-ggsave("Figures/MISO/01-enduse_shares_world.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
+ggsave("Figures/Supporting-Figures/S03_EndUseShares_World.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
+ggsave("Figures/SVG/Supporting-Figures/S03_EndUseShares_World.svg", ggplot2::last_plot(), units = 'cm', width = 8.7*2, height = 8.7)
+clean_svg("Figures/SVG/Supporting-Figures/S03_EndUseShares_World.svg")
 
 # ── Fig 10b: By region — facet_grid(Region ~ material) ───────────────────────
 
@@ -380,6 +382,8 @@ p_region <- region_shares %>%
   )
 p_region
 # fmt: skip
-ggsave("Figures/MISO/01-enduse_shares_region.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*3, height = 8.7*3)
+ggsave("Figures/Supporting-Figures/S04_EndUseShares_Region.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*3, height = 8.7*3)
+ggsave("Figures/SVG/Supporting-Figures/S04_EndUseShares_Region.svg", ggplot2::last_plot(), units = 'cm', width = 8.7*3, height = 8.7*3)
+clean_svg("Figures/SVG/Supporting-Figures/S04_EndUseShares_Region.svg")
 
 # EoF

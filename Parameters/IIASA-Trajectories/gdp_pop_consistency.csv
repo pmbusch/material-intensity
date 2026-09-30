@@ -1,0 +1,521 @@
+variable,family,ssp,year,n_models,cv_pct,comparison,model,n_families
+GDP|MER,High,SSP3,2020,5,3.880992784616192,across_models_same_family_ssp,NA,NA
+GDP|MER,High,SSP3,2025,5,5.735802784063207,across_models_same_family_ssp,NA,NA
+GDP|MER,High,SSP3,2030,5,8.61225852388948,across_models_same_family_ssp,NA,NA
+GDP|MER,High,SSP3,2035,5,10.11010941679936,across_models_same_family_ssp,NA,NA
+GDP|MER,High,SSP3,2040,5,11.652672758170214,across_models_same_family_ssp,NA,NA
+GDP|MER,High,SSP3,2045,5,12.74787490239829,across_models_same_family_ssp,NA,NA
+GDP|MER,High,SSP3,2050,5,13.663468189139003,across_models_same_family_ssp,NA,NA
+GDP|MER,High,SSP3,2055,4,16.73203083463409,across_models_same_family_ssp,NA,NA
+GDP|MER,High,SSP3,2060,5,15.281495867818284,across_models_same_family_ssp,NA,NA
+GDP|MER,High,SSP5,2020,5,3.6298336894501966,across_models_same_family_ssp,NA,NA
+GDP|MER,High,SSP5,2025,5,6.4525160332672025,across_models_same_family_ssp,NA,NA
+GDP|MER,High,SSP5,2030,5,10.926459371657344,across_models_same_family_ssp,NA,NA
+GDP|MER,High,SSP5,2035,5,14.925918130961872,across_models_same_family_ssp,NA,NA
+GDP|MER,High,SSP5,2040,5,17.913709000429424,across_models_same_family_ssp,NA,NA
+GDP|MER,High,SSP5,2045,5,20.861732151014603,across_models_same_family_ssp,NA,NA
+GDP|MER,High,SSP5,2050,5,23.589366679196218,across_models_same_family_ssp,NA,NA
+GDP|MER,High,SSP5,2055,4,29.85036026393628,across_models_same_family_ssp,NA,NA
+GDP|MER,High,SSP5,2060,5,28.03551104026391,across_models_same_family_ssp,NA,NA
+GDP|MER,High-to-Low,SSP5,2020,4,3.1892497969082405,across_models_same_family_ssp,NA,NA
+GDP|MER,High-to-Low,SSP5,2025,4,6.265461473904701,across_models_same_family_ssp,NA,NA
+GDP|MER,High-to-Low,SSP5,2030,4,11.082163568847166,across_models_same_family_ssp,NA,NA
+GDP|MER,High-to-Low,SSP5,2035,4,15.291418466376053,across_models_same_family_ssp,NA,NA
+GDP|MER,High-to-Low,SSP5,2040,4,18.36343631127479,across_models_same_family_ssp,NA,NA
+GDP|MER,High-to-Low,SSP5,2045,4,21.352915936207477,across_models_same_family_ssp,NA,NA
+GDP|MER,High-to-Low,SSP5,2050,4,24.093623379465136,across_models_same_family_ssp,NA,NA
+GDP|MER,High-to-Low,SSP5,2055,3,31.426293330162807,across_models_same_family_ssp,NA,NA
+GDP|MER,High-to-Low,SSP5,2060,4,28.468393964640175,across_models_same_family_ssp,NA,NA
+GDP|MER,Low,SSP1,2020,3,2.6064526631996805,across_models_same_family_ssp,NA,NA
+GDP|MER,Low,SSP1,2025,3,7.321373495719009,across_models_same_family_ssp,NA,NA
+GDP|MER,Low,SSP1,2030,3,12.460655242958236,across_models_same_family_ssp,NA,NA
+GDP|MER,Low,SSP1,2035,3,16.667258979088338,across_models_same_family_ssp,NA,NA
+GDP|MER,Low,SSP1,2040,3,20.011526376104758,across_models_same_family_ssp,NA,NA
+GDP|MER,Low,SSP1,2045,3,23.00217183160069,across_models_same_family_ssp,NA,NA
+GDP|MER,Low,SSP1,2050,3,25.59214064094164,across_models_same_family_ssp,NA,NA
+GDP|MER,Low,SSP1,2055,2,34.34930165378482,across_models_same_family_ssp,NA,NA
+GDP|MER,Low,SSP1,2060,3,29.994216734661176,across_models_same_family_ssp,NA,NA
+GDP|MER,Low,SSP2,2020,6,3.5502522498920634,across_models_same_family_ssp,NA,NA
+GDP|MER,Low,SSP2,2025,6,5.56491828159412,across_models_same_family_ssp,NA,NA
+GDP|MER,Low,SSP2,2030,6,8.548152585205932,across_models_same_family_ssp,NA,NA
+GDP|MER,Low,SSP2,2035,6,10.90446479188939,across_models_same_family_ssp,NA,NA
+GDP|MER,Low,SSP2,2040,6,13.115958999864322,across_models_same_family_ssp,NA,NA
+GDP|MER,Low,SSP2,2045,6,15.415440342579986,across_models_same_family_ssp,NA,NA
+GDP|MER,Low,SSP2,2050,6,17.59174880007393,across_models_same_family_ssp,NA,NA
+GDP|MER,Low,SSP2,2055,5,22.23882817864629,across_models_same_family_ssp,NA,NA
+GDP|MER,Low,SSP2,2060,6,21.971541958309942,across_models_same_family_ssp,NA,NA
+GDP|MER,Low-to-Negative,SSP1,2020,2,0.20882006523153004,across_models_same_family_ssp,NA,NA
+GDP|MER,Low-to-Negative,SSP1,2025,2,0.3115268405452939,across_models_same_family_ssp,NA,NA
+GDP|MER,Low-to-Negative,SSP1,2030,2,0.3621164452084567,across_models_same_family_ssp,NA,NA
+GDP|MER,Low-to-Negative,SSP1,2035,2,1.2707475882381585,across_models_same_family_ssp,NA,NA
+GDP|MER,Low-to-Negative,SSP1,2040,2,2.606851995932657,across_models_same_family_ssp,NA,NA
+GDP|MER,Low-to-Negative,SSP1,2045,2,4.369143483669983,across_models_same_family_ssp,NA,NA
+GDP|MER,Low-to-Negative,SSP1,2050,2,6.275863675110179,across_models_same_family_ssp,NA,NA
+GDP|MER,Low-to-Negative,SSP1,2060,2,10.286617304265913,across_models_same_family_ssp,NA,NA
+GDP|MER,Low-to-Negative,SSP2,2020,5,3.968917575753359,across_models_same_family_ssp,NA,NA
+GDP|MER,Low-to-Negative,SSP2,2025,5,6.192691987875826,across_models_same_family_ssp,NA,NA
+GDP|MER,Low-to-Negative,SSP2,2030,5,9.482269169277306,across_models_same_family_ssp,NA,NA
+GDP|MER,Low-to-Negative,SSP2,2035,5,11.935222733782119,across_models_same_family_ssp,NA,NA
+GDP|MER,Low-to-Negative,SSP2,2040,5,14.410127323737932,across_models_same_family_ssp,NA,NA
+GDP|MER,Low-to-Negative,SSP2,2045,5,16.647463064604786,across_models_same_family_ssp,NA,NA
+GDP|MER,Low-to-Negative,SSP2,2050,5,18.796960116889284,across_models_same_family_ssp,NA,NA
+GDP|MER,Low-to-Negative,SSP2,2055,4,24.244224326896997,across_models_same_family_ssp,NA,NA
+GDP|MER,Low-to-Negative,SSP2,2060,5,23.216398942693885,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium,SSP1,2020,3,4.140112500266727,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium,SSP1,2025,3,2.949160278365438,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium,SSP1,2030,3,3.2605524664598406,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium,SSP1,2035,3,4.0927351137982795,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium,SSP1,2040,3,5.003464683537844,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium,SSP1,2045,3,6.048033213630707,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium,SSP1,2050,3,7.18073964276254,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium,SSP1,2055,2,6.163716737865927,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium,SSP1,2060,3,9.595088724096222,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium,SSP2,2020,6,3.5500229778118273,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium,SSP2,2025,6,5.564798937719518,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium,SSP2,2030,6,8.572126050022332,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium,SSP2,2035,6,10.867190161103853,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium,SSP2,2040,6,13.097586900762204,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium,SSP2,2045,6,15.197137593232549,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium,SSP2,2050,6,17.176024967066716,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium,SSP2,2055,5,21.45111656933093,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium,SSP2,2060,6,21.122037015520092,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium-to-Low,SSP1,2020,2,2.652049725505638,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium-to-Low,SSP1,2025,2,0.5859335941787731,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium-to-Low,SSP1,2030,2,0.6753257662351424,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium-to-Low,SSP1,2035,2,1.3036766988307817,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium-to-Low,SSP1,2040,2,2.1973134689062515,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium-to-Low,SSP1,2045,2,3.409931797872333,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium-to-Low,SSP1,2050,2,4.593070240048583,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium-to-Low,SSP1,2060,2,7.600603430572468,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium-to-Low,SSP2,2020,6,3.550148459183638,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium-to-Low,SSP2,2025,6,5.564785480426207,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium-to-Low,SSP2,2030,6,8.580525576689936,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium-to-Low,SSP2,2035,6,10.868046808957175,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium-to-Low,SSP2,2040,6,13.095464353285857,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium-to-Low,SSP2,2045,6,15.214708055154144,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium-to-Low,SSP2,2050,6,17.21757666939133,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium-to-Low,SSP2,2055,5,21.530203079380573,across_models_same_family_ssp,NA,NA
+GDP|MER,Medium-to-Low,SSP2,2060,6,21.259576265463277,across_models_same_family_ssp,NA,NA
+GDP|MER,Very Low,SSP1,2020,5,4.060913182003176,across_models_same_family_ssp,NA,NA
+GDP|MER,Very Low,SSP1,2025,5,6.825270177476344,across_models_same_family_ssp,NA,NA
+GDP|MER,Very Low,SSP1,2030,5,10.962426142741997,across_models_same_family_ssp,NA,NA
+GDP|MER,Very Low,SSP1,2035,5,14.92179105675323,across_models_same_family_ssp,NA,NA
+GDP|MER,Very Low,SSP1,2040,5,18.339832824291282,across_models_same_family_ssp,NA,NA
+GDP|MER,Very Low,SSP1,2045,5,21.51403070851896,across_models_same_family_ssp,NA,NA
+GDP|MER,Very Low,SSP1,2050,5,24.401730757018264,across_models_same_family_ssp,NA,NA
+GDP|MER,Very Low,SSP1,2055,4,31.089502143346127,across_models_same_family_ssp,NA,NA
+GDP|MER,Very Low,SSP1,2060,5,29.228774888079805,across_models_same_family_ssp,NA,NA
+GDP|MER,Very Low,SSP2,2020,5,3.6325400239807406,across_models_same_family_ssp,NA,NA
+GDP|MER,Very Low,SSP2,2025,5,6.074957702014121,across_models_same_family_ssp,NA,NA
+GDP|MER,Very Low,SSP2,2030,5,9.330427536623501,across_models_same_family_ssp,NA,NA
+GDP|MER,Very Low,SSP2,2035,5,12.290345203987815,across_models_same_family_ssp,NA,NA
+GDP|MER,Very Low,SSP2,2040,5,14.940265037495552,across_models_same_family_ssp,NA,NA
+GDP|MER,Very Low,SSP2,2045,5,17.659400976181008,across_models_same_family_ssp,NA,NA
+GDP|MER,Very Low,SSP2,2050,5,19.99698134959948,across_models_same_family_ssp,NA,NA
+GDP|MER,Very Low,SSP2,2055,4,25.953626509584502,across_models_same_family_ssp,NA,NA
+GDP|MER,Very Low,SSP2,2060,5,24.821315807835695,across_models_same_family_ssp,NA,NA
+Population,High,SSP3,2020,5,0.5960669411920938,across_models_same_family_ssp,NA,NA
+Population,High,SSP3,2025,5,0.6150848136080156,across_models_same_family_ssp,NA,NA
+Population,High,SSP3,2030,5,0.5586802561882729,across_models_same_family_ssp,NA,NA
+Population,High,SSP3,2035,5,0.5676874190053874,across_models_same_family_ssp,NA,NA
+Population,High,SSP3,2040,5,0.5760420209541302,across_models_same_family_ssp,NA,NA
+Population,High,SSP3,2045,5,0.5838068408191702,across_models_same_family_ssp,NA,NA
+Population,High,SSP3,2050,5,0.5914111480001805,across_models_same_family_ssp,NA,NA
+Population,High,SSP3,2055,4,0.6479016622203235,across_models_same_family_ssp,NA,NA
+Population,High,SSP3,2060,5,0.6061010456972404,across_models_same_family_ssp,NA,NA
+Population,High,SSP5,2020,5,0.5213263762393631,across_models_same_family_ssp,NA,NA
+Population,High,SSP5,2025,5,0.5377737596246159,across_models_same_family_ssp,NA,NA
+Population,High,SSP5,2030,5,0.5437467855955503,across_models_same_family_ssp,NA,NA
+Population,High,SSP5,2035,5,0.5489266218780625,across_models_same_family_ssp,NA,NA
+Population,High,SSP5,2040,5,0.5531919984269328,across_models_same_family_ssp,NA,NA
+Population,High,SSP5,2045,5,0.557127913346888,across_models_same_family_ssp,NA,NA
+Population,High,SSP5,2050,5,0.5610437700552527,across_models_same_family_ssp,NA,NA
+Population,High,SSP5,2055,4,0.6104896967381854,across_models_same_family_ssp,NA,NA
+Population,High,SSP5,2060,5,0.5681924026818272,across_models_same_family_ssp,NA,NA
+Population,High-to-Low,SSP5,2020,4,0.23186145149460244,across_models_same_family_ssp,NA,NA
+Population,High-to-Low,SSP5,2025,4,0.2484455792576222,across_models_same_family_ssp,NA,NA
+Population,High-to-Low,SSP5,2030,4,0.25560805999323705,across_models_same_family_ssp,NA,NA
+Population,High-to-Low,SSP5,2035,4,0.26347318058613367,across_models_same_family_ssp,NA,NA
+Population,High-to-Low,SSP5,2040,4,0.27172326580822026,across_models_same_family_ssp,NA,NA
+Population,High-to-Low,SSP5,2045,4,0.28049007645720364,across_models_same_family_ssp,NA,NA
+Population,High-to-Low,SSP5,2050,4,0.2896589335308401,across_models_same_family_ssp,NA,NA
+Population,High-to-Low,SSP5,2055,3,0.34981927106123567,across_models_same_family_ssp,NA,NA
+Population,High-to-Low,SSP5,2060,4,0.30791984325472244,across_models_same_family_ssp,NA,NA
+Population,Low,SSP1,2020,3,0.372040543704006,across_models_same_family_ssp,NA,NA
+Population,Low,SSP1,2025,3,0.39822135680673565,across_models_same_family_ssp,NA,NA
+Population,Low,SSP1,2030,3,0.6669594741275855,across_models_same_family_ssp,NA,NA
+Population,Low,SSP1,2035,3,0.6978920411642214,across_models_same_family_ssp,NA,NA
+Population,Low,SSP1,2040,3,0.7261138844511961,across_models_same_family_ssp,NA,NA
+Population,Low,SSP1,2045,3,0.7531378457597779,across_models_same_family_ssp,NA,NA
+Population,Low,SSP1,2050,3,0.7789763021510653,across_models_same_family_ssp,NA,NA
+Population,Low,SSP1,2055,2,1.1227876314446628,across_models_same_family_ssp,NA,NA
+Population,Low,SSP1,2060,3,0.8265663632264737,across_models_same_family_ssp,NA,NA
+Population,Low,SSP2,2020,7,0.49457660778848467,across_models_same_family_ssp,NA,NA
+Population,Low,SSP2,2025,7,0.5066637879500852,across_models_same_family_ssp,NA,NA
+Population,Low,SSP2,2030,7,0.531573732209942,across_models_same_family_ssp,NA,NA
+Population,Low,SSP2,2035,7,0.5465662524938761,across_models_same_family_ssp,NA,NA
+Population,Low,SSP2,2040,7,0.5610344489761211,across_models_same_family_ssp,NA,NA
+Population,Low,SSP2,2045,7,0.5750895546263677,across_models_same_family_ssp,NA,NA
+Population,Low,SSP2,2050,7,0.5889992641870636,across_models_same_family_ssp,NA,NA
+Population,Low,SSP2,2055,5,0.7029395235277082,across_models_same_family_ssp,NA,NA
+Population,Low,SSP2,2060,7,0.6166293714865703,across_models_same_family_ssp,NA,NA
+Population,Low-to-Negative,SSP1,2020,2,0.15055401238824861,across_models_same_family_ssp,NA,NA
+Population,Low-to-Negative,SSP1,2025,2,0.12176481345212492,across_models_same_family_ssp,NA,NA
+Population,Low-to-Negative,SSP1,2030,2,0.09536179118113165,across_models_same_family_ssp,NA,NA
+Population,Low-to-Negative,SSP1,2035,2,0.07167030061807529,across_models_same_family_ssp,NA,NA
+Population,Low-to-Negative,SSP1,2040,2,0.049992009209195165,across_models_same_family_ssp,NA,NA
+Population,Low-to-Negative,SSP1,2045,2,0.028839475683619036,across_models_same_family_ssp,NA,NA
+Population,Low-to-Negative,SSP1,2050,2,0.007951944253435903,across_models_same_family_ssp,NA,NA
+Population,Low-to-Negative,SSP1,2060,2,0.031524246583946675,across_models_same_family_ssp,NA,NA
+Population,Low-to-Negative,SSP2,2020,6,0.5399593788528932,across_models_same_family_ssp,NA,NA
+Population,Low-to-Negative,SSP2,2025,6,0.5512640382068719,across_models_same_family_ssp,NA,NA
+Population,Low-to-Negative,SSP2,2030,6,0.5767608009300605,across_models_same_family_ssp,NA,NA
+Population,Low-to-Negative,SSP2,2035,6,0.5905108401736511,across_models_same_family_ssp,NA,NA
+Population,Low-to-Negative,SSP2,2040,6,0.6033669028646909,across_models_same_family_ssp,NA,NA
+Population,Low-to-Negative,SSP2,2045,6,0.6154846409207585,across_models_same_family_ssp,NA,NA
+Population,Low-to-Negative,SSP2,2050,6,0.6271509190754834,across_models_same_family_ssp,NA,NA
+Population,Low-to-Negative,SSP2,2055,4,0.7825213618107381,across_models_same_family_ssp,NA,NA
+Population,Low-to-Negative,SSP2,2060,6,0.6496614157351072,across_models_same_family_ssp,NA,NA
+Population,Medium,SSP1,2020,3,0.8019615449218278,across_models_same_family_ssp,NA,NA
+Population,Medium,SSP1,2025,3,0.8217484281323393,across_models_same_family_ssp,NA,NA
+Population,Medium,SSP1,2030,3,1.044521000427972,across_models_same_family_ssp,NA,NA
+Population,Medium,SSP1,2035,3,1.0684193799832025,across_models_same_family_ssp,NA,NA
+Population,Medium,SSP1,2040,3,1.0893554564404349,across_models_same_family_ssp,NA,NA
+Population,Medium,SSP1,2045,3,1.1088139244038482,across_models_same_family_ssp,NA,NA
+Population,Medium,SSP1,2050,3,1.1271490472074557,across_models_same_family_ssp,NA,NA
+Population,Medium,SSP1,2055,2,1.6150087349467772,across_models_same_family_ssp,NA,NA
+Population,Medium,SSP1,2060,3,1.1600958508923664,across_models_same_family_ssp,NA,NA
+Population,Medium,SSP2,2020,7,0.49457660778848467,across_models_same_family_ssp,NA,NA
+Population,Medium,SSP2,2025,7,0.5066637879500852,across_models_same_family_ssp,NA,NA
+Population,Medium,SSP2,2030,7,0.531573732209942,across_models_same_family_ssp,NA,NA
+Population,Medium,SSP2,2035,7,0.5465662524938761,across_models_same_family_ssp,NA,NA
+Population,Medium,SSP2,2040,7,0.5610344489761211,across_models_same_family_ssp,NA,NA
+Population,Medium,SSP2,2045,7,0.5750895546263677,across_models_same_family_ssp,NA,NA
+Population,Medium,SSP2,2050,7,0.5889992641870636,across_models_same_family_ssp,NA,NA
+Population,Medium,SSP2,2055,5,0.7029395235277082,across_models_same_family_ssp,NA,NA
+Population,Medium,SSP2,2060,7,0.6166293714865703,across_models_same_family_ssp,NA,NA
+Population,Medium-to-Low,SSP1,2020,2,0.18093210157493236,across_models_same_family_ssp,NA,NA
+Population,Medium-to-Low,SSP1,2025,2,0.20452981904992806,across_models_same_family_ssp,NA,NA
+Population,Medium-to-Low,SSP1,2030,2,0.5700775518433167,across_models_same_family_ssp,NA,NA
+Population,Medium-to-Low,SSP1,2035,2,0.6011551305213342,across_models_same_family_ssp,NA,NA
+Population,Medium-to-Low,SSP1,2040,2,0.6293050407363474,across_models_same_family_ssp,NA,NA
+Population,Medium-to-Low,SSP1,2045,2,0.6561289748098021,across_models_same_family_ssp,NA,NA
+Population,Medium-to-Low,SSP1,2050,2,0.6817566069584271,across_models_same_family_ssp,NA,NA
+Population,Medium-to-Low,SSP1,2060,2,0.7292406954815571,across_models_same_family_ssp,NA,NA
+Population,Medium-to-Low,SSP2,2020,7,0.49457660778848467,across_models_same_family_ssp,NA,NA
+Population,Medium-to-Low,SSP2,2025,7,0.5066637879500852,across_models_same_family_ssp,NA,NA
+Population,Medium-to-Low,SSP2,2030,7,0.531573732209942,across_models_same_family_ssp,NA,NA
+Population,Medium-to-Low,SSP2,2035,7,0.5465662524938761,across_models_same_family_ssp,NA,NA
+Population,Medium-to-Low,SSP2,2040,7,0.5610344489761211,across_models_same_family_ssp,NA,NA
+Population,Medium-to-Low,SSP2,2045,7,0.5750895546263677,across_models_same_family_ssp,NA,NA
+Population,Medium-to-Low,SSP2,2050,7,0.5889992641870636,across_models_same_family_ssp,NA,NA
+Population,Medium-to-Low,SSP2,2055,5,0.7029395235277082,across_models_same_family_ssp,NA,NA
+Population,Medium-to-Low,SSP2,2060,7,0.6166293714865703,across_models_same_family_ssp,NA,NA
+Population,Very Low,SSP1,2020,5,0.5960669411920938,across_models_same_family_ssp,NA,NA
+Population,Very Low,SSP1,2025,5,0.6150848136080156,across_models_same_family_ssp,NA,NA
+Population,Very Low,SSP1,2030,5,0.7668668952434995,across_models_same_family_ssp,NA,NA
+Population,Very Low,SSP1,2035,5,0.7853285383910422,across_models_same_family_ssp,NA,NA
+Population,Very Low,SSP1,2040,5,0.801746693382552,across_models_same_family_ssp,NA,NA
+Population,Very Low,SSP1,2045,5,0.817230565446063,across_models_same_family_ssp,NA,NA
+Population,Very Low,SSP1,2050,5,0.8319735611725178,across_models_same_family_ssp,NA,NA
+Population,Very Low,SSP1,2055,4,0.9713261830588176,across_models_same_family_ssp,NA,NA
+Population,Very Low,SSP1,2060,5,0.8588171351718602,across_models_same_family_ssp,NA,NA
+Population,Very Low,SSP2,2020,6,0.518434933547045,across_models_same_family_ssp,NA,NA
+Population,Very Low,SSP2,2025,6,0.5356829597442861,across_models_same_family_ssp,NA,NA
+Population,Very Low,SSP2,2030,6,0.5654933808972973,across_models_same_family_ssp,NA,NA
+Population,Very Low,SSP2,2035,6,0.5830693049986828,across_models_same_family_ssp,NA,NA
+Population,Very Low,SSP2,2040,6,0.5999791245909923,across_models_same_family_ssp,NA,NA
+Population,Very Low,SSP2,2045,6,0.6163384276480857,across_models_same_family_ssp,NA,NA
+Population,Very Low,SSP2,2050,6,0.6324705545935234,across_models_same_family_ssp,NA,NA
+Population,Very Low,SSP2,2055,4,0.7963072828329554,across_models_same_family_ssp,NA,NA
+Population,Very Low,SSP2,2060,6,0.6643212227694031,across_models_same_family_ssp,NA,NA
+GDP|MER,NA,SSP1,2020,NA,7.480262065916525e-4,across_families_same_model_ssp,AIM 3.0,2
+GDP|MER,NA,SSP1,2025,NA,0.029478682424982947,across_families_same_model_ssp,AIM 3.0,2
+GDP|MER,NA,SSP1,2030,NA,0.1152565233095782,across_families_same_model_ssp,AIM 3.0,2
+GDP|MER,NA,SSP1,2035,NA,0.8253886043276951,across_families_same_model_ssp,AIM 3.0,2
+GDP|MER,NA,SSP1,2040,NA,1.519621345178721,across_families_same_model_ssp,AIM 3.0,2
+GDP|MER,NA,SSP1,2045,NA,2.1456525955743833,across_families_same_model_ssp,AIM 3.0,2
+GDP|MER,NA,SSP1,2050,NA,2.752685554346028,across_families_same_model_ssp,AIM 3.0,2
+GDP|MER,NA,SSP1,2055,NA,3.90196406811599,across_families_same_model_ssp,AIM 3.0,2
+GDP|MER,NA,SSP1,2060,NA,3.5636985124675107,across_families_same_model_ssp,AIM 3.0,2
+GDP|MER,NA,SSP2,2020,NA,3.6983329794881956e-4,across_families_same_model_ssp,AIM 3.0,5
+GDP|MER,NA,SSP2,2025,NA,3.4382117267008343e-4,across_families_same_model_ssp,AIM 3.0,5
+GDP|MER,NA,SSP2,2030,NA,0.17336561898504338,across_families_same_model_ssp,AIM 3.0,5
+GDP|MER,NA,SSP2,2035,NA,0.9935203646379507,across_families_same_model_ssp,AIM 3.0,5
+GDP|MER,NA,SSP2,2040,NA,0.8627556697042614,across_families_same_model_ssp,AIM 3.0,5
+GDP|MER,NA,SSP2,2045,NA,1.239325625439821,across_families_same_model_ssp,AIM 3.0,5
+GDP|MER,NA,SSP2,2050,NA,1.5281504201599874,across_families_same_model_ssp,AIM 3.0,5
+GDP|MER,NA,SSP2,2055,NA,2.1057215086615435,across_families_same_model_ssp,AIM 3.0,5
+GDP|MER,NA,SSP2,2060,NA,2.7243889101491323,across_families_same_model_ssp,AIM 3.0,5
+GDP|MER,NA,SSP2,2020,NA,0,across_families_same_model_ssp,GCAM 8s,4
+GDP|MER,NA,SSP2,2025,NA,0,across_families_same_model_ssp,GCAM 8s,4
+GDP|MER,NA,SSP2,2030,NA,0,across_families_same_model_ssp,GCAM 8s,4
+GDP|MER,NA,SSP2,2035,NA,0,across_families_same_model_ssp,GCAM 8s,4
+GDP|MER,NA,SSP2,2040,NA,0,across_families_same_model_ssp,GCAM 8s,4
+GDP|MER,NA,SSP2,2045,NA,0,across_families_same_model_ssp,GCAM 8s,4
+GDP|MER,NA,SSP2,2050,NA,0,across_families_same_model_ssp,GCAM 8s,4
+GDP|MER,NA,SSP2,2055,NA,0,across_families_same_model_ssp,GCAM 8s,4
+GDP|MER,NA,SSP2,2060,NA,0,across_families_same_model_ssp,GCAM 8s,4
+GDP|MER,NA,SSP5,2020,NA,0,across_families_same_model_ssp,GCAM 8s,2
+GDP|MER,NA,SSP5,2025,NA,0,across_families_same_model_ssp,GCAM 8s,2
+GDP|MER,NA,SSP5,2030,NA,0,across_families_same_model_ssp,GCAM 8s,2
+GDP|MER,NA,SSP5,2035,NA,0,across_families_same_model_ssp,GCAM 8s,2
+GDP|MER,NA,SSP5,2040,NA,0,across_families_same_model_ssp,GCAM 8s,2
+GDP|MER,NA,SSP5,2045,NA,0,across_families_same_model_ssp,GCAM 8s,2
+GDP|MER,NA,SSP5,2050,NA,0,across_families_same_model_ssp,GCAM 8s,2
+GDP|MER,NA,SSP5,2055,NA,0,across_families_same_model_ssp,GCAM 8s,2
+GDP|MER,NA,SSP5,2060,NA,0,across_families_same_model_ssp,GCAM 8s,2
+GDP|MER,NA,SSP1,2020,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+GDP|MER,NA,SSP1,2025,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+GDP|MER,NA,SSP1,2030,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+GDP|MER,NA,SSP1,2035,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+GDP|MER,NA,SSP1,2040,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+GDP|MER,NA,SSP1,2045,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+GDP|MER,NA,SSP1,2050,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+GDP|MER,NA,SSP1,2060,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+GDP|MER,NA,SSP2,2020,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+GDP|MER,NA,SSP2,2025,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+GDP|MER,NA,SSP2,2030,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+GDP|MER,NA,SSP2,2035,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+GDP|MER,NA,SSP2,2040,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+GDP|MER,NA,SSP2,2045,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+GDP|MER,NA,SSP2,2050,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+GDP|MER,NA,SSP2,2060,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+GDP|MER,NA,SSP5,2020,NA,0,across_families_same_model_ssp,IMAGE 3.4,2
+GDP|MER,NA,SSP5,2025,NA,0,across_families_same_model_ssp,IMAGE 3.4,2
+GDP|MER,NA,SSP5,2030,NA,0,across_families_same_model_ssp,IMAGE 3.4,2
+GDP|MER,NA,SSP5,2035,NA,0,across_families_same_model_ssp,IMAGE 3.4,2
+GDP|MER,NA,SSP5,2040,NA,0,across_families_same_model_ssp,IMAGE 3.4,2
+GDP|MER,NA,SSP5,2045,NA,0,across_families_same_model_ssp,IMAGE 3.4,2
+GDP|MER,NA,SSP5,2050,NA,0,across_families_same_model_ssp,IMAGE 3.4,2
+GDP|MER,NA,SSP5,2060,NA,0,across_families_same_model_ssp,IMAGE 3.4,2
+GDP|MER,NA,SSP1,2020,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+GDP|MER,NA,SSP1,2025,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+GDP|MER,NA,SSP1,2030,NA,0.07943028606435823,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+GDP|MER,NA,SSP1,2035,NA,0.15057232989458033,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+GDP|MER,NA,SSP1,2040,NA,0.1740859443939578,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+GDP|MER,NA,SSP1,2045,NA,0.15243749159162323,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+GDP|MER,NA,SSP1,2050,NA,0.1314449664958203,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+GDP|MER,NA,SSP1,2055,NA,0.10522454274582549,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+GDP|MER,NA,SSP1,2060,NA,0.08093702308979711,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+GDP|MER,NA,SSP2,2020,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,5
+GDP|MER,NA,SSP2,2025,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,5
+GDP|MER,NA,SSP2,2030,NA,0.14823161612771224,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,5
+GDP|MER,NA,SSP2,2035,NA,0.20679467041081934,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,5
+GDP|MER,NA,SSP2,2040,NA,0.22694779221970265,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,5
+GDP|MER,NA,SSP2,2045,NA,0.2336417357944447,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,5
+GDP|MER,NA,SSP2,2050,NA,0.25236738460280905,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,5
+GDP|MER,NA,SSP2,2055,NA,0.2617740188095004,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,5
+GDP|MER,NA,SSP2,2060,NA,0.2731175290635834,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,5
+GDP|MER,NA,SSP3,2020,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+GDP|MER,NA,SSP3,2025,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+GDP|MER,NA,SSP3,2030,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+GDP|MER,NA,SSP3,2035,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+GDP|MER,NA,SSP3,2040,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+GDP|MER,NA,SSP3,2045,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+GDP|MER,NA,SSP3,2050,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+GDP|MER,NA,SSP3,2055,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+GDP|MER,NA,SSP3,2060,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+GDP|MER,NA,SSP5,2020,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,3
+GDP|MER,NA,SSP5,2025,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,3
+GDP|MER,NA,SSP5,2030,NA,0.19666888791589313,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,3
+GDP|MER,NA,SSP5,2035,NA,0.34879768430148594,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,3
+GDP|MER,NA,SSP5,2040,NA,0.7311623584639338,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,3
+GDP|MER,NA,SSP5,2045,NA,0.9234671658757123,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,3
+GDP|MER,NA,SSP5,2050,NA,1.005539360618077,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,3
+GDP|MER,NA,SSP5,2055,NA,1.0461784120124793,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,3
+GDP|MER,NA,SSP5,2060,NA,1.0897012688372016,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,3
+GDP|MER,NA,SSP1,2020,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,4
+GDP|MER,NA,SSP1,2025,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,4
+GDP|MER,NA,SSP1,2030,NA,0.17207433864444244,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,4
+GDP|MER,NA,SSP1,2035,NA,0.6525592342772356,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,4
+GDP|MER,NA,SSP1,2040,NA,1.0382102470415033,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,4
+GDP|MER,NA,SSP1,2045,NA,1.1433408830360627,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,4
+GDP|MER,NA,SSP1,2050,NA,1.0775400655433172,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,4
+GDP|MER,NA,SSP1,2055,NA,0.9067068581499339,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,4
+GDP|MER,NA,SSP1,2060,NA,0.7421108219315089,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,4
+GDP|MER,NA,SSP2,2020,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,6
+GDP|MER,NA,SSP2,2025,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,6
+GDP|MER,NA,SSP2,2030,NA,0.2189969810550804,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,6
+GDP|MER,NA,SSP2,2035,NA,0.6957353633301018,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,6
+GDP|MER,NA,SSP2,2040,NA,1.121590731447223,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,6
+GDP|MER,NA,SSP2,2045,NA,1.3117709427413038,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,6
+GDP|MER,NA,SSP2,2050,NA,1.3311290672490868,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,6
+GDP|MER,NA,SSP2,2055,NA,1.227013073431543,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,6
+GDP|MER,NA,SSP2,2060,NA,1.118755736270449,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,6
+GDP|MER,NA,SSP3,2020,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,3
+GDP|MER,NA,SSP3,2025,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,3
+GDP|MER,NA,SSP3,2030,NA,0.07716796181104663,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,3
+GDP|MER,NA,SSP3,2035,NA,0.10682764060867748,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,3
+GDP|MER,NA,SSP3,2040,NA,0.167243664877632,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,3
+GDP|MER,NA,SSP3,2045,NA,0.2698114695997595,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,3
+GDP|MER,NA,SSP3,2050,NA,0.43050258018053067,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,3
+GDP|MER,NA,SSP3,2055,NA,0.6756323978213121,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,3
+GDP|MER,NA,SSP3,2060,NA,0.7192670385814758,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,3
+GDP|MER,NA,SSP2,2020,NA,0,across_families_same_model_ssp,WITCH 6.0,4
+GDP|MER,NA,SSP2,2025,NA,0,across_families_same_model_ssp,WITCH 6.0,4
+GDP|MER,NA,SSP2,2030,NA,0.10893292321475581,across_families_same_model_ssp,WITCH 6.0,4
+GDP|MER,NA,SSP2,2035,NA,0.16295929606716297,across_families_same_model_ssp,WITCH 6.0,4
+GDP|MER,NA,SSP2,2040,NA,1.0767626714029304,across_families_same_model_ssp,WITCH 6.0,4
+GDP|MER,NA,SSP2,2045,NA,1.7421982732014143,across_families_same_model_ssp,WITCH 6.0,4
+GDP|MER,NA,SSP2,2050,NA,2.034576883748744,across_families_same_model_ssp,WITCH 6.0,4
+GDP|MER,NA,SSP2,2055,NA,2.27915686729689,across_families_same_model_ssp,WITCH 6.0,4
+GDP|MER,NA,SSP2,2060,NA,2.3479902533296966,across_families_same_model_ssp,WITCH 6.0,4
+GDP|MER,NA,SSP5,2020,NA,0,across_families_same_model_ssp,WITCH 6.0,2
+GDP|MER,NA,SSP5,2025,NA,0,across_families_same_model_ssp,WITCH 6.0,2
+GDP|MER,NA,SSP5,2030,NA,0,across_families_same_model_ssp,WITCH 6.0,2
+GDP|MER,NA,SSP5,2035,NA,0,across_families_same_model_ssp,WITCH 6.0,2
+GDP|MER,NA,SSP5,2040,NA,0,across_families_same_model_ssp,WITCH 6.0,2
+GDP|MER,NA,SSP5,2045,NA,0,across_families_same_model_ssp,WITCH 6.0,2
+GDP|MER,NA,SSP5,2050,NA,0,across_families_same_model_ssp,WITCH 6.0,2
+GDP|MER,NA,SSP5,2055,NA,0,across_families_same_model_ssp,WITCH 6.0,2
+GDP|MER,NA,SSP5,2060,NA,0,across_families_same_model_ssp,WITCH 6.0,2
+Population,NA,SSP1,2020,NA,0,across_families_same_model_ssp,AIM 3.0,2
+Population,NA,SSP1,2025,NA,0,across_families_same_model_ssp,AIM 3.0,2
+Population,NA,SSP1,2030,NA,0,across_families_same_model_ssp,AIM 3.0,2
+Population,NA,SSP1,2035,NA,0,across_families_same_model_ssp,AIM 3.0,2
+Population,NA,SSP1,2040,NA,0,across_families_same_model_ssp,AIM 3.0,2
+Population,NA,SSP1,2045,NA,0,across_families_same_model_ssp,AIM 3.0,2
+Population,NA,SSP1,2050,NA,0,across_families_same_model_ssp,AIM 3.0,2
+Population,NA,SSP1,2055,NA,0,across_families_same_model_ssp,AIM 3.0,2
+Population,NA,SSP1,2060,NA,0,across_families_same_model_ssp,AIM 3.0,2
+Population,NA,SSP2,2020,NA,0,across_families_same_model_ssp,AIM 3.0,5
+Population,NA,SSP2,2025,NA,0,across_families_same_model_ssp,AIM 3.0,5
+Population,NA,SSP2,2030,NA,0,across_families_same_model_ssp,AIM 3.0,5
+Population,NA,SSP2,2035,NA,0,across_families_same_model_ssp,AIM 3.0,5
+Population,NA,SSP2,2040,NA,0,across_families_same_model_ssp,AIM 3.0,5
+Population,NA,SSP2,2045,NA,0,across_families_same_model_ssp,AIM 3.0,5
+Population,NA,SSP2,2050,NA,0,across_families_same_model_ssp,AIM 3.0,5
+Population,NA,SSP2,2055,NA,0,across_families_same_model_ssp,AIM 3.0,5
+Population,NA,SSP2,2060,NA,0,across_families_same_model_ssp,AIM 3.0,5
+Population,NA,SSP2,2020,NA,0,across_families_same_model_ssp,COFFEE 1.6,5
+Population,NA,SSP2,2025,NA,0,across_families_same_model_ssp,COFFEE 1.6,5
+Population,NA,SSP2,2030,NA,0,across_families_same_model_ssp,COFFEE 1.6,5
+Population,NA,SSP2,2035,NA,0,across_families_same_model_ssp,COFFEE 1.6,5
+Population,NA,SSP2,2040,NA,0,across_families_same_model_ssp,COFFEE 1.6,5
+Population,NA,SSP2,2045,NA,0,across_families_same_model_ssp,COFFEE 1.6,5
+Population,NA,SSP2,2050,NA,0,across_families_same_model_ssp,COFFEE 1.6,5
+Population,NA,SSP2,2060,NA,0,across_families_same_model_ssp,COFFEE 1.6,5
+Population,NA,SSP2,2020,NA,0,across_families_same_model_ssp,GCAM 8s,4
+Population,NA,SSP2,2025,NA,0,across_families_same_model_ssp,GCAM 8s,4
+Population,NA,SSP2,2030,NA,0,across_families_same_model_ssp,GCAM 8s,4
+Population,NA,SSP2,2035,NA,0,across_families_same_model_ssp,GCAM 8s,4
+Population,NA,SSP2,2040,NA,0,across_families_same_model_ssp,GCAM 8s,4
+Population,NA,SSP2,2045,NA,0,across_families_same_model_ssp,GCAM 8s,4
+Population,NA,SSP2,2050,NA,0,across_families_same_model_ssp,GCAM 8s,4
+Population,NA,SSP2,2055,NA,0,across_families_same_model_ssp,GCAM 8s,4
+Population,NA,SSP2,2060,NA,0,across_families_same_model_ssp,GCAM 8s,4
+Population,NA,SSP5,2020,NA,0,across_families_same_model_ssp,GCAM 8s,2
+Population,NA,SSP5,2025,NA,0,across_families_same_model_ssp,GCAM 8s,2
+Population,NA,SSP5,2030,NA,0,across_families_same_model_ssp,GCAM 8s,2
+Population,NA,SSP5,2035,NA,0,across_families_same_model_ssp,GCAM 8s,2
+Population,NA,SSP5,2040,NA,0,across_families_same_model_ssp,GCAM 8s,2
+Population,NA,SSP5,2045,NA,0,across_families_same_model_ssp,GCAM 8s,2
+Population,NA,SSP5,2050,NA,0,across_families_same_model_ssp,GCAM 8s,2
+Population,NA,SSP5,2055,NA,0,across_families_same_model_ssp,GCAM 8s,2
+Population,NA,SSP5,2060,NA,0,across_families_same_model_ssp,GCAM 8s,2
+Population,NA,SSP1,2020,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+Population,NA,SSP1,2025,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+Population,NA,SSP1,2030,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+Population,NA,SSP1,2035,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+Population,NA,SSP1,2040,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+Population,NA,SSP1,2045,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+Population,NA,SSP1,2050,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+Population,NA,SSP1,2060,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+Population,NA,SSP2,2020,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+Population,NA,SSP2,2025,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+Population,NA,SSP2,2030,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+Population,NA,SSP2,2035,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+Population,NA,SSP2,2040,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+Population,NA,SSP2,2045,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+Population,NA,SSP2,2050,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+Population,NA,SSP2,2060,NA,0,across_families_same_model_ssp,IMAGE 3.4,5
+Population,NA,SSP5,2020,NA,0,across_families_same_model_ssp,IMAGE 3.4,2
+Population,NA,SSP5,2025,NA,0,across_families_same_model_ssp,IMAGE 3.4,2
+Population,NA,SSP5,2030,NA,0,across_families_same_model_ssp,IMAGE 3.4,2
+Population,NA,SSP5,2035,NA,0,across_families_same_model_ssp,IMAGE 3.4,2
+Population,NA,SSP5,2040,NA,0,across_families_same_model_ssp,IMAGE 3.4,2
+Population,NA,SSP5,2045,NA,0,across_families_same_model_ssp,IMAGE 3.4,2
+Population,NA,SSP5,2050,NA,0,across_families_same_model_ssp,IMAGE 3.4,2
+Population,NA,SSP5,2060,NA,0,across_families_same_model_ssp,IMAGE 3.4,2
+Population,NA,SSP1,2020,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+Population,NA,SSP1,2025,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+Population,NA,SSP1,2030,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+Population,NA,SSP1,2035,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+Population,NA,SSP1,2040,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+Population,NA,SSP1,2045,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+Population,NA,SSP1,2050,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+Population,NA,SSP1,2055,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+Population,NA,SSP1,2060,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+Population,NA,SSP2,2020,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,5
+Population,NA,SSP2,2025,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,5
+Population,NA,SSP2,2030,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,5
+Population,NA,SSP2,2035,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,5
+Population,NA,SSP2,2040,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,5
+Population,NA,SSP2,2045,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,5
+Population,NA,SSP2,2050,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,5
+Population,NA,SSP2,2055,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,5
+Population,NA,SSP2,2060,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,5
+Population,NA,SSP3,2020,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+Population,NA,SSP3,2025,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+Population,NA,SSP3,2030,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+Population,NA,SSP3,2035,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+Population,NA,SSP3,2040,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+Population,NA,SSP3,2045,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+Population,NA,SSP3,2050,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+Population,NA,SSP3,2055,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+Population,NA,SSP3,2060,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,2
+Population,NA,SSP5,2020,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,3
+Population,NA,SSP5,2025,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,3
+Population,NA,SSP5,2030,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,3
+Population,NA,SSP5,2035,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,3
+Population,NA,SSP5,2040,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,3
+Population,NA,SSP5,2045,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,3
+Population,NA,SSP5,2050,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,3
+Population,NA,SSP5,2055,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,3
+Population,NA,SSP5,2060,NA,0,across_families_same_model_ssp,MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,3
+Population,NA,SSP1,2020,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,4
+Population,NA,SSP1,2025,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,4
+Population,NA,SSP1,2030,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,4
+Population,NA,SSP1,2035,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,4
+Population,NA,SSP1,2040,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,4
+Population,NA,SSP1,2045,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,4
+Population,NA,SSP1,2050,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,4
+Population,NA,SSP1,2055,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,4
+Population,NA,SSP1,2060,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,4
+Population,NA,SSP2,2020,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,6
+Population,NA,SSP2,2025,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,6
+Population,NA,SSP2,2030,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,6
+Population,NA,SSP2,2035,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,6
+Population,NA,SSP2,2040,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,6
+Population,NA,SSP2,2045,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,6
+Population,NA,SSP2,2050,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,6
+Population,NA,SSP2,2055,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,6
+Population,NA,SSP2,2060,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,6
+Population,NA,SSP3,2020,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,3
+Population,NA,SSP3,2025,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,3
+Population,NA,SSP3,2030,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,3
+Population,NA,SSP3,2035,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,3
+Population,NA,SSP3,2040,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,3
+Population,NA,SSP3,2045,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,3
+Population,NA,SSP3,2050,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,3
+Population,NA,SSP3,2055,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,3
+Population,NA,SSP3,2060,NA,0,across_families_same_model_ssp,REMIND-MAgPIE 3.5-4.11,3
+Population,NA,SSP2,2020,NA,0,across_families_same_model_ssp,WITCH 6.0,4
+Population,NA,SSP2,2025,NA,0,across_families_same_model_ssp,WITCH 6.0,4
+Population,NA,SSP2,2030,NA,0,across_families_same_model_ssp,WITCH 6.0,4
+Population,NA,SSP2,2035,NA,0,across_families_same_model_ssp,WITCH 6.0,4
+Population,NA,SSP2,2040,NA,0,across_families_same_model_ssp,WITCH 6.0,4
+Population,NA,SSP2,2045,NA,0,across_families_same_model_ssp,WITCH 6.0,4
+Population,NA,SSP2,2050,NA,0,across_families_same_model_ssp,WITCH 6.0,4
+Population,NA,SSP2,2055,NA,0,across_families_same_model_ssp,WITCH 6.0,4
+Population,NA,SSP2,2060,NA,0,across_families_same_model_ssp,WITCH 6.0,4
+Population,NA,SSP5,2020,NA,0,across_families_same_model_ssp,WITCH 6.0,2
+Population,NA,SSP5,2025,NA,0,across_families_same_model_ssp,WITCH 6.0,2
+Population,NA,SSP5,2030,NA,0,across_families_same_model_ssp,WITCH 6.0,2
+Population,NA,SSP5,2035,NA,0,across_families_same_model_ssp,WITCH 6.0,2
+Population,NA,SSP5,2040,NA,0,across_families_same_model_ssp,WITCH 6.0,2
+Population,NA,SSP5,2045,NA,0,across_families_same_model_ssp,WITCH 6.0,2
+Population,NA,SSP5,2050,NA,0,across_families_same_model_ssp,WITCH 6.0,2
+Population,NA,SSP5,2055,NA,0,across_families_same_model_ssp,WITCH 6.0,2
+Population,NA,SSP5,2060,NA,0,across_families_same_model_ssp,WITCH 6.0,2

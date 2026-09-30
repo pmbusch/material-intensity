@@ -1,0 +1,18 @@
+region,r10,weight
+East Asia,China+ (R10),0.7070478352929472
+East Asia,Pacific OECD (R10),0.15655773860363784
+East Asia,Reforming Economies (R10),0.01609569591675563
+East Asia,Rest of Asia (R10),0.12029873018665928
+Europe & Russia,Europe (R10),0.9250110268794609
+Europe & Russia,Reforming Economies (R10),0.07498897312053915
+Latin America,Latin America (R10),1
+Middle East & North Africa,Africa (R10),0.21057898582024243
+Middle East & North Africa,India+ (R10),0.09093449431732169
+Middle East & North Africa,Middle East (R10),0.6760351486768088
+Middle East & North Africa,Reforming Economies (R10),0.02245137118562714
+North America,North America (R10),1
+Oceania,North America (R10),0.002926642715639231
+Oceania,Pacific OECD (R10),0.9702748092461979
+Oceania,Rest of Asia (R10),0.026798548038162874
+South Asia,India+ (R10),1
+Sub-Saharan Africa,Africa (R10),1

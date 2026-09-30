@@ -195,14 +195,14 @@ print(comparison %>% filter(year %in% c(1990, 2000, 2010, 2020, 2024)))
 cat("\nSTEP 5: Save GDP outputs\n")
 
 # ── Regional ─────────────────────────────────────────────────────────────────
-write_csv(gdp_region, "Parameters/gdp_region.csv")
-cat("Saved: Parameters/gdp_region.csv (", nrow(gdp_region), "rows,", length(unique(gdp_region$Region)), "regions )\n")
+write_csv(gdp_region, "Parameters/Worldbank-GDP/gdp_region.csv")
+cat("Saved: Parameters/Worldbank-GDP/gdp_region.csv (", nrow(gdp_region), "rows,", length(unique(gdp_region$Region)), "regions )\n")
 
 # ── World aggregate ───────────────────────────────────────────────────────────
 gdp_world <- gdp_region %>% group_by(year) %>% summarise(GDP_2015USD = sum(GDP_2015USD, na.rm = TRUE), .groups = "drop")
 
-write_csv(gdp_world, "Parameters/gdp_world.csv")
-cat("Saved: Parameters/gdp_world.csv (", nrow(gdp_world), "rows )\n")
+write_csv(gdp_world, "Parameters/Worldbank-GDP/gdp_world.csv")
+cat("Saved: Parameters/Worldbank-GDP/gdp_world.csv (", nrow(gdp_world), "rows )\n")
 
 # ── Selected country data ─────────────────────────────────────────────────────
 gdp_country <- gdp_countries %>% filter(ISO3 %in% COUNTRY_ISO3) %>% dplyr::select(ISO3, year, GDP_2015USD)
@@ -212,9 +212,9 @@ if (length(missing_ctry) > 0) {
   cat("[NOTE] Selected countries with no WB GDP data:", paste(missing_ctry, collapse = ", "), "\n")
 }
 
-write_csv(gdp_country, "Parameters/gdp_country.csv")
+write_csv(gdp_country, "Parameters/Worldbank-GDP/gdp_country.csv")
 cat(
-  "Saved: Parameters/gdp_country.csv (",
+  "Saved: Parameters/Worldbank-GDP/gdp_country.csv (",
   nrow(gdp_country),
   "rows,",
   length(unique(gdp_country$ISO3)),

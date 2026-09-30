@@ -11,18 +11,18 @@
 ##
 ## Input:
 ##   Parameters/Intermediate/UNEP_flows_subenduse.parquet  -- from Script 01b (8 sub-uses)
-##   Parameters/materials_region_DMC.csv                   -- UNEP raw DMC for Fe/NonFe split
-##   Parameters/MISO/MISO_stock_regional.csv               -- calibration anchor (super-cat level)
-##   Parameters/MISO/metal_grade_ore.csv                   -- ore→metal conversion factor g (to 2016)
+##   Parameters/UNEP-Materials/materials_region_DMC.csv                   -- UNEP raw DMC for Fe/NonFe split
+##   Parameters/MISO-Stock/MISO_stock_regional.csv               -- calibration anchor (super-cat level)
+##   Parameters/MISO-Stock/metal_grade_ore.csv                   -- ore→metal conversion factor g (to 2016)
 ##   Inputs/MC_Assumptions.xlsx (sheet Parameters)          -- 2024 grade "now" target (ramp anchor)
 ##   Parameters/Intermediate/miso_unep_scope_factor_A.csv  -- from Script 02c
 ##
 ## Outputs:
 ##   Parameters/Intermediate/stock_trajectory_subenduse.parquet  -- stock by sub-use + Fe/NonFe
 ##   Parameters/Intermediate/stock_trajectory_1970_2024.csv      -- stock by material x end_use (Fe/NonFe merged, sub-use summed)
-##   Parameters/stock_2024_age_profile.csv   -- cohort-level stock at 2024
-##   Parameters/stock_2024_total.csv         -- calibrated total stock at 2024
-##   Figures/Stocks/stock_trajectory_1970_2024.png
+##   Parameters/MISO-Stock/stock_2024_age_profile.csv   -- cohort-level stock at 2024
+##   Parameters/MISO-Stock/stock_2024_total.csv         -- calibrated total stock at 2024
+##   Figures/Supporting-Figures/S06_StockTrajectory_1970_2024.png
 ##   Figures/Stocks/stock_trajectory_endUSE_1970_2024.png
 ##   Figures/Stocks/age_profile_2024.png
 ##   Figures/Stocks/outflow_trajectory.png
@@ -138,12 +138,12 @@ cat(
   "\n"
 )
 
-miso_stock <- read_csv("Parameters/MISO/MISO_stock_regional.csv", show_col_types = FALSE)
+miso_stock <- read_csv("Parameters/MISO-Stock/MISO_stock_regional.csv", show_col_types = FALSE)
 cat("MISO stock:", nrow(miso_stock), "rows |", "years:", min(miso_stock$year), "-", max(miso_stock$year), "\n")
 
 # -- Fe/NonFe split and ore-to-metal conversion (Metal ores only) --------------
 
-unep_raw <- read_csv("Parameters/materials_region_DMC.csv", show_col_types = FALSE)
+unep_raw <- read_csv("Parameters/UNEP-Materials/materials_region_DMC.csv", show_col_types = FALSE)
 
 fe_share_rt <- unep_raw %>%
   filter(material_category %in% c("Ferrous ores", "Non-ferrous ores")) %>%
@@ -160,7 +160,7 @@ fe_share_rt <- unep_raw %>%
     )
   )
 
-grade_raw <- read_csv("Parameters/MISO/metal_grade_ore.csv", show_col_types = FALSE)
+grade_raw <- read_csv("Parameters/MISO-Stock/metal_grade_ore.csv", show_col_types = FALSE)
 
 grade_wide <- grade_raw %>%
   pivot_wider(names_from = group, values_from = g) %>%
@@ -439,6 +439,25 @@ write.csv(
 )
 cat("  Year range:", range(dsm_calibrated$year), "\n")
 
+# -- Also write calibrated historical inflow / outflow per sub_use (model basis:
+# MISO-scope, post A and lambda_cal; metals in metal mass). grade = ore grade of
+# that year (metal -> ore-equivalent = / grade; 1 for non-metallic minerals).
+# Used to show history on the same basis as the MC projection (02-RunSimulations.R STEP 8).
+flow_trajectory_subenduse <- dsm_nested_cal %>%
+  dplyr::select(Region, material, super_category, sub_use, data) %>%
+  unnest(data) %>%
+  dplyr::select(Region, material, super_category, sub_use, year, inflow_Mt = flow_Mt) %>%
+  left_join(
+    dsm_calibrated %>% dplyr::select(Region, material, super_category, sub_use, year, outflow_Mt),
+    by = c("Region", "material", "super_category", "sub_use", "year")
+  ) %>%
+  left_join(grade_wide, by = "year") %>%
+  mutate(grade = case_when(material == "Metal_Fe" ~ g_Fe, material == "Metal_NonFe" ~ g_NonFe, TRUE ~ 1)) %>%
+  dplyr::select(-g_Fe, -g_NonFe)
+
+write.csv(flow_trajectory_subenduse, "Parameters/Intermediate/flow_trajectory_subenduse.csv", row.names = F)
+cat("  Saved: Parameters/Intermediate/flow_trajectory_subenduse.csv (", nrow(flow_trajectory_subenduse), "rows )\n")
+
 # -- Also write the collapsed (Fe+NonFe merged, sub-use summed away)
 # trajectory used by historical-vs-forecast figures and 04_stock_intensity_analysis.R
 stock_trajectory_1970_2024 <- dsm_calibrated %>%
@@ -555,15 +574,15 @@ age_profile_list <- age_profile_nested %>%
 
 cat("  Age profile rows:", nrow(age_profile_list), "\n")
 
-write_csv(age_profile_list, "Parameters/stock_2024_age_profile.csv")
-cat("  Saved: Parameters/stock_2024_age_profile.csv\n")
+write_csv(age_profile_list, "Parameters/MISO-Stock/stock_2024_age_profile.csv")
+cat("  Saved: Parameters/MISO-Stock/stock_2024_age_profile.csv\n")
 
 stock_2024_total <- dsm_calibrated %>%
   filter(year == 2024) %>%
   dplyr::select(Region, material, super_category, sub_use, stock_Mt)
 
-write_csv(stock_2024_total, "Parameters/stock_2024_total.csv")
-cat("  Saved: Parameters/stock_2024_total.csv\n")
+write_csv(stock_2024_total, "Parameters/MISO-Stock/stock_2024_total.csv")
+cat("  Saved: Parameters/MISO-Stock/stock_2024_total.csv\n")
 
 
 # Step 7: Validation plots ---------------------------------------------------
@@ -615,7 +634,9 @@ p_traj <- dsm_calibrated %>%
 p_traj
 
 # fmt: skip
-ggsave("Figures/Stocks/stock_trajectory_1970_2024.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
+ggsave("Figures/Supporting-Figures/S06_StockTrajectory_1970_2024.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
+ggsave("Figures/SVG/Supporting-Figures/S06_StockTrajectory_1970_2024.svg", ggplot2::last_plot(), units = 'cm', width = 8.7*2, height = 8.7)
+clean_svg("Figures/SVG/Supporting-Figures/S06_StockTrajectory_1970_2024.svg")
 
 SUPER_LABELS <- c(
   "buildings" = "Buildings",

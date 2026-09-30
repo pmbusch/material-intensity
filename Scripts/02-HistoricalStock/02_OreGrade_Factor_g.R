@@ -14,11 +14,11 @@
 ##                 "Products mainly from metals nec." is excluded (not gross ore)
 ##
 ## Inputs:
-##   Parameters/materials_region_DMC.csv           — UNEP DMC Region × year
-##   Parameters/MISO/MISO_flows_regional.csv        — MISO metal inflows
-##   Parameters/MISO/MISO_outflows_regional.csv     — MISO metal outflows
+##   Parameters/UNEP-Materials/materials_region_DMC.csv           — UNEP DMC Region × year
+##   Parameters/MISO-Stock/MISO_flows_regional.csv        — MISO metal inflows
+##   Parameters/MISO-Stock/MISO_outflows_regional.csv     — MISO metal outflows
 ##
-## Figures (Figures/MISO/):
+## Figures (Figures/Inputs/MISO/):
 ##   ore_grade_g_global.png       — global g over time (Fig 1)
 ##   ore_grade_g_sensitivity.png  — recycling rate sensitivity, global (Fig 2)
 ##   ore_grade_g_regional.png     — regional g over time (Fig 3)
@@ -34,7 +34,7 @@ RR_FE_SENS <- c(0, 0.05, 0.10, 0.20, 0.30, 0.40, 0.50, 0.6) # recycling rate sen
 
 CAT_FE <- "Ferrous ores"
 CAT_NONFE <- "Non-ferrous ores"
-FIG_DIR <- "Figures/MISO"
+FIG_DIR <- "Figures/Inputs/MISO"
 
 GROUP_COLORS <- c("Ferrous" = "#B71C1C", "Non-ferrous" = "#C77B00")
 
@@ -42,9 +42,9 @@ GROUP_COLORS <- c("Ferrous" = "#B71C1C", "Non-ferrous" = "#C77B00")
 # Step 1: Load data --------
 cat("STEP 1: Load data\n")
 
-miso_inflow <- read_csv("Parameters/MISO/MISO_flows_regional.csv", show_col_types = FALSE)
-miso_outflow <- read_csv("Parameters/MISO/MISO_outflows_regional.csv", show_col_types = FALSE)
-unep_raw <- read_csv("Parameters/materials_region_DMC.csv", show_col_types = FALSE)
+miso_inflow <- read_csv("Parameters/MISO-Stock/MISO_flows_regional.csv", show_col_types = FALSE)
+miso_outflow <- read_csv("Parameters/MISO-Stock/MISO_outflows_regional.csv", show_col_types = FALSE)
+unep_raw <- read_csv("Parameters/UNEP-Materials/materials_region_DMC.csv", show_col_types = FALSE)
 
 cat("  Inflow  rows:", nrow(miso_inflow), "| years:", min(miso_inflow$year), "-", max(miso_inflow$year), "\n")
 cat("  Outflow rows:", nrow(miso_outflow), "| years:", min(miso_outflow$year), "-", max(miso_outflow$year), "\n")
@@ -190,7 +190,9 @@ ggplot(global_g_long, aes(year, g, colour = group)) +
   theme(panel.spacing = unit(0.8, "lines"))
 
 # fmt: skip
-ggsave(file.path(FIG_DIR, "02-ore_grade_g_global.png"), ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7)
+ggsave("Figures/Supporting-Figures/S05_OreGrade_g_Global.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7)
+ggsave("Figures/SVG/Supporting-Figures/S05_OreGrade_g_Global.svg", ggplot2::last_plot(), units = "cm", width = 8.7 * 2, height = 8.7)
+clean_svg("Figures/SVG/Supporting-Figures/S05_OreGrade_g_Global.svg")
 cat("  Saved: ore_grade_g_global.png\n")
 
 
@@ -348,7 +350,7 @@ global_joined %>%
 
 # fill 1970 with 1971
 hist_save <- global_g_long %>% group_by(group) %>% arrange(year) %>% fill(g, .direction = "up")
-write.csv(hist_save, "Parameters/MISO/metal_grade_ore.csv", row.names = F)
+write.csv(hist_save, "Parameters/MISO-Stock/metal_grade_ore.csv", row.names = F)
 
 # values last 10 years
 # grade Fe: 38.1%

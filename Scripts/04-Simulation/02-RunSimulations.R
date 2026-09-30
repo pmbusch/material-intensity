@@ -25,9 +25,15 @@
 ##          new_additions_Mt_pure, replacement_Mt_pure, waste_Mt_pure (metal mass)
 ##          secondary_spilled_Mt        (recyclable mass with no demand to absorb it)
 ##          run_neg_primary, run_total_spill_Mt  (per-run diagnostic flags)
-##          pop_ssp_lo/hi, pop_ssp_share_lo, gdppc_ssp_lo/hi, gdppc_ssp_share_lo
-##            (continuous SSP blend used for this run's population/GDP-percap;
-##             no discrete ssp_label -- see STEP 3/4 for the interpolation)
+##          ssp_lo, ssp_hi, ssp_share_lo
+##            (continuous SSP blend used for this run's population, GDP-percap
+##             and flow-intensity bounds; no discrete ssp_label -- see STEP 4)
+##
+## Intensity endpoints are region-specific: endpoint = int_2024 * ratio, with
+## ratio = min + u * (max - min) from each region's own bounds (01-Sampling.R),
+## u shared by all regions; reached at target_year (smoothstep, log-linear).
+## Target-stock growth blends from the historical 2024 rate into the Kaya rate
+## over STOCK_GROWTH_BLEND_YRS (00-Parameters.R) to avoid a seam jump in flows.
 ## =============================================================================
 
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
@@ -75,7 +81,7 @@ SUB_USE_BY_MATKEY <- list(
 # =============================================================================
 cat("STEP 1: Load LHS draws\n")
 
-mc_input_matrix <- readr::read_csv("Parameters/MC/mc_input_matrix.csv", show_col_types = FALSE)
+mc_input_matrix <- readr::read_csv("Parameters/Simulation/mc_input_matrix.csv", show_col_types = FALSE)
 N_RUNS <- nrow(mc_input_matrix)
 cat("  Runs:", N_RUNS, "| Cols:", ncol(mc_input_matrix), "\n")
 
@@ -153,49 +159,11 @@ downcycling_now <- readxl::read_excel(RECYCLING_FILE, sheet = "Downcycling") |>
   ) |>
   dplyr::filter(!stringr::str_detect(region, "—"))
 
-# Global intensity min/max envelopes (convergence targets clip to these)
-intensity_raw <- readxl::read_excel("Inputs/MC_Assumptions.xlsx", sheet = "Intensity")
-
-intensity_bounds_biomass <- intensity_raw |>
-  dplyr::filter(Category == "Biomass") |>
-  dplyr::mutate(
-    mat_key = dplyr::case_when(
-      stringr::str_detect(tolower(Detail), "residue") ~ NA_character_,
-      stringr::str_detect(tolower(Detail), "grazed") ~ "grazed_biomass",
-      stringr::str_detect(tolower(Detail), "crop") ~ "crops",
-      stringr::str_detect(tolower(Detail), "wood") ~ "wood",
-      stringr::str_detect(tolower(Detail), "other") ~ "other_biomass",
-      TRUE ~ NA_character_
-    )
-  ) |>
-  dplyr::filter(!is.na(mat_key)) |>
-  dplyr::select(mat_key, int_min = min, int_max = max)
-
-intensity_bounds_fossil <- intensity_raw |>
-  dplyr::filter(stringr::str_detect(tolower(Category), "fossil")) |>
-  dplyr::mutate(
-    mat_key = dplyr::case_when(
-      stringr::str_detect(tolower(Detail), "coal") ~ "coal",
-      stringr::str_detect(tolower(Detail), "gas") ~ "gas",
-      stringr::str_detect(tolower(Detail), "petroleum|oil") ~ "oil",
-      stringr::str_detect(tolower(Detail), "other") ~ "other_fossil",
-      TRUE ~ NA_character_
-    )
-  ) |>
-  dplyr::filter(!is.na(mat_key)) |>
-  dplyr::select(mat_key, int_min = min, int_max = max)
-
-intensity_bounds_metal <- intensity_raw |>
-  dplyr::filter(stringr::str_detect(tolower(Category), "metal ore")) |>
-  dplyr::mutate(mat_key = classify_super(Detail)) |>
-  dplyr::filter(!is.na(mat_key)) |>
-  dplyr::select(mat_key, int_min = min, int_max = max)
-
-intensity_bounds_nonmet <- intensity_raw |>
-  dplyr::filter(stringr::str_detect(tolower(Category), "metalic")) |>
-  dplyr::mutate(mat_key = classify_super(Detail)) |>
-  dplyr::filter(!is.na(mat_key)) |>
-  dplyr::select(mat_key, int_min = min, int_max = max)
+# Region-specific intensity ratio bounds (endpoint / 2024), built in 01-Sampling.R:
+#   flows  -> per region x SSP (ScenarioMIP R10 bounds, GDP-weighted to model regions)
+#   stocks -> per region, SSP-independent (Stock_Bounds sheet, End_use via classify_super)
+flow_ratio_bounds <- readr::read_csv("Parameters/Simulation/flow_ratio_bounds.csv", show_col_types = FALSE)
+stock_ratio_bounds <- readr::read_csv("Parameters/Simulation/stock_ratio_bounds.csv", show_col_types = FALSE)
 
 
 # =============================================================================
@@ -207,7 +175,7 @@ DSM_START <- 2025L
 YEARS_DSM <- seq(DSM_START, FORECAST_END)
 N_YR <- length(YEARS_DSM)
 
-ssp_drivers <- readr::read_csv("Parameters/IIASA/ssp_drivers.csv", show_col_types = FALSE)
+ssp_drivers <- readr::read_csv("Parameters/IIASA-Trajectories/ssp_drivers.csv", show_col_types = FALSE)
 
 pop_idx <- ssp_drivers |>
   filter(variable == "Population", year >= DSM_START, year <= FORECAST_END) |>
@@ -216,7 +184,7 @@ gdp_percap_idx <- ssp_drivers |>
   filter(variable == "GDP|PPP [per capita]", year >= DSM_START, year <= FORECAST_END) |>
   dplyr::select(scenario, region, year, gdp_percap_index = index)
 
-gdp_base_vals <- readr::read_csv("Parameters/gdp_region.csv", show_col_types = FALSE) |>
+gdp_base_vals <- readr::read_csv("Parameters/Worldbank-GDP/gdp_region.csv", show_col_types = FALSE) |>
   filter(year == 2024L) |>
   dplyr::select(region = Region, GDP_2015USD)
 
@@ -228,7 +196,7 @@ gdp_full <- ssp_drivers |>
   left_join(gdp_base_vals, by = "region") |>
   mutate(gdp_billion_usd = GDP_2015USD * gdp_index / 1e9)
 
-unep_dmc <- readr::read_csv("Parameters/materials_region_DMC.csv", show_col_types = FALSE)
+unep_dmc <- readr::read_csv("Parameters/UNEP-Materials/materials_region_DMC.csv", show_col_types = FALSE)
 
 # Collapse minor UNEP categories into "Other *" buckets; keep Crop Residues split out.
 dict_mat <- readxl::read_excel("Inputs/Dict_Materials.xlsx", sheet = "Categories") %>%
@@ -258,15 +226,30 @@ m_2024_fossil <- unep_dmc |>
   dplyr::select(region = Region, mat_key, M_2024_Mt = DMC_Mt)
 
 # 2024 stock baseline -> nested lookup [material][region][sub_use] = stock_Mt
-stock_2024_raw <- readr::read_csv("Parameters/stock_2024_total.csv", show_col_types = FALSE) |> rename(region = Region)
+stock_2024_raw <- readr::read_csv("Parameters/MISO-Stock/stock_2024_total.csv", show_col_types = FALSE) |> rename(region = Region)
 stock_2024_sub <- stock_2024_raw |>
   dplyr::select(material, region, sub_use, stock_Mt) |>
   split(~material) |>
   lapply(function(md) split(md, ~region) |> lapply(function(rd) setNames(rd$stock_Mt, rd$sub_use)))
 
+# Historical 2024 stock log-growth, log(S_2024 / S_2023), from the historical DSM
+# -> nested lookup [material][region][sub_use]; anchors the seam blend (STEP 5)
+stock_growth_hist <- readr::read_csv("Parameters/Intermediate/stock_trajectory_subenduse.csv", show_col_types = FALSE) |>
+  filter(year %in% c(2023L, 2024L)) |>
+  dplyr::select(material, region = Region, sub_use, year, stock_Mt) |>
+  tidyr::pivot_wider(names_from = year, values_from = stock_Mt, names_prefix = "S_") |>
+  mutate(g_hist = log(S_2024 / S_2023)) |>
+  filter(is.finite(g_hist))
+stock_growth_hist_sub <- stock_growth_hist |>
+  split(~material) |>
+  lapply(function(md) split(md, ~region) |> lapply(function(rd) setNames(rd$g_hist, rd$sub_use)))
+
+# Weight on model (Kaya) stock growth per YEARS_DSM: linear over STOCK_GROWTH_BLEND_YRS
+w_growth_model <- pmin(1, (YEARS_DSM - 2024L) / (STOCK_GROWTH_BLEND_YRS + 1L))
+
 # Age profiles: annualize 5-year cohort bins by spreading each bin evenly over
 # its preceding `gap` years -> removes the staircase artifact in survival curves.
-age_profile_raw <- readr::read_csv("Parameters/stock_2024_age_profile.csv", show_col_types = FALSE) |>
+age_profile_raw <- readr::read_csv("Parameters/MISO-Stock/stock_2024_age_profile.csv", show_col_types = FALSE) |>
   rename(region = Region) |>
   group_by(material, region, sub_use, cohort_year) |>
   summarise(surviving_stock_Mt = sum(surviving_stock_Mt), .groups = "drop")
@@ -328,11 +311,12 @@ make_mat <- function(df, val_col) {
 pop_mat <- make_mat(pop_idx, "pop_index")
 gdppc_mat <- make_mat(gdp_percap_idx, "gdp_percap_index")
 
-# World aggregate (population-weighted) ranking of the 5 SSPs at FORECAST_END --
-# used only to locate the two bracketing SSPs for the continuous pop/GDP-percap
-# draws below; the region-level blend itself uses pop_mat/gdppc_mat above.
+# World GDP-per-capita growth (2024 -> FORECAST_END) ranking of the sampled SSPs
+# (SSP_SAMPLED; SSP4 excluded) -- used only to locate the two bracketing SSPs
+# for the continuous ssp_u draw below; the region-level blend itself uses
+# pop_mat/gdppc_mat above.
 world_agg <- ssp_drivers |>
-  filter(variable %in% c("Population", "GDP|PPP"), year %in% c(2024L, FORECAST_END)) |>
+  filter(variable %in% c("Population", "GDP|PPP"), year %in% c(2024L, FORECAST_END), scenario %in% SSP_SAMPLED) |>
   dplyr::select(scenario, region, variable, year, value) |>
   tidyr::pivot_wider(names_from = variable, values_from = value) |>
   dplyr::group_by(scenario, year) |>
@@ -343,12 +327,6 @@ world_2024 <- world_agg |> dplyr::filter(year == 2024L) |> dplyr::select(scenari
 world_end <- world_agg |>
   dplyr::filter(year == FORECAST_END) |>
   dplyr::select(scenario, pop_end = pop_world, gdppc_end = gdppc_world)
-
-ssp_rank_pop <- world_end |>
-  dplyr::left_join(world_2024, by = "scenario") |>
-  dplyr::mutate(val = pop_end / pop_base) |>
-  dplyr::arrange(val) |>
-  dplyr::select(scenario, val)
 
 ssp_rank_gdp <- world_end |>
   dplyr::left_join(world_2024, by = "scenario") |>
@@ -364,13 +342,25 @@ cat("  Static data loaded.\n")
 # =============================================================================
 cat("\nSTEP 4: Rebuild trajectories from LHS draws\n")
 
-# GDP-weighted 2024 intensity per super_category (the global anchor for convergence)
-int_wavg_fn <- function(df) {
-  df |>
-    left_join(gdp_base_vals |> rename(GDP = GDP_2015USD), by = "region") |>
-    group_by(mat_key) |>
-    summarise(int_2024_wavg = weighted.mean(int_2024, w = GDP, na.rm = TRUE), .groups = "drop")
-}
+# -- Continuous SSP position (one draw -> population, GDP/capita, flow bounds) --
+# Equal-coverage mapping of ssp_u onto the N_SSP sampled SSPs ranked by world
+# GDP/capita growth (ssp_rank_gdp, STEP 3): p = clamp(N*u - 0.5, 0, N-1),
+# k = floor(p), share_hi = p - k; blend the SSPs at rank k and k+1 (0-based).
+# Each SSP gets an equal 1/N share of u (half of it pure-ish at the two ends).
+N_SSP <- nrow(ssp_rank_gdp)
+ssp_p <- pmin(N_SSP - 1, pmax(0, N_SSP * mc_input_matrix$ssp_u - 0.5))
+ssp_k <- pmin(N_SSP - 2, floor(ssp_p)) # p = N-1 -> k = N-2 with share_hi = 1 (same point)
+ssp_bracket <- tibble::tibble(
+  run_id = mc_input_matrix$run_id,
+  ssp_lo = ssp_rank_gdp$scenario[ssp_k + 1],
+  ssp_hi = ssp_rank_gdp$scenario[ssp_k + 2],
+  ssp_share_lo = 1 - (ssp_p - ssp_k)
+)
+ssp_lo_vec <- ssp_bracket$ssp_lo
+ssp_hi_vec <- ssp_bracket$ssp_hi
+ssp_share_lo_vec <- ssp_bracket$ssp_share_lo
+
+cat("  SSP rank (world GDP/capita growth):", paste(ssp_rank_gdp$scenario, collapse = " < "), "\n")
 
 # Collect the single global [0,1] draw per material into long format
 collect_u <- function(mc, prefix, suffix, mat_keys) {
@@ -382,35 +372,53 @@ collect_u <- function(mc, prefix, suffix, mat_keys) {
     dplyr::select(run_id, mat_key, u_global)
 }
 
-# Endpoint intensity:  endpoint = G * (int_2024 / int_2024_wavg)^lambda, clipped.
-#   G      = global convergence target (one draw, same across regions for the run)
-#   lambda = gap persistence; 0 = full convergence to G, 1 = preserve regional ratio
-build_endpoints <- function(bounds, intensity_bounds, mc, prefix, suffix, lambda_col, fixed_keys = character(0)) {
+# Endpoint intensity:  endpoint = int_2024 * ratio, ratio = min + u * (max - min)
+#   u         = one draw per material, shared by all regions for the run
+#   [min,max] = the region's OWN ratio bounds (endpoint / 2024)
+#   flows (ratio_bounds has an `ssp` column): ratio computed with the same u
+#   under both bracketing SSPs' bounds, blended linearly by ssp_share_lo
+build_endpoints <- function(bounds, ratio_bounds, mc, prefix, suffix, fixed_keys = character(0)) {
   mat_keys <- setdiff(sort(unique(bounds$mat_key)), fixed_keys)
   if (length(mat_keys) == 0) {
     return(NULL)
   }
 
   u_global <- collect_u(mc, prefix, suffix, mat_keys)
-  int_wavg <- int_wavg_fn(bounds)
-  lambda_df <- mc |> dplyr::select(run_id, lambda = all_of(lambda_col))
 
-  G_df <- u_global |>
-    left_join(intensity_bounds |> dplyr::select(mat_key, int_min, int_max), by = "mat_key") |>
-    mutate(G = int_min + u_global * (int_max - int_min)) |>
-    dplyr::select(run_id, mat_key, G)
+  if ("ssp" %in% names(ratio_bounds)) {
+    ratio_df <- u_global |>
+      left_join(ssp_bracket, by = "run_id") |>
+      left_join(
+        ratio_bounds |> dplyr::select(region, mat_key, ssp_lo = ssp, min_lo = ratio_min, max_lo = ratio_max),
+        by = c("mat_key", "ssp_lo"),
+        relationship = "many-to-many"
+      ) |>
+      left_join(
+        ratio_bounds |> dplyr::select(region, mat_key, ssp_hi = ssp, min_hi = ratio_min, max_hi = ratio_max),
+        by = c("region", "mat_key", "ssp_hi")
+      ) |>
+      mutate(
+        ratio = ssp_share_lo * (min_lo + u_global * (max_lo - min_lo)) +
+          (1 - ssp_share_lo) * (min_hi + u_global * (max_hi - min_hi))
+      )
+  } else {
+    ratio_df <- u_global |>
+      left_join(
+        ratio_bounds |> dplyr::select(region, mat_key, ratio_min, ratio_max),
+        by = "mat_key",
+        relationship = "many-to-many"
+      ) |>
+      mutate(ratio = ratio_min + u_global * (ratio_max - ratio_min))
+  }
 
   sampled <- bounds |>
     filter(mat_key %in% mat_keys) |>
-    left_join(int_wavg, by = "mat_key") |>
-    left_join(G_df, by = "mat_key", relationship = "many-to-many") |>
-    left_join(lambda_df, by = "run_id") |>
-    left_join(intensity_bounds |> dplyr::select(mat_key, int_min, int_max), by = "mat_key") |>
-    mutate(
-      endpoint = G * (int_2024 / pmax(int_2024_wavg, 1e-12))^lambda,
-      endpoint = pmax(int_min, pmin(int_max, endpoint))
-    ) |>
+    left_join(ratio_df |> dplyr::select(run_id, region, mat_key, ratio), by = c("region", "mat_key")) |>
+    mutate(endpoint = int_2024 * ratio) |>
     dplyr::select(run_id, region, mat_key, int_2024, endpoint)
+  if (anyNA(sampled$endpoint)) {
+    stop("Missing ratio bounds for: ", paste(unique(paste(sampled$region, sampled$mat_key)[is.na(sampled$endpoint)]), collapse = ", "))
+  }
 
   # Fixed materials: endpoint frozen at 2024 value for every run
   if (length(fixed_keys) > 0) {
@@ -426,43 +434,39 @@ build_endpoints <- function(bounds, intensity_bounds, mc, prefix, suffix, lambda
 
 ep_biomass <- build_endpoints(
   biomass_bounds,
-  intensity_bounds_biomass,
+  flow_ratio_bounds |> filter(material_group == "biomass"),
   mc_input_matrix,
   "intensity_",
   "_global",
-  "gap_persistence_biomass",
   fixed_keys = "other_biomass"
 ) |>
   mutate(material_group = "biomass")
 
 ep_fossil <- build_endpoints(
   fossil_bounds,
-  intensity_bounds_fossil,
+  flow_ratio_bounds |> filter(material_group == "fossil_fuels"),
   mc_input_matrix,
   "intensity_",
   "_global",
-  "gap_persistence_fossilfuels",
   fixed_keys = "other_fossil"
 ) |>
   mutate(material_group = "fossil_fuels")
 
 ep_metal <- build_endpoints(
   metal_bounds,
-  intensity_bounds_metal,
+  stock_ratio_bounds |> filter(material_group == "metal_ores"),
   mc_input_matrix,
   "intensity_",
-  "_metalOres_global",
-  "gap_persistence_metal_construction"
+  "_metalOres_global"
 ) |>
   mutate(material_group = "metal_ores")
 
 ep_nonmet <- build_endpoints(
   nonmet_bounds,
-  intensity_bounds_nonmet,
+  stock_ratio_bounds |> filter(material_group == "nonmetallic_minerals"),
   mc_input_matrix,
   "intensity_",
   "_nonMetallic_global",
-  "gap_persistence_metal_construction",
   fixed_keys = c("sl_products", "machinery")
 ) |>
   mutate(material_group = "nonmetallic_minerals")
@@ -480,10 +484,10 @@ recyc_conv_yr <- mc_input_matrix |>
   ) |>
   dplyr::select(run_id, recyc_convergence_yr)
 
-lambda_rates <- mc_input_matrix |> dplyr::select(run_id, lambda = gap_persistence_rates)
-
-# Same convergence shape as intensity, but on rates: ramp to endpoint by
-# recyc_convergence_yr, hold after, clip to [min, max] throughout.
+# Endpoint rate = min_rate + u * (max_rate - min_rate): absolute bounds from the
+# MC_Assumptions Parameters sheet, same for all regions (SSP-independent). Each
+# region ramps from its own 2024 rate to that endpoint by recyc_convergence_yr,
+# holds after (no clipping, no GDP-weighted anchor).
 #
 # 2024 anchor is the Excel end-of-life recycling rate itself (rate_now, from
 # the "Recycling_EOL" sheet -- fraction of end-of-life waste recovered). This
@@ -495,10 +499,6 @@ lambda_rates <- mc_input_matrix |> dplyr::select(run_id, lambda = gap_persistenc
 # belong in a waste-based recycling rate; this model makes no trade
 # assumptions, so that anchor has been dropped.)
 make_recycling_traj <- function(recycling_now, G_col, min_rate, max_rate, mat_label) {
-  wavg <- recycling_now |>
-    left_join(gdp_base_vals |> rename(GDP = GDP_2015USD), by = "region") |>
-    summarise(rate_mean = weighted.mean(rate_now, w = GDP, na.rm = TRUE)) |>
-    pull(rate_mean)
   G_df <- mc_input_matrix |>
     dplyr::select(run_id, u = all_of(G_col)) |>
     mutate(G = min_rate + u * (max_rate - min_rate)) |>
@@ -507,9 +507,8 @@ make_recycling_traj <- function(recycling_now, G_col, min_rate, max_rate, mat_la
   ep <- recycling_now |>
     tidyr::crossing(run_id = seq_len(N_RUNS)) |>
     left_join(G_df, by = "run_id") |>
-    left_join(lambda_rates, by = "run_id") |>
     left_join(recyc_conv_yr, by = "run_id") |>
-    mutate(recycling_endpoint = pmax(min_rate, pmin(max_rate, G + lambda * (rate_now - wavg))))
+    mutate(recycling_endpoint = G)
   ep |>
     tidyr::crossing(year = YEARS_DSM) |>
     mutate(
@@ -550,11 +549,7 @@ downcycling_long <- downcycling_now |>
     values_to = "rate_now"
   )
 
-downcycling_wavg <- downcycling_long |>
-  left_join(gdp_base_vals |> rename(GDP = GDP_2015USD), by = "region") |>
-  group_by(end_use) |>
-  summarise(rate_mean = weighted.mean(rate_now, w = GDP, na.rm = TRUE), .groups = "drop")
-
+# Endpoint = DOWNCYCLING_MIN + u * (MAX - MIN), same for all regions (as recycling)
 downcycling_G <- mc_input_matrix |>
   dplyr::select(run_id, downcycling_buildings_global, downcycling_civil_infrastructure_global) |>
   tidyr::pivot_longer(-run_id, names_to = "end_use", values_to = "u", names_pattern = "downcycling_(.+)_global") |>
@@ -567,11 +562,9 @@ downcycling_G <- bind_rows(
 )
 
 downcycling_ep <- downcycling_long |>
-  left_join(downcycling_wavg, by = "end_use") |>
   left_join(downcycling_G, by = "end_use", relationship = "many-to-many") |>
-  left_join(lambda_rates, by = "run_id") |>
   left_join(recyc_conv_yr, by = "run_id") |>
-  mutate(downcycling_endpoint = pmax(DOWNCYCLING_MIN, pmin(DOWNCYCLING_MAX, G + lambda * (rate_now - rate_mean))))
+  mutate(downcycling_endpoint = G)
 
 downcycling_traj <- downcycling_ep |>
   tidyr::crossing(year = YEARS_DSM) |>
@@ -579,8 +572,7 @@ downcycling_traj <- downcycling_ep |>
     # Smoothstep ease, same rationale as the recycling-rate ramp above.
     w_lin = pmin(1, pmax(0, (year - 2024L) / pmax(1L, recyc_convergence_yr - 2024L))),
     w_smooth = w_lin^2 * (3 - 2 * w_lin),
-    downcycling_rate = rate_now + (downcycling_endpoint - rate_now) * w_smooth,
-    downcycling_rate = pmax(DOWNCYCLING_MIN, pmin(DOWNCYCLING_MAX, downcycling_rate))
+    downcycling_rate = rate_now + (downcycling_endpoint - rate_now) * w_smooth
   ) |>
   dplyr::select(run_id, region, end_use, year, downcycling_rate)
 
@@ -659,31 +651,6 @@ target_year_vec <- as.integer(round(
   TARGET_YEAR_MIN + mc_input_matrix$target_year_u * (TARGET_YEAR_MAX - TARGET_YEAR_MIN)
 ))
 
-# -- Continuous SSP interpolation (population & GDP per capita, independent) --
-# For each run's [0,1] draw, locate where it falls in the FORECAST_END world
-# index range and the two bracketing SSPs, then blend their FULL trajectory by
-# the resulting share for every region and year (see ssp_rank_pop/gdp, STEP 3).
-locate_ssp_bracket <- function(u, ranked) {
-  target <- min(ranked$val) + u * (max(ranked$val) - min(ranked$val))
-  k <- findInterval(target, ranked$val, all.inside = TRUE)
-  data.frame(
-    ssp_lo = ranked$scenario[k],
-    ssp_hi = ranked$scenario[k + 1],
-    share_lo = (ranked$val[k + 1] - target) / (ranked$val[k + 1] - ranked$val[k])
-  )
-}
-
-pop_bracket <- purrr::map_dfr(mc_input_matrix$pop_ssp_u, locate_ssp_bracket, ranked = ssp_rank_pop)
-gdp_bracket <- purrr::map_dfr(mc_input_matrix$gdppc_ssp_u, locate_ssp_bracket, ranked = ssp_rank_gdp)
-
-pop_ssp_lo_vec <- pop_bracket$ssp_lo
-pop_ssp_hi_vec <- pop_bracket$ssp_hi
-pop_share_lo_vec <- pop_bracket$share_lo
-
-gdppc_ssp_lo_vec <- gdp_bracket$ssp_lo
-gdppc_ssp_hi_vec <- gdp_bracket$ssp_hi
-gdppc_share_lo_vec <- gdp_bracket$share_lo
-
 cat("  Trajectories rebuilt.\n")
 
 
@@ -700,11 +667,12 @@ run_one <- function(i) {
   gr_i <- grade_by_run[[i]]
 
   # Continuous SSP blend: convex combination of the two bracketing SSPs'
-  # region x year matrices, independently for population and GDP per capita.
-  pop_i <- pop_share_lo_vec[i] * pop_mat[[pop_ssp_lo_vec[i]]] +
-    (1 - pop_share_lo_vec[i]) * pop_mat[[pop_ssp_hi_vec[i]]]
-  gdppc_i <- gdppc_share_lo_vec[i] * gdppc_mat[[gdppc_ssp_lo_vec[i]]] +
-    (1 - gdppc_share_lo_vec[i]) * gdppc_mat[[gdppc_ssp_hi_vec[i]]]
+  # region x year matrices -- same bracket and share for population and GDP
+  # per capita (and for the flow-intensity bounds, see build_endpoints).
+  pop_i <- ssp_share_lo_vec[i] * pop_mat[[ssp_lo_vec[i]]] +
+    (1 - ssp_share_lo_vec[i]) * pop_mat[[ssp_hi_vec[i]]]
+  gdppc_i <- ssp_share_lo_vec[i] * gdppc_mat[[ssp_lo_vec[i]]] +
+    (1 - ssp_share_lo_vec[i]) * gdppc_mat[[ssp_hi_vec[i]]]
 
   yr_vec <- YEARS_DSM
   # alpha: 0->1 time weight, smoothstep-eased (zero slope at both 2024 and
@@ -714,6 +682,10 @@ run_one <- function(i) {
   # 2024 value to endpoint as int_2024 * (endpoint / int_2024)^alpha
   alpha_lin <- pmin(1, pmax(0, (yr_vec - 2024L) / (target_year_vec[i] - 2024L)))
   alpha <- alpha_lin^2 * (3 - 2 * alpha_lin)
+  # Hermite slope basis (0 at both ends, unit initial slope in alpha_lin): stock
+  # log-intensity += h10 * g_int * span gives an initial slope of g_int per year
+  h10 <- alpha_lin^3 - 2 * alpha_lin^2 + alpha_lin
+  span_yrs <- target_year_vec[i] - 2024L
 
   # Ore grade: same smoothstep-eased ramp from the 2024 baseline to the
   # sampled target, using the same convergence year (alpha) as intensity.
@@ -834,7 +806,17 @@ run_one <- function(i) {
         if (is.null(s2024) || s2024 <= 0) {
           next
         }
-        target_stock <- s2024 * pop_i[rg, ] * gdppc_i[rg, ] * stock_intensity_index
+        # Intensity ramp starts at the slope that continues 2024 stock growth:
+        # g_int = historical stock log-growth - this run's 2025 GDP log-growth (Hermite slope term)
+        g_s <- stock_growth_hist_sub[[mat_label]][[rg]][su]
+        g_int <- if (length(g_s) == 1 && !is.na(g_s)) g_s - log(pop_i[rg, 1] * gdppc_i[rg, 1]) else 0
+        target_stock <- s2024 * pop_i[rg, ] * gdppc_i[rg, ] * stock_intensity_index * exp(h10 * g_int * span_yrs)
+        # Seam blend: log stock growth = w * model + (1 - w) * historical 2024 rate
+        g_hist <- stock_growth_hist_sub[[mat_label]][[rg]][su]
+        if (length(g_hist) == 1 && !is.na(g_hist)) {
+          g_model <- diff(log(c(s2024, target_stock)))
+          target_stock <- s2024 * exp(cumsum(w_growth_model * g_model + (1 - w_growth_model) * g_hist))
+        }
         lp_row <- lp_i[lp_i$sub_use == su, ]
         if (nrow(lp_row) == 0) {
           next
@@ -942,7 +924,17 @@ run_one <- function(i) {
       if (is.null(s2024) || s2024 <= 0) {
         next
       }
-      target_stock <- s2024 * pop_i[rg, ] * gdppc_i[rg, ] * stock_intensity_index
+      # Intensity ramp starts at the slope that continues 2024 stock growth:
+      # g_int = historical stock log-growth - this run's 2025 GDP log-growth (Hermite slope term)
+      g_s <- stock_growth_hist_sub[["Non-metallic minerals"]][[rg]][su]
+      g_int <- if (length(g_s) == 1 && !is.na(g_s)) g_s - log(pop_i[rg, 1] * gdppc_i[rg, 1]) else 0
+      target_stock <- s2024 * pop_i[rg, ] * gdppc_i[rg, ] * stock_intensity_index * exp(h10 * g_int * span_yrs)
+      # Seam blend: log stock growth = w * model + (1 - w) * historical 2024 rate
+      g_hist <- stock_growth_hist_sub[["Non-metallic minerals"]][[rg]][su]
+      if (length(g_hist) == 1 && !is.na(g_hist)) {
+        g_model <- diff(log(c(s2024, target_stock)))
+        target_stock <- s2024 * exp(cumsum(w_growth_model * g_model + (1 - w_growth_model) * g_hist))
+      }
       lp_row <- lp_i[lp_i$sub_use == su, ]
       if (nrow(lp_row) == 0) {
         next
@@ -1081,13 +1073,10 @@ run_one <- function(i) {
   out <- bind_rows(out_list)
 
   # Continuous SSP blend used by this run (replaces the discrete ssp_label) --
-  # exact reconstruction of pop_i/gdppc_i requires only these six values.
-  out$pop_ssp_lo <- pop_ssp_lo_vec[i]
-  out$pop_ssp_hi <- pop_ssp_hi_vec[i]
-  out$pop_ssp_share_lo <- pop_share_lo_vec[i]
-  out$gdppc_ssp_lo <- gdppc_ssp_lo_vec[i]
-  out$gdppc_ssp_hi <- gdppc_ssp_hi_vec[i]
-  out$gdppc_ssp_share_lo <- gdppc_share_lo_vec[i]
+  # exact reconstruction of pop_i/gdppc_i requires only these three values.
+  out$ssp_lo <- ssp_lo_vec[i]
+  out$ssp_hi <- ssp_hi_vec[i]
+  out$ssp_share_lo <- ssp_share_lo_vec[i]
 
   # Per-run physical-sanity flags (kept, not filtered) -> screen pathological
   # runs downstream before SHAP/Sobol rather than letting them contaminate.
@@ -1141,6 +1130,43 @@ cat(sprintf(
   spill_summary$median_spill_Mt,
   spill_summary$max_spill_Mt
 ))
+
+
+# =============================================================================
+# STEP 8: Historical flows on the model basis (1970-2024)
+# =============================================================================
+# UNEP DMC (territorial) is not what the DSM projects: the DSM inflow is
+# MISO-scope (incl. scrap and embodied trade, calibrated). For a seamless
+# history -> projection, historical primary = DSM inflow - secondary, with
+# secondary = historical outflow x the model's own 2025 recovery rate (MC
+# pooled, per region x material). Metals converted to ore-equivalent with the
+# historical grade (same basis as primary_consumption_Mt).
+cat("\nSTEP 8: Historical flows on the model basis\n")
+
+MATERIAL_BY_GROUP <- c("metal_fe" = "Metal_Fe", "metal_nonfe" = "Metal_NonFe", "nonmetallic_minerals" = "Non-metallic minerals")
+
+recovery_2025 <- results |>
+  dplyr::filter(year == DSM_START, material_group %in% names(MATERIAL_BY_GROUP)) |>
+  dplyr::group_by(region, material = MATERIAL_BY_GROUP[material_group]) |>
+  dplyr::summarise(recovery_rate = sum(secondary_supply_Mt_pure, na.rm = TRUE) / sum(waste_Mt_pure, na.rm = TRUE), .groups = "drop")
+
+hist_flows_model_basis <- readr::read_csv("Parameters/Intermediate/flow_trajectory_subenduse.csv", show_col_types = FALSE) |>
+  dplyr::rename(region = Region) |>
+  dplyr::left_join(recovery_2025, by = c("region", "material")) |>
+  dplyr::arrange(region, material, sub_use, year) |>
+  dplyr::group_by(region, material, sub_use) |>
+  dplyr::mutate(outflow_Mt = dplyr::coalesce(outflow_Mt, dplyr::lead(outflow_Mt))) |> # first year has no outflow
+  dplyr::ungroup() |>
+  dplyr::mutate(
+    outflow_Mt = tidyr::replace_na(outflow_Mt, 0),
+    secondary_Mt = pmin(outflow_Mt * tidyr::replace_na(recovery_rate, 0), inflow_Mt),
+    primary_Mt = inflow_Mt - secondary_Mt,
+    dplyr::across(c(inflow_Mt, outflow_Mt, secondary_Mt, primary_Mt), \(x) x / grade) # ore-equivalent for metals
+  ) |>
+  dplyr::select(region, material, super_category, sub_use, year, inflow_Mt, outflow_Mt, secondary_Mt, primary_Mt)
+
+readr::write_csv(hist_flows_model_basis, "Results/MC/hist_flows_model_basis.csv")
+cat("  Saved: Results/MC/hist_flows_model_basis.csv (", nrow(hist_flows_model_basis), "rows )\n")
 
 cat("\n=== MC run complete ===\n")
 

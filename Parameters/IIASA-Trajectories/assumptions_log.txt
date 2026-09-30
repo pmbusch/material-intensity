@@ -1,0 +1,8 @@
+Assumptions / drop log -- generated 2026-09-30
+
+- Dropped 4195 exact duplicate rows after stacking (energy extract repeats Primary Energy variables already in the R10/World files, with identical values).
+- Dropped 140752 rows outside the 2020-2060 5-yr grid (includes the near-empty 2021 column, which is a data artifact, not a real annual series).
+- Checked for (Marker) vs non-marker duplication within the same model: none found.
+- 'Other (R10)' is excluded from the region set used in metrics/analysis scripts (02+); its share of World is logged in other_r10_share.csv for reference.
+- Largest 'Other (R10)' median share of World: Food Intake|Livestock [per capita] (162.5%).
+- GDP/Population vary negligibly across forcing families for a given model+SSP -> denominator is effectively exogenous (SSP-determined), not policy-responsive.

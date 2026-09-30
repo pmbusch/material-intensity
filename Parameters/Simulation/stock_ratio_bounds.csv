@@ -1,0 +1,65 @@
+region,material_group,mat_key,ratio_min,ratio_max
+North America,metal_ores,buildings,0.55,1.1
+Europe & Russia,metal_ores,buildings,0.55,1.1
+Oceania,metal_ores,buildings,0.55,1.1
+East Asia,metal_ores,buildings,0.55,1.2
+Latin America,metal_ores,buildings,0.55,1.2
+Middle East & North Africa,metal_ores,buildings,0.55,1.2
+South Asia,metal_ores,buildings,0.55,1.2
+Sub-Saharan Africa,metal_ores,buildings,0.55,1.2
+North America,metal_ores,civil,0.8,1.1
+Europe & Russia,metal_ores,civil,0.8,1.1
+Oceania,metal_ores,civil,0.8,1.1
+East Asia,metal_ores,civil,0.8,1.3
+Latin America,metal_ores,civil,0.8,1.3
+Middle East & North Africa,metal_ores,civil,0.8,1.3
+South Asia,metal_ores,civil,0.8,1.3
+Sub-Saharan Africa,metal_ores,civil,0.8,1.3
+North America,metal_ores,machinery,0.7,1.1
+Europe & Russia,metal_ores,machinery,0.7,1.1
+Oceania,metal_ores,machinery,0.7,1.1
+East Asia,metal_ores,machinery,0.7,1.3
+Latin America,metal_ores,machinery,0.7,1.3
+Middle East & North Africa,metal_ores,machinery,0.7,1.3
+South Asia,metal_ores,machinery,0.7,1.3
+Sub-Saharan Africa,metal_ores,machinery,0.7,1.3
+North America,metal_ores,sl_products,0.7,1.1
+Europe & Russia,metal_ores,sl_products,0.7,1.1
+Oceania,metal_ores,sl_products,0.7,1.1
+East Asia,metal_ores,sl_products,0.7,1.5
+Latin America,metal_ores,sl_products,0.7,1.5
+Middle East & North Africa,metal_ores,sl_products,0.7,1.5
+South Asia,metal_ores,sl_products,0.7,1.5
+Sub-Saharan Africa,metal_ores,sl_products,0.7,1.5
+North America,nonmetallic_minerals,buildings,0.7,1.1
+Europe & Russia,nonmetallic_minerals,buildings,0.7,1.1
+Oceania,nonmetallic_minerals,buildings,0.7,1.1
+East Asia,nonmetallic_minerals,buildings,0.7,1.3
+Latin America,nonmetallic_minerals,buildings,0.7,1.8
+Middle East & North Africa,nonmetallic_minerals,buildings,0.7,1.8
+South Asia,nonmetallic_minerals,buildings,0.7,1.3
+Sub-Saharan Africa,nonmetallic_minerals,buildings,0.7,1.8
+North America,nonmetallic_minerals,civil,0.55,1.1
+Europe & Russia,nonmetallic_minerals,civil,0.55,1.1
+Oceania,nonmetallic_minerals,civil,0.55,1.1
+East Asia,nonmetallic_minerals,civil,0.55,1.45
+Latin America,nonmetallic_minerals,civil,0.55,1.45
+Middle East & North Africa,nonmetallic_minerals,civil,0.55,1.45
+South Asia,nonmetallic_minerals,civil,0.55,1.45
+Sub-Saharan Africa,nonmetallic_minerals,civil,0.55,1.45
+North America,nonmetallic_minerals,machinery,1,1
+Europe & Russia,nonmetallic_minerals,machinery,1,1
+Oceania,nonmetallic_minerals,machinery,1,1
+East Asia,nonmetallic_minerals,machinery,1,1
+Latin America,nonmetallic_minerals,machinery,1,1
+Middle East & North Africa,nonmetallic_minerals,machinery,1,1
+South Asia,nonmetallic_minerals,machinery,1,1
+Sub-Saharan Africa,nonmetallic_minerals,machinery,1,1
+North America,nonmetallic_minerals,sl_products,1,1
+Europe & Russia,nonmetallic_minerals,sl_products,1,1
+Oceania,nonmetallic_minerals,sl_products,1,1
+East Asia,nonmetallic_minerals,sl_products,1,1
+Latin America,nonmetallic_minerals,sl_products,1,1
+Middle East & North Africa,nonmetallic_minerals,sl_products,1,1
+South Asia,nonmetallic_minerals,sl_products,1,1
+Sub-Saharan Africa,nonmetallic_minerals,sl_products,1,1

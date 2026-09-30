@@ -8,7 +8,7 @@ source('Scripts/00-Libraries.R', encoding = 'UTF-8')
 source("Scripts/00-CommonParameters.R", encoding = "UTF-8")
 
 
-age_profile_list <- read_csv("Parameters/stock_2024_age_profile.csv")
+age_profile_list <- read_csv("Parameters/MISO-Stock/stock_2024_age_profile.csv")
 
 
 # -- Plot 1: 2024 age distribution by end-use and material --------------------
@@ -132,10 +132,10 @@ p_pyramid <- pyramid_data %>%
 p_pyramid
 
 # fmt: skip
-ggsave("Figures/Stocks/age_profile_2024.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
+ggsave("Figures/Supporting-Figures/S07_AgeProfile_2024.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
 # fmt: skip
-ggsave("Figures/SVG/age_profile_2024.svg", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
-clean_svg("Figures/SVG/age_profile_2024.svg")
+ggsave("Figures/SVG/Supporting-Figures/S07_AgeProfile_2024.svg", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
+clean_svg("Figures/SVG/Supporting-Figures/S07_AgeProfile_2024.svg")
 
 # -- Plot 2: 2024 age distribution faceted by region (Buildings vs Civil infrastructure) --------------------------------
 
@@ -348,7 +348,7 @@ p_pyramid_msl <- pyramid_data_msl %>%
 p_pyramid_msl
 
 # fmt: skip
-ggsave("Figures/Stocks/age_profile_2024_msl.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
+ggsave("Figures/Supporting-Figures/S08_AgeProfile_2024_MSL.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
 # fmt: skip
-ggsave("Figures/SVG/age_profile_2024_msl.svg", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
-clean_svg("Figures/SVG/age_profile_2024_msl.svg")
+ggsave("Figures/SVG/Supporting-Figures/S08_AgeProfile_2024_MSL.svg", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
+clean_svg("Figures/SVG/Supporting-Figures/S08_AgeProfile_2024_MSL.svg")

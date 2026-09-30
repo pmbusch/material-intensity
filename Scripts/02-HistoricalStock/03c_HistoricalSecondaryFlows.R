@@ -26,10 +26,10 @@
 ##   Parameters/Intermediate/miso_unep_scope_factor_A.csv   -- metal A (Script 02b)
 ##   Parameters/Intermediate/UNEP_flows_subenduse.csv       -- Script 01b
 ##   Parameters/Intermediate/nonprimary_share_2024.csv      -- Script 03 (cross-check anchor)
-##   Parameters/materials_region_DMC.csv                    -- raw UNEP DMC (primary)
-##   Parameters/MISO/MISO_flows_regional.csv                -- MISO inflows (non-metallic A)
-##   Parameters/MISO/MISO_outflows_regional.csv             -- MISO waste/EoL flows
-##   Parameters/MISO/metal_grade_ore.csv                    -- ore -> metal grade g
+##   Parameters/UNEP-Materials/materials_region_DMC.csv                    -- raw UNEP DMC (primary)
+##   Parameters/MISO-Stock/MISO_flows_regional.csv                -- MISO inflows (non-metallic A)
+##   Parameters/MISO-Stock/MISO_outflows_regional.csv             -- MISO waste/EoL flows
+##   Parameters/MISO-Stock/metal_grade_ore.csv                    -- ore -> metal grade g
 ##
 ## Output:
 ##   Parameters/Intermediate/historical_secondary_flows.csv
@@ -78,7 +78,7 @@ cat("  Metal A rows:", nrow(metal_A), "| years:", paste(range(metal_A$year), col
 cat("\nSTEP 2: Non-metallic minerals scope factor A_nonmet\n")
 
 unep_sub <- read.csv("Parameters/Intermediate/UNEP_flows_subenduse.csv")
-miso_flows <- read_csv("Parameters/MISO/MISO_flows_regional.csv", show_col_types = FALSE)
+miso_flows <- read_csv("Parameters/MISO-Stock/MISO_flows_regional.csv", show_col_types = FALSE)
 
 unep_nonmet_super <- unep_sub %>%
   filter(material == "Non-metallic minerals", year >= HIST_START, year <= MISO_LAST_YEAR) %>%
@@ -169,7 +169,7 @@ if (n_negative > 0) {
 
 cat("\nSTEP 4: Historical waste flows (MISO outflows)\n")
 
-miso_waste_raw <- read_csv("Parameters/MISO/MISO_outflows_regional.csv", show_col_types = FALSE) %>%
+miso_waste_raw <- read_csv("Parameters/MISO-Stock/MISO_outflows_regional.csv", show_col_types = FALSE) %>%
   filter(material %in% c("Metal ores", "Non-metallic minerals"), year >= HIST_START, year <= MISO_LAST_YEAR) %>%
   mutate(
     material_group = recode(material, "Metal ores" = "metal_ores", "Non-metallic minerals" = "nonmetallic_minerals")
@@ -212,7 +212,7 @@ cat("  Region x super_category x year groups where rate was clamped:", n_clamped
 
 cat("\nSTEP 6: Convert metal secondary flow to ore-equivalent Mt\n")
 
-unep_raw <- read_csv("Parameters/materials_region_DMC.csv", show_col_types = FALSE)
+unep_raw <- read_csv("Parameters/UNEP-Materials/materials_region_DMC.csv", show_col_types = FALSE)
 
 fe_share_rt <- unep_raw %>%
   filter(material_category %in% METAL_CATS) %>%
@@ -230,7 +230,7 @@ fe_share_rt <- unep_raw %>%
   ) %>%
   dplyr::select(Region, year, fe_share)
 
-grade_raw <- read_csv("Parameters/MISO/metal_grade_ore.csv", show_col_types = FALSE)
+grade_raw <- read_csv("Parameters/MISO-Stock/metal_grade_ore.csv", show_col_types = FALSE)
 grade_wide <- grade_raw %>%
   pivot_wider(names_from = group, values_from = g) %>%
   rename(g_Fe = Ferrous, g_NonFe = `Non-ferrous`)

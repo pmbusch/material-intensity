@@ -1,0 +1,442 @@
+model,family,ssp,marker,region,year,metric,value
+AIM 3.0,Medium,SSP1,FALSE,World,2020,gas_extraction_total,134.783
+AIM 3.0,Medium,SSP1,FALSE,World,2025,gas_extraction_total,136.3024
+AIM 3.0,Medium,SSP1,FALSE,World,2030,gas_extraction_total,118.181
+AIM 3.0,Medium,SSP1,FALSE,World,2035,gas_extraction_total,114.7612
+AIM 3.0,Medium,SSP1,FALSE,World,2040,gas_extraction_total,109.9916
+AIM 3.0,Medium,SSP1,FALSE,World,2045,gas_extraction_total,97.2769
+AIM 3.0,Medium,SSP1,FALSE,World,2050,gas_extraction_total,85.9429
+AIM 3.0,Medium,SSP1,FALSE,World,2055,gas_extraction_total,82.4241
+AIM 3.0,Medium,SSP1,FALSE,World,2060,gas_extraction_total,80.8184
+AIM 3.0,Very Low,SSP1,FALSE,World,2020,gas_extraction_total,134.7316
+AIM 3.0,Very Low,SSP1,FALSE,World,2025,gas_extraction_total,136.7333
+AIM 3.0,Very Low,SSP1,FALSE,World,2030,gas_extraction_total,117.2452
+AIM 3.0,Very Low,SSP1,FALSE,World,2035,gas_extraction_total,90.9216
+AIM 3.0,Very Low,SSP1,FALSE,World,2040,gas_extraction_total,61.1978
+AIM 3.0,Very Low,SSP1,FALSE,World,2045,gas_extraction_total,45.0395
+AIM 3.0,Very Low,SSP1,FALSE,World,2050,gas_extraction_total,35.6491
+AIM 3.0,Very Low,SSP1,FALSE,World,2055,gas_extraction_total,33.0349
+AIM 3.0,Very Low,SSP1,FALSE,World,2060,gas_extraction_total,32.1724
+AIM 3.0,Low,SSP2,FALSE,World,2020,gas_extraction_total,134.7309
+AIM 3.0,Low,SSP2,FALSE,World,2025,gas_extraction_total,136.7359
+AIM 3.0,Low,SSP2,FALSE,World,2030,gas_extraction_total,120.6985
+AIM 3.0,Low,SSP2,FALSE,World,2035,gas_extraction_total,106.4373
+AIM 3.0,Low,SSP2,FALSE,World,2040,gas_extraction_total,104.3703
+AIM 3.0,Low,SSP2,FALSE,World,2045,gas_extraction_total,91.1563
+AIM 3.0,Low,SSP2,FALSE,World,2050,gas_extraction_total,63.0807
+AIM 3.0,Low,SSP2,FALSE,World,2055,gas_extraction_total,45.8552
+AIM 3.0,Low,SSP2,FALSE,World,2060,gas_extraction_total,38.9383
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2020,gas_extraction_total,134.7286
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2025,gas_extraction_total,136.7369
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2030,gas_extraction_total,125.4449
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2035,gas_extraction_total,130.4569
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2040,gas_extraction_total,100.0227
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2045,gas_extraction_total,85.2223
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2050,gas_extraction_total,65.5902
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2055,gas_extraction_total,49.8283
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2060,gas_extraction_total,44.4045
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2020,gas_extraction_total,134.7444
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2025,gas_extraction_total,136.7435
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2030,gas_extraction_total,125.7176
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2035,gas_extraction_total,130.6477
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2040,gas_extraction_total,133.8019
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2045,gas_extraction_total,129.9971
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2050,gas_extraction_total,121.6497
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2055,gas_extraction_total,120.9405
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2060,gas_extraction_total,111.8785
+AIM 3.0,Medium,SSP2,FALSE,World,2020,gas_extraction_total,134.7806
+AIM 3.0,Medium,SSP2,FALSE,World,2025,gas_extraction_total,136.8028
+AIM 3.0,Medium,SSP2,FALSE,World,2030,gas_extraction_total,124.9455
+AIM 3.0,Medium,SSP2,FALSE,World,2035,gas_extraction_total,129.8431
+AIM 3.0,Medium,SSP2,FALSE,World,2040,gas_extraction_total,132.0324
+AIM 3.0,Medium,SSP2,FALSE,World,2045,gas_extraction_total,129.0563
+AIM 3.0,Medium,SSP2,FALSE,World,2050,gas_extraction_total,120.5142
+AIM 3.0,Medium,SSP2,FALSE,World,2055,gas_extraction_total,121.2163
+AIM 3.0,Medium,SSP2,FALSE,World,2060,gas_extraction_total,126.2648
+AIM 3.0,Very Low,SSP2,FALSE,World,2020,gas_extraction_total,134.7368
+AIM 3.0,Very Low,SSP2,FALSE,World,2025,gas_extraction_total,136.7437
+AIM 3.0,Very Low,SSP2,FALSE,World,2030,gas_extraction_total,116.4668
+AIM 3.0,Very Low,SSP2,FALSE,World,2035,gas_extraction_total,64.6809
+AIM 3.0,Very Low,SSP2,FALSE,World,2040,gas_extraction_total,60.0116
+AIM 3.0,Very Low,SSP2,FALSE,World,2045,gas_extraction_total,50.0158
+AIM 3.0,Very Low,SSP2,FALSE,World,2050,gas_extraction_total,42.2978
+AIM 3.0,Very Low,SSP2,FALSE,World,2055,gas_extraction_total,34.3181
+AIM 3.0,Very Low,SSP2,FALSE,World,2060,gas_extraction_total,33.1571
+AIM 3.0,High,SSP3,FALSE,World,2020,gas_extraction_total,134.7777
+AIM 3.0,High,SSP3,FALSE,World,2025,gas_extraction_total,136.2875
+AIM 3.0,High,SSP3,FALSE,World,2030,gas_extraction_total,128.677
+AIM 3.0,High,SSP3,FALSE,World,2035,gas_extraction_total,134.367
+AIM 3.0,High,SSP3,FALSE,World,2040,gas_extraction_total,135.504
+AIM 3.0,High,SSP3,FALSE,World,2045,gas_extraction_total,133.2189
+AIM 3.0,High,SSP3,FALSE,World,2050,gas_extraction_total,129.161
+AIM 3.0,High,SSP3,FALSE,World,2055,gas_extraction_total,127.3754
+AIM 3.0,High,SSP3,FALSE,World,2060,gas_extraction_total,128.5341
+AIM 3.0,High,SSP5,FALSE,World,2020,gas_extraction_total,134.7839
+AIM 3.0,High,SSP5,FALSE,World,2025,gas_extraction_total,136.3152
+AIM 3.0,High,SSP5,FALSE,World,2030,gas_extraction_total,126.4126
+AIM 3.0,High,SSP5,FALSE,World,2035,gas_extraction_total,133.9554
+AIM 3.0,High,SSP5,FALSE,World,2040,gas_extraction_total,139.4839
+AIM 3.0,High,SSP5,FALSE,World,2045,gas_extraction_total,138.9796
+AIM 3.0,High,SSP5,FALSE,World,2050,gas_extraction_total,133.7134
+AIM 3.0,High,SSP5,FALSE,World,2055,gas_extraction_total,134.1802
+AIM 3.0,High,SSP5,FALSE,World,2060,gas_extraction_total,144.7066
+GCAM 8s,Low,SSP2,FALSE,World,2020,gas_extraction_total,136.3666068
+GCAM 8s,Low,SSP2,FALSE,World,2025,gas_extraction_total,144.07020948
+GCAM 8s,Low,SSP2,FALSE,World,2030,gas_extraction_total,133.3149872
+GCAM 8s,Low,SSP2,FALSE,World,2035,gas_extraction_total,125.57021957
+GCAM 8s,Low,SSP2,FALSE,World,2040,gas_extraction_total,112.9189345
+GCAM 8s,Low,SSP2,FALSE,World,2045,gas_extraction_total,99.27134571
+GCAM 8s,Low,SSP2,FALSE,World,2050,gas_extraction_total,84.77671903
+GCAM 8s,Low,SSP2,FALSE,World,2055,gas_extraction_total,77.73319904
+GCAM 8s,Low,SSP2,FALSE,World,2060,gas_extraction_total,71.04730075
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2020,gas_extraction_total,136.3666068
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2025,gas_extraction_total,144.22910298
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2030,gas_extraction_total,141.89331429
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2035,gas_extraction_total,132.36594022
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2040,gas_extraction_total,110.04915947
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2045,gas_extraction_total,91.07310454
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2050,gas_extraction_total,77.79146188
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2055,gas_extraction_total,70.73933459
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2060,gas_extraction_total,64.80424121
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2020,gas_extraction_total,136.3666068
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2025,gas_extraction_total,144.07048589
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2030,gas_extraction_total,144.54488567
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2035,gas_extraction_total,144.00307215
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2040,gas_extraction_total,148.96773764
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2045,gas_extraction_total,145.16524168
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2050,gas_extraction_total,139.87776871
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2055,gas_extraction_total,136.8621939
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2060,gas_extraction_total,129.92298725
+GCAM 8s,Medium,SSP2,FALSE,World,2020,gas_extraction_total,136.3666068
+GCAM 8s,Medium,SSP2,FALSE,World,2025,gas_extraction_total,144.08381788
+GCAM 8s,Medium,SSP2,FALSE,World,2030,gas_extraction_total,144.63249262
+GCAM 8s,Medium,SSP2,FALSE,World,2035,gas_extraction_total,144.22432318
+GCAM 8s,Medium,SSP2,FALSE,World,2040,gas_extraction_total,149.63706301
+GCAM 8s,Medium,SSP2,FALSE,World,2045,gas_extraction_total,157.98720818
+GCAM 8s,Medium,SSP2,FALSE,World,2050,gas_extraction_total,165.33448048
+GCAM 8s,Medium,SSP2,FALSE,World,2055,gas_extraction_total,179.05218779
+GCAM 8s,Medium,SSP2,FALSE,World,2060,gas_extraction_total,189.92091778
+GCAM 8s,High,SSP3,TRUE,World,2020,gas_extraction_total,136.3666068
+GCAM 8s,High,SSP3,TRUE,World,2025,gas_extraction_total,143.74920866
+GCAM 8s,High,SSP3,TRUE,World,2030,gas_extraction_total,153.10041581
+GCAM 8s,High,SSP3,TRUE,World,2035,gas_extraction_total,161.95866341
+GCAM 8s,High,SSP3,TRUE,World,2040,gas_extraction_total,166.76038014
+GCAM 8s,High,SSP3,TRUE,World,2045,gas_extraction_total,172.0302547
+GCAM 8s,High,SSP3,TRUE,World,2050,gas_extraction_total,177.25872817
+GCAM 8s,High,SSP3,TRUE,World,2055,gas_extraction_total,192.46898422
+GCAM 8s,High,SSP3,TRUE,World,2060,gas_extraction_total,199.86268025
+GCAM 8s,High,SSP5,FALSE,World,2020,gas_extraction_total,136.3666068
+GCAM 8s,High,SSP5,FALSE,World,2025,gas_extraction_total,145.73632251
+GCAM 8s,High,SSP5,FALSE,World,2030,gas_extraction_total,157.97480178
+GCAM 8s,High,SSP5,FALSE,World,2035,gas_extraction_total,174.05452923000001
+GCAM 8s,High,SSP5,FALSE,World,2040,gas_extraction_total,193.03410334
+GCAM 8s,High,SSP5,FALSE,World,2045,gas_extraction_total,217.14142713
+GCAM 8s,High,SSP5,FALSE,World,2050,gas_extraction_total,244.82312349
+GCAM 8s,High,SSP5,FALSE,World,2055,gas_extraction_total,281.48610236
+GCAM 8s,High,SSP5,FALSE,World,2060,gas_extraction_total,308.042499
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2020,gas_extraction_total,136.3666068
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2025,gas_extraction_total,145.73632251
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2030,gas_extraction_total,157.97480178
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2035,gas_extraction_total,174.05452923000001
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2040,gas_extraction_total,193.03410334
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2045,gas_extraction_total,217.14142713
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2050,gas_extraction_total,244.82312349
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2055,gas_extraction_total,281.48610236
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2060,gas_extraction_total,308.042499
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2020,gas_extraction_total,145.5129334594871
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2025,gas_extraction_total,158.4499639622243
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2030,gas_extraction_total,138.7590694626615
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2035,gas_extraction_total,144.1476244523981
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2040,gas_extraction_total,144.3386682119832
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2045,gas_extraction_total,138.8795535656311
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2050,gas_extraction_total,126.2759919684399
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2055,gas_extraction_total,111.0714601890972
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2060,gas_extraction_total,98.19192511305332
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2020,gas_extraction_total,145.5129334594871
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2025,gas_extraction_total,158.4499639622243
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2030,gas_extraction_total,135.9039786958433
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2035,gas_extraction_total,124.0424537061738
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2040,gas_extraction_total,107.6181329830524
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2045,gas_extraction_total,96.16203224237476
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2050,gas_extraction_total,82.4158104156053
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2055,gas_extraction_total,64.58593157461345
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2060,gas_extraction_total,51.70754749991367
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2020,gas_extraction_total,145.5688057504163
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2025,gas_extraction_total,158.4617570228921
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2030,gas_extraction_total,150.7525256489348
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2035,gas_extraction_total,171.7214254814018
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2040,gas_extraction_total,186.3834194001607
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2045,gas_extraction_total,184.9103570154765
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2050,gas_extraction_total,183.8821330120599
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2055,gas_extraction_total,166.7474734389558
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2060,gas_extraction_total,157.4365112877651
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2020,gas_extraction_total,145.5688057504163
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2025,gas_extraction_total,158.4617570228921
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2030,gas_extraction_total,156.8428282845735
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2035,gas_extraction_total,174.3346012771592
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2040,gas_extraction_total,177.8742063728621
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2045,gas_extraction_total,167.2081424586573
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2050,gas_extraction_total,150.3994835561715
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2055,gas_extraction_total,123.9223746594819
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2060,gas_extraction_total,104.7054134821317
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2020,gas_extraction_total,145.5688057504163
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2025,gas_extraction_total,158.4617570228921
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2030,gas_extraction_total,156.8428282845735
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2035,gas_extraction_total,174.3346012771592
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2040,gas_extraction_total,188.2690192659058
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2045,gas_extraction_total,212.6594464133254
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2050,gas_extraction_total,233.5280701529681
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2055,gas_extraction_total,257.4185741683557
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2060,gas_extraction_total,277.8796129663561
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2020,gas_extraction_total,145.5276941612999
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2025,gas_extraction_total,159.5509062595836
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2030,gas_extraction_total,158.6019214204728
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2035,gas_extraction_total,176.9986620242774
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2040,gas_extraction_total,189.7015074259132
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2045,gas_extraction_total,207.663231968642
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2050,gas_extraction_total,228.4042612103178
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2055,gas_extraction_total,248.385909187213
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2060,gas_extraction_total,264.4770947344946
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2020,gas_extraction_total,145.5292318378316
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2025,gas_extraction_total,161.2716558557463
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2030,gas_extraction_total,138.5189575781558
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2035,gas_extraction_total,129.0769847971245
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2040,gas_extraction_total,114.0611722976187
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2045,gas_extraction_total,97.54898380781304
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2050,gas_extraction_total,77.7985383139834
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2055,gas_extraction_total,60.21091966422293
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2060,gas_extraction_total,47.05729271648536
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2020,gas_extraction_total,145.7576719446885
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2025,gas_extraction_total,154.9261096753365
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2030,gas_extraction_total,163.2841985867856
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2035,gas_extraction_total,187.2159636563135
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2040,gas_extraction_total,211.9596990344529
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2045,gas_extraction_total,237.7419028120006
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2050,gas_extraction_total,268.8586402289008
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2055,gas_extraction_total,299.6340813664531
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2060,gas_extraction_total,318.9458561956413
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2020,gas_extraction_total,145.7576719446885
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2025,gas_extraction_total,154.9261096753365
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2030,gas_extraction_total,163.2841985867856
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2035,gas_extraction_total,187.2159636563135
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2040,gas_extraction_total,211.9596990344529
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2045,gas_extraction_total,237.7419028120006
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2050,gas_extraction_total,268.8586402289008
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2055,gas_extraction_total,299.6340813664531
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2060,gas_extraction_total,318.9458561956413
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2020,gas_extraction_total,145.7308254852973
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2025,gas_extraction_total,154.9615644914441
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2030,gas_extraction_total,149.0518283281849
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2035,gas_extraction_total,150.2720287919637
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2040,gas_extraction_total,159.5407216259782
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2045,gas_extraction_total,157.8905670673802
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2050,gas_extraction_total,145.0649033590532
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2055,gas_extraction_total,129.4946733170576
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2060,gas_extraction_total,116.7757933590476
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2020,gas_extraction_total,145.5397209634715
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2025,gas_extraction_total,161.1189992877363
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2030,gas_extraction_total,180.1734082363731
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2035,gas_extraction_total,210.6681207656931
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2040,gas_extraction_total,250.4411756879116
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2045,gas_extraction_total,302.7727014449972
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2050,gas_extraction_total,356.8833094814436
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2055,gas_extraction_total,420.7494854041915
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2060,gas_extraction_total,490.232781447284
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2020,gas_extraction_total,145.5397209634715
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2025,gas_extraction_total,161.1189992877363
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2030,gas_extraction_total,166.4095203812332
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2035,gas_extraction_total,186.0927401857648
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2040,gas_extraction_total,175.2750191435689
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2045,gas_extraction_total,164.4779490336805
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2050,gas_extraction_total,148.1574475161419
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2055,gas_extraction_total,135.5338602058539
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2060,gas_extraction_total,143.9739336771297
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2020,gas_extraction_total,145.5397209634715
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2025,gas_extraction_total,161.1189992877363
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2030,gas_extraction_total,180.1734082363731
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2035,gas_extraction_total,210.6681207656931
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2040,gas_extraction_total,250.4411756879116
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2045,gas_extraction_total,302.7727014449972
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2050,gas_extraction_total,356.8833094814436
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2055,gas_extraction_total,420.7494854041915
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2060,gas_extraction_total,490.232781447284
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2020,gas_extraction_total,158.5364444
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2025,gas_extraction_total,165.7224468000001
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2030,gas_extraction_total,161.9442594
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2035,gas_extraction_total,139.8705426
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2040,gas_extraction_total,114.9815428
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2045,gas_extraction_total,95.0714408
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2050,gas_extraction_total,85.40082340000002
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2055,gas_extraction_total,81.41757570000001
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2060,gas_extraction_total,80.6052931
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2020,gas_extraction_total,158.5364444
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2025,gas_extraction_total,165.7224468000001
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2030,gas_extraction_total,164.2800278
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2035,gas_extraction_total,160.2344437
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2040,gas_extraction_total,150.0004491
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2045,gas_extraction_total,139.6846014
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2050,gas_extraction_total,124.4443832
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2055,gas_extraction_total,116.44126
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2060,gas_extraction_total,112.4390014
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2020,gas_extraction_total,158.5364444
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2025,gas_extraction_total,165.7224468000001
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2030,gas_extraction_total,164.2800278
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2035,gas_extraction_total,160.2344437
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2040,gas_extraction_total,150.0004491
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2045,gas_extraction_total,143.228739
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2050,gas_extraction_total,141.5668204
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2055,gas_extraction_total,141.3100188
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2060,gas_extraction_total,144.5284884
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2020,gas_extraction_total,158.5364444
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2025,gas_extraction_total,165.7224468000001
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2030,gas_extraction_total,158.3569895
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2035,gas_extraction_total,108.1692245
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2040,gas_extraction_total,59.70945080000001
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2045,gas_extraction_total,27.3932327
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2050,gas_extraction_total,13.8411817
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2055,gas_extraction_total,11.1961346
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2060,gas_extraction_total,8.5474933
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2020,gas_extraction_total,158.5364444
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2025,gas_extraction_total,165.7224468000001
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2030,gas_extraction_total,169.7480862
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2035,gas_extraction_total,183.8562776
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2040,gas_extraction_total,204.8367785
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2045,gas_extraction_total,225.0260641
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2050,gas_extraction_total,241.9299032
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2055,gas_extraction_total,251.5600622
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2060,gas_extraction_total,261.5376305
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2020,gas_extraction_total,158.5364444
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2025,gas_extraction_total,165.7224468000001
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2030,gas_extraction_total,159.4290782
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2035,gas_extraction_total,132.8721872
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2040,gas_extraction_total,100.679381
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2045,gas_extraction_total,76.37449849999999
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2050,gas_extraction_total,61.56439990000001
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2055,gas_extraction_total,53.6137907
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2060,gas_extraction_total,48.6782924
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2020,gas_extraction_total,158.5364444
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2025,gas_extraction_total,165.7224468000001
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2030,gas_extraction_total,163.8919957
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2035,gas_extraction_total,157.1596571
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2040,gas_extraction_total,143.4026481
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2045,gas_extraction_total,124.2767421
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2050,gas_extraction_total,106.2958932
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2055,gas_extraction_total,94.4489385
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2060,gas_extraction_total,85.7781106
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2020,gas_extraction_total,158.5364444
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2025,gas_extraction_total,165.7224468000001
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2030,gas_extraction_total,163.8919957
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2035,gas_extraction_total,162.2456701
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2040,gas_extraction_total,160.0448494
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2045,gas_extraction_total,157.4071835
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2050,gas_extraction_total,147.1152049
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2055,gas_extraction_total,137.5534661
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2060,gas_extraction_total,133.8364335
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2020,gas_extraction_total,158.5364444
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2025,gas_extraction_total,165.7224468000001
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2030,gas_extraction_total,163.8919957
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2035,gas_extraction_total,162.2456701
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2040,gas_extraction_total,160.0448494
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2045,gas_extraction_total,162.1767431
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2050,gas_extraction_total,168.4873959
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2055,gas_extraction_total,174.5948433
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2060,gas_extraction_total,187.4390149
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2020,gas_extraction_total,158.5364444
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2025,gas_extraction_total,165.7224468000001
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2030,gas_extraction_total,156.8354155
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2035,gas_extraction_total,102.5698678
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2040,gas_extraction_total,57.09319410000001
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2045,gas_extraction_total,27.9643097
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2050,gas_extraction_total,15.9781038
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2055,gas_extraction_total,13.921386
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2060,gas_extraction_total,11.901967
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2020,gas_extraction_total,158.5364444
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2025,gas_extraction_total,165.7224468000001
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2030,gas_extraction_total,173.9541306
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2035,gas_extraction_total,190.2522772
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2040,gas_extraction_total,206.2645949
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2045,gas_extraction_total,224.1284796
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2050,gas_extraction_total,243.0851583
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2055,gas_extraction_total,255.1644297
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2060,gas_extraction_total,268.9834721999999
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2020,gas_extraction_total,158.5364444
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2025,gas_extraction_total,165.7224468000001
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2030,gas_extraction_total,169.4549745
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2035,gas_extraction_total,180.8513071
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2040,gas_extraction_total,191.638376
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2045,gas_extraction_total,195.0429173
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2050,gas_extraction_total,189.0567851
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2055,gas_extraction_total,179.1555731
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2060,gas_extraction_total,165.4718958
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2020,gas_extraction_total,158.5364444
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2025,gas_extraction_total,165.7224468000001
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2030,gas_extraction_total,169.4549745
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2035,gas_extraction_total,180.8513071
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2040,gas_extraction_total,191.638376
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2045,gas_extraction_total,201.9725994
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2050,gas_extraction_total,214.2866785
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2055,gas_extraction_total,223.2195785999999
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2060,gas_extraction_total,235.8705274
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2020,gas_extraction_total,137.9204703149136
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2025,gas_extraction_total,146.7819671089061
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2030,gas_extraction_total,143.7425721178229
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2035,gas_extraction_total,147.3564161044075
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2040,gas_extraction_total,141.2214764071537
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2045,gas_extraction_total,105.0757646006417
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2050,gas_extraction_total,77.96235201276502
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2055,gas_extraction_total,58.7753992429078
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2060,gas_extraction_total,49.93612520706819
+WITCH 6.0,Low,SSP2,FALSE,World,2020,gas_extraction_total,137.9204703149136
+WITCH 6.0,Low,SSP2,FALSE,World,2025,gas_extraction_total,146.7819671089061
+WITCH 6.0,Low,SSP2,FALSE,World,2030,gas_extraction_total,138.6644230187948
+WITCH 6.0,Low,SSP2,FALSE,World,2035,gas_extraction_total,135.9641400260221
+WITCH 6.0,Low,SSP2,FALSE,World,2040,gas_extraction_total,121.9378722708849
+WITCH 6.0,Low,SSP2,FALSE,World,2045,gas_extraction_total,93.90454163584234
+WITCH 6.0,Low,SSP2,FALSE,World,2050,gas_extraction_total,73.99745861187435
+WITCH 6.0,Low,SSP2,FALSE,World,2055,gas_extraction_total,66.73461052430847
+WITCH 6.0,Low,SSP2,FALSE,World,2060,gas_extraction_total,63.11795407348099
+WITCH 6.0,Very Low,SSP2,FALSE,World,2020,gas_extraction_total,137.9204703149136
+WITCH 6.0,Very Low,SSP2,FALSE,World,2025,gas_extraction_total,146.7819671089061
+WITCH 6.0,Very Low,SSP2,FALSE,World,2030,gas_extraction_total,135.19923423137
+WITCH 6.0,Very Low,SSP2,FALSE,World,2035,gas_extraction_total,127.6139520350253
+WITCH 6.0,Very Low,SSP2,FALSE,World,2040,gas_extraction_total,61.98470774878138
+WITCH 6.0,Very Low,SSP2,FALSE,World,2045,gas_extraction_total,39.28213051958322
+WITCH 6.0,Very Low,SSP2,FALSE,World,2050,gas_extraction_total,31.26643974199145
+WITCH 6.0,Very Low,SSP2,FALSE,World,2055,gas_extraction_total,28.87711449137599
+WITCH 6.0,Very Low,SSP2,FALSE,World,2060,gas_extraction_total,30.14616132656676
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2020,gas_extraction_total,137.9204703149136
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2025,gas_extraction_total,146.7819671089061
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2030,gas_extraction_total,159.1038473284414
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2035,gas_extraction_total,165.5106931698972
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2040,gas_extraction_total,169.2727817661038
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2045,gas_extraction_total,158.2476694665287
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2050,gas_extraction_total,158.0023961392773
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2055,gas_extraction_total,152.5783608176122
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2060,gas_extraction_total,141.1468666968336
+WITCH 6.0,Medium,SSP2,FALSE,World,2020,gas_extraction_total,137.9204703149136
+WITCH 6.0,Medium,SSP2,FALSE,World,2025,gas_extraction_total,146.7819671089061
+WITCH 6.0,Medium,SSP2,FALSE,World,2030,gas_extraction_total,159.1038473284414
+WITCH 6.0,Medium,SSP2,FALSE,World,2035,gas_extraction_total,165.5106931698972
+WITCH 6.0,Medium,SSP2,FALSE,World,2040,gas_extraction_total,169.2727817661038
+WITCH 6.0,Medium,SSP2,FALSE,World,2045,gas_extraction_total,175.0225476587268
+WITCH 6.0,Medium,SSP2,FALSE,World,2050,gas_extraction_total,179.2040164029948
+WITCH 6.0,Medium,SSP2,FALSE,World,2055,gas_extraction_total,185.700035216433
+WITCH 6.0,Medium,SSP2,FALSE,World,2060,gas_extraction_total,193.8596870438699
+WITCH 6.0,High,SSP5,FALSE,World,2020,gas_extraction_total,137.9204703149136
+WITCH 6.0,High,SSP5,FALSE,World,2025,gas_extraction_total,146.7819671089061
+WITCH 6.0,High,SSP5,FALSE,World,2030,gas_extraction_total,152.249080461231
+WITCH 6.0,High,SSP5,FALSE,World,2035,gas_extraction_total,156.846959292523
+WITCH 6.0,High,SSP5,FALSE,World,2040,gas_extraction_total,166.8017412482338
+WITCH 6.0,High,SSP5,FALSE,World,2045,gas_extraction_total,185.7622770105737
+WITCH 6.0,High,SSP5,FALSE,World,2050,gas_extraction_total,204.3629429885542
+WITCH 6.0,High,SSP5,FALSE,World,2055,gas_extraction_total,220.3957628982794
+WITCH 6.0,High,SSP5,FALSE,World,2060,gas_extraction_total,236.0354264351825
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2020,gas_extraction_total,137.9204703149136
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2025,gas_extraction_total,146.7819671089061
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2030,gas_extraction_total,152.249080461231
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2035,gas_extraction_total,156.846959292523
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2040,gas_extraction_total,166.8017412482338
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2045,gas_extraction_total,185.7622770105737
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2050,gas_extraction_total,204.3629429885542
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2055,gas_extraction_total,220.3957628982794
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2060,gas_extraction_total,236.0354264351825

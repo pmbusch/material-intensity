@@ -1,0 +1,442 @@
+model,family,ssp,marker,region,year,metric,value
+AIM 3.0,Medium,SSP1,FALSE,World,2020,oil_extraction_total,171.4252
+AIM 3.0,Medium,SSP1,FALSE,World,2025,oil_extraction_total,197.3721
+AIM 3.0,Medium,SSP1,FALSE,World,2030,oil_extraction_total,150.6131
+AIM 3.0,Medium,SSP1,FALSE,World,2035,oil_extraction_total,151.1125
+AIM 3.0,Medium,SSP1,FALSE,World,2040,oil_extraction_total,149.7446
+AIM 3.0,Medium,SSP1,FALSE,World,2045,oil_extraction_total,150.9064
+AIM 3.0,Medium,SSP1,FALSE,World,2050,oil_extraction_total,151.7213
+AIM 3.0,Medium,SSP1,FALSE,World,2055,oil_extraction_total,156.9602
+AIM 3.0,Medium,SSP1,FALSE,World,2060,oil_extraction_total,159.7634
+AIM 3.0,Very Low,SSP1,FALSE,World,2020,oil_extraction_total,171.4217
+AIM 3.0,Very Low,SSP1,FALSE,World,2025,oil_extraction_total,197.4034
+AIM 3.0,Very Low,SSP1,FALSE,World,2030,oil_extraction_total,150.2161
+AIM 3.0,Very Low,SSP1,FALSE,World,2035,oil_extraction_total,130.8194
+AIM 3.0,Very Low,SSP1,FALSE,World,2040,oil_extraction_total,102.7651
+AIM 3.0,Very Low,SSP1,FALSE,World,2045,oil_extraction_total,82.4782
+AIM 3.0,Very Low,SSP1,FALSE,World,2050,oil_extraction_total,61.9539
+AIM 3.0,Very Low,SSP1,FALSE,World,2055,oil_extraction_total,36.6262
+AIM 3.0,Very Low,SSP1,FALSE,World,2060,oil_extraction_total,34.1186
+AIM 3.0,Low,SSP2,FALSE,World,2020,oil_extraction_total,171.4182
+AIM 3.0,Low,SSP2,FALSE,World,2025,oil_extraction_total,197.3824
+AIM 3.0,Low,SSP2,FALSE,World,2030,oil_extraction_total,154.6306
+AIM 3.0,Low,SSP2,FALSE,World,2035,oil_extraction_total,144.3665
+AIM 3.0,Low,SSP2,FALSE,World,2040,oil_extraction_total,141.3515
+AIM 3.0,Low,SSP2,FALSE,World,2045,oil_extraction_total,134.4928
+AIM 3.0,Low,SSP2,FALSE,World,2050,oil_extraction_total,118.0186
+AIM 3.0,Low,SSP2,FALSE,World,2055,oil_extraction_total,91.8935
+AIM 3.0,Low,SSP2,FALSE,World,2060,oil_extraction_total,77.7003
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2020,oil_extraction_total,171.4158
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2025,oil_extraction_total,197.3783
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2030,oil_extraction_total,158.8774
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2035,oil_extraction_total,162.1048
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2040,oil_extraction_total,147.0454
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2045,oil_extraction_total,120.0394
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2050,oil_extraction_total,98.1223
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2055,oil_extraction_total,83.7997
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2060,oil_extraction_total,74.0797
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2020,oil_extraction_total,171.4209
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2025,oil_extraction_total,197.3906
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2030,oil_extraction_total,158.2193
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2035,oil_extraction_total,162.5884
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2040,oil_extraction_total,163.2326
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2045,oil_extraction_total,166.0712
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2050,oil_extraction_total,170.8968
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2055,oil_extraction_total,181.9513
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2060,oil_extraction_total,184.2004
+AIM 3.0,Medium,SSP2,FALSE,World,2020,oil_extraction_total,171.4264
+AIM 3.0,Medium,SSP2,FALSE,World,2025,oil_extraction_total,197.3794
+AIM 3.0,Medium,SSP2,FALSE,World,2030,oil_extraction_total,158.2907
+AIM 3.0,Medium,SSP2,FALSE,World,2035,oil_extraction_total,161.5787
+AIM 3.0,Medium,SSP2,FALSE,World,2040,oil_extraction_total,162.0061
+AIM 3.0,Medium,SSP2,FALSE,World,2045,oil_extraction_total,164.4038
+AIM 3.0,Medium,SSP2,FALSE,World,2050,oil_extraction_total,169.04
+AIM 3.0,Medium,SSP2,FALSE,World,2055,oil_extraction_total,179.2454
+AIM 3.0,Medium,SSP2,FALSE,World,2060,oil_extraction_total,188.8019
+AIM 3.0,Very Low,SSP2,FALSE,World,2020,oil_extraction_total,171.4199
+AIM 3.0,Very Low,SSP2,FALSE,World,2025,oil_extraction_total,197.3849
+AIM 3.0,Very Low,SSP2,FALSE,World,2030,oil_extraction_total,149.5743
+AIM 3.0,Very Low,SSP2,FALSE,World,2035,oil_extraction_total,108.0708
+AIM 3.0,Very Low,SSP2,FALSE,World,2040,oil_extraction_total,84.6055
+AIM 3.0,Very Low,SSP2,FALSE,World,2045,oil_extraction_total,67.866
+AIM 3.0,Very Low,SSP2,FALSE,World,2050,oil_extraction_total,62.3151
+AIM 3.0,Very Low,SSP2,FALSE,World,2055,oil_extraction_total,49.5676
+AIM 3.0,Very Low,SSP2,FALSE,World,2060,oil_extraction_total,38.6527
+AIM 3.0,High,SSP3,FALSE,World,2020,oil_extraction_total,171.427
+AIM 3.0,High,SSP3,FALSE,World,2025,oil_extraction_total,197.3582
+AIM 3.0,High,SSP3,FALSE,World,2030,oil_extraction_total,158.6668
+AIM 3.0,High,SSP3,FALSE,World,2035,oil_extraction_total,160.4432
+AIM 3.0,High,SSP3,FALSE,World,2040,oil_extraction_total,157.6149
+AIM 3.0,High,SSP3,FALSE,World,2045,oil_extraction_total,156.9669
+AIM 3.0,High,SSP3,FALSE,World,2050,oil_extraction_total,158.4858
+AIM 3.0,High,SSP3,FALSE,World,2055,oil_extraction_total,165.5731
+AIM 3.0,High,SSP3,FALSE,World,2060,oil_extraction_total,170.6165
+AIM 3.0,High,SSP5,FALSE,World,2020,oil_extraction_total,171.4255
+AIM 3.0,High,SSP5,FALSE,World,2025,oil_extraction_total,197.3751
+AIM 3.0,High,SSP5,FALSE,World,2030,oil_extraction_total,158.5844
+AIM 3.0,High,SSP5,FALSE,World,2035,oil_extraction_total,166.9779
+AIM 3.0,High,SSP5,FALSE,World,2040,oil_extraction_total,171.9682
+AIM 3.0,High,SSP5,FALSE,World,2045,oil_extraction_total,178.3514
+AIM 3.0,High,SSP5,FALSE,World,2050,oil_extraction_total,172.6365
+AIM 3.0,High,SSP5,FALSE,World,2055,oil_extraction_total,181.28
+AIM 3.0,High,SSP5,FALSE,World,2060,oil_extraction_total,195.9977
+GCAM 8s,Low,SSP2,FALSE,World,2020,oil_extraction_total,403.0576758
+GCAM 8s,Low,SSP2,FALSE,World,2025,oil_extraction_total,436.9695783
+GCAM 8s,Low,SSP2,FALSE,World,2030,oil_extraction_total,460.1895236
+GCAM 8s,Low,SSP2,FALSE,World,2035,oil_extraction_total,338.3865199
+GCAM 8s,Low,SSP2,FALSE,World,2040,oil_extraction_total,301.4328468
+GCAM 8s,Low,SSP2,FALSE,World,2045,oil_extraction_total,264.3669525
+GCAM 8s,Low,SSP2,FALSE,World,2050,oil_extraction_total,351.461024
+GCAM 8s,Low,SSP2,FALSE,World,2055,oil_extraction_total,498.3523459
+GCAM 8s,Low,SSP2,FALSE,World,2060,oil_extraction_total,513.69046
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2020,oil_extraction_total,403.0576758
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2025,oil_extraction_total,426.272898
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2030,oil_extraction_total,444.9195305
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2035,oil_extraction_total,381.1751344
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2040,oil_extraction_total,261.6145347
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2045,oil_extraction_total,206.9048119
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2050,oil_extraction_total,211.1611977
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2055,oil_extraction_total,333.9007378
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2060,oil_extraction_total,348.1089737
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2020,oil_extraction_total,403.0576758
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2025,oil_extraction_total,436.9672939
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2030,oil_extraction_total,389.6000303
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2035,oil_extraction_total,438.8186844
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2040,oil_extraction_total,565.7252569
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2045,oil_extraction_total,475.1998256
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2050,oil_extraction_total,663.7859733
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2055,oil_extraction_total,1203.9068278
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2060,oil_extraction_total,848.373056
+GCAM 8s,Medium,SSP2,FALSE,World,2020,oil_extraction_total,403.0576758
+GCAM 8s,Medium,SSP2,FALSE,World,2025,oil_extraction_total,436.9771541
+GCAM 8s,Medium,SSP2,FALSE,World,2030,oil_extraction_total,389.6636103
+GCAM 8s,Medium,SSP2,FALSE,World,2035,oil_extraction_total,438.880757
+GCAM 8s,Medium,SSP2,FALSE,World,2040,oil_extraction_total,566.7964789
+GCAM 8s,Medium,SSP2,FALSE,World,2045,oil_extraction_total,691.063665
+GCAM 8s,Medium,SSP2,FALSE,World,2050,oil_extraction_total,1083.8594646
+GCAM 8s,Medium,SSP2,FALSE,World,2055,oil_extraction_total,2358.6458087
+GCAM 8s,Medium,SSP2,FALSE,World,2060,oil_extraction_total,2412.586717
+GCAM 8s,High,SSP3,TRUE,World,2020,oil_extraction_total,403.0576758
+GCAM 8s,High,SSP3,TRUE,World,2025,oil_extraction_total,438.7829083
+GCAM 8s,High,SSP3,TRUE,World,2030,oil_extraction_total,505.3278174
+GCAM 8s,High,SSP3,TRUE,World,2035,oil_extraction_total,621.7909354
+GCAM 8s,High,SSP3,TRUE,World,2040,oil_extraction_total,815.9229361
+GCAM 8s,High,SSP3,TRUE,World,2045,oil_extraction_total,1127.9133921
+GCAM 8s,High,SSP3,TRUE,World,2050,oil_extraction_total,1639.9142262
+GCAM 8s,High,SSP3,TRUE,World,2055,oil_extraction_total,3201.984095
+GCAM 8s,High,SSP3,TRUE,World,2060,oil_extraction_total,3431.9977721
+GCAM 8s,High,SSP5,FALSE,World,2020,oil_extraction_total,403.0576758
+GCAM 8s,High,SSP5,FALSE,World,2025,oil_extraction_total,462.3700761
+GCAM 8s,High,SSP5,FALSE,World,2030,oil_extraction_total,539.4569953
+GCAM 8s,High,SSP5,FALSE,World,2035,oil_extraction_total,693.941009
+GCAM 8s,High,SSP5,FALSE,World,2040,oil_extraction_total,1020.4219507
+GCAM 8s,High,SSP5,FALSE,World,2045,oil_extraction_total,1551.7655283
+GCAM 8s,High,SSP5,FALSE,World,2050,oil_extraction_total,2589.1322518
+GCAM 8s,High,SSP5,FALSE,World,2055,oil_extraction_total,4358.0080252
+GCAM 8s,High,SSP5,FALSE,World,2060,oil_extraction_total,5504.4065934
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2020,oil_extraction_total,403.0576758
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2025,oil_extraction_total,462.3700761
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2030,oil_extraction_total,539.4569953
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2035,oil_extraction_total,693.941009
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2040,oil_extraction_total,1020.4219507
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2045,oil_extraction_total,1551.7655283
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2050,oil_extraction_total,2589.1322518
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2055,oil_extraction_total,4358.0080252
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2060,oil_extraction_total,5504.4065934
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2020,oil_extraction_total,197.0058943917458
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2025,oil_extraction_total,185.2373416273917
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2030,oil_extraction_total,151.2080879041353
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2035,oil_extraction_total,127.9862525471312
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2040,oil_extraction_total,102.4669135935836
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2045,oil_extraction_total,79.2328681604402
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2050,oil_extraction_total,59.7578639160485
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2055,oil_extraction_total,45.12372997050431
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2060,oil_extraction_total,33.43061814219642
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2020,oil_extraction_total,197.0058943917458
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2025,oil_extraction_total,185.2373416273917
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2030,oil_extraction_total,143.2081756648674
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2035,oil_extraction_total,111.6275702989184
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2040,oil_extraction_total,84.6282329052292
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2045,oil_extraction_total,63.80411354621879
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2050,oil_extraction_total,47.8254203780895
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2055,oil_extraction_total,35.52738285249104
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2060,oil_extraction_total,26.19343461821229
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2020,oil_extraction_total,197.0552256447117
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2025,oil_extraction_total,186.0916647594852
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2030,oil_extraction_total,173.0201765771269
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2035,oil_extraction_total,166.2662774581826
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2040,oil_extraction_total,142.736988200398
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2045,oil_extraction_total,116.399578027904
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2050,oil_extraction_total,89.68495404811881
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2055,oil_extraction_total,72.07151827925087
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2060,oil_extraction_total,56.028137848717
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2020,oil_extraction_total,197.0552256447117
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2025,oil_extraction_total,186.0916647594852
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2030,oil_extraction_total,181.7710139972573
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2035,oil_extraction_total,185.1746462959237
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2040,oil_extraction_total,162.4754346897175
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2045,oil_extraction_total,130.7825717479967
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2050,oil_extraction_total,99.70399768597449
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2055,oil_extraction_total,75.70973976246748
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2060,oil_extraction_total,57.76662874458091
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2020,oil_extraction_total,197.0552256447117
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2025,oil_extraction_total,186.0916647594852
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2030,oil_extraction_total,181.7710139972573
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2035,oil_extraction_total,185.1746462959237
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2040,oil_extraction_total,185.1865928068163
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2045,oil_extraction_total,178.1174976672309
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2050,oil_extraction_total,161.2853952935129
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2055,oil_extraction_total,149.0368013124632
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2060,oil_extraction_total,130.7874208137995
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2020,oil_extraction_total,197.0058943917458
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2025,oil_extraction_total,186.9446269090703
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2030,oil_extraction_total,180.3297298794364
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2035,oil_extraction_total,185.4290265884475
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2040,oil_extraction_total,187.3483342721056
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2045,oil_extraction_total,182.196488533164
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2050,oil_extraction_total,174.042381829805
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2055,oil_extraction_total,170.315909024643
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2060,oil_extraction_total,164.8448277955096
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2020,oil_extraction_total,197.0058943917458
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2025,oil_extraction_total,186.8019245689063
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2030,oil_extraction_total,146.4412635079508
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2035,oil_extraction_total,119.9784846760274
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2040,oil_extraction_total,91.14289674776204
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2045,oil_extraction_total,68.84251502097524
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2050,oil_extraction_total,51.63805904068145
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2055,oil_extraction_total,38.42680556463801
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2060,oil_extraction_total,28.40405955924938
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2020,oil_extraction_total,197.1085780318602
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2025,oil_extraction_total,185.0257313045252
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2030,oil_extraction_total,185.2884638291615
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2035,oil_extraction_total,190.5103850717761
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2040,oil_extraction_total,182.9565111319344
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2045,oil_extraction_total,168.6848731658686
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2050,oil_extraction_total,145.630018202496
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2055,oil_extraction_total,128.0260242812396
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2060,oil_extraction_total,117.1658869676784
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2020,oil_extraction_total,197.1085780318602
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2025,oil_extraction_total,185.0257313045252
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2030,oil_extraction_total,185.2884638291615
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2035,oil_extraction_total,190.5103850717761
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2040,oil_extraction_total,182.9565111319344
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2045,oil_extraction_total,168.6848731658686
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2050,oil_extraction_total,145.630018202496
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2055,oil_extraction_total,128.0260242812396
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2060,oil_extraction_total,117.1658869676784
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2020,oil_extraction_total,197.0704902083686
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2025,oil_extraction_total,186.0884244509717
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2030,oil_extraction_total,188.6122834798015
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2035,oil_extraction_total,175.8068061244038
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2040,oil_extraction_total,151.2066358262807
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2045,oil_extraction_total,116.7513786689349
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2050,oil_extraction_total,88.72588759657071
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2055,oil_extraction_total,67.11592858137408
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2060,oil_extraction_total,51.13648425999328
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2020,oil_extraction_total,197.2919368669099
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2025,oil_extraction_total,186.3478859194147
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2030,oil_extraction_total,208.829009858542
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2035,oil_extraction_total,228.1240483289289
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2040,oil_extraction_total,243.6972415671493
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2045,oil_extraction_total,256.4903177205564
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2050,oil_extraction_total,262.9157597224974
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2055,oil_extraction_total,263.7007643891064
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2060,oil_extraction_total,249.8670350866812
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2020,oil_extraction_total,197.2919368669099
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2025,oil_extraction_total,186.3478859194147
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2030,oil_extraction_total,195.3650093559056
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2035,oil_extraction_total,203.6740354773001
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2040,oil_extraction_total,177.0507506039434
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2045,oil_extraction_total,137.0558103972845
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2050,oil_extraction_total,104.2923880345795
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2055,oil_extraction_total,80.24700626250359
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2060,oil_extraction_total,62.08807783807013
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2020,oil_extraction_total,197.2919368669099
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2025,oil_extraction_total,186.3478859194147
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2030,oil_extraction_total,208.829009858542
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2035,oil_extraction_total,228.1240483289289
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2040,oil_extraction_total,243.6972415671493
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2045,oil_extraction_total,256.4903177205564
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2050,oil_extraction_total,262.9157597224974
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2055,oil_extraction_total,263.7007643891064
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2060,oil_extraction_total,249.8670350866812
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2020,oil_extraction_total,205.017139
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2025,oil_extraction_total,213.5157368
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2030,oil_extraction_total,213.1470595
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2035,oil_extraction_total,200.1002658
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2040,oil_extraction_total,177.8235998
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2045,oil_extraction_total,152.3626984
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2050,oil_extraction_total,127.3326501
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2055,oil_extraction_total,103.1073248
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2060,oil_extraction_total,78.5452211
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2020,oil_extraction_total,205.017139
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2025,oil_extraction_total,213.5157368
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2030,oil_extraction_total,216.3438848
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2035,oil_extraction_total,207.8276185
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2040,oil_extraction_total,191.0416406
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2045,oil_extraction_total,167.964175
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2050,oil_extraction_total,142.8014786
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2055,oil_extraction_total,118.7412342
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2060,oil_extraction_total,95.39622570000002
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2020,oil_extraction_total,205.017139
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2025,oil_extraction_total,213.5157368
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2030,oil_extraction_total,216.3438848
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2035,oil_extraction_total,207.8276185
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2040,oil_extraction_total,191.0416406
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2045,oil_extraction_total,169.5827285
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2050,oil_extraction_total,147.8394567
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2055,oil_extraction_total,125.271457
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2060,oil_extraction_total,102.8013561
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2020,oil_extraction_total,205.017139
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2025,oil_extraction_total,213.5157368
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2030,oil_extraction_total,206.9498843
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2035,oil_extraction_total,171.8785917
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2040,oil_extraction_total,122.7812139
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2045,oil_extraction_total,82.71085960000002
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2050,oil_extraction_total,51.80028709999999
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2055,oil_extraction_total,34.44505280000001
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2060,oil_extraction_total,19.3033801
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2020,oil_extraction_total,205.017139
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2025,oil_extraction_total,213.5157368
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2030,oil_extraction_total,225.4054896
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2035,oil_extraction_total,237.7508647
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2040,oil_extraction_total,241.5740535
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2045,oil_extraction_total,240.4690459
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2050,oil_extraction_total,232.8057597
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2055,oil_extraction_total,211.9460763
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2060,oil_extraction_total,179.566289
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2020,oil_extraction_total,205.017139
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2025,oil_extraction_total,213.5157368
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2030,oil_extraction_total,216.5174928
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2035,oil_extraction_total,206.5523538
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2040,oil_extraction_total,185.4174583
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2045,oil_extraction_total,159.2115397
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2050,oil_extraction_total,136.2492013
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2055,oil_extraction_total,115.5235673
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2060,oil_extraction_total,93.666276
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2020,oil_extraction_total,205.017139
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2025,oil_extraction_total,213.5157368
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2030,oil_extraction_total,220.7669449
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2035,oil_extraction_total,217.492876
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2040,oil_extraction_total,203.3311632
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2045,oil_extraction_total,181.3641603
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2050,oil_extraction_total,156.6161594
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2055,oil_extraction_total,130.3216235
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2060,oil_extraction_total,103.4742289
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2020,oil_extraction_total,205.017139
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2025,oil_extraction_total,213.5157368
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2030,oil_extraction_total,220.7669449
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2035,oil_extraction_total,218.8795634
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2040,oil_extraction_total,207.9175116
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2045,oil_extraction_total,190.3971203
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2050,oil_extraction_total,168.5686058
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2055,oil_extraction_total,149.1601463
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2060,oil_extraction_total,128.6974633
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2020,oil_extraction_total,205.017139
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2025,oil_extraction_total,213.5157368
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2030,oil_extraction_total,220.7669449
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2035,oil_extraction_total,218.8795634
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2040,oil_extraction_total,207.9175116
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2045,oil_extraction_total,193.045198
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2050,oil_extraction_total,178.003982
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2055,oil_extraction_total,161.306242
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2060,oil_extraction_total,142.6750499
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2020,oil_extraction_total,205.017139
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2025,oil_extraction_total,213.5157368
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2030,oil_extraction_total,210.4625919
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2035,oil_extraction_total,176.7643128
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2040,oil_extraction_total,129.9160949
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2045,oil_extraction_total,92.2921724
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2050,oil_extraction_total,62.19939110000001
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2055,oil_extraction_total,47.9027297
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2060,oil_extraction_total,33.94817330000001
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2020,oil_extraction_total,205.017139
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2025,oil_extraction_total,213.5157368
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2030,oil_extraction_total,228.3630675
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2035,oil_extraction_total,246.8790132
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2040,oil_extraction_total,252.5582297
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2045,oil_extraction_total,249.7897419
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2050,oil_extraction_total,237.4228254
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2055,oil_extraction_total,211.4289615
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2060,oil_extraction_total,171.9637604
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2020,oil_extraction_total,205.017139
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2025,oil_extraction_total,213.5157368
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2030,oil_extraction_total,223.8959487
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2035,oil_extraction_total,231.8924688
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2040,oil_extraction_total,225.5388917
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2045,oil_extraction_total,210.6192894
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2050,oil_extraction_total,190.185394
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2055,oil_extraction_total,166.3506068
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2060,oil_extraction_total,137.8462469
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2020,oil_extraction_total,205.017139
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2025,oil_extraction_total,213.5157368
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2030,oil_extraction_total,223.8959487
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2035,oil_extraction_total,231.8924688
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2040,oil_extraction_total,225.5388917
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2045,oil_extraction_total,213.0882075
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2050,oil_extraction_total,198.2242144
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2055,oil_extraction_total,177.8502529
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2060,oil_extraction_total,150.8894604
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2020,oil_extraction_total,184.4196409539667
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2025,oil_extraction_total,183.13766600879
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2030,oil_extraction_total,177.2636314035928
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2035,oil_extraction_total,191.5261988913761
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2040,oil_extraction_total,193.4988324997946
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2045,oil_extraction_total,178.5125526179401
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2050,oil_extraction_total,154.028451040046
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2055,oil_extraction_total,131.6217307885744
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2060,oil_extraction_total,121.3689115929749
+WITCH 6.0,Low,SSP2,FALSE,World,2020,oil_extraction_total,184.4196409539667
+WITCH 6.0,Low,SSP2,FALSE,World,2025,oil_extraction_total,183.13766600879
+WITCH 6.0,Low,SSP2,FALSE,World,2030,oil_extraction_total,186.3129688056486
+WITCH 6.0,Low,SSP2,FALSE,World,2035,oil_extraction_total,188.0731491186323
+WITCH 6.0,Low,SSP2,FALSE,World,2040,oil_extraction_total,179.600794456688
+WITCH 6.0,Low,SSP2,FALSE,World,2045,oil_extraction_total,161.3988482557829
+WITCH 6.0,Low,SSP2,FALSE,World,2050,oil_extraction_total,145.6102260561342
+WITCH 6.0,Low,SSP2,FALSE,World,2055,oil_extraction_total,136.0788413838476
+WITCH 6.0,Low,SSP2,FALSE,World,2060,oil_extraction_total,129.882046926813
+WITCH 6.0,Very Low,SSP2,FALSE,World,2020,oil_extraction_total,184.4196409539667
+WITCH 6.0,Very Low,SSP2,FALSE,World,2025,oil_extraction_total,183.13766600879
+WITCH 6.0,Very Low,SSP2,FALSE,World,2030,oil_extraction_total,185.1099389760039
+WITCH 6.0,Very Low,SSP2,FALSE,World,2035,oil_extraction_total,177.2819239948945
+WITCH 6.0,Very Low,SSP2,FALSE,World,2040,oil_extraction_total,134.9924890681863
+WITCH 6.0,Very Low,SSP2,FALSE,World,2045,oil_extraction_total,104.2282216514257
+WITCH 6.0,Very Low,SSP2,FALSE,World,2050,oil_extraction_total,102.3600398535247
+WITCH 6.0,Very Low,SSP2,FALSE,World,2055,oil_extraction_total,93.18707381939652
+WITCH 6.0,Very Low,SSP2,FALSE,World,2060,oil_extraction_total,86.58716742202965
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2020,oil_extraction_total,184.4196409539667
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2025,oil_extraction_total,183.13766600879
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2030,oil_extraction_total,193.9046750687806
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2035,oil_extraction_total,200.7511278116785
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2040,oil_extraction_total,204.1442882715279
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2045,oil_extraction_total,201.3568948576842
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2050,oil_extraction_total,203.4785974291527
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2055,oil_extraction_total,204.5568791190643
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2060,oil_extraction_total,202.1709751477514
+WITCH 6.0,Medium,SSP2,FALSE,World,2020,oil_extraction_total,184.4196409539667
+WITCH 6.0,Medium,SSP2,FALSE,World,2025,oil_extraction_total,183.13766600879
+WITCH 6.0,Medium,SSP2,FALSE,World,2030,oil_extraction_total,193.9046750687806
+WITCH 6.0,Medium,SSP2,FALSE,World,2035,oil_extraction_total,200.7511278116785
+WITCH 6.0,Medium,SSP2,FALSE,World,2040,oil_extraction_total,204.1442882715279
+WITCH 6.0,Medium,SSP2,FALSE,World,2045,oil_extraction_total,208.8241856607115
+WITCH 6.0,Medium,SSP2,FALSE,World,2050,oil_extraction_total,212.8402611716577
+WITCH 6.0,Medium,SSP2,FALSE,World,2055,oil_extraction_total,217.5126005252114
+WITCH 6.0,Medium,SSP2,FALSE,World,2060,oil_extraction_total,223.4540224729957
+WITCH 6.0,High,SSP5,FALSE,World,2020,oil_extraction_total,184.4196409539667
+WITCH 6.0,High,SSP5,FALSE,World,2025,oil_extraction_total,183.13766600879
+WITCH 6.0,High,SSP5,FALSE,World,2030,oil_extraction_total,188.9735569759791
+WITCH 6.0,High,SSP5,FALSE,World,2035,oil_extraction_total,196.5904090707127
+WITCH 6.0,High,SSP5,FALSE,World,2040,oil_extraction_total,208.3222245660642
+WITCH 6.0,High,SSP5,FALSE,World,2045,oil_extraction_total,222.902460418105
+WITCH 6.0,High,SSP5,FALSE,World,2050,oil_extraction_total,234.328687513656
+WITCH 6.0,High,SSP5,FALSE,World,2055,oil_extraction_total,244.670290868736
+WITCH 6.0,High,SSP5,FALSE,World,2060,oil_extraction_total,255.4156992837065
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2020,oil_extraction_total,184.4196409539667
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2025,oil_extraction_total,183.13766600879
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2030,oil_extraction_total,188.9735569759791
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2035,oil_extraction_total,196.5904090707127
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2040,oil_extraction_total,208.3222245660642
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2045,oil_extraction_total,222.902460418105
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2050,oil_extraction_total,234.328687513656
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2055,oil_extraction_total,244.670290868736
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2060,oil_extraction_total,255.4156992837065

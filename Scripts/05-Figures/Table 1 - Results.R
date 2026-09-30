@@ -12,12 +12,11 @@
 ## "Stock" = in_use_stock_Mt. Biomass and fossil fuels have no in-use stock in
 ##   this model (Kaya flow-through), so their Stock/Outflow cells are blank.
 ##
-## 2024 values use real historical/accounting data wherever available
-## (stock_2024_total.csv; materials_region_DMC.csv; historical_secondary_flows.csv).
-## Where history has no split matching this table's detail rows (minerals by
-## end-use; metals Fe/Non-Fe outflow), the real 2024 category TOTAL is kept
-## from history and apportioned across details using the MC ensemble's own
-## year-2025 (first simulated year, closest available) median shares.
+## 2024 values use real historical/accounting data (stock_2024_total.csv;
+## materials_region_DMC.csv for biomass/fossil). Metal/mineral 2024 flow and
+## outflow come from the historical DSM on the model basis
+## (Results/MC/hist_flows_model_basis.csv, 02-RunSimulations.R STEP 8), so they
+## are the same quantity as the FORECAST_END columns.
 
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
 library(arrow)
@@ -49,9 +48,21 @@ DETAIL_ORDER <- list(
 # Load data --------
 
 mc_results <- arrow::read_parquet("Results/MC/mc_results.parquet")
-stock_2024_total <- readr::read_csv("Parameters/stock_2024_total.csv", show_col_types = FALSE)
-dmc_region <- readr::read_csv("Parameters/materials_region_DMC.csv", show_col_types = FALSE)
-secondary_2024 <- readr::read_csv("Parameters/Intermediate/historical_secondary_flows.csv", show_col_types = FALSE)
+stock_2024_total <- readr::read_csv("Parameters/MISO-Stock/stock_2024_total.csv", show_col_types = FALSE)
+dmc_region <- readr::read_csv("Parameters/UNEP-Materials/materials_region_DMC.csv", show_col_types = FALSE)
+hist_flows_2024 <- readr::read_csv("Results/MC/hist_flows_model_basis.csv", show_col_types = FALSE) |>
+  dplyr::filter(year == 2024) |>
+  dplyr::mutate(
+    category = dplyr::if_else(material == "Non-metallic minerals", "Non-metallic minerals", "Metals"),
+    detail = dplyr::case_when(
+      material == "Metal_Fe" ~ "Ferrous ores",
+      material == "Metal_NonFe" ~ "Non-ferrous ores",
+      super_category == "buildings" ~ "Buildings",
+      super_category == "civil_infrastructure" ~ "Civil infrastructure",
+      super_category == "machinery" ~ "Machinery",
+      super_category == "short_lived" ~ "Short-lived products"
+    )
+  )
 dict_mat <- readxl::read_excel("Inputs/Dict_Materials.xlsx", sheet = "Categories") |>
   dplyr::select(material_category = Material_22, Material_group)
 
@@ -163,34 +174,20 @@ flow_2024_fossil <- dmc_2024 |>
   dplyr::summarise(flow_2024_Mt = sum(DMC_Mt, na.rm = TRUE), .groups = "drop") |>
   dplyr::mutate(category = "Fossil fuels")
 
-flow_2024_metal <- dmc_2024 |>
-  dplyr::filter(material_category %in% c("Ferrous ores", "Non-ferrous ores")) |>
-  dplyr::group_by(detail = material_category) |>
-  dplyr::summarise(flow_2024_Mt = sum(DMC_Mt, na.rm = TRUE), .groups = "drop") |>
+# Metals/minerals: 2024 historical DSM inflow on the model basis (= primary +
+# secondary, ore-equivalent for metals; 02-RunSimulations.R STEP 8), the same
+# quantity as the FORECAST_END flow -- not UNEP DMC (territorial, other scope).
+flow_2024_metal <- hist_flows_2024 |>
+  dplyr::filter(category == "Metals") |>
+  dplyr::group_by(detail) |>
+  dplyr::summarise(flow_2024_Mt = sum(inflow_Mt, na.rm = TRUE), .groups = "drop") |>
   dplyr::mutate(category = "Metals")
 
-mineral_2024_total_Mt <- dmc_2024 |>
-  dplyr::filter(material_category %in% c(
-    "Non-metallic minerals - construction dominant",
-    "Non-metallic minerals - industrial or agricultural dominant"
-  )) |>
-  dplyr::summarise(x = sum(DMC_Mt, na.rm = TRUE)) |>
-  dplyr::pull(x)
-
-# No historical end-use split exists for minerals -- apportion the real 2024
-# total using the MC ensemble's own year-2025 median end-use share of flow.
-mineral_flow_shares <- mc_proxy |>
+flow_2024_mineral <- hist_flows_2024 |>
   dplyr::filter(category == "Non-metallic minerals") |>
-  dplyr::group_by(run_id, detail) |>
-  dplyr::summarise(flow_Mt = sum(flow_Mt, na.rm = TRUE), .groups = "drop") |>
-  dplyr::group_by(run_id) |>
-  dplyr::mutate(share = flow_Mt / sum(flow_Mt)) |>
-  dplyr::ungroup() |>
   dplyr::group_by(detail) |>
-  dplyr::summarise(share = median(share), .groups = "drop")
-
-flow_2024_mineral <- mineral_flow_shares |>
-  dplyr::transmute(detail, category = "Non-metallic minerals", flow_2024_Mt = share * mineral_2024_total_Mt)
+  dplyr::summarise(flow_2024_Mt = sum(inflow_Mt, na.rm = TRUE), .groups = "drop") |>
+  dplyr::mutate(category = "Non-metallic minerals")
 
 flow_2024_detail <- dplyr::bind_rows(flow_2024_biomass, flow_2024_fossil, flow_2024_metal, flow_2024_mineral) |>
   dplyr::mutate(flow_2024_Gt = flow_2024_Mt / 1e3) |>
@@ -234,47 +231,10 @@ flow_target_all <- dplyr::bind_rows(flow_mc_grand_byrun, flow_mc_category_byrun,
 # OUTFLOW -- 2024 (historical waste) and FORECAST_END (MC) ------------------
 # ===========================================================================
 
-secondary_2024_filt <- secondary_2024 |> dplyr::filter(year == 2024)
-
-metal_waste_2024_Mt <- secondary_2024_filt |>
-  dplyr::filter(material_group == "metal_ores") |>
-  dplyr::summarise(x = sum(waste_Mt, na.rm = TRUE)) |>
-  dplyr::pull(x)
-
-mineral_waste_2024_Mt <- secondary_2024_filt |>
-  dplyr::filter(material_group == "nonmetallic_minerals") |>
-  dplyr::summarise(x = sum(waste_Mt, na.rm = TRUE)) |>
-  dplyr::pull(x)
-
-# No historical Fe/Non-Fe or end-use split exists for waste -- apportion the
-# real 2024 category totals using the MC ensemble's year-2025 median shares.
-metal_waste_shares <- mc_proxy |>
-  dplyr::filter(category == "Metals") |>
-  dplyr::group_by(run_id, detail) |>
-  dplyr::summarise(waste_Mt = sum(waste_Mt, na.rm = TRUE), .groups = "drop") |>
-  dplyr::group_by(run_id) |>
-  dplyr::mutate(share = waste_Mt / sum(waste_Mt)) |>
-  dplyr::ungroup() |>
-  dplyr::group_by(detail) |>
-  dplyr::summarise(share = median(share), .groups = "drop")
-
-mineral_waste_shares <- mc_proxy |>
-  dplyr::filter(category == "Non-metallic minerals") |>
-  dplyr::group_by(run_id, detail) |>
-  dplyr::summarise(waste_Mt = sum(waste_Mt, na.rm = TRUE), .groups = "drop") |>
-  dplyr::group_by(run_id) |>
-  dplyr::mutate(share = waste_Mt / sum(waste_Mt)) |>
-  dplyr::ungroup() |>
-  dplyr::group_by(detail) |>
-  dplyr::summarise(share = median(share), .groups = "drop")
-
-outflow_2024_metal <- metal_waste_shares |>
-  dplyr::transmute(detail, category = "Metals", outflow_2024_Gt = share * metal_waste_2024_Mt / 1e3)
-
-outflow_2024_mineral <- mineral_waste_shares |>
-  dplyr::transmute(detail, category = "Non-metallic minerals", outflow_2024_Gt = share * mineral_waste_2024_Mt / 1e3)
-
-outflow_2024_detail <- dplyr::bind_rows(outflow_2024_metal, outflow_2024_mineral)
+# 2024 historical DSM outflow on the model basis (same source as the 2024 flow)
+outflow_2024_detail <- hist_flows_2024 |>
+  dplyr::group_by(category, detail) |>
+  dplyr::summarise(outflow_2024_Gt = sum(outflow_Mt, na.rm = TRUE) / 1e3, .groups = "drop")
 
 outflow_2024_category <- outflow_2024_detail |>
   dplyr::group_by(category) |>

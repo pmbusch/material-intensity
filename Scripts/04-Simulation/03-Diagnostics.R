@@ -11,7 +11,7 @@
 ##   2. SRRC         -- standardised rank regression coefficients (sensitivity)
 ##   3. Envelope     -- P5/P25/P50/P75/P95 band per material category × year
 ##
-## Figures saved to Figures/MC/
+## Figures saved to Figures/Simulation/
 ## =============================================================================
 
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
@@ -26,8 +26,8 @@ cat("=== MC Diagnostics ===\n\n")
 cat("Loading MC results...\n")
 results <- arrow::read_parquet("Results/MC/mc_results.parquet") |>
   mutate(material_group = ifelse(material_group %in% c("metal_fe", "metal_nonfe"), "metal_ores", material_group))
-input_matrix <- read_csv("Parameters/MC/mc_input_matrix.csv", show_col_types = FALSE)
-dmc_hist <- read_csv("Parameters/materials_region_DMC.csv", show_col_types = FALSE)
+input_matrix <- read_csv("Parameters/Simulation/mc_input_matrix.csv", show_col_types = FALSE)
+dmc_hist <- read_csv("Parameters/UNEP-Materials/materials_region_DMC.csv", show_col_types = FALSE)
 
 n_runs <- n_distinct(results$run_id)
 cat("  Runs:", n_runs, "| Rows:", format(nrow(results), big.mark = ","), "\n")
@@ -80,7 +80,7 @@ ggplot(conv_long, aes(n, Mt, colour = percentile)) +
   theme(legend.position = c(0.88, 0.5))
 
 # fmt: skip
-ggsave("Figures/MC/03_convergence.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7)
+ggsave("Figures/Simulation/03_convergence.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7)
 
 # fmt: skip
 cat("  P01 / P50 / P99 at N =",n_runs,":",round(tail(conv_data$p01, 1)/1e3, 0),"/",round(tail(conv_data$p50, 1)/1e3, 0),"/",round(tail(conv_data$p99, 1)/1e3, 0),"Gt\n\n")
@@ -92,7 +92,7 @@ cat("  P01 / P50 / P99 at N =",n_runs,":",round(tail(conv_data$p01, 1)/1e3, 0),"
 
 cat("DIAGNOSTIC 2: SRRC sensitivity\n")
 
-# pop_ssp_u / gdppc_ssp_u are already continuous [0,1] draws -> used as-is
+# ssp_u is already a continuous [0,1] draw -> used as-is
 inputs_num <- input_matrix |>
   arrange(run_id) |>
   dplyr::select(-run_id)
@@ -111,7 +111,7 @@ srrc <- tibble(parameter = rownames(coef_sum), srrc = coef_sum[, "Estimate"], p_
     abs_srrc = abs(srrc),
     # Classify parameter family for colour
     family = dplyr::case_when(
-      parameter %in% c("x_rnkpop_ssp_u", "x_rnkgdppc_ssp_u") ~ "SSP choice",
+      parameter %in% c("x_rnkssp_u") ~ "SSP choice",
       stringr::str_detect(parameter, "rho") ~ "Variance split (rho)",
       stringr::str_detect(parameter, "target_year|intensity|g_int|delta_int") ~ "Intensity",
       stringr::str_detect(parameter, "circ|conv_year") ~ "Circularity",
@@ -150,8 +150,8 @@ ggplot(top_srrc, aes(srrc, label, fill = family)) +
   theme(legend.position = "right", axis.text.y = element_text(size = 7))
 
 # fmt: skip
-ggsave("Figures/MC/03_srrc_sensitivity.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2.5, height = 8.7 * 2)
-cat("  Saved: Figures/MC/srrc_sensitivity.png\n")
+ggsave("Figures/Simulation/03_srrc_sensitivity.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2.5, height = 8.7 * 2)
+cat("  Saved: Figures/Simulation/srrc_sensitivity.png\n")
 cat("  Top 5 parameters by |SRRC|:\n")
 print(head(srrc |> dplyr::select(parameter, srrc, p_value), 5))
 cat("\n")
@@ -311,8 +311,8 @@ ggplot() +
   theme(plot.margin = margin(5.5, 40, 5.5, 5.5))
 
 # fmt: skip
-ggsave("Figures/MC/03_output_envelope.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7 * 2)
-cat("  Saved: Figures/MC/output_envelope.png\n")
+ggsave("Figures/Simulation/03_output_envelope.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7 * 2)
+cat("  Saved: Figures/Simulation/output_envelope.png\n")
 
 # Save envelope data
 write_csv(envelope_global, "Results/MC/mc_envelope.csv")

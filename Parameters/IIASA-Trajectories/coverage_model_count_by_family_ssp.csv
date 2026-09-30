@@ -1,0 +1,20 @@
+family,ssp,n_models
+High,SSP2,1
+High,SSP3,5
+High,SSP5,5
+High-to-Low,SSP3,1
+High-to-Low,SSP5,4
+Low,SSP1,3
+Low,SSP2,7
+Low-to-Negative,SSP1,2
+Low-to-Negative,SSP2,6
+Low-to-Negative,SSP4,1
+Low-to-Negative,SSP5,1
+Medium,SSP1,3
+Medium,SSP2,7
+Medium,SSP3,1
+Medium-to-Low,SSP1,2
+Medium-to-Low,SSP2,7
+Medium-to-Low,SSP3,1
+Very Low,SSP1,5
+Very Low,SSP2,6

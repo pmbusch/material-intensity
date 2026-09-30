@@ -1,0 +1,546 @@
+model,family,ssp,marker,region,year,metric,value
+AIM 3.0,Medium,SSP1,FALSE,World,2020,forestry_production_gdp,0.04025756280250029
+AIM 3.0,Medium,SSP1,FALSE,World,2025,forestry_production_gdp,0.03370105386931334
+AIM 3.0,Medium,SSP1,FALSE,World,2030,forestry_production_gdp,0.02982808464957558
+AIM 3.0,Medium,SSP1,FALSE,World,2035,forestry_production_gdp,0.02631049878894001
+AIM 3.0,Medium,SSP1,FALSE,World,2040,forestry_production_gdp,0.0232264090471356
+AIM 3.0,Medium,SSP1,FALSE,World,2045,forestry_production_gdp,0.02065925059996645
+AIM 3.0,Medium,SSP1,FALSE,World,2050,forestry_production_gdp,0.01839869852782965
+AIM 3.0,Medium,SSP1,FALSE,World,2055,forestry_production_gdp,0.01640887258343294
+AIM 3.0,Medium,SSP1,FALSE,World,2060,forestry_production_gdp,0.01463493658876824
+AIM 3.0,Very Low,SSP1,FALSE,World,2020,forestry_production_gdp,0.04025793366318932
+AIM 3.0,Very Low,SSP1,FALSE,World,2025,forestry_production_gdp,0.03368557048623608
+AIM 3.0,Very Low,SSP1,FALSE,World,2030,forestry_production_gdp,0.02997437682804475
+AIM 3.0,Very Low,SSP1,FALSE,World,2035,forestry_production_gdp,0.02704102838495476
+AIM 3.0,Very Low,SSP1,FALSE,World,2040,forestry_production_gdp,0.02434059204409732
+AIM 3.0,Very Low,SSP1,FALSE,World,2045,forestry_production_gdp,0.0218944085542944
+AIM 3.0,Very Low,SSP1,FALSE,World,2050,forestry_production_gdp,0.01924233162771092
+AIM 3.0,Very Low,SSP1,FALSE,World,2055,forestry_production_gdp,0.01678910345629562
+AIM 3.0,Very Low,SSP1,FALSE,World,2060,forestry_production_gdp,0.01498501848500945
+AIM 3.0,Low,SSP2,FALSE,World,2020,forestry_production_gdp,0.04025782318593302
+AIM 3.0,Low,SSP2,FALSE,World,2025,forestry_production_gdp,0.03368558233611717
+AIM 3.0,Low,SSP2,FALSE,World,2030,forestry_production_gdp,0.03021081600866668
+AIM 3.0,Low,SSP2,FALSE,World,2035,forestry_production_gdp,0.02728721900470169
+AIM 3.0,Low,SSP2,FALSE,World,2040,forestry_production_gdp,0.024612133065182
+AIM 3.0,Low,SSP2,FALSE,World,2045,forestry_production_gdp,0.02251929613572385
+AIM 3.0,Low,SSP2,FALSE,World,2050,forestry_production_gdp,0.02035789133669616
+AIM 3.0,Low,SSP2,FALSE,World,2055,forestry_production_gdp,0.0185076299630839
+AIM 3.0,Low,SSP2,FALSE,World,2060,forestry_production_gdp,0.0167955659785679
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2020,forestry_production_gdp,0.04025783458369548
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2025,forestry_production_gdp,0.03368561944185416
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2030,forestry_production_gdp,0.03004424046231032
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2035,forestry_production_gdp,0.0269156103418279
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2040,forestry_production_gdp,0.0253226347426763
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2045,forestry_production_gdp,0.023145659150315
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2050,forestry_production_gdp,0.02103941430804901
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2055,forestry_production_gdp,0.01864087285732781
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2060,forestry_production_gdp,0.01686862620109692
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2020,forestry_production_gdp,0.04025765357718778
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2025,forestry_production_gdp,0.03368534997766944
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2030,forestry_production_gdp,0.03005567869854088
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2035,forestry_production_gdp,0.02692897200117067
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2040,forestry_production_gdp,0.02431582753934967
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2045,forestry_production_gdp,0.02215468049051153
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2050,forestry_production_gdp,0.02006687516788608
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2055,forestry_production_gdp,0.01811684375904625
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2060,forestry_production_gdp,0.01637360185171995
+AIM 3.0,Medium,SSP2,FALSE,World,2020,forestry_production_gdp,0.04025750549250613
+AIM 3.0,Medium,SSP2,FALSE,World,2025,forestry_production_gdp,0.03368541210486753
+AIM 3.0,Medium,SSP2,FALSE,World,2030,forestry_production_gdp,0.03006277332510356
+AIM 3.0,Medium,SSP2,FALSE,World,2035,forestry_production_gdp,0.02691336922775445
+AIM 3.0,Medium,SSP2,FALSE,World,2040,forestry_production_gdp,0.02430284938988453
+AIM 3.0,Medium,SSP2,FALSE,World,2045,forestry_production_gdp,0.0221434675184211
+AIM 3.0,Medium,SSP2,FALSE,World,2050,forestry_production_gdp,0.02004633574853892
+AIM 3.0,Medium,SSP2,FALSE,World,2055,forestry_production_gdp,0.01811165553973396
+AIM 3.0,Medium,SSP2,FALSE,World,2060,forestry_production_gdp,0.01633276544470568
+AIM 3.0,Very Low,SSP2,FALSE,World,2020,forestry_production_gdp,0.04025771829875062
+AIM 3.0,Very Low,SSP2,FALSE,World,2025,forestry_production_gdp,0.03368546577934264
+AIM 3.0,Very Low,SSP2,FALSE,World,2030,forestry_production_gdp,0.03047789055143578
+AIM 3.0,Very Low,SSP2,FALSE,World,2035,forestry_production_gdp,0.02855162227911818
+AIM 3.0,Very Low,SSP2,FALSE,World,2040,forestry_production_gdp,0.02589436361406108
+AIM 3.0,Very Low,SSP2,FALSE,World,2045,forestry_production_gdp,0.0237372125821321
+AIM 3.0,Very Low,SSP2,FALSE,World,2050,forestry_production_gdp,0.02094033988352641
+AIM 3.0,Very Low,SSP2,FALSE,World,2055,forestry_production_gdp,0.01886224265730124
+AIM 3.0,Very Low,SSP2,FALSE,World,2060,forestry_production_gdp,0.01708666236410002
+AIM 3.0,High,SSP3,FALSE,World,2020,forestry_production_gdp,0.04025725223650845
+AIM 3.0,High,SSP3,FALSE,World,2025,forestry_production_gdp,0.03370049843373224
+AIM 3.0,High,SSP3,FALSE,World,2030,forestry_production_gdp,0.03025311109736887
+AIM 3.0,High,SSP3,FALSE,World,2035,forestry_production_gdp,0.02763751245350661
+AIM 3.0,High,SSP3,FALSE,World,2040,forestry_production_gdp,0.02576947095080623
+AIM 3.0,High,SSP3,FALSE,World,2045,forestry_production_gdp,0.02439662794654893
+AIM 3.0,High,SSP3,FALSE,World,2050,forestry_production_gdp,0.02299034806498597
+AIM 3.0,High,SSP3,FALSE,World,2055,forestry_production_gdp,0.02163044490091639
+AIM 3.0,High,SSP3,FALSE,World,2060,forestry_production_gdp,0.02038751092811589
+AIM 3.0,High,SSP5,FALSE,World,2020,forestry_production_gdp,0.04025776427765693
+AIM 3.0,High,SSP5,FALSE,World,2025,forestry_production_gdp,0.03370157674784019
+AIM 3.0,High,SSP5,FALSE,World,2030,forestry_production_gdp,0.02991318347271544
+AIM 3.0,High,SSP5,FALSE,World,2035,forestry_production_gdp,0.02595036426788922
+AIM 3.0,High,SSP5,FALSE,World,2040,forestry_production_gdp,0.02224863386817507
+AIM 3.0,High,SSP5,FALSE,World,2045,forestry_production_gdp,0.01918343955460947
+AIM 3.0,High,SSP5,FALSE,World,2050,forestry_production_gdp,0.01660455636607543
+AIM 3.0,High,SSP5,FALSE,World,2055,forestry_production_gdp,0.01441504596207938
+AIM 3.0,High,SSP5,FALSE,World,2060,forestry_production_gdp,0.01251442223598025
+GCAM 8s,Low,SSP2,FALSE,World,2020,forestry_production_gdp,0.05379443757393859
+GCAM 8s,Low,SSP2,FALSE,World,2025,forestry_production_gdp,0.04606614476470334
+GCAM 8s,Low,SSP2,FALSE,World,2030,forestry_production_gdp,0.04054881098299694
+GCAM 8s,Low,SSP2,FALSE,World,2035,forestry_production_gdp,0.03684570091153293
+GCAM 8s,Low,SSP2,FALSE,World,2040,forestry_production_gdp,0.03445329249953909
+GCAM 8s,Low,SSP2,FALSE,World,2045,forestry_production_gdp,0.03179688510085699
+GCAM 8s,Low,SSP2,FALSE,World,2050,forestry_production_gdp,0.02929651155279298
+GCAM 8s,Low,SSP2,FALSE,World,2055,forestry_production_gdp,0.02700022752708401
+GCAM 8s,Low,SSP2,FALSE,World,2060,forestry_production_gdp,0.02471825032269081
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2020,forestry_production_gdp,0.05379443757393859
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2025,forestry_production_gdp,0.04609746955755292
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2030,forestry_production_gdp,0.04044897447942516
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2035,forestry_production_gdp,0.03675968713922892
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2040,forestry_production_gdp,0.03473835289494813
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2045,forestry_production_gdp,0.03290350040338511
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2050,forestry_production_gdp,0.02958779565838476
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2055,forestry_production_gdp,0.02732424988336149
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2060,forestry_production_gdp,0.02521277107048918
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2020,forestry_production_gdp,0.05379443757393859
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2025,forestry_production_gdp,0.04606681438629965
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2030,forestry_production_gdp,0.04013256962960185
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2035,forestry_production_gdp,0.03649604836297768
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2040,forestry_production_gdp,0.03347761623505119
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2045,forestry_production_gdp,0.0305673643142601
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2050,forestry_production_gdp,0.02818796305928315
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2055,forestry_production_gdp,0.02654367539159307
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2060,forestry_production_gdp,0.02465649610889931
+GCAM 8s,Medium,SSP2,FALSE,World,2020,forestry_production_gdp,0.05379443757393859
+GCAM 8s,Medium,SSP2,FALSE,World,2025,forestry_production_gdp,0.04606866506516738
+GCAM 8s,Medium,SSP2,FALSE,World,2030,forestry_production_gdp,0.04016428805467421
+GCAM 8s,Medium,SSP2,FALSE,World,2035,forestry_production_gdp,0.03654703231101092
+GCAM 8s,Medium,SSP2,FALSE,World,2040,forestry_production_gdp,0.03356244580104197
+GCAM 8s,Medium,SSP2,FALSE,World,2045,forestry_production_gdp,0.03054251342259158
+GCAM 8s,Medium,SSP2,FALSE,World,2050,forestry_production_gdp,0.02796260836711687
+GCAM 8s,Medium,SSP2,FALSE,World,2055,forestry_production_gdp,0.02611107698655921
+GCAM 8s,Medium,SSP2,FALSE,World,2060,forestry_production_gdp,0.02413212801198655
+GCAM 8s,High,SSP3,TRUE,World,2020,forestry_production_gdp,0.05379443757393859
+GCAM 8s,High,SSP3,TRUE,World,2025,forestry_production_gdp,0.04665998616342264
+GCAM 8s,High,SSP3,TRUE,World,2030,forestry_production_gdp,0.04130119136587743
+GCAM 8s,High,SSP3,TRUE,World,2035,forestry_production_gdp,0.03836776471895172
+GCAM 8s,High,SSP3,TRUE,World,2040,forestry_production_gdp,0.0361977927453649
+GCAM 8s,High,SSP3,TRUE,World,2045,forestry_production_gdp,0.03418232626452894
+GCAM 8s,High,SSP3,TRUE,World,2050,forestry_production_gdp,0.03267671781094138
+GCAM 8s,High,SSP3,TRUE,World,2055,forestry_production_gdp,0.03171023961345615
+GCAM 8s,High,SSP3,TRUE,World,2060,forestry_production_gdp,0.03030761347287033
+GCAM 8s,High,SSP5,FALSE,World,2020,forestry_production_gdp,0.05379443757393859
+GCAM 8s,High,SSP5,FALSE,World,2025,forestry_production_gdp,0.04621557424301768
+GCAM 8s,High,SSP5,FALSE,World,2030,forestry_production_gdp,0.04026404894175223
+GCAM 8s,High,SSP5,FALSE,World,2035,forestry_production_gdp,0.03542368776240846
+GCAM 8s,High,SSP5,FALSE,World,2040,forestry_production_gdp,0.03083527161318312
+GCAM 8s,High,SSP5,FALSE,World,2045,forestry_production_gdp,0.02653355222530138
+GCAM 8s,High,SSP5,FALSE,World,2050,forestry_production_gdp,0.02315852980000115
+GCAM 8s,High,SSP5,FALSE,World,2055,forestry_production_gdp,0.02061441628063836
+GCAM 8s,High,SSP5,FALSE,World,2060,forestry_production_gdp,0.01818029059544932
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2020,forestry_production_gdp,0.05379443757393859
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2025,forestry_production_gdp,0.04621557424301768
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2030,forestry_production_gdp,0.04026404894175223
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2035,forestry_production_gdp,0.03542368776240846
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2040,forestry_production_gdp,0.03083527161318312
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2045,forestry_production_gdp,0.02653355222530138
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2050,forestry_production_gdp,0.02315852980000115
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2055,forestry_production_gdp,0.02061441628063836
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2060,forestry_production_gdp,0.01818029059544932
+IMAGE 3.4,Low,SSP1,FALSE,World,2020,forestry_production_gdp,0.04615662722806671
+IMAGE 3.4,Low,SSP1,FALSE,World,2025,forestry_production_gdp,0.04054465438275184
+IMAGE 3.4,Low,SSP1,FALSE,World,2030,forestry_production_gdp,0.03512665397710016
+IMAGE 3.4,Low,SSP1,FALSE,World,2035,forestry_production_gdp,0.0277332772505283
+IMAGE 3.4,Low,SSP1,FALSE,World,2040,forestry_production_gdp,0.02157350706032265
+IMAGE 3.4,Low,SSP1,FALSE,World,2045,forestry_production_gdp,0.01756963927329305
+IMAGE 3.4,Low,SSP1,FALSE,World,2050,forestry_production_gdp,0.01481293380607411
+IMAGE 3.4,Low,SSP1,FALSE,World,2060,forestry_production_gdp,0.01175831574610545
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2020,forestry_production_gdp,0.04615662722806671
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2025,forestry_production_gdp,0.04054454536440292
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2030,forestry_production_gdp,0.03523002033889081
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2035,forestry_production_gdp,0.02791184995824895
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2040,forestry_production_gdp,0.02192531937678443
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2045,forestry_production_gdp,0.01772512718867595
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2050,forestry_production_gdp,0.01474187319239197
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2060,forestry_production_gdp,0.01164824683693096
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2020,forestry_production_gdp,0.04615662722806671
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2025,forestry_production_gdp,0.04054454536440292
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2030,forestry_production_gdp,0.03523004866102848
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2035,forestry_production_gdp,0.02791296568137376
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2040,forestry_production_gdp,0.02192570674220334
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2045,forestry_production_gdp,0.01778823932700555
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2050,forestry_production_gdp,0.01484140317280745
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2060,forestry_production_gdp,0.01175417187488871
+IMAGE 3.4,Medium,SSP1,FALSE,World,2020,forestry_production_gdp,0.04615662722806671
+IMAGE 3.4,Medium,SSP1,FALSE,World,2025,forestry_production_gdp,0.04054454536440292
+IMAGE 3.4,Medium,SSP1,FALSE,World,2030,forestry_production_gdp,0.03522931228544901
+IMAGE 3.4,Medium,SSP1,FALSE,World,2035,forestry_production_gdp,0.02791242817972239
+IMAGE 3.4,Medium,SSP1,FALSE,World,2040,forestry_production_gdp,0.02192827743998338
+IMAGE 3.4,Medium,SSP1,FALSE,World,2045,forestry_production_gdp,0.01780824154674735
+IMAGE 3.4,Medium,SSP1,FALSE,World,2050,forestry_production_gdp,0.01488609470700016
+IMAGE 3.4,Medium,SSP1,FALSE,World,2060,forestry_production_gdp,0.0118107805733351
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2020,forestry_production_gdp,0.04615735813675534
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2025,forestry_production_gdp,0.04055035604239986
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2030,forestry_production_gdp,0.03519208755583529
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2035,forestry_production_gdp,0.0274518707041435
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2040,forestry_production_gdp,0.02096106120400292
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2045,forestry_production_gdp,0.01691694459125973
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2050,forestry_production_gdp,0.01428777604983795
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2060,forestry_production_gdp,0.01091344448549531
+IMAGE 3.4,Low,SSP2,FALSE,World,2020,forestry_production_gdp,0.04615662722806671
+IMAGE 3.4,Low,SSP2,FALSE,World,2025,forestry_production_gdp,0.04054464348091694
+IMAGE 3.4,Low,SSP2,FALSE,World,2030,forestry_production_gdp,0.03580887136063219
+IMAGE 3.4,Low,SSP2,FALSE,World,2035,forestry_production_gdp,0.03000936185498548
+IMAGE 3.4,Low,SSP2,FALSE,World,2040,forestry_production_gdp,0.02526712622750833
+IMAGE 3.4,Low,SSP2,FALSE,World,2045,forestry_production_gdp,0.02173134292948868
+IMAGE 3.4,Low,SSP2,FALSE,World,2050,forestry_production_gdp,0.01897507472433628
+IMAGE 3.4,Low,SSP2,FALSE,World,2060,forestry_production_gdp,0.01610128354801424
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2020,forestry_production_gdp,0.04615662722806671
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2025,forestry_production_gdp,0.04054453446256803
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2030,forestry_production_gdp,0.03600487806537729
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2035,forestry_production_gdp,0.03031674502827503
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2040,forestry_production_gdp,0.02558905757867125
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2045,forestry_production_gdp,0.02210670542991719
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2050,forestry_production_gdp,0.01909047698728172
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2060,forestry_production_gdp,0.01595539800069708
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2020,forestry_production_gdp,0.04615662722806671
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2025,forestry_production_gdp,0.04054453446256803
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2030,forestry_production_gdp,0.03600359128646991
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2035,forestry_production_gdp,0.03030892907798619
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2040,forestry_production_gdp,0.02557999240085743
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2045,forestry_production_gdp,0.02224574337230678
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2050,forestry_production_gdp,0.01935300232226955
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2060,forestry_production_gdp,0.01611549457039265
+IMAGE 3.4,Medium,SSP2,TRUE,World,2020,forestry_production_gdp,0.04615662722806671
+IMAGE 3.4,Medium,SSP2,TRUE,World,2025,forestry_production_gdp,0.04054453446256803
+IMAGE 3.4,Medium,SSP2,TRUE,World,2030,forestry_production_gdp,0.03600291951218738
+IMAGE 3.4,Medium,SSP2,TRUE,World,2035,forestry_production_gdp,0.03030728797707718
+IMAGE 3.4,Medium,SSP2,TRUE,World,2040,forestry_production_gdp,0.02557700250833699
+IMAGE 3.4,Medium,SSP2,TRUE,World,2045,forestry_production_gdp,0.02223544960103393
+IMAGE 3.4,Medium,SSP2,TRUE,World,2050,forestry_production_gdp,0.01937903837752612
+IMAGE 3.4,Medium,SSP2,TRUE,World,2060,forestry_production_gdp,0.01603103777408008
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2020,forestry_production_gdp,0.04615735813675534
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2025,forestry_production_gdp,0.04055035604239986
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2030,forestry_production_gdp,0.03574861036900632
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2035,forestry_production_gdp,0.02932381267122003
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2040,forestry_production_gdp,0.02344251309567252
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2045,forestry_production_gdp,0.01939886734350861
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2050,forestry_production_gdp,0.01659533938087692
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2060,forestry_production_gdp,0.01344569336217719
+IMAGE 3.4,High,SSP3,FALSE,World,2020,forestry_production_gdp,0.04615735813675534
+IMAGE 3.4,High,SSP3,FALSE,World,2025,forestry_production_gdp,0.04054838281028457
+IMAGE 3.4,High,SSP3,FALSE,World,2030,forestry_production_gdp,0.03649066480230201
+IMAGE 3.4,High,SSP3,FALSE,World,2035,forestry_production_gdp,0.03283847836595557
+IMAGE 3.4,High,SSP3,FALSE,World,2040,forestry_production_gdp,0.03069083389171745
+IMAGE 3.4,High,SSP3,FALSE,World,2045,forestry_production_gdp,0.02901966096203986
+IMAGE 3.4,High,SSP3,FALSE,World,2050,forestry_production_gdp,0.02694478561984077
+IMAGE 3.4,High,SSP3,FALSE,World,2060,forestry_production_gdp,0.02479922873794758
+IMAGE 3.4,High,SSP5,FALSE,World,2020,forestry_production_gdp,0.04615735813675534
+IMAGE 3.4,High,SSP5,FALSE,World,2025,forestry_production_gdp,0.04055160975341232
+IMAGE 3.4,High,SSP5,FALSE,World,2030,forestry_production_gdp,0.03605106245143589
+IMAGE 3.4,High,SSP5,FALSE,World,2035,forestry_production_gdp,0.02940056768794875
+IMAGE 3.4,High,SSP5,FALSE,World,2040,forestry_production_gdp,0.02331261256924119
+IMAGE 3.4,High,SSP5,FALSE,World,2045,forestry_production_gdp,0.01901848509027388
+IMAGE 3.4,High,SSP5,FALSE,World,2050,forestry_production_gdp,0.01598318639427895
+IMAGE 3.4,High,SSP5,FALSE,World,2060,forestry_production_gdp,0.01242547342770231
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2020,forestry_production_gdp,0.04615735813675534
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2025,forestry_production_gdp,0.04055160975341232
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2030,forestry_production_gdp,0.0360510436557858
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2035,forestry_production_gdp,0.02940063095009333
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2040,forestry_production_gdp,0.02331349131447157
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2045,forestry_production_gdp,0.01901746281413562
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2050,forestry_production_gdp,0.01598314967214149
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2060,forestry_production_gdp,0.01242529025774058
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2020,forestry_production_gdp,0.04640727614968507
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2025,forestry_production_gdp,0.03822878109919278
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2030,forestry_production_gdp,0.02958698002184727
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2035,forestry_production_gdp,0.02391681731114636
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2040,forestry_production_gdp,0.01968238407275478
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2045,forestry_production_gdp,0.01634674536724821
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2050,forestry_production_gdp,0.01382029972085832
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2055,forestry_production_gdp,0.01181530546624884
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2060,forestry_production_gdp,0.01020909078788674
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2020,forestry_production_gdp,0.04640727614968507
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2025,forestry_production_gdp,0.03822878109919278
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2030,forestry_production_gdp,0.02962095638126406
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2035,forestry_production_gdp,0.02397797442598611
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2040,forestry_production_gdp,0.01974723709084844
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2045,forestry_production_gdp,0.01644559972978702
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2050,forestry_production_gdp,0.01394252855617565
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2055,forestry_production_gdp,0.01192549703481272
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2060,forestry_production_gdp,0.01030974795950275
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2020,forestry_production_gdp,0.04655351561589637
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2025,forestry_production_gdp,0.0387606917185451
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2030,forestry_production_gdp,0.03326565408369355
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2035,forestry_production_gdp,0.02873034070363747
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2040,forestry_production_gdp,0.02520808153608436
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2045,forestry_production_gdp,0.02216125451546764
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2050,forestry_production_gdp,0.01965392131945305
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2055,forestry_production_gdp,0.01746811481126453
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2060,forestry_production_gdp,0.01560110353646557
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2020,forestry_production_gdp,0.04655351561589637
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2025,forestry_production_gdp,0.0387606917185451
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2030,forestry_production_gdp,0.0331526555106184
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2035,forestry_production_gdp,0.028604190633001
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2040,forestry_production_gdp,0.02512983313668695
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2045,forestry_production_gdp,0.0221378042067049
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2050,forestry_production_gdp,0.01966428261850539
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2055,forestry_production_gdp,0.01750543019861589
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2060,forestry_production_gdp,0.01565275307036699
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2020,forestry_production_gdp,0.04655351561589637
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2025,forestry_production_gdp,0.0387606917185451
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2030,forestry_production_gdp,0.0331526555106184
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2035,forestry_production_gdp,0.02842776911786106
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2040,forestry_production_gdp,0.02476252522561945
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2045,forestry_production_gdp,0.02164406384590547
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2050,forestry_production_gdp,0.01908610267849391
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2055,forestry_production_gdp,0.01678409215716395
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2060,forestry_production_gdp,0.01483205882847698
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2020,forestry_production_gdp,0.04655351561589637
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2025,forestry_production_gdp,0.0387606917185451
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2030,forestry_production_gdp,0.03317138013326721
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2035,forestry_production_gdp,0.02843121287927796
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2040,forestry_production_gdp,0.0247589963696902
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2045,forestry_production_gdp,0.02163450451747172
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2050,forestry_production_gdp,0.01907212465914962
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2055,forestry_production_gdp,0.01676000697201934
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2060,forestry_production_gdp,0.0147975950239212
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2020,forestry_production_gdp,0.04655351561589637
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2025,forestry_production_gdp,0.0387606917185451
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2030,forestry_production_gdp,0.0302804983066369
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2035,forestry_production_gdp,0.02549831087613419
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2040,forestry_production_gdp,0.02179066921979462
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2045,forestry_production_gdp,0.01877953119066323
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2050,forestry_production_gdp,0.0163309998711796
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2055,forestry_production_gdp,0.01425470851197244
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2060,forestry_production_gdp,0.01250442944490104
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2020,forestry_production_gdp,0.0466987654929307
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2025,forestry_production_gdp,0.03916543160253619
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2030,forestry_production_gdp,0.03404158574989308
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2035,forestry_production_gdp,0.03110504335002138
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2040,forestry_production_gdp,0.02914792136658543
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2045,forestry_production_gdp,0.0273055311900456
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2050,forestry_production_gdp,0.02588695991982375
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2055,forestry_production_gdp,0.0245212442344558
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2060,forestry_production_gdp,0.02335560513507392
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2020,forestry_production_gdp,0.0466987654929307
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2025,forestry_production_gdp,0.03916543160253619
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2030,forestry_production_gdp,0.03404158574989308
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2035,forestry_production_gdp,0.03110492028816325
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2040,forestry_production_gdp,0.02914770005863078
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2045,forestry_production_gdp,0.02730467432284402
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2050,forestry_production_gdp,0.02588555040506281
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2055,forestry_production_gdp,0.02452126244849693
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2060,forestry_production_gdp,0.02335689397698195
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2020,forestry_production_gdp,0.0466987654929307
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2025,forestry_production_gdp,0.03920576799524153
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2030,forestry_production_gdp,0.03180140688268607
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2035,forestry_production_gdp,0.02772214115827695
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2040,forestry_production_gdp,0.02467976562334747
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2045,forestry_production_gdp,0.02196698623868597
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2050,forestry_production_gdp,0.01981711948965217
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2055,forestry_production_gdp,0.01808575759254679
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2060,forestry_production_gdp,0.01662092630896333
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2020,forestry_production_gdp,0.04640727614968507
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2025,forestry_production_gdp,0.03856401641172403
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2030,forestry_production_gdp,0.03022610140614893
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2035,forestry_production_gdp,0.02406256911635648
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2040,forestry_production_gdp,0.01936092048444386
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2045,forestry_production_gdp,0.01552201004670842
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2050,forestry_production_gdp,0.012728444683684
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2055,forestry_production_gdp,0.01045060199789471
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2060,forestry_production_gdp,0.00869271817823264
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2020,forestry_production_gdp,0.04640727614968507
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2025,forestry_production_gdp,0.03856401641172403
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2030,forestry_production_gdp,0.03033790251859329
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2035,forestry_production_gdp,0.02422806074269535
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2040,forestry_production_gdp,0.01963411863113284
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2045,forestry_production_gdp,0.01589734863363545
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2050,forestry_production_gdp,0.01313982782832167
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2055,forestry_production_gdp,0.01086789083518109
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2060,forestry_production_gdp,0.00910882655968789
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2020,forestry_production_gdp,0.04640727614968507
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2025,forestry_production_gdp,0.03856401641172403
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2030,forestry_production_gdp,0.03022610465488603
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2035,forestry_production_gdp,0.02406314200796065
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2040,forestry_production_gdp,0.0193618332331477
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2045,forestry_production_gdp,0.01552371022067328
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2050,forestry_production_gdp,0.01273063225181685
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2055,forestry_production_gdp,0.01045354059293868
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2060,forestry_production_gdp,0.00869614955448634
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2020,forestry_production_gdp,0.04618884984963967
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2025,forestry_production_gdp,0.04129150910987278
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2030,forestry_production_gdp,0.03686569880605369
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2035,forestry_production_gdp,0.03181786486686051
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2040,forestry_production_gdp,0.02741571050176232
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2045,forestry_production_gdp,0.02372910594866255
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2050,forestry_production_gdp,0.02075070253718824
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2055,forestry_production_gdp,0.01835224295317404
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2060,forestry_production_gdp,0.01641042728512157
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2020,forestry_production_gdp,0.04618884984963967
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2025,forestry_production_gdp,0.04129150910987278
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2030,forestry_production_gdp,0.0367576529672814
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2035,forestry_production_gdp,0.03156970996367224
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2040,forestry_production_gdp,0.02713656812847413
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2045,forestry_production_gdp,0.02348737713399288
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2050,forestry_production_gdp,0.02057052871759903
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2055,forestry_production_gdp,0.01820319585545523
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2060,forestry_production_gdp,0.01627981089501299
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2020,forestry_production_gdp,0.04618884984963967
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2025,forestry_production_gdp,0.04129150910987278
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2030,forestry_production_gdp,0.0367576529672814
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2035,forestry_production_gdp,0.03156970996367224
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2040,forestry_production_gdp,0.02713656812847413
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2045,forestry_production_gdp,0.02347402330253034
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2050,forestry_production_gdp,0.02052090244011529
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2055,forestry_production_gdp,0.0181512044191916
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2060,forestry_production_gdp,0.01622726449088402
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2020,forestry_production_gdp,0.04618884984963967
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2025,forestry_production_gdp,0.04129150910987278
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2030,forestry_production_gdp,0.03686899120993117
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2035,forestry_production_gdp,0.03199521109643837
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2040,forestry_production_gdp,0.02773621274194171
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2045,forestry_production_gdp,0.02405546435502166
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2050,forestry_production_gdp,0.02101715192760636
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2055,forestry_production_gdp,0.0185217309762988
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2060,forestry_production_gdp,0.01649368314394464
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2020,forestry_production_gdp,0.04618884984963967
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2025,forestry_production_gdp,0.04129150910987278
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2030,forestry_production_gdp,0.03672433259465178
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2035,forestry_production_gdp,0.03263291711405461
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2040,forestry_production_gdp,0.02933614775336053
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2045,forestry_production_gdp,0.02645441509824403
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2050,forestry_production_gdp,0.0239170044024229
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2055,forestry_production_gdp,0.02167370667672409
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2060,forestry_production_gdp,0.01972583197872369
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2020,forestry_production_gdp,0.04618884984963967
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2025,forestry_production_gdp,0.04129150910987278
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2030,forestry_production_gdp,0.03690385575366947
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2035,forestry_production_gdp,0.03304807606936499
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2040,forestry_production_gdp,0.02991266956338824
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2045,forestry_production_gdp,0.02708613638597884
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2050,forestry_production_gdp,0.02451844062535719
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2055,forestry_production_gdp,0.02222823921416415
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2060,forestry_production_gdp,0.02021199328582688
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2020,forestry_production_gdp,0.04618884984963967
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2025,forestry_production_gdp,0.04129150910987278
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2030,forestry_production_gdp,0.03676225731088679
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2035,forestry_production_gdp,0.03272286955996864
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2040,forestry_production_gdp,0.02950152796060251
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2045,forestry_production_gdp,0.02665808069785926
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2050,forestry_production_gdp,0.02412411127027764
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2055,forestry_production_gdp,0.02187600323736643
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2060,forestry_production_gdp,0.01988415156155024
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2020,forestry_production_gdp,0.04618884984963967
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2025,forestry_production_gdp,0.04129150910987278
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2030,forestry_production_gdp,0.03676225731088679
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2035,forestry_production_gdp,0.03273033547813966
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2040,forestry_production_gdp,0.02947364185861291
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2045,forestry_production_gdp,0.02662506987907657
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2050,forestry_production_gdp,0.02411063010305328
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2055,forestry_production_gdp,0.02186718280387014
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2060,forestry_production_gdp,0.0198759018746666
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2020,forestry_production_gdp,0.04618884984963967
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2025,forestry_production_gdp,0.04129150910987278
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2030,forestry_production_gdp,0.03676225731088679
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2035,forestry_production_gdp,0.03273033547813966
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2040,forestry_production_gdp,0.02947364185861291
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2045,forestry_production_gdp,0.02660706714397936
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2050,forestry_production_gdp,0.0240355892535369
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2055,forestry_production_gdp,0.02175115320075827
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2060,forestry_production_gdp,0.01973837011680668
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2020,forestry_production_gdp,0.04618884984963967
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2025,forestry_production_gdp,0.04129150910987278
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2030,forestry_production_gdp,0.03690894534527032
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2035,forestry_production_gdp,0.03321418419794976
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2040,forestry_production_gdp,0.03020750088955126
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2045,forestry_production_gdp,0.0273835643899211
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2050,forestry_production_gdp,0.02476554251411153
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2055,forestry_production_gdp,0.02235248022360863
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2060,forestry_production_gdp,0.02022902261536675
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2020,forestry_production_gdp,0.04618884984963967
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2025,forestry_production_gdp,0.04129150910987278
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2030,forestry_production_gdp,0.03757864598355351
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2035,forestry_production_gdp,0.03421829662683544
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2040,forestry_production_gdp,0.03232907192278369
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2045,forestry_production_gdp,0.03105153218679377
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2050,forestry_production_gdp,0.03007250703120365
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2055,forestry_production_gdp,0.02927880464903995
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2060,forestry_production_gdp,0.02870937229020133
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2020,forestry_production_gdp,0.04618884984963967
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2025,forestry_production_gdp,0.04129150910987278
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2030,forestry_production_gdp,0.03762889554998135
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2035,forestry_production_gdp,0.03428165012397045
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2040,forestry_production_gdp,0.03242281152149788
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2045,forestry_production_gdp,0.03120963965622775
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2050,forestry_production_gdp,0.030330181893478102
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2055,forestry_production_gdp,0.02965995303820958
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2060,forestry_production_gdp,0.02908477496819871
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2020,forestry_production_gdp,0.04618884984963967
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2025,forestry_production_gdp,0.04129150910987278
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2030,forestry_production_gdp,0.03762889554998135
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2035,forestry_production_gdp,0.03428165012397045
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2040,forestry_production_gdp,0.03242281152149788
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2045,forestry_production_gdp,0.03117939316593245
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2050,forestry_production_gdp,0.03016998890112139
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2055,forestry_production_gdp,0.02936727994635074
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2060,forestry_production_gdp,0.02874058096981518
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2020,forestry_production_gdp,0.04875701424341538
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2025,forestry_production_gdp,0.04402408118628535
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2030,forestry_production_gdp,0.03722057713284115
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2035,forestry_production_gdp,0.03289601174646402
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2040,forestry_production_gdp,0.02883875611621766
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2045,forestry_production_gdp,0.02533486172275163
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2050,forestry_production_gdp,0.02284352458159372
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2055,forestry_production_gdp,0.02135320756397388
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2060,forestry_production_gdp,0.01994161670239072
+WITCH 6.0,Low,SSP2,FALSE,World,2020,forestry_production_gdp,0.04875701424341538
+WITCH 6.0,Low,SSP2,FALSE,World,2025,forestry_production_gdp,0.04402408118628535
+WITCH 6.0,Low,SSP2,FALSE,World,2030,forestry_production_gdp,0.04145612838195172
+WITCH 6.0,Low,SSP2,FALSE,World,2035,forestry_production_gdp,0.0382298512522019
+WITCH 6.0,Low,SSP2,FALSE,World,2040,forestry_production_gdp,0.03496799893747992
+WITCH 6.0,Low,SSP2,FALSE,World,2045,forestry_production_gdp,0.03245173450281691
+WITCH 6.0,Low,SSP2,FALSE,World,2050,forestry_production_gdp,0.03039160580118026
+WITCH 6.0,Low,SSP2,FALSE,World,2055,forestry_production_gdp,0.02909401750024748
+WITCH 6.0,Low,SSP2,FALSE,World,2060,forestry_production_gdp,0.02741851317597121
+WITCH 6.0,Very Low,SSP2,FALSE,World,2020,forestry_production_gdp,0.04875701424341538
+WITCH 6.0,Very Low,SSP2,FALSE,World,2025,forestry_production_gdp,0.04402408118628535
+WITCH 6.0,Very Low,SSP2,FALSE,World,2030,forestry_production_gdp,0.03753963194802429
+WITCH 6.0,Very Low,SSP2,FALSE,World,2035,forestry_production_gdp,0.03375726542623905
+WITCH 6.0,Very Low,SSP2,FALSE,World,2040,forestry_production_gdp,0.0311034691200627
+WITCH 6.0,Very Low,SSP2,FALSE,World,2045,forestry_production_gdp,0.02809783745100736
+WITCH 6.0,Very Low,SSP2,FALSE,World,2050,forestry_production_gdp,0.02584785695047222
+WITCH 6.0,Very Low,SSP2,FALSE,World,2055,forestry_production_gdp,0.02414523457743839
+WITCH 6.0,Very Low,SSP2,FALSE,World,2060,forestry_production_gdp,0.02240002192026412
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2020,forestry_production_gdp,0.04875701424341538
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2025,forestry_production_gdp,0.04402408118628535
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2030,forestry_production_gdp,0.04133833748712918
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2035,forestry_production_gdp,0.03813059568828361
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2040,forestry_production_gdp,0.03509868022585768
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2045,forestry_production_gdp,0.03162216889933399
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2050,forestry_production_gdp,0.02908728844146465
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2055,forestry_production_gdp,0.02708544907085532
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2060,forestry_production_gdp,0.02539721922525044
+WITCH 6.0,Medium,SSP2,FALSE,World,2020,forestry_production_gdp,0.04875701424341538
+WITCH 6.0,Medium,SSP2,FALSE,World,2025,forestry_production_gdp,0.04402408118628535
+WITCH 6.0,Medium,SSP2,FALSE,World,2030,forestry_production_gdp,0.04133326215127379
+WITCH 6.0,Medium,SSP2,FALSE,World,2035,forestry_production_gdp,0.03813615547692924
+WITCH 6.0,Medium,SSP2,FALSE,World,2040,forestry_production_gdp,0.03509978452530506
+WITCH 6.0,Medium,SSP2,FALSE,World,2045,forestry_production_gdp,0.03162797821208155
+WITCH 6.0,Medium,SSP2,FALSE,World,2050,forestry_production_gdp,0.02895399219802992
+WITCH 6.0,Medium,SSP2,FALSE,World,2055,forestry_production_gdp,0.0267752011480591
+WITCH 6.0,Medium,SSP2,FALSE,World,2060,forestry_production_gdp,0.02486584185440821
+WITCH 6.0,High,SSP5,FALSE,World,2020,forestry_production_gdp,0.04875701424341538
+WITCH 6.0,High,SSP5,FALSE,World,2025,forestry_production_gdp,0.04402408118628535
+WITCH 6.0,High,SSP5,FALSE,World,2030,forestry_production_gdp,0.03790288686866929
+WITCH 6.0,High,SSP5,FALSE,World,2035,forestry_production_gdp,0.03304885553794387
+WITCH 6.0,High,SSP5,FALSE,World,2040,forestry_production_gdp,0.02822860961933935
+WITCH 6.0,High,SSP5,FALSE,World,2045,forestry_production_gdp,0.02390194462224396
+WITCH 6.0,High,SSP5,FALSE,World,2050,forestry_production_gdp,0.020701370125145
+WITCH 6.0,High,SSP5,FALSE,World,2055,forestry_production_gdp,0.01809990954914597
+WITCH 6.0,High,SSP5,FALSE,World,2060,forestry_production_gdp,0.0159312151490946
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2020,forestry_production_gdp,0.04875701424341538
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2025,forestry_production_gdp,0.04402408118628535
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2030,forestry_production_gdp,0.03790288686866929
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2035,forestry_production_gdp,0.03304885553794387
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2040,forestry_production_gdp,0.02822860961933935
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2045,forestry_production_gdp,0.02390194462224396
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2050,forestry_production_gdp,0.020701370125145
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2055,forestry_production_gdp,0.01809990954914597
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2060,forestry_production_gdp,0.0159312151490946

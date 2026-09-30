@@ -9,7 +9,7 @@
 ##                                           year columns 1900–2016 (values in kt)
 ##   Inputs/Dict_Countries.xlsx            — sheet "MISO_Agg": Country → Region
 ##
-## Outputs (Parameters/MISO/):
+## Outputs (Parameters/MISO-Stock/):
 ##   MISO_stock_regional.csv        — Metal ores + Non-metallic minerals only
 ##   MISO_flows_regional.csv        — Metal ores + Non-metallic minerals only
 ##   MISO_outflows_regional.csv     — Metal ores + Non-metallic minerals only
@@ -143,22 +143,22 @@ head(stock_agg)
 
 cat("\nSTEP 6: Save reference files (all materials) and filter to in-scope\n")
 
-write_csv(stock_agg, "Parameters/MISO/MISO_stock_regional_all.csv")
-write_csv(flows_agg, "Parameters/MISO/MISO_flows_regional_all.csv")
-write_csv(outflows_agg, "Parameters/MISO/MISO_outflows_regional_all.csv")
+write_csv(stock_agg, "Parameters/MISO-Stock/MISO_stock_regional_all.csv")
+write_csv(flows_agg, "Parameters/MISO-Stock/MISO_flows_regional_all.csv")
+write_csv(outflows_agg, "Parameters/MISO-Stock/MISO_outflows_regional_all.csv")
 cat("  Saved all-material reference files (biomass + fossil_fuels included)\n")
 
 stock_agg <- stock_agg %>% filter(material %in% IN_SCOPE_MATERIALS)
 flows_agg <- flows_agg %>% filter(material %in% IN_SCOPE_MATERIALS)
 outflows_agg <- outflows_agg %>% filter(material %in% IN_SCOPE_MATERIALS)
 
-write_csv(stock_agg, "Parameters/MISO/MISO_stock_regional.csv")
-write_csv(flows_agg, "Parameters/MISO/MISO_flows_regional.csv")
-write_csv(outflows_agg, "Parameters/MISO/MISO_outflows_regional.csv")
+write_csv(stock_agg, "Parameters/MISO-Stock/MISO_stock_regional.csv")
+write_csv(flows_agg, "Parameters/MISO-Stock/MISO_flows_regional.csv")
+write_csv(outflows_agg, "Parameters/MISO-Stock/MISO_outflows_regional.csv")
 
-cat("  Saved: Parameters/MISO/MISO_stock_regional.csv    (", nrow(stock_agg), "rows )\n")
-cat("  Saved: Parameters/MISO/MISO_flows_regional.csv    (", nrow(flows_agg), "rows )\n")
-cat("  Saved: Parameters/MISO/MISO_outflows_regional.csv (", nrow(outflows_agg), "rows )\n")
+cat("  Saved: Parameters/MISO-Stock/MISO_stock_regional.csv    (", nrow(stock_agg), "rows )\n")
+cat("  Saved: Parameters/MISO-Stock/MISO_flows_regional.csv    (", nrow(flows_agg), "rows )\n")
+cat("  Saved: Parameters/MISO-Stock/MISO_outflows_regional.csv (", nrow(outflows_agg), "rows )\n")
 
 
 # Step 7: Validate global stock 2016 — must be 1093 Gt -------------------
@@ -166,7 +166,7 @@ cat("  Saved: Parameters/MISO/MISO_outflows_regional.csv (", nrow(outflows_agg),
 cat("\nSTEP 7: Validate global in-use stock for 2016 (all 4 materials)\n")
 
 # Use the all-material file so biomass and fossil_fuels are included
-stock_all <- read_csv("Parameters/MISO/MISO_stock_regional_all.csv", show_col_types = FALSE)
+stock_all <- read_csv("Parameters/MISO-Stock/MISO_stock_regional_all.csv", show_col_types = FALSE)
 
 global_2016_Mt <- stock_all %>%
   filter(year == 2016) %>%

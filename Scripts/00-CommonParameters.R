@@ -19,7 +19,7 @@
 # deterministic DSM forecast scripts) and every projected figure runs.
 # Change this ONE number to extend/shorten the horizon everywhere downstream.
 # BASE_YEAR and TARGET_YEAR (intensity convergence, held at 2050 as a modelling
-# choice independent of the horizon) live in Scripts/model_parameters.R.
+# choice independent of the horizon) live in Scripts/04-Simulation/00-Parameters.R.
 FORECAST_END <- 2060L
 
 # ── Regions (Analysis_group, 8 levels) ────────────────────────────────────────
@@ -112,6 +112,13 @@ PALETTE_SUBENDUSE <- c(
 )
 
 SSP_COLORS <- c("SSP1" = "#2d7d46", "SSP2" = "#8db84e", "SSP3" = "#e8a628", "SSP4" = "#d4622a", "SSP5" = "#c0392b")
+
+# ── SSPs sampled by the model (MC, deterministic runs, sampling figures) ──────
+# SSP4 EXCLUDED: ScenarioMIP has a single IIASA run for SSP4 (one model, one
+# scenario) -> no valid min-max intensity-ratio range. To re-include it, add
+# "SSP4" back here; its flow bounds then fall back to SSP2's (04_summary_ratio.R
+# Fix 2). Raw ScenarioMIP exploration figures (03-SSP Trajectories) still show SSP4.
+SSP_SAMPLED <- c("SSP1", "SSP2", "SSP3", "SSP5")
 
 # ── Decoupling classification (4 levels) ──────────────────────────────────────
 # Used by 19-Decoupling.R, 19b-Decoupling-ScenarioDiscovery.R and Figure 3.

@@ -1,0 +1,74 @@
+metric,unit
+gdp_pc,USD_2010/capita
+pe_gdp,MJ/USD
+pe_biomass_gdp,MJ/USD
+pe_coal_gdp,MJ/USD
+pe_fossil_gdp,MJ/USD
+pe_gas_gdp,MJ/USD
+pe_oil_gdp,MJ/USD
+pe_other_gdp,MJ/USD
+pe_geothermal_gdp,MJ/USD
+pe_hydro_gdp,MJ/USD
+pe_nuclear_gdp,MJ/USD
+pe_ocean_gdp,MJ/USD
+pe_nonbio_renew_gdp,MJ/USD
+cap_biomass_gdp,W/USD
+cap_coal_gdp,W/USD
+cap_fossil_gdp,W/USD
+cap_gas_gdp,W/USD
+cap_geothermal_gdp,W/USD
+cap_hydro_gdp,W/USD
+cap_hydrogen_gdp,W/USD
+cap_nuclear_gdp,W/USD
+cap_oil_gdp,W/USD
+cap_other_gdp,W/USD
+cap_solar_csp_gdp,W/USD
+cap_solar_pv_gdp,W/USD
+cap_wind_offshore_gdp,W/USD
+cap_wind_onshore_gdp,W/USD
+food_crops_pc,kcal/capita/day
+food_livestock_pc,kcal/capita/day
+food_waste_pc,kcal/capita/day
+forestry_production_total,million m³/yr
+forestry_production_gdp,L/USD
+forestry_production_pc,m³/capita
+pe_fossil_share,fraction of Primary Energy
+pe_biomass_share,fraction of Primary Energy
+agri_prod_gdp,million t DM per billion USD_2010
+agri_prod_pc,t DM/capita
+agri_crops_gdp,kg/USD
+agri_crops_pc,t DM/capita
+agri_livestock_gdp,kg/USD
+agri_livestock_pc,t DM/capita
+agri_residues_gdp,million t DM per billion USD_2010
+agri_residues_pc,t DM/capita
+steel_gdp,kg/USD
+steel_pc,t/capita
+cement_gdp,kg/USD
+cement_pc,t/capita
+aluminum_gdp,kg/USD
+aluminum_pc,t/capita
+floor_rescom_gdp,billion m2 per billion USD_2010
+floor_rescom_pc,m2/capita
+floor_res_gdp,m2/USD
+floor_res_pc,m2/capita
+floor_com_gdp,m2/USD
+floor_com_pc,m2/capita
+fossil_extraction_total,EJ/yr
+fossil_extraction_gdp,EJ per billion USD_2010
+coal_extraction_total,EJ/yr
+coal_extraction_gdp,MJ/USD
+coal_extraction_pc,TJ/capita
+gas_extraction_total,EJ/yr
+gas_extraction_gdp,MJ/USD
+gas_extraction_pc,TJ/capita
+oil_extraction_total,EJ/yr
+oil_extraction_gdp,MJ/USD
+oil_extraction_pc,TJ/capita
+steel_total,Mt
+aluminum_total,Mt
+cement_total,Mt
+agri_crops_total,million t DM
+agri_livestock_total,million t DM
+floor_com_total,billion m2
+floor_res_total,billion m2

@@ -14,7 +14,7 @@
 ##
 ## Inputs:
 ##   Parameters/Intermediate/stock_trajectory_1970_2024.csv  -- from Script 02b
-##   Parameters/gdp_region.csv  -- Region x year x GDP_2015USD
+##   Parameters/Worldbank-GDP/gdp_region.csv  -- Region x year x GDP_2015USD
 ##
 ## Outputs:
 ##   Figures/Stocks/stock_intensity_global_region.png
@@ -50,7 +50,7 @@ cat("  Regions:  ", paste(sort(unique(stock_traj$Region)), collapse = ", "), "\n
 
 cat("\nSTEP 2: Load GDP and add material hierarchy\n")
 
-gdp <- read_csv("Parameters/gdp_region.csv", show_col_types = FALSE)
+gdp <- read_csv("Parameters/Worldbank-GDP/gdp_region.csv", show_col_types = FALSE)
 cat("  GDP units: constant 2015 USD (GDP_2015USD)\n")
 cat("  GDP rows:", nrow(gdp), "| years:", min(gdp$year), "-", max(gdp$year), "\n")
 

@@ -206,7 +206,7 @@ for (fc in FLOW_CODES) {
     summarise(value_Mt = sum(value_Mt, na.rm = TRUE), .groups = "drop") %>%
     rename(!!out_col := value_Mt)
 
-  out_path <- paste0("Parameters/materials_region_", fc, ".csv")
+  out_path <- paste0("Parameters/UNEP-Materials/materials_region_", fc, ".csv")
   write_csv(df_region, out_path)
   cat("  Saved:", out_path, "(", nrow(df_region), "rows,", length(unique(df_region$Region)), "regions )\n")
 
@@ -216,7 +216,7 @@ for (fc in FLOW_CODES) {
     dplyr::select(ISO3, year, material_category, value_Mt) %>%
     rename(!!out_col := value_Mt)
 
-  out_path <- paste0("Parameters/materials_country_", fc, ".csv")
+  out_path <- paste0("Parameters/UNEP-Materials/materials_country_", fc, ".csv")
   write_csv(df_country, out_path)
   cat("  Saved:", out_path, "(", nrow(df_country), "rows,", length(unique(df_country$ISO3)), "countries )\n")
 
@@ -226,7 +226,7 @@ for (fc in FLOW_CODES) {
     summarise(value_Mt = sum(value_Mt, na.rm = TRUE), .groups = "drop") %>%
     rename(!!out_col := value_Mt)
 
-  out_path <- paste0("Parameters/materials_world_", fc, ".csv")
+  out_path <- paste0("Parameters/UNEP-Materials/materials_world_", fc, ".csv")
   write_csv(df_world, out_path)
   cat("  Saved:", out_path, "(", nrow(df_world), "rows )\n")
 }

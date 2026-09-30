@@ -23,9 +23,9 @@
 ##
 ## Input:
 ##   Parameters/Intermediate/UNEP_flows_subenduse.csv   -- from script 01b
-##   Parameters/materials_region_DMC.csv                -- fe_share
-##   Parameters/MISO/metal_grade_ore.csv                -- ore -> metal (g)
-##   Parameters/MISO/MISO_flows_regional.csv            -- MISO inflows
+##   Parameters/UNEP-Materials/materials_region_DMC.csv                -- fe_share
+##   Parameters/MISO-Stock/metal_grade_ore.csv                -- ore -> metal (g)
+##   Parameters/MISO-Stock/MISO_flows_regional.csv            -- MISO inflows
 ##
 ## Output:
 ##   Parameters/Intermediate/miso_unep_scope_factor_A.csv
@@ -47,7 +47,7 @@ cat("=== Scope factor A: MISO/UNEP metal inflow ratio ===\n\n")
 # (duplicates script 03 Step 1 Fe/NonFe split + g conversion; keep in sync)
 
 unep_sub <- read.csv("Parameters/Intermediate/UNEP_flows_subenduse.csv")
-unep_raw <- read_csv("Parameters/materials_region_DMC.csv", show_col_types = FALSE)
+unep_raw <- read_csv("Parameters/UNEP-Materials/materials_region_DMC.csv", show_col_types = FALSE)
 
 fe_share_rt <- unep_raw %>%
   filter(material_category %in% c("Ferrous ores", "Non-ferrous ores")) %>%
@@ -64,7 +64,7 @@ fe_share_rt <- unep_raw %>%
     )
   )
 
-grade_raw <- read_csv("Parameters/MISO/metal_grade_ore.csv", show_col_types = FALSE)
+grade_raw <- read_csv("Parameters/MISO-Stock/metal_grade_ore.csv", show_col_types = FALSE)
 grade_wide <- grade_raw %>%
   pivot_wider(names_from = group, values_from = g) %>%
   rename(g_Fe = Ferrous, g_NonFe = `Non-ferrous`)
@@ -98,7 +98,7 @@ cat("STEP 1: UNEP metal inflow (metal mass):", nrow(unep_metal_super), "rows\n")
 # NOTE: schema assumed as MISO_stock_regional.csv (end_use labels = super_category
 # labels; value column value_Mt). Adjust renames if the flows file differs.
 
-miso_flows <- read_csv("Parameters/MISO/MISO_flows_regional.csv", show_col_types = FALSE)
+miso_flows <- read_csv("Parameters/MISO-Stock/MISO_flows_regional.csv", show_col_types = FALSE)
 
 miso_inflow_super <- miso_flows %>%
   filter(material == "Metal ores", year >= 1970, year <= MISO_LAST_YEAR) %>%

@@ -24,7 +24,7 @@
 ##   Parameters/Intermediate/UNEP_flows_subenduse.parquet
 ##     columns: year, Region, material, super_category, sub_use,
 ##              inflow_share, flow_Mt
-##   Figures/MISO/:
+##   Figures/Inputs/MISO/:
 ##     subenduse_shares_[category].png  — time-varying inflow share per super-cat
 ##   Console: inversion vs ΔS vs S·τ⁻¹ diagnostic table; CV sensitivity table
 ## =============================================================================
@@ -39,7 +39,7 @@ CV_SENS <- c(0.2, 0.3, 0.5) # sensitivity sweep
 STABLE_START <- 1990 # stable-period for mean share summary
 STABLE_END <- 2010
 SHARE_TOL <- 0.001
-FIG_DIR <- "Figures/MISO"
+FIG_DIR <- "Figures/Inputs/MISO"
 
 # Sub-use mean lifetimes (MISO arithmetic mean, yr) --------
 MEAN_LIFE <- c(

@@ -145,7 +145,7 @@ save_pop_outputs <- function(pop_df, label) {
     group_by(Region, year) %>%
     summarise(population = sum(population, na.rm = TRUE), .groups = "drop")
 
-  path <- paste0("Parameters/population_region_", label, ".csv")
+  path <- paste0("Parameters/UN-Population/population_region_", label, ".csv")
   write_csv(pop_region, path)
   cat("  Saved:", path, "(", nrow(pop_region), "rows,", length(unique(pop_region$Region)), "regions )\n")
 
@@ -156,14 +156,14 @@ save_pop_outputs <- function(pop_df, label) {
     group_by(year) %>%
     summarise(population = sum(population, na.rm = TRUE), .groups = "drop")
 
-  path <- paste0("Parameters/population_world_", label, ".csv")
+  path <- paste0("Parameters/UN-Population/population_world_", label, ".csv")
   write_csv(pop_world, path)
   cat("  Saved:", path, "(", nrow(pop_world), "rows )\n")
 
   # ── Selected country data ───────────────────────────────────────────────────
   pop_country <- pop_df %>% filter(ISO3 %in% COUNTRY_ISO3) %>% dplyr::select(ISO3, year, population)
 
-  path <- paste0("Parameters/population_country_", label, ".csv")
+  path <- paste0("Parameters/UN-Population/population_country_", label, ".csv")
   write_csv(pop_country, path)
   cat("  Saved:", path, "(", nrow(pop_country), "rows,", length(unique(pop_country$ISO3)), "countries )\n")
 

@@ -1,0 +1,586 @@
+model,family,ssp,marker,region,year,metric,value
+AIM 3.0,Medium,SSP1,FALSE,World,2020,agri_livestock_total,303.8158
+AIM 3.0,Medium,SSP1,FALSE,World,2025,agri_livestock_total,321.6993
+AIM 3.0,Medium,SSP1,FALSE,World,2030,agri_livestock_total,309.2465
+AIM 3.0,Medium,SSP1,FALSE,World,2035,agri_livestock_total,298.7784
+AIM 3.0,Medium,SSP1,FALSE,World,2040,agri_livestock_total,292.2149
+AIM 3.0,Medium,SSP1,FALSE,World,2045,agri_livestock_total,288.8623
+AIM 3.0,Medium,SSP1,FALSE,World,2050,agri_livestock_total,287.9242
+AIM 3.0,Medium,SSP1,FALSE,World,2055,agri_livestock_total,287.8596
+AIM 3.0,Medium,SSP1,FALSE,World,2060,agri_livestock_total,287.8539
+AIM 3.0,Very Low,SSP1,FALSE,World,2020,agri_livestock_total,303.8158
+AIM 3.0,Very Low,SSP1,FALSE,World,2025,agri_livestock_total,321.8268
+AIM 3.0,Very Low,SSP1,FALSE,World,2030,agri_livestock_total,307.3246
+AIM 3.0,Very Low,SSP1,FALSE,World,2035,agri_livestock_total,288.8074
+AIM 3.0,Very Low,SSP1,FALSE,World,2040,agri_livestock_total,277.575
+AIM 3.0,Very Low,SSP1,FALSE,World,2045,agri_livestock_total,270.6175
+AIM 3.0,Very Low,SSP1,FALSE,World,2050,agri_livestock_total,268.7518
+AIM 3.0,Very Low,SSP1,FALSE,World,2055,agri_livestock_total,265.4543
+AIM 3.0,Very Low,SSP1,FALSE,World,2060,agri_livestock_total,262.5903
+AIM 3.0,Low,SSP2,FALSE,World,2020,agri_livestock_total,303.7954
+AIM 3.0,Low,SSP2,FALSE,World,2025,agri_livestock_total,321.7975
+AIM 3.0,Low,SSP2,FALSE,World,2030,agri_livestock_total,331.1589
+AIM 3.0,Low,SSP2,FALSE,World,2035,agri_livestock_total,343.7439
+AIM 3.0,Low,SSP2,FALSE,World,2040,agri_livestock_total,364.2985
+AIM 3.0,Low,SSP2,FALSE,World,2045,agri_livestock_total,376.1971
+AIM 3.0,Low,SSP2,FALSE,World,2050,agri_livestock_total,387.3983
+AIM 3.0,Low,SSP2,FALSE,World,2055,agri_livestock_total,394.3365
+AIM 3.0,Low,SSP2,FALSE,World,2060,agri_livestock_total,406.6202
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2020,agri_livestock_total,303.7959
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2025,agri_livestock_total,321.7977
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2030,agri_livestock_total,339.4465
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2035,agri_livestock_total,357.1731
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2040,agri_livestock_total,362.4397
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2045,agri_livestock_total,375.0234
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2050,agri_livestock_total,387.4872
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2055,agri_livestock_total,397.1405
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2060,agri_livestock_total,406.1928
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2020,agri_livestock_total,303.7963
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2025,agri_livestock_total,321.79880000000003
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2030,agri_livestock_total,339.9133
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2035,agri_livestock_total,357.4572
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2040,agri_livestock_total,374.7148
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2045,agri_livestock_total,391.4739
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2050,agri_livestock_total,407.3645
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2055,agri_livestock_total,421.8752
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2060,agri_livestock_total,429.8684
+AIM 3.0,Medium,SSP2,FALSE,World,2020,agri_livestock_total,303.7959
+AIM 3.0,Medium,SSP2,FALSE,World,2025,agri_livestock_total,321.7971
+AIM 3.0,Medium,SSP2,FALSE,World,2030,agri_livestock_total,339.5844
+AIM 3.0,Medium,SSP2,FALSE,World,2035,agri_livestock_total,357.2673
+AIM 3.0,Medium,SSP2,FALSE,World,2040,agri_livestock_total,374.4882
+AIM 3.0,Medium,SSP2,FALSE,World,2045,agri_livestock_total,391.2328
+AIM 3.0,Medium,SSP2,FALSE,World,2050,agri_livestock_total,407.1219
+AIM 3.0,Medium,SSP2,FALSE,World,2055,agri_livestock_total,421.6606
+AIM 3.0,Medium,SSP2,FALSE,World,2060,agri_livestock_total,435.3489
+AIM 3.0,Very Low,SSP2,FALSE,World,2020,agri_livestock_total,303.796
+AIM 3.0,Very Low,SSP2,FALSE,World,2025,agri_livestock_total,321.7981
+AIM 3.0,Very Low,SSP2,FALSE,World,2030,agri_livestock_total,292.1473
+AIM 3.0,Very Low,SSP2,FALSE,World,2035,agri_livestock_total,270.9445
+AIM 3.0,Very Low,SSP2,FALSE,World,2040,agri_livestock_total,257.0842
+AIM 3.0,Very Low,SSP2,FALSE,World,2045,agri_livestock_total,248.8567
+AIM 3.0,Very Low,SSP2,FALSE,World,2050,agri_livestock_total,242.2342
+AIM 3.0,Very Low,SSP2,FALSE,World,2055,agri_livestock_total,237.2376
+AIM 3.0,Very Low,SSP2,FALSE,World,2060,agri_livestock_total,230.6876
+AIM 3.0,High,SSP3,FALSE,World,2020,agri_livestock_total,303.7808
+AIM 3.0,High,SSP3,FALSE,World,2025,agri_livestock_total,321.6435
+AIM 3.0,High,SSP3,FALSE,World,2030,agri_livestock_total,342.1994
+AIM 3.0,High,SSP3,FALSE,World,2035,agri_livestock_total,361.71
+AIM 3.0,High,SSP3,FALSE,World,2040,agri_livestock_total,379.8452
+AIM 3.0,High,SSP3,FALSE,World,2045,agri_livestock_total,396.2589
+AIM 3.0,High,SSP3,FALSE,World,2050,agri_livestock_total,411.7429
+AIM 3.0,High,SSP3,FALSE,World,2055,agri_livestock_total,426.2493
+AIM 3.0,High,SSP3,FALSE,World,2060,agri_livestock_total,440.66
+AIM 3.0,High,SSP5,FALSE,World,2020,agri_livestock_total,303.8156
+AIM 3.0,High,SSP5,FALSE,World,2025,agri_livestock_total,321.6994
+AIM 3.0,High,SSP5,FALSE,World,2030,agri_livestock_total,340.6476
+AIM 3.0,High,SSP5,FALSE,World,2035,agri_livestock_total,360.8084
+AIM 3.0,High,SSP5,FALSE,World,2040,agri_livestock_total,382.1308
+AIM 3.0,High,SSP5,FALSE,World,2045,agri_livestock_total,403.6137
+AIM 3.0,High,SSP5,FALSE,World,2050,agri_livestock_total,423.0942
+AIM 3.0,High,SSP5,FALSE,World,2055,agri_livestock_total,439.7771
+AIM 3.0,High,SSP5,FALSE,World,2060,agri_livestock_total,454.2961
+GCAM 8s,Low,SSP2,FALSE,World,2020,agri_livestock_total,331.651886295882
+GCAM 8s,Low,SSP2,FALSE,World,2025,agri_livestock_total,351.0410488123
+GCAM 8s,Low,SSP2,FALSE,World,2030,agri_livestock_total,362.274796759817
+GCAM 8s,Low,SSP2,FALSE,World,2035,agri_livestock_total,376.553716933825
+GCAM 8s,Low,SSP2,FALSE,World,2040,agri_livestock_total,386.693164518324
+GCAM 8s,Low,SSP2,FALSE,World,2045,agri_livestock_total,397.542114218197
+GCAM 8s,Low,SSP2,FALSE,World,2050,agri_livestock_total,408.492223300293
+GCAM 8s,Low,SSP2,FALSE,World,2055,agri_livestock_total,416.614073090096
+GCAM 8s,Low,SSP2,FALSE,World,2060,agri_livestock_total,423.151148225248
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2020,agri_livestock_total,331.651886295882
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2025,agri_livestock_total,351.091368632455
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2030,agri_livestock_total,363.922296005967
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2035,agri_livestock_total,377.923393064433
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2040,agri_livestock_total,384.965890617376
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2045,agri_livestock_total,394.567471975145
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2050,agri_livestock_total,403.12399585308
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2055,agri_livestock_total,409.638448719509
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2060,agri_livestock_total,414.774951983579
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2020,agri_livestock_total,331.651886295882
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2025,agri_livestock_total,351.042841239993
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2030,agri_livestock_total,369.2455318865
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2035,agri_livestock_total,385.575874277339
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2040,agri_livestock_total,399.938038463709
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2045,agri_livestock_total,412.824001888244
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2050,agri_livestock_total,424.441554264969
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2055,agri_livestock_total,434.812369155306
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2060,agri_livestock_total,444.123735873091
+GCAM 8s,Medium,SSP2,FALSE,World,2020,agri_livestock_total,331.651886295882
+GCAM 8s,Medium,SSP2,FALSE,World,2025,agri_livestock_total,351.042968593666
+GCAM 8s,Medium,SSP2,FALSE,World,2030,agri_livestock_total,369.245620557387
+GCAM 8s,Medium,SSP2,FALSE,World,2035,agri_livestock_total,385.576493390708
+GCAM 8s,Medium,SSP2,FALSE,World,2040,agri_livestock_total,399.935402654945
+GCAM 8s,Medium,SSP2,FALSE,World,2045,agri_livestock_total,412.747102470974
+GCAM 8s,Medium,SSP2,FALSE,World,2050,agri_livestock_total,424.116375105446
+GCAM 8s,Medium,SSP2,FALSE,World,2055,agri_livestock_total,434.127422703961
+GCAM 8s,Medium,SSP2,FALSE,World,2060,agri_livestock_total,442.650794892142
+GCAM 8s,High,SSP3,TRUE,World,2020,agri_livestock_total,331.651886295882
+GCAM 8s,High,SSP3,TRUE,World,2025,agri_livestock_total,351.409522486908
+GCAM 8s,High,SSP3,TRUE,World,2030,agri_livestock_total,370.574102123438
+GCAM 8s,High,SSP3,TRUE,World,2035,agri_livestock_total,387.776271214356
+GCAM 8s,High,SSP3,TRUE,World,2040,agri_livestock_total,402.78568921462
+GCAM 8s,High,SSP3,TRUE,World,2045,agri_livestock_total,415.449634815574
+GCAM 8s,High,SSP3,TRUE,World,2050,agri_livestock_total,426.620993397654
+GCAM 8s,High,SSP3,TRUE,World,2055,agri_livestock_total,436.932896933224
+GCAM 8s,High,SSP3,TRUE,World,2060,agri_livestock_total,446.899856379325
+GCAM 8s,High,SSP5,FALSE,World,2020,agri_livestock_total,331.651886295882
+GCAM 8s,High,SSP5,FALSE,World,2025,agri_livestock_total,351.415309469247
+GCAM 8s,High,SSP5,FALSE,World,2030,agri_livestock_total,369.497951570504
+GCAM 8s,High,SSP5,FALSE,World,2035,agri_livestock_total,387.197153286869
+GCAM 8s,High,SSP5,FALSE,World,2040,agri_livestock_total,404.135053784683
+GCAM 8s,High,SSP5,FALSE,World,2045,agri_livestock_total,419.807921599672
+GCAM 8s,High,SSP5,FALSE,World,2050,agri_livestock_total,432.78155601393
+GCAM 8s,High,SSP5,FALSE,World,2055,agri_livestock_total,443.17081615197
+GCAM 8s,High,SSP5,FALSE,World,2060,agri_livestock_total,450.860902739066
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2020,agri_livestock_total,331.651886295882
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2025,agri_livestock_total,351.415309469247
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2030,agri_livestock_total,369.497951570504
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2035,agri_livestock_total,387.197153286869
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2040,agri_livestock_total,404.135053784683
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2045,agri_livestock_total,419.807921599672
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2050,agri_livestock_total,432.78155601393
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2055,agri_livestock_total,443.17081615197
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2060,agri_livestock_total,450.860902739066
+IMAGE 3.4,Low,SSP1,FALSE,World,2020,agri_livestock_total,329.98684375
+IMAGE 3.4,Low,SSP1,FALSE,World,2025,agri_livestock_total,346.8105
+IMAGE 3.4,Low,SSP1,FALSE,World,2030,agri_livestock_total,355.093875
+IMAGE 3.4,Low,SSP1,FALSE,World,2035,agri_livestock_total,362.10665625
+IMAGE 3.4,Low,SSP1,FALSE,World,2040,agri_livestock_total,369.05403125
+IMAGE 3.4,Low,SSP1,FALSE,World,2045,agri_livestock_total,375.1568125
+IMAGE 3.4,Low,SSP1,FALSE,World,2050,agri_livestock_total,380.49584375
+IMAGE 3.4,Low,SSP1,FALSE,World,2060,agri_livestock_total,391.3266875
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2020,agri_livestock_total,329.98684375
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2025,agri_livestock_total,346.8105
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2030,agri_livestock_total,355.17865625
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2035,agri_livestock_total,360.26559375
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2040,agri_livestock_total,367.2668125
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2045,agri_livestock_total,373.8409375
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2050,agri_livestock_total,372.47025
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2060,agri_livestock_total,376.88603125
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2020,agri_livestock_total,329.98684375
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2025,agri_livestock_total,346.8105
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2030,agri_livestock_total,356.6339375
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2035,agri_livestock_total,364.48815625
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2040,agri_livestock_total,372.35384375
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2045,agri_livestock_total,379.5651875
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2050,agri_livestock_total,384.417
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2060,agri_livestock_total,397.27803125
+IMAGE 3.4,Medium,SSP1,FALSE,World,2020,agri_livestock_total,329.98684375
+IMAGE 3.4,Medium,SSP1,FALSE,World,2025,agri_livestock_total,346.8105
+IMAGE 3.4,Medium,SSP1,FALSE,World,2030,agri_livestock_total,356.58553125
+IMAGE 3.4,Medium,SSP1,FALSE,World,2035,agri_livestock_total,365.67978125
+IMAGE 3.4,Medium,SSP1,FALSE,World,2040,agri_livestock_total,374.5644375
+IMAGE 3.4,Medium,SSP1,FALSE,World,2045,agri_livestock_total,383.16909375
+IMAGE 3.4,Medium,SSP1,FALSE,World,2050,agri_livestock_total,390.24575
+IMAGE 3.4,Medium,SSP1,FALSE,World,2060,agri_livestock_total,407.12146875
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2020,agri_livestock_total,329.98684375
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2025,agri_livestock_total,346.8105
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2030,agri_livestock_total,334.62625
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2035,agri_livestock_total,324.23203125
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2040,agri_livestock_total,314.82328125
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2045,agri_livestock_total,307.85134375
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2050,agri_livestock_total,303.4811875
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2060,agri_livestock_total,299.5714375
+IMAGE 3.4,Low,SSP2,FALSE,World,2020,agri_livestock_total,329.98684375
+IMAGE 3.4,Low,SSP2,FALSE,World,2025,agri_livestock_total,347.65078125
+IMAGE 3.4,Low,SSP2,FALSE,World,2030,agri_livestock_total,362.15271875
+IMAGE 3.4,Low,SSP2,FALSE,World,2035,agri_livestock_total,377.61153125
+IMAGE 3.4,Low,SSP2,FALSE,World,2040,agri_livestock_total,391.45790625
+IMAGE 3.4,Low,SSP2,FALSE,World,2045,agri_livestock_total,404.67671875
+IMAGE 3.4,Low,SSP2,FALSE,World,2050,agri_livestock_total,416.83734375
+IMAGE 3.4,Low,SSP2,FALSE,World,2060,agri_livestock_total,433.32303125
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2020,agri_livestock_total,329.98684375
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2025,agri_livestock_total,347.65078125
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2030,agri_livestock_total,364.9413125
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2035,agri_livestock_total,376.51625
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2040,agri_livestock_total,389.3525625
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2045,agri_livestock_total,403.2546875
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2050,agri_livestock_total,411.58646875
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2060,agri_livestock_total,429.0544375
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2020,agri_livestock_total,329.98684375
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2025,agri_livestock_total,347.65078125
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2030,agri_livestock_total,368.2979375
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2035,agri_livestock_total,386.46321875
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2040,agri_livestock_total,402.9281875
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2045,agri_livestock_total,418.424375
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2050,agri_livestock_total,431.8165
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2060,agri_livestock_total,453.9565625
+IMAGE 3.4,Medium,SSP2,TRUE,World,2020,agri_livestock_total,329.98684375
+IMAGE 3.4,Medium,SSP2,TRUE,World,2025,agri_livestock_total,347.9953125
+IMAGE 3.4,Medium,SSP2,TRUE,World,2030,agri_livestock_total,368.7795625
+IMAGE 3.4,Medium,SSP2,TRUE,World,2035,agri_livestock_total,387.6409375
+IMAGE 3.4,Medium,SSP2,TRUE,World,2040,agri_livestock_total,405.5475
+IMAGE 3.4,Medium,SSP2,TRUE,World,2045,agri_livestock_total,422.82428125
+IMAGE 3.4,Medium,SSP2,TRUE,World,2050,agri_livestock_total,439.23778125
+IMAGE 3.4,Medium,SSP2,TRUE,World,2060,agri_livestock_total,466.4545
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2020,agri_livestock_total,329.98684375
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2025,agri_livestock_total,347.65078125
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2030,agri_livestock_total,337.04575
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2035,agri_livestock_total,328.2348125
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2040,agri_livestock_total,320.36071875
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2045,agri_livestock_total,314.75859375
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2050,agri_livestock_total,311.515
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2060,agri_livestock_total,309.80090625
+IMAGE 3.4,High,SSP3,FALSE,World,2020,agri_livestock_total,329.98684375
+IMAGE 3.4,High,SSP3,FALSE,World,2025,agri_livestock_total,347.5420625
+IMAGE 3.4,High,SSP3,FALSE,World,2030,agri_livestock_total,386.4614375
+IMAGE 3.4,High,SSP3,FALSE,World,2035,agri_livestock_total,425.7719375
+IMAGE 3.4,High,SSP3,FALSE,World,2040,agri_livestock_total,465.1378125
+IMAGE 3.4,High,SSP3,FALSE,World,2045,agri_livestock_total,503.73296875
+IMAGE 3.4,High,SSP3,FALSE,World,2050,agri_livestock_total,542.7070625
+IMAGE 3.4,High,SSP3,FALSE,World,2060,agri_livestock_total,587.3478125
+IMAGE 3.4,High,SSP5,FALSE,World,2020,agri_livestock_total,329.98684375
+IMAGE 3.4,High,SSP5,FALSE,World,2025,agri_livestock_total,347.1835
+IMAGE 3.4,High,SSP5,FALSE,World,2030,agri_livestock_total,373.16365625
+IMAGE 3.4,High,SSP5,FALSE,World,2035,agri_livestock_total,401.37909375
+IMAGE 3.4,High,SSP5,FALSE,World,2040,agri_livestock_total,431.6266875
+IMAGE 3.4,High,SSP5,FALSE,World,2045,agri_livestock_total,463.46121875
+IMAGE 3.4,High,SSP5,FALSE,World,2050,agri_livestock_total,494.31946875
+IMAGE 3.4,High,SSP5,FALSE,World,2060,agri_livestock_total,541.220625
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2020,agri_livestock_total,329.98684375
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2025,agri_livestock_total,347.1835
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2030,agri_livestock_total,373.1651875
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2035,agri_livestock_total,401.383125
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2040,agri_livestock_total,431.633
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2045,agri_livestock_total,463.47
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2050,agri_livestock_total,494.33253125
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2060,agri_livestock_total,541.2376875
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2020,agri_livestock_total,266.1627385
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2025,agri_livestock_total,291.85749635
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2030,agri_livestock_total,287.7110712
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2035,agri_livestock_total,286.267422
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2040,agri_livestock_total,284.8237728
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2045,agri_livestock_total,277.8725334
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2050,agri_livestock_total,270.921294
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2055,agri_livestock_total,260.5101553
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2060,agri_livestock_total,250.0990166
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2020,agri_livestock_total,266.1627385
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2025,agri_livestock_total,291.85749635
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2030,agri_livestock_total,287.2866667
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2035,agri_livestock_total,284.217847
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2040,agri_livestock_total,281.1490273
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2045,agri_livestock_total,273.71823395
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2050,agri_livestock_total,266.2874406
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2055,agri_livestock_total,256.3564433
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2060,agri_livestock_total,246.425446
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2020,agri_livestock_total,266.1627385
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2025,agri_livestock_total,291.85749635
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2030,agri_livestock_total,314.1985483
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2035,agri_livestock_total,329.5029302
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2040,agri_livestock_total,344.8073121
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2045,agri_livestock_total,355.9294471
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2050,agri_livestock_total,367.0515821
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2055,agri_livestock_total,375.3827479
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2060,agri_livestock_total,383.7139137
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2020,agri_livestock_total,266.1627385
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2025,agri_livestock_total,291.85749635
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2030,agri_livestock_total,317.5038018
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2035,agri_livestock_total,332.837596
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2040,agri_livestock_total,348.1713902
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2045,agri_livestock_total,358.64270785
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2050,agri_livestock_total,369.1140255
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2055,agri_livestock_total,376.50555035
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2060,agri_livestock_total,383.8970752
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2020,agri_livestock_total,266.1627385
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2025,agri_livestock_total,291.85749635
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2030,agri_livestock_total,317.5038018
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2035,agri_livestock_total,334.5534627
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2040,agri_livestock_total,351.6031236
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2045,agri_livestock_total,364.96492805
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2050,agri_livestock_total,378.3267325
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2055,agri_livestock_total,388.29367955
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2060,agri_livestock_total,398.2606266
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2020,agri_livestock_total,266.1627385
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2025,agri_livestock_total,291.85749635
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2030,agri_livestock_total,317.4622056
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2035,agri_livestock_total,335.0090561
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2040,agri_livestock_total,352.5559066
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2045,agri_livestock_total,366.45130995
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2050,agri_livestock_total,380.3467133
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2055,agri_livestock_total,391.5672781
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2060,agri_livestock_total,402.7878429
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2020,agri_livestock_total,266.1627385
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2025,agri_livestock_total,291.85749635
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2030,agri_livestock_total,287.7934911
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2035,agri_livestock_total,284.45818265
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2040,agri_livestock_total,281.1228742
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2045,agri_livestock_total,274.74139265
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2050,agri_livestock_total,268.3599111
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2055,agri_livestock_total,259.9526331
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2060,agri_livestock_total,251.5453551
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2020,agri_livestock_total,266.1627385
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2025,agri_livestock_total,291.85749635
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2030,agri_livestock_total,311.1228208
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2035,agri_livestock_total,325.8800256
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2040,agri_livestock_total,340.6372304
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2045,agri_livestock_total,351.16747245
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2050,agri_livestock_total,361.6977145
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2055,agri_livestock_total,369.86859435
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2060,agri_livestock_total,378.0394742
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2020,agri_livestock_total,266.1627385
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2025,agri_livestock_total,291.85749635
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2030,agri_livestock_total,311.0805971
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2035,agri_livestock_total,325.61696675
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2040,agri_livestock_total,340.1533364
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2045,agri_livestock_total,350.4878951
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2050,agri_livestock_total,360.8224538
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2055,agri_livestock_total,368.86481795
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2060,agri_livestock_total,376.9071821
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2020,agri_livestock_total,266.1627385
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2025,agri_livestock_total,291.85749635
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2030,agri_livestock_total,316.0557541
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2035,agri_livestock_total,331.01771915
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2040,agri_livestock_total,345.9796842
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2045,agri_livestock_total,355.5300636
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2050,agri_livestock_total,365.080443
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2055,agri_livestock_total,371.8039435
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2060,agri_livestock_total,378.527444
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2020,agri_livestock_total,266.1627385
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2025,agri_livestock_total,291.85749635
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2030,agri_livestock_total,321.487111
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2035,agri_livestock_total,345.62941835
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2040,agri_livestock_total,369.7717257
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2045,agri_livestock_total,391.18931675
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2050,agri_livestock_total,412.6069078
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2055,agri_livestock_total,428.81045745
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2060,agri_livestock_total,445.0140071
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2020,agri_livestock_total,266.1627385
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2025,agri_livestock_total,291.85749635
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2030,agri_livestock_total,320.9005154
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2035,agri_livestock_total,339.4816281
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2040,agri_livestock_total,358.0627408
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2045,agri_livestock_total,373.96042465
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2050,agri_livestock_total,389.8581085
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2055,agri_livestock_total,398.4660481
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2060,agri_livestock_total,407.0739877
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2020,agri_livestock_total,266.1627385
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2025,agri_livestock_total,291.85749635
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2030,agri_livestock_total,321.4365033
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2035,agri_livestock_total,345.3931325
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2040,agri_livestock_total,369.3497617
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2045,agri_livestock_total,390.49649525
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2050,agri_livestock_total,411.6432288
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2055,agri_livestock_total,427.81006315
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2060,agri_livestock_total,443.9768975
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2020,agri_livestock_total,315.5303
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2025,agri_livestock_total,344.4104
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2030,agri_livestock_total,377.7019
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2035,agri_livestock_total,400.4447
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2040,agri_livestock_total,419.347
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2045,agri_livestock_total,433.5461
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2050,agri_livestock_total,443.4906
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2055,agri_livestock_total,448.6997
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2060,agri_livestock_total,449.0226
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2020,agri_livestock_total,315.5303
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2025,agri_livestock_total,344.4104
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2030,agri_livestock_total,377.9107
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2035,agri_livestock_total,400.6437
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2040,agri_livestock_total,418.9927
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2045,agri_livestock_total,433.2473
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2050,agri_livestock_total,443.6735
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2055,agri_livestock_total,449.4106
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2060,agri_livestock_total,449.6041
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2020,agri_livestock_total,315.5303
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2025,agri_livestock_total,344.4104
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2030,agri_livestock_total,377.9107
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2035,agri_livestock_total,400.6437
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2040,agri_livestock_total,418.9927
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2045,agri_livestock_total,433.273
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2050,agri_livestock_total,443.7446
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2055,agri_livestock_total,449.0968
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2060,agri_livestock_total,450.1393
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2020,agri_livestock_total,315.5303
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2025,agri_livestock_total,344.4104
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2030,agri_livestock_total,355.9225
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2035,agri_livestock_total,359.992
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2040,agri_livestock_total,357.4444
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2045,agri_livestock_total,348.9904
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2050,agri_livestock_total,333.6222
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2055,agri_livestock_total,312.2103
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2060,agri_livestock_total,285.6944
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2020,agri_livestock_total,315.5303
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2025,agri_livestock_total,344.4104
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2030,agri_livestock_total,376.1307
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2035,agri_livestock_total,405.4562
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2040,agri_livestock_total,433.2083
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2045,agri_livestock_total,460.1773
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2050,agri_livestock_total,485.9064999999999
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2055,agri_livestock_total,510.3394
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2060,agri_livestock_total,533.6737000000002
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2020,agri_livestock_total,315.5303
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2025,agri_livestock_total,344.4104
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2030,agri_livestock_total,376.0076
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2035,agri_livestock_total,405.7241
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2040,agri_livestock_total,433.8515
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2045,agri_livestock_total,460.4025
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2050,agri_livestock_total,486.2837
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2055,agri_livestock_total,510.7796
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2060,agri_livestock_total,534.405
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2020,agri_livestock_total,315.5303
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2025,agri_livestock_total,344.4104
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2030,agri_livestock_total,376.0773
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2035,agri_livestock_total,406.1106
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2040,agri_livestock_total,433.9672
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2045,agri_livestock_total,460.6452
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2050,agri_livestock_total,485.7526
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2055,agri_livestock_total,509.7004
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2060,agri_livestock_total,533.1246
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2020,agri_livestock_total,315.5303
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2025,agri_livestock_total,344.4104
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2030,agri_livestock_total,376.0773
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2035,agri_livestock_total,405.405
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2040,agri_livestock_total,433.1339
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2045,agri_livestock_total,460.746
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2050,agri_livestock_total,486.9368999999999
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2055,agri_livestock_total,511.3129
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2060,agri_livestock_total,534.8425999999998
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2020,agri_livestock_total,315.5303
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2025,agri_livestock_total,344.4104
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2030,agri_livestock_total,376.0773
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2035,agri_livestock_total,405.405
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2040,agri_livestock_total,433.1339
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2045,agri_livestock_total,460.1387
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2050,agri_livestock_total,485.8604
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2055,agri_livestock_total,510.3231
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2060,agri_livestock_total,533.5228
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2020,agri_livestock_total,315.5303
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2025,agri_livestock_total,344.4104
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2030,agri_livestock_total,352.5729
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2035,agri_livestock_total,355.3614
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2040,agri_livestock_total,352.5603
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2045,agri_livestock_total,344.7635
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2050,agri_livestock_total,331.8551
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2055,agri_livestock_total,314.5354
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2060,agri_livestock_total,293.126
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2020,agri_livestock_total,315.5303
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2025,agri_livestock_total,344.4104
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2030,agri_livestock_total,372.6794
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2035,agri_livestock_total,399.774
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2040,agri_livestock_total,424.3014
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2045,agri_livestock_total,446.3019
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2050,agri_livestock_total,466.5458
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2055,agri_livestock_total,486.194
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2060,agri_livestock_total,506.5617
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2020,agri_livestock_total,315.5303
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2025,agri_livestock_total,344.4104
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2030,agri_livestock_total,372.6424000000001
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2035,agri_livestock_total,399.6819
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2040,agri_livestock_total,424.2804
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2045,agri_livestock_total,446.9934
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2050,agri_livestock_total,467.2307
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2055,agri_livestock_total,487.2160999999999
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2060,agri_livestock_total,507.6035
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2020,agri_livestock_total,315.5303
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2025,agri_livestock_total,344.4104
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2030,agri_livestock_total,372.6424000000001
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2035,agri_livestock_total,399.6819
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2040,agri_livestock_total,424.2804
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2045,agri_livestock_total,446.27
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2050,agri_livestock_total,466.5234
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2055,agri_livestock_total,486.1802
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2060,agri_livestock_total,506.5531
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2020,agri_livestock_total,263.6278700838553
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2025,agri_livestock_total,289.0293377199696
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2030,agri_livestock_total,286.560280776643
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2035,agri_livestock_total,285.801875498981
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2040,agri_livestock_total,283.2961111548997
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2045,agri_livestock_total,272.6272949381346
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2050,agri_livestock_total,261.6736230054806
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2055,agri_livestock_total,246.9600887028778
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2060,agri_livestock_total,235.258048328659
+WITCH 6.0,Low,SSP2,FALSE,World,2020,agri_livestock_total,263.6278700838553
+WITCH 6.0,Low,SSP2,FALSE,World,2025,agri_livestock_total,289.0293377199696
+WITCH 6.0,Low,SSP2,FALSE,World,2030,agri_livestock_total,309.4616415305153
+WITCH 6.0,Low,SSP2,FALSE,World,2035,agri_livestock_total,325.1807754348246
+WITCH 6.0,Low,SSP2,FALSE,World,2040,agri_livestock_total,337.6065081051939
+WITCH 6.0,Low,SSP2,FALSE,World,2045,agri_livestock_total,344.4931800432987
+WITCH 6.0,Low,SSP2,FALSE,World,2050,agri_livestock_total,349.649690602556
+WITCH 6.0,Low,SSP2,FALSE,World,2055,agri_livestock_total,356.6849116950174
+WITCH 6.0,Low,SSP2,FALSE,World,2060,agri_livestock_total,367.5162125430976
+WITCH 6.0,Very Low,SSP2,FALSE,World,2020,agri_livestock_total,263.6278700838553
+WITCH 6.0,Very Low,SSP2,FALSE,World,2025,agri_livestock_total,289.0293377199696
+WITCH 6.0,Very Low,SSP2,FALSE,World,2030,agri_livestock_total,281.8165776530786
+WITCH 6.0,Very Low,SSP2,FALSE,World,2035,agri_livestock_total,280.7535858779542
+WITCH 6.0,Very Low,SSP2,FALSE,World,2040,agri_livestock_total,266.1698458765551
+WITCH 6.0,Very Low,SSP2,FALSE,World,2045,agri_livestock_total,251.5494139128807
+WITCH 6.0,Very Low,SSP2,FALSE,World,2050,agri_livestock_total,246.9305781263628
+WITCH 6.0,Very Low,SSP2,FALSE,World,2055,agri_livestock_total,239.5962826038094
+WITCH 6.0,Very Low,SSP2,FALSE,World,2060,agri_livestock_total,231.9643439701036
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2020,agri_livestock_total,263.6278700838553
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2025,agri_livestock_total,289.0293377199696
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2030,agri_livestock_total,314.4597180246612
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2035,agri_livestock_total,330.6636672315313
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2040,agri_livestock_total,346.8830384985985
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2045,agri_livestock_total,356.2477820294491
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2050,agri_livestock_total,370.0050717178073
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2055,agri_livestock_total,380.8860550659537
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2060,agri_livestock_total,389.7296434283941
+WITCH 6.0,Medium,SSP2,FALSE,World,2020,agri_livestock_total,263.6278700838553
+WITCH 6.0,Medium,SSP2,FALSE,World,2025,agri_livestock_total,289.0293377199696
+WITCH 6.0,Medium,SSP2,FALSE,World,2030,agri_livestock_total,313.2307481077474
+WITCH 6.0,Medium,SSP2,FALSE,World,2035,agri_livestock_total,329.5632173896395
+WITCH 6.0,Medium,SSP2,FALSE,World,2040,agri_livestock_total,345.8187648308611
+WITCH 6.0,Medium,SSP2,FALSE,World,2045,agri_livestock_total,360.0471022165293
+WITCH 6.0,Medium,SSP2,FALSE,World,2050,agri_livestock_total,374.1476414313958
+WITCH 6.0,Medium,SSP2,FALSE,World,2055,agri_livestock_total,386.3096548077542
+WITCH 6.0,Medium,SSP2,FALSE,World,2060,agri_livestock_total,398.434468168394
+WITCH 6.0,High,SSP5,FALSE,World,2020,agri_livestock_total,263.6278700838553
+WITCH 6.0,High,SSP5,FALSE,World,2025,agri_livestock_total,289.0293377199696
+WITCH 6.0,High,SSP5,FALSE,World,2030,agri_livestock_total,318.1412199902243
+WITCH 6.0,High,SSP5,FALSE,World,2035,agri_livestock_total,342.0257995890333
+WITCH 6.0,High,SSP5,FALSE,World,2040,agri_livestock_total,365.7739084051491
+WITCH 6.0,High,SSP5,FALSE,World,2045,agri_livestock_total,389.0666852192473
+WITCH 6.0,High,SSP5,FALSE,World,2050,agri_livestock_total,412.3790896921457
+WITCH 6.0,High,SSP5,FALSE,World,2055,agri_livestock_total,431.8415164976045
+WITCH 6.0,High,SSP5,FALSE,World,2060,agri_livestock_total,451.2812510929062
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2020,agri_livestock_total,263.6278700838553
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2025,agri_livestock_total,289.0293377199696
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2030,agri_livestock_total,318.1412199902243
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2035,agri_livestock_total,342.0257995890333
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2040,agri_livestock_total,365.7739084051491
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2045,agri_livestock_total,389.0666852192473
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2050,agri_livestock_total,412.3790896921457
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2055,agri_livestock_total,431.8415164976045
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2060,agri_livestock_total,451.2812510929062
+COFFEE 1.6,Low,SSP2,FALSE,World,2020,agri_livestock_total,293.9889284294617
+COFFEE 1.6,Low,SSP2,FALSE,World,2025,agri_livestock_total,301.1399816431444
+COFFEE 1.6,Low,SSP2,FALSE,World,2030,agri_livestock_total,309.5321612129431
+COFFEE 1.6,Low,SSP2,FALSE,World,2035,agri_livestock_total,320.6566603092607
+COFFEE 1.6,Low,SSP2,FALSE,World,2040,agri_livestock_total,331.6226562175866
+COFFEE 1.6,Low,SSP2,FALSE,World,2045,agri_livestock_total,341.842427170071
+COFFEE 1.6,Low,SSP2,FALSE,World,2050,agri_livestock_total,350.4226179129058
+COFFEE 1.6,Low,SSP2,FALSE,World,2060,agri_livestock_total,363.7293141430105
+COFFEE 1.6,Low-to-Negative,SSP2,FALSE,World,2020,agri_livestock_total,293.9889284294617
+COFFEE 1.6,Low-to-Negative,SSP2,FALSE,World,2025,agri_livestock_total,301.1399816431444
+COFFEE 1.6,Low-to-Negative,SSP2,FALSE,World,2030,agri_livestock_total,309.5321612129431
+COFFEE 1.6,Low-to-Negative,SSP2,FALSE,World,2035,agri_livestock_total,320.6566604254207
+COFFEE 1.6,Low-to-Negative,SSP2,FALSE,World,2040,agri_livestock_total,331.1003000265926
+COFFEE 1.6,Low-to-Negative,SSP2,FALSE,World,2045,agri_livestock_total,341.842426765711
+COFFEE 1.6,Low-to-Negative,SSP2,FALSE,World,2050,agri_livestock_total,350.4331030340458
+COFFEE 1.6,Low-to-Negative,SSP2,FALSE,World,2060,agri_livestock_total,363.781733713964
+COFFEE 1.6,Medium-to-Low,SSP2,TRUE,World,2020,agri_livestock_total,293.9889284294617
+COFFEE 1.6,Medium-to-Low,SSP2,TRUE,World,2025,agri_livestock_total,301.1399816431444
+COFFEE 1.6,Medium-to-Low,SSP2,TRUE,World,2030,agri_livestock_total,309.5321612129431
+COFFEE 1.6,Medium-to-Low,SSP2,TRUE,World,2035,agri_livestock_total,320.6566600800207
+COFFEE 1.6,Medium-to-Low,SSP2,TRUE,World,2040,agri_livestock_total,332.0728475387871
+COFFEE 1.6,Medium-to-Low,SSP2,TRUE,World,2045,agri_livestock_total,341.842433595061
+COFFEE 1.6,Medium-to-Low,SSP2,TRUE,World,2050,agri_livestock_total,350.4226256266888
+COFFEE 1.6,Medium-to-Low,SSP2,TRUE,World,2060,agri_livestock_total,363.7293139400495
+COFFEE 1.6,Medium,SSP2,FALSE,World,2020,agri_livestock_total,293.9889284294617
+COFFEE 1.6,Medium,SSP2,FALSE,World,2025,agri_livestock_total,301.1399816431444
+COFFEE 1.6,Medium,SSP2,FALSE,World,2030,agri_livestock_total,309.5321612129431
+COFFEE 1.6,Medium,SSP2,FALSE,World,2035,agri_livestock_total,320.6566600800207
+COFFEE 1.6,Medium,SSP2,FALSE,World,2040,agri_livestock_total,332.0728469227871
+COFFEE 1.6,Medium,SSP2,FALSE,World,2045,agri_livestock_total,341.842434361101
+COFFEE 1.6,Medium,SSP2,FALSE,World,2050,agri_livestock_total,350.4226245970888
+COFFEE 1.6,Medium,SSP2,FALSE,World,2060,agri_livestock_total,363.7293134340495
+COFFEE 1.6,Very Low,SSP2,FALSE,World,2020,agri_livestock_total,293.9889284294617
+COFFEE 1.6,Very Low,SSP2,FALSE,World,2025,agri_livestock_total,301.1399816431444
+COFFEE 1.6,Very Low,SSP2,FALSE,World,2030,agri_livestock_total,309.5321612129431
+COFFEE 1.6,Very Low,SSP2,FALSE,World,2035,agri_livestock_total,327.3566853996353
+COFFEE 1.6,Very Low,SSP2,FALSE,World,2040,agri_livestock_total,342.7664540430335
+COFFEE 1.6,Very Low,SSP2,FALSE,World,2045,agri_livestock_total,357.3442812088072
+COFFEE 1.6,Very Low,SSP2,FALSE,World,2050,agri_livestock_total,373.2062315245191
+COFFEE 1.6,Very Low,SSP2,FALSE,World,2060,agri_livestock_total,400.6103406672754

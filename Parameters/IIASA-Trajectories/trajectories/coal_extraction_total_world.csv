@@ -1,0 +1,442 @@
+model,family,ssp,marker,region,year,metric,value
+AIM 3.0,Medium,SSP1,FALSE,World,2020,coal_extraction_total,152.0528
+AIM 3.0,Medium,SSP1,FALSE,World,2025,coal_extraction_total,168.958
+AIM 3.0,Medium,SSP1,FALSE,World,2030,coal_extraction_total,140.0907
+AIM 3.0,Medium,SSP1,FALSE,World,2035,coal_extraction_total,136.778
+AIM 3.0,Medium,SSP1,FALSE,World,2040,coal_extraction_total,102.2411
+AIM 3.0,Medium,SSP1,FALSE,World,2045,coal_extraction_total,93.7065
+AIM 3.0,Medium,SSP1,FALSE,World,2050,coal_extraction_total,84.5426
+AIM 3.0,Medium,SSP1,FALSE,World,2055,coal_extraction_total,78.0767
+AIM 3.0,Medium,SSP1,FALSE,World,2060,coal_extraction_total,76.4717
+AIM 3.0,Very Low,SSP1,FALSE,World,2020,coal_extraction_total,152.0359
+AIM 3.0,Very Low,SSP1,FALSE,World,2025,coal_extraction_total,168.8824
+AIM 3.0,Very Low,SSP1,FALSE,World,2030,coal_extraction_total,130.4056
+AIM 3.0,Very Low,SSP1,FALSE,World,2035,coal_extraction_total,48.8714
+AIM 3.0,Very Low,SSP1,FALSE,World,2040,coal_extraction_total,37.5679
+AIM 3.0,Very Low,SSP1,FALSE,World,2045,coal_extraction_total,29.0897
+AIM 3.0,Very Low,SSP1,FALSE,World,2050,coal_extraction_total,17.6435
+AIM 3.0,Very Low,SSP1,FALSE,World,2055,coal_extraction_total,11.3604
+AIM 3.0,Very Low,SSP1,FALSE,World,2060,coal_extraction_total,10.8541
+AIM 3.0,Low,SSP2,FALSE,World,2020,coal_extraction_total,152.0193
+AIM 3.0,Low,SSP2,FALSE,World,2025,coal_extraction_total,168.8367
+AIM 3.0,Low,SSP2,FALSE,World,2030,coal_extraction_total,147.045
+AIM 3.0,Low,SSP2,FALSE,World,2035,coal_extraction_total,91.0671
+AIM 3.0,Low,SSP2,FALSE,World,2040,coal_extraction_total,100.8373
+AIM 3.0,Low,SSP2,FALSE,World,2045,coal_extraction_total,67.2114
+AIM 3.0,Low,SSP2,FALSE,World,2050,coal_extraction_total,48.1455
+AIM 3.0,Low,SSP2,FALSE,World,2055,coal_extraction_total,41.6379
+AIM 3.0,Low,SSP2,FALSE,World,2060,coal_extraction_total,38.9184
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2020,coal_extraction_total,152.0171
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2025,coal_extraction_total,168.8363
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2030,coal_extraction_total,158.4192
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2035,coal_extraction_total,163.1147
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2040,coal_extraction_total,74.4374
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2045,coal_extraction_total,54.4125
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2050,coal_extraction_total,43.0187
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2055,coal_extraction_total,37.1319
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2060,coal_extraction_total,28.1948
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2020,coal_extraction_total,152.0381
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2025,coal_extraction_total,168.8552
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2030,coal_extraction_total,160.1743
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2035,coal_extraction_total,165.349
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2040,coal_extraction_total,166.1909
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2045,coal_extraction_total,172.2165
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2050,coal_extraction_total,151.7625
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2055,coal_extraction_total,130.8922
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2060,coal_extraction_total,106.3137
+AIM 3.0,Medium,SSP2,FALSE,World,2020,coal_extraction_total,152.052
+AIM 3.0,Medium,SSP2,FALSE,World,2025,coal_extraction_total,168.8786
+AIM 3.0,Medium,SSP2,FALSE,World,2030,coal_extraction_total,158.6607
+AIM 3.0,Medium,SSP2,FALSE,World,2035,coal_extraction_total,163.0908
+AIM 3.0,Medium,SSP2,FALSE,World,2040,coal_extraction_total,159.2234
+AIM 3.0,Medium,SSP2,FALSE,World,2045,coal_extraction_total,164.1217
+AIM 3.0,Medium,SSP2,FALSE,World,2050,coal_extraction_total,140.5313
+AIM 3.0,Medium,SSP2,FALSE,World,2055,coal_extraction_total,130.2356
+AIM 3.0,Medium,SSP2,FALSE,World,2060,coal_extraction_total,124.5803
+AIM 3.0,Very Low,SSP2,FALSE,World,2020,coal_extraction_total,152.0376
+AIM 3.0,Very Low,SSP2,FALSE,World,2025,coal_extraction_total,168.8564
+AIM 3.0,Very Low,SSP2,FALSE,World,2030,coal_extraction_total,140.9625
+AIM 3.0,Very Low,SSP2,FALSE,World,2035,coal_extraction_total,36.7009
+AIM 3.0,Very Low,SSP2,FALSE,World,2040,coal_extraction_total,31.2493
+AIM 3.0,Very Low,SSP2,FALSE,World,2045,coal_extraction_total,26.0235
+AIM 3.0,Very Low,SSP2,FALSE,World,2050,coal_extraction_total,25.2713
+AIM 3.0,Very Low,SSP2,FALSE,World,2055,coal_extraction_total,23.1682
+AIM 3.0,Very Low,SSP2,FALSE,World,2060,coal_extraction_total,10.9525
+AIM 3.0,High,SSP3,FALSE,World,2020,coal_extraction_total,152.0508
+AIM 3.0,High,SSP3,FALSE,World,2025,coal_extraction_total,168.9262
+AIM 3.0,High,SSP3,FALSE,World,2030,coal_extraction_total,164.1267
+AIM 3.0,High,SSP3,FALSE,World,2035,coal_extraction_total,178.6345
+AIM 3.0,High,SSP3,FALSE,World,2040,coal_extraction_total,181.225
+AIM 3.0,High,SSP3,FALSE,World,2045,coal_extraction_total,187.4984
+AIM 3.0,High,SSP3,FALSE,World,2050,coal_extraction_total,182.1971
+AIM 3.0,High,SSP3,FALSE,World,2055,coal_extraction_total,166.5111
+AIM 3.0,High,SSP3,FALSE,World,2060,coal_extraction_total,165.9169
+AIM 3.0,High,SSP5,FALSE,World,2020,coal_extraction_total,152.0532
+AIM 3.0,High,SSP5,FALSE,World,2025,coal_extraction_total,168.956
+AIM 3.0,High,SSP5,FALSE,World,2030,coal_extraction_total,162.2345
+AIM 3.0,High,SSP5,FALSE,World,2035,coal_extraction_total,181.1957
+AIM 3.0,High,SSP5,FALSE,World,2040,coal_extraction_total,191.3232
+AIM 3.0,High,SSP5,FALSE,World,2045,coal_extraction_total,215.0132
+AIM 3.0,High,SSP5,FALSE,World,2050,coal_extraction_total,253.4226
+AIM 3.0,High,SSP5,FALSE,World,2055,coal_extraction_total,274.1967
+AIM 3.0,High,SSP5,FALSE,World,2060,coal_extraction_total,288.278
+GCAM 8s,Low,SSP2,FALSE,World,2020,coal_extraction_total,154.8373018
+GCAM 8s,Low,SSP2,FALSE,World,2025,coal_extraction_total,163.077594581
+GCAM 8s,Low,SSP2,FALSE,World,2030,coal_extraction_total,138.667692839
+GCAM 8s,Low,SSP2,FALSE,World,2035,coal_extraction_total,116.162071905
+GCAM 8s,Low,SSP2,FALSE,World,2040,coal_extraction_total,69.5932820166
+GCAM 8s,Low,SSP2,FALSE,World,2045,coal_extraction_total,40.2594471039
+GCAM 8s,Low,SSP2,FALSE,World,2050,coal_extraction_total,27.8883685188
+GCAM 8s,Low,SSP2,FALSE,World,2055,coal_extraction_total,22.03169263194
+GCAM 8s,Low,SSP2,FALSE,World,2060,coal_extraction_total,18.16002593624
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2020,coal_extraction_total,154.8373018
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2025,coal_extraction_total,163.575620297
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2030,coal_extraction_total,147.488917566
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2035,coal_extraction_total,123.370359935
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2040,coal_extraction_total,55.5514434295
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2045,coal_extraction_total,33.1968828763
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2050,coal_extraction_total,24.7125391477
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2055,coal_extraction_total,22.48485556519
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2060,coal_extraction_total,20.8197549109952
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2020,coal_extraction_total,154.8373018
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2025,coal_extraction_total,163.077805991
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2030,coal_extraction_total,149.703449538
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2035,coal_extraction_total,146.719384516
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2040,coal_extraction_total,148.473082173
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2045,coal_extraction_total,121.70074476
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2050,coal_extraction_total,88.448944656
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2055,coal_extraction_total,60.871420296
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2060,coal_extraction_total,41.467692998
+GCAM 8s,Medium,SSP2,FALSE,World,2020,coal_extraction_total,154.8373018
+GCAM 8s,Medium,SSP2,FALSE,World,2025,coal_extraction_total,163.095654933
+GCAM 8s,Medium,SSP2,FALSE,World,2030,coal_extraction_total,149.757398964
+GCAM 8s,Medium,SSP2,FALSE,World,2035,coal_extraction_total,146.744295391
+GCAM 8s,Medium,SSP2,FALSE,World,2040,coal_extraction_total,148.331080542
+GCAM 8s,Medium,SSP2,FALSE,World,2045,coal_extraction_total,145.577900914
+GCAM 8s,Medium,SSP2,FALSE,World,2050,coal_extraction_total,141.146609609
+GCAM 8s,Medium,SSP2,FALSE,World,2055,coal_extraction_total,136.78448534
+GCAM 8s,Medium,SSP2,FALSE,World,2060,coal_extraction_total,130.815080769
+GCAM 8s,High,SSP3,TRUE,World,2020,coal_extraction_total,154.8373018
+GCAM 8s,High,SSP3,TRUE,World,2025,coal_extraction_total,165.401782466
+GCAM 8s,High,SSP3,TRUE,World,2030,coal_extraction_total,181.154480034
+GCAM 8s,High,SSP3,TRUE,World,2035,coal_extraction_total,187.874882739
+GCAM 8s,High,SSP3,TRUE,World,2040,coal_extraction_total,192.250733487
+GCAM 8s,High,SSP3,TRUE,World,2045,coal_extraction_total,193.573362306
+GCAM 8s,High,SSP3,TRUE,World,2050,coal_extraction_total,192.48478864
+GCAM 8s,High,SSP3,TRUE,World,2055,coal_extraction_total,204.11458693
+GCAM 8s,High,SSP3,TRUE,World,2060,coal_extraction_total,207.23598074
+GCAM 8s,High,SSP5,FALSE,World,2020,coal_extraction_total,154.8373018
+GCAM 8s,High,SSP5,FALSE,World,2025,coal_extraction_total,165.386035733
+GCAM 8s,High,SSP5,FALSE,World,2030,coal_extraction_total,180.258467898
+GCAM 8s,High,SSP5,FALSE,World,2035,coal_extraction_total,190.163654321
+GCAM 8s,High,SSP5,FALSE,World,2040,coal_extraction_total,199.14023123
+GCAM 8s,High,SSP5,FALSE,World,2045,coal_extraction_total,205.63645651
+GCAM 8s,High,SSP5,FALSE,World,2050,coal_extraction_total,207.71490686
+GCAM 8s,High,SSP5,FALSE,World,2055,coal_extraction_total,213.10999685
+GCAM 8s,High,SSP5,FALSE,World,2060,coal_extraction_total,212.79200116
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2020,coal_extraction_total,154.8373018
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2025,coal_extraction_total,165.386035733
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2030,coal_extraction_total,180.258467898
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2035,coal_extraction_total,190.163654321
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2040,coal_extraction_total,199.14023123
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2045,coal_extraction_total,205.63645651
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2050,coal_extraction_total,207.71490686
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2055,coal_extraction_total,213.10999685
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2060,coal_extraction_total,212.79200116
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2020,coal_extraction_total,162.3026986405721
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2025,coal_extraction_total,143.8465444301342
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2030,coal_extraction_total,126.1236236949194
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2035,coal_extraction_total,94.02831506585332
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2040,coal_extraction_total,73.36344154326932
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2045,coal_extraction_total,52.90161263702494
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2050,coal_extraction_total,38.29888086467482
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2055,coal_extraction_total,21.41029471923601
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2060,coal_extraction_total,15.89774627400441
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2020,coal_extraction_total,162.3026986405721
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2025,coal_extraction_total,143.8465444301342
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2030,coal_extraction_total,127.024587070674
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2035,coal_extraction_total,58.77177702169094
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2040,coal_extraction_total,27.08123172999413
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2045,coal_extraction_total,16.13216698716813
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2050,coal_extraction_total,8.087680251799863
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2055,coal_extraction_total,2.427546588702288
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2060,coal_extraction_total,1.18867105026589
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2020,coal_extraction_total,162.3026986405721
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2025,coal_extraction_total,142.9345592036114
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2030,coal_extraction_total,127.8112369457187
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2035,coal_extraction_total,80.2436552837796
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2040,coal_extraction_total,50.47948575107529
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2045,coal_extraction_total,33.51092106392841
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2050,coal_extraction_total,17.85950397124996
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2055,coal_extraction_total,6.584440878758498
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2060,coal_extraction_total,3.408082992880827
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2020,coal_extraction_total,162.3026986405721
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2025,coal_extraction_total,142.9345592036114
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2030,coal_extraction_total,125.3818652372813
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2035,coal_extraction_total,111.793067717776
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2040,coal_extraction_total,48.78792192999549
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2045,coal_extraction_total,27.44179853565927
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2050,coal_extraction_total,14.79845072744995
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2055,coal_extraction_total,6.045392368553164
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2060,coal_extraction_total,3.494053627043539
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2020,coal_extraction_total,162.3026986405721
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2025,coal_extraction_total,142.9345592036114
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2030,coal_extraction_total,125.3818652372813
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2035,coal_extraction_total,111.793067717776
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2040,coal_extraction_total,105.0594505499018
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2045,coal_extraction_total,75.45690914389321
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2050,coal_extraction_total,60.482536732071416
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2055,coal_extraction_total,39.21757128005031
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2060,coal_extraction_total,32.84512715896501
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2020,coal_extraction_total,162.3026986405721
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2025,coal_extraction_total,143.9821433701213
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2030,coal_extraction_total,127.1125847699362
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2035,coal_extraction_total,117.6081765653421
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2040,coal_extraction_total,112.7891304259751
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2045,coal_extraction_total,101.1011656405926
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2050,coal_extraction_total,91.63498994051788
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2055,coal_extraction_total,82.9447203507997
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2060,coal_extraction_total,92.37589497215478
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2020,coal_extraction_total,162.0569782009846
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2025,coal_extraction_total,150.1609086643309
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2030,coal_extraction_total,118.564528505015
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2035,coal_extraction_total,53.44285590289396
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2040,coal_extraction_total,23.53389110932121
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2045,coal_extraction_total,13.71313303974474
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2050,coal_extraction_total,5.478095717962994
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2055,coal_extraction_total,1.960923242814128
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2060,coal_extraction_total,1.139348309615059
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2020,coal_extraction_total,162.3118899677238
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2025,coal_extraction_total,144.0629040611163
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2030,coal_extraction_total,139.6032466726955
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2035,coal_extraction_total,143.6129421109243
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2040,coal_extraction_total,154.4098143216679
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2045,coal_extraction_total,155.0752123049494
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2050,coal_extraction_total,156.059427466921
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2055,coal_extraction_total,162.1861183441743
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2060,coal_extraction_total,179.7780850392599
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2020,coal_extraction_total,162.3118899677238
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2025,coal_extraction_total,144.0629040611163
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2030,coal_extraction_total,139.6032466726955
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2035,coal_extraction_total,143.6129421109243
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2040,coal_extraction_total,154.4098143216679
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2045,coal_extraction_total,155.0752123049494
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2050,coal_extraction_total,156.059427466921
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2055,coal_extraction_total,162.1861183441743
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2060,coal_extraction_total,179.7780850392599
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2020,coal_extraction_total,162.3026986405721
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2025,coal_extraction_total,149.6201045533481
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2030,coal_extraction_total,137.0524225841822
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2035,coal_extraction_total,137.1682267055443
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2040,coal_extraction_total,104.8966778891911
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2045,coal_extraction_total,79.92556859149633
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2050,coal_extraction_total,61.00307685418278
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2055,coal_extraction_total,46.80960607078952
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2060,coal_extraction_total,35.82052917976466
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2020,coal_extraction_total,162.3026986405721
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2025,coal_extraction_total,150.2234336390977
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2030,coal_extraction_total,134.702338869258
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2035,coal_extraction_total,148.6097433562929
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2040,coal_extraction_total,159.7899880121736
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2045,coal_extraction_total,147.8404429337608
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2050,coal_extraction_total,142.1935159353612
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2055,coal_extraction_total,127.5446267573788
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2060,coal_extraction_total,121.0480566972988
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2020,coal_extraction_total,162.3026986405721
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2025,coal_extraction_total,150.2234336390977
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2030,coal_extraction_total,131.3858424484202
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2035,coal_extraction_total,139.2100395495642
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2040,coal_extraction_total,106.4765937458364
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2045,coal_extraction_total,81.14807736422239
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2050,coal_extraction_total,61.54935421297303
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2055,coal_extraction_total,46.52479242679367
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2060,coal_extraction_total,35.47201125788481
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2020,coal_extraction_total,162.3026986405721
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2025,coal_extraction_total,150.2234336390977
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2030,coal_extraction_total,134.702338869258
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2035,coal_extraction_total,148.6097433562929
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2040,coal_extraction_total,159.7899880121736
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2045,coal_extraction_total,147.8404429337608
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2050,coal_extraction_total,142.1935159353612
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2055,coal_extraction_total,127.5446267573788
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2060,coal_extraction_total,121.0480566972988
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2020,coal_extraction_total,165.1159777
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2025,coal_extraction_total,165.5017361
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2030,coal_extraction_total,139.8739583
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2035,coal_extraction_total,79.1049172
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2040,coal_extraction_total,42.69609270000001
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2045,coal_extraction_total,27.2795201
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2050,coal_extraction_total,21.47532919999999
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2055,coal_extraction_total,15.9493387
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2060,coal_extraction_total,10.4280934
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2020,coal_extraction_total,165.1159777
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2025,coal_extraction_total,165.5017361
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2030,coal_extraction_total,144.8292689
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2035,coal_extraction_total,114.0941556
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2040,coal_extraction_total,90.1935186
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2045,coal_extraction_total,63.59585430000001
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2050,coal_extraction_total,42.5815682
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2055,coal_extraction_total,36.6470287
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2060,coal_extraction_total,29.873514
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2020,coal_extraction_total,165.1159777
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2025,coal_extraction_total,165.5017361
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2030,coal_extraction_total,144.8292689
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2035,coal_extraction_total,114.0941556
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2040,coal_extraction_total,90.1935186
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2045,coal_extraction_total,69.07093259999999
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2050,coal_extraction_total,58.3163268
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2055,coal_extraction_total,56.9003853
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2060,coal_extraction_total,54.42033170000001
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2020,coal_extraction_total,165.1159777
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2025,coal_extraction_total,165.5017361
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2030,coal_extraction_total,134.3763592
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2035,coal_extraction_total,54.1380842
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2040,coal_extraction_total,16.0516389
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2045,coal_extraction_total,2.7101984
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2050,coal_extraction_total,2.2944657
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2055,coal_extraction_total,2.152188
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2060,coal_extraction_total,1.8856369
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2020,coal_extraction_total,165.1159777
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2025,coal_extraction_total,165.5017361
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2030,coal_extraction_total,153.41516
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2035,coal_extraction_total,151.3470486
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2040,coal_extraction_total,149.3948919
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2045,coal_extraction_total,145.0988911
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2050,coal_extraction_total,146.0350444
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2055,coal_extraction_total,155.3287793
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2060,coal_extraction_total,176.6783292
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2020,coal_extraction_total,165.1159777
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2025,coal_extraction_total,165.5017361
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2030,coal_extraction_total,139.5588688
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2035,coal_extraction_total,82.7905073
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2040,coal_extraction_total,37.72035940000001
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2045,coal_extraction_total,17.8649472
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2050,coal_extraction_total,9.1517571
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2055,coal_extraction_total,4.907321400000001
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2060,coal_extraction_total,2.8790643
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2020,coal_extraction_total,165.1159777
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2025,coal_extraction_total,165.5017361
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2030,coal_extraction_total,146.2454109
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2035,coal_extraction_total,114.7524934
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2040,coal_extraction_total,64.68437829999998
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2045,coal_extraction_total,33.9120608
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2050,coal_extraction_total,20.3913697
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2055,coal_extraction_total,12.6034838
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2060,coal_extraction_total,7.042691100000001
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2020,coal_extraction_total,165.1159777
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2025,coal_extraction_total,165.5017361
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2030,coal_extraction_total,146.2454109
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2035,coal_extraction_total,123.5720492
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2040,coal_extraction_total,104.8008946
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2045,coal_extraction_total,78.73050360000002
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2050,coal_extraction_total,48.2099671
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2055,coal_extraction_total,35.9554603
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2060,coal_extraction_total,28.2515831
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2020,coal_extraction_total,165.1159777
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2025,coal_extraction_total,165.5017361
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2030,coal_extraction_total,146.2454109
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2035,coal_extraction_total,123.5720492
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2040,coal_extraction_total,104.8008946
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2045,coal_extraction_total,86.2001211
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2050,coal_extraction_total,76.41768380000002
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2055,coal_extraction_total,75.5555592
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2060,coal_extraction_total,77.36732040000001
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2020,coal_extraction_total,165.1159777
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2025,coal_extraction_total,165.5017361
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2030,coal_extraction_total,133.9785799
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2035,coal_extraction_total,64.7522425
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2040,coal_extraction_total,18.9183819
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2045,coal_extraction_total,4.379699200000001
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2050,coal_extraction_total,2.1590667
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2055,coal_extraction_total,2.0429402
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2060,coal_extraction_total,1.8319015
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2020,coal_extraction_total,165.1159777
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2025,coal_extraction_total,165.5017361
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2030,coal_extraction_total,162.1046155
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2035,coal_extraction_total,179.4468146
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2040,coal_extraction_total,202.6442087
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2045,coal_extraction_total,221.694519
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2050,coal_extraction_total,248.2397836999999
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2055,coal_extraction_total,285.4112575999999
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2060,coal_extraction_total,346.2787118999999
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2020,coal_extraction_total,165.1159777
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2025,coal_extraction_total,165.5017361
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2030,coal_extraction_total,154.8333571
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2035,coal_extraction_total,155.1016757
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2040,coal_extraction_total,158.6426987
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2045,coal_extraction_total,143.8984961
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2050,coal_extraction_total,102.3405405
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2055,coal_extraction_total,70.01454940000002
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2060,coal_extraction_total,46.9035626
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2020,coal_extraction_total,165.1159777
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2025,coal_extraction_total,165.5017361
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2030,coal_extraction_total,154.8333571
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2035,coal_extraction_total,155.1016757
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2040,coal_extraction_total,158.6426987
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2045,coal_extraction_total,158.747579
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2050,coal_extraction_total,163.0771465
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2055,coal_extraction_total,174.2304781
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2060,coal_extraction_total,195.3672921
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2020,coal_extraction_total,158.7810351860388
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2025,coal_extraction_total,161.6009452352234
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2030,coal_extraction_total,147.6568925470436
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2035,coal_extraction_total,132.2512227471428
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2040,coal_extraction_total,94.69650957249064
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2045,coal_extraction_total,52.42413085271899
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2050,coal_extraction_total,35.51369612080988
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2055,coal_extraction_total,29.04541464605448
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2060,coal_extraction_total,26.61993280930387
+WITCH 6.0,Low,SSP2,FALSE,World,2020,coal_extraction_total,158.7810351860388
+WITCH 6.0,Low,SSP2,FALSE,World,2025,coal_extraction_total,161.6009452352234
+WITCH 6.0,Low,SSP2,FALSE,World,2030,coal_extraction_total,139.1611920932963
+WITCH 6.0,Low,SSP2,FALSE,World,2035,coal_extraction_total,108.0708560278083
+WITCH 6.0,Low,SSP2,FALSE,World,2040,coal_extraction_total,77.33362474200237
+WITCH 6.0,Low,SSP2,FALSE,World,2045,coal_extraction_total,47.27639856490985
+WITCH 6.0,Low,SSP2,FALSE,World,2050,coal_extraction_total,32.87456799840965
+WITCH 6.0,Low,SSP2,FALSE,World,2055,coal_extraction_total,29.55347777928293
+WITCH 6.0,Low,SSP2,FALSE,World,2060,coal_extraction_total,27.43105441308889
+WITCH 6.0,Very Low,SSP2,FALSE,World,2020,coal_extraction_total,158.7810351860388
+WITCH 6.0,Very Low,SSP2,FALSE,World,2025,coal_extraction_total,161.6009452352234
+WITCH 6.0,Very Low,SSP2,FALSE,World,2030,coal_extraction_total,135.1805875267666
+WITCH 6.0,Very Low,SSP2,FALSE,World,2035,coal_extraction_total,93.8626692973606
+WITCH 6.0,Very Low,SSP2,FALSE,World,2040,coal_extraction_total,43.08543726419842
+WITCH 6.0,Very Low,SSP2,FALSE,World,2045,coal_extraction_total,33.51889646595586
+WITCH 6.0,Very Low,SSP2,FALSE,World,2050,coal_extraction_total,30.91656977720086
+WITCH 6.0,Very Low,SSP2,FALSE,World,2055,coal_extraction_total,28.43995175975887
+WITCH 6.0,Very Low,SSP2,FALSE,World,2060,coal_extraction_total,26.0001282824816
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2020,coal_extraction_total,158.7810351860388
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2025,coal_extraction_total,161.6009452352234
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2030,coal_extraction_total,149.8699916720654
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2035,coal_extraction_total,138.7950811101354
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2040,coal_extraction_total,130.6881359578189
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2045,coal_extraction_total,81.39627837182407
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2050,coal_extraction_total,65.82029492700562
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2055,coal_extraction_total,56.22411911982721
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2060,coal_extraction_total,45.53243979832926
+WITCH 6.0,Medium,SSP2,FALSE,World,2020,coal_extraction_total,158.7810351860388
+WITCH 6.0,Medium,SSP2,FALSE,World,2025,coal_extraction_total,161.6009452352234
+WITCH 6.0,Medium,SSP2,FALSE,World,2030,coal_extraction_total,149.8699916720654
+WITCH 6.0,Medium,SSP2,FALSE,World,2035,coal_extraction_total,138.7950811101354
+WITCH 6.0,Medium,SSP2,FALSE,World,2040,coal_extraction_total,130.6881359578189
+WITCH 6.0,Medium,SSP2,FALSE,World,2045,coal_extraction_total,123.9620049668322
+WITCH 6.0,Medium,SSP2,FALSE,World,2050,coal_extraction_total,119.1625096120915
+WITCH 6.0,Medium,SSP2,FALSE,World,2055,coal_extraction_total,108.437077764467
+WITCH 6.0,Medium,SSP2,FALSE,World,2060,coal_extraction_total,101.6771978097953
+WITCH 6.0,High,SSP5,FALSE,World,2020,coal_extraction_total,158.7810351860388
+WITCH 6.0,High,SSP5,FALSE,World,2025,coal_extraction_total,161.6009452352234
+WITCH 6.0,High,SSP5,FALSE,World,2030,coal_extraction_total,170.9468767507123
+WITCH 6.0,High,SSP5,FALSE,World,2035,coal_extraction_total,168.6278292579516
+WITCH 6.0,High,SSP5,FALSE,World,2040,coal_extraction_total,166.4574360783024
+WITCH 6.0,High,SSP5,FALSE,World,2045,coal_extraction_total,170.0217959631067
+WITCH 6.0,High,SSP5,FALSE,World,2050,coal_extraction_total,173.6292527774629
+WITCH 6.0,High,SSP5,FALSE,World,2055,coal_extraction_total,175.3755730424511
+WITCH 6.0,High,SSP5,FALSE,World,2060,coal_extraction_total,178.9748636191144
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2020,coal_extraction_total,158.7810351860388
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2025,coal_extraction_total,161.6009452352234
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2030,coal_extraction_total,170.9468767507123
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2035,coal_extraction_total,168.6278292579516
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2040,coal_extraction_total,166.4574360783024
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2045,coal_extraction_total,170.0217959631067
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2050,coal_extraction_total,173.6292527774629
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2055,coal_extraction_total,175.3755730424511
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2060,coal_extraction_total,178.9748636191144

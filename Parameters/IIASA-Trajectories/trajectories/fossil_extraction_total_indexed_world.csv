@@ -1,0 +1,442 @@
+model,family,ssp,marker,metric,year,index
+AIM 3.0,Medium,SSP1,FALSE,fossil_extraction_total,2020,1
+AIM 3.0,Medium,SSP1,FALSE,fossil_extraction_total,2025,1.0968258263304098
+AIM 3.0,Medium,SSP1,FALSE,fossil_extraction_total,2030,0.8922531046717918
+AIM 3.0,Medium,SSP1,FALSE,fossil_extraction_total,2035,0.8786514671770017
+AIM 3.0,Medium,SSP1,FALSE,fossil_extraction_total,2040,0.7898933140721117
+AIM 3.0,Medium,SSP1,FALSE,fossil_extraction_total,2045,0.7460591235125835
+AIM 3.0,Medium,SSP1,FALSE,fossil_extraction_total,2050,0.7031076177113044
+AIM 3.0,Medium,SSP1,FALSE,fossil_extraction_total,2055,0.6927515106020368
+AIM 3.0,Medium,SSP1,FALSE,fossil_extraction_total,2060,0.6918622793560874
+AIM 3.0,Very Low,SSP1,FALSE,fossil_extraction_total,2020,1
+AIM 3.0,Very Low,SSP1,FALSE,fossil_extraction_total,2025,1.0978414593796622
+AIM 3.0,Very Low,SSP1,FALSE,fossil_extraction_total,2030,0.8683463075952029
+AIM 3.0,Very Low,SSP1,FALSE,fossil_extraction_total,2035,0.5906127861590801
+AIM 3.0,Very Low,SSP1,FALSE,fossil_extraction_total,2040,0.4398418819125374
+AIM 3.0,Very Low,SSP1,FALSE,fossil_extraction_total,2045,0.3417963583602581
+AIM 3.0,Very Low,SSP1,FALSE,fossil_extraction_total,2050,0.25152600716036083
+AIM 3.0,Very Low,SSP1,FALSE,fossil_extraction_total,2055,0.176829789964495
+AIM 3.0,Very Low,SSP1,FALSE,fossil_extraction_total,2060,0.1683695294432955
+AIM 3.0,Low,SSP2,FALSE,fossil_extraction_total,2020,1
+AIM 3.0,Low,SSP2,FALSE,fossil_extraction_total,2025,1.097751394465441
+AIM 3.0,Low,SSP2,FALSE,fossil_extraction_total,2030,0.9218752319016327
+AIM 3.0,Low,SSP2,FALSE,fossil_extraction_total,2035,0.746168657637672
+AIM 3.0,Low,SSP2,FALSE,fossil_extraction_total,2040,0.7564011398429049
+AIM 3.0,Low,SSP2,FALSE,fossil_extraction_total,2045,0.6391983820796021
+AIM 3.0,Low,SSP2,FALSE,fossil_extraction_total,2050,0.5003505261384242
+AIM 3.0,Low,SSP2,FALSE,fossil_extraction_total,2055,0.3915298392468795
+AIM 3.0,Low,SSP2,FALSE,fossil_extraction_total,2060,0.339519268461116
+AIM 3.0,Low-to-Negative,SSP2,TRUE,fossil_extraction_total,2020,1
+AIM 3.0,Low-to-Negative,SSP2,TRUE,fossil_extraction_total,2025,1.0977602875841816
+AIM 3.0,Low-to-Negative,SSP2,TRUE,fossil_extraction_total,2030,0.9663437456006233
+AIM 3.0,Low-to-Negative,SSP2,TRUE,fossil_extraction_total,2035,0.9945759301032496
+AIM 3.0,Low-to-Negative,SSP2,TRUE,fossil_extraction_total,2040,0.7017296302722948
+AIM 3.0,Low-to-Negative,SSP2,TRUE,fossil_extraction_total,2045,0.5667743797765636
+AIM 3.0,Low-to-Negative,SSP2,TRUE,fossil_extraction_total,2050,0.451219057035565
+AIM 3.0,Low-to-Negative,SSP2,TRUE,fossil_extraction_total,2055,0.3727067857076599
+AIM 3.0,Low-to-Negative,SSP2,TRUE,fossil_extraction_total,2060,0.3201469350873
+AIM 3.0,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2020,1
+AIM 3.0,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2025,1.097742399990921
+AIM 3.0,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2030,0.9692446629597248
+AIM 3.0,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2035,1.0008330361581779
+AIM 3.0,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2040,1.010960198025593
+AIM 3.0,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2045,1.022002019190604
+AIM 3.0,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2050,0.9696763489751495
+AIM 3.0,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2055,0.9467062007833202
+AIM 3.0,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2060,0.878196451619521
+AIM 3.0,Medium,SSP2,FALSE,fossil_extraction_total,2020,1
+AIM 3.0,Medium,SSP2,FALSE,fossil_extraction_total,2025,1.0977652375621645
+AIM 3.0,Medium,SSP2,FALSE,fossil_extraction_total,2030,0.9642950820387598
+AIM 3.0,Medium,SSP2,FALSE,fossil_extraction_total,2035,0.991824710480318
+AIM 3.0,Medium,SSP2,FALSE,fossil_extraction_total,2040,0.9890954678467854
+AIM 3.0,Medium,SSP2,FALSE,fossil_extraction_total,2045,0.9985222330603435
+AIM 3.0,Medium,SSP2,FALSE,fossil_extraction_total,2050,0.9385205746095548
+AIM 3.0,Medium,SSP2,FALSE,fossil_extraction_total,2055,0.9398556274944954
+AIM 3.0,Medium,SSP2,FALSE,fossil_extraction_total,2060,0.9593854130524441
+AIM 3.0,Very Low,SSP2,FALSE,fossil_extraction_total,2020,1
+AIM 3.0,Very Low,SSP2,FALSE,fossil_extraction_total,2025,1.0977548171157956
+AIM 3.0,Very Low,SSP2,FALSE,fossil_extraction_total,2030,0.8882773094296459
+AIM 3.0,Very Low,SSP2,FALSE,fossil_extraction_total,2035,0.4571261580512896
+AIM 3.0,Very Low,SSP2,FALSE,fossil_extraction_total,2040,0.383824940641994
+AIM 3.0,Very Low,SSP2,FALSE,fossil_extraction_total,2045,0.31407047185004267
+AIM 3.0,Very Low,SSP2,FALSE,fossil_extraction_total,2050,0.28346969833540053
+AIM 3.0,Very Low,SSP2,FALSE,fossil_extraction_total,2055,0.23364302000264953
+AIM 3.0,Very Low,SSP2,FALSE,fossil_extraction_total,2060,0.18062708331378197
+AIM 3.0,High,SSP3,FALSE,fossil_extraction_total,2020,1
+AIM 3.0,High,SSP3,FALSE,fossil_extraction_total,2025,1.0967067498371543
+AIM 3.0,High,SSP3,FALSE,fossil_extraction_total,2030,0.9851938492827692
+AIM 3.0,High,SSP3,FALSE,fossil_extraction_total,2035,1.0331457014700314
+AIM 3.0,High,SSP3,FALSE,fossil_extraction_total,2040,1.0351079256004565
+AIM 3.0,High,SSP3,FALSE,fossil_extraction_total,2045,1.042397090705949
+AIM 3.0,High,SSP3,FALSE,fossil_extraction_total,2050,1.0252880761933028
+AIM 3.0,High,SSP3,FALSE,fossil_extraction_total,2055,1.0026275734824788
+AIM 3.0,High,SSP3,FALSE,fossil_extraction_total,2060,1.0148650698136739
+AIM 3.0,High,SSP5,FALSE,fossil_extraction_total,2020,1
+AIM 3.0,High,SSP5,FALSE,fossil_extraction_total,2025,1.096852110558444
+AIM 3.0,High,SSP5,FALSE,fossil_extraction_total,2030,0.9759284305548827
+AIM 3.0,High,SSP5,FALSE,fossil_extraction_total,2035,1.0520801828471273
+AIM 3.0,High,SSP5,FALSE,fossil_extraction_total,2040,1.0971336085467154
+AIM 3.0,High,SSP5,FALSE,fossil_extraction_total,2045,1.1616575299839
+AIM 3.0,High,SSP5,FALSE,fossil_extraction_total,2050,1.2215103305397386
+AIM 3.0,High,SSP5,FALSE,fossil_extraction_total,2055,1.2867227218629669
+AIM 3.0,High,SSP5,FALSE,fossil_extraction_total,2060,1.372536838048752
+GCAM 8s,Low,SSP2,FALSE,fossil_extraction_total,2020,1
+GCAM 8s,Low,SSP2,FALSE,fossil_extraction_total,2025,1.071811258294072
+GCAM 8s,Low,SSP2,FALSE,fossil_extraction_total,2030,1.0546056703854116
+GCAM 8s,Low,SSP2,FALSE,fossil_extraction_total,2035,0.8355911149489204
+GCAM 8s,Low,SSP2,FALSE,fossil_extraction_total,2040,0.6970644411138471
+GCAM 8s,Low,SSP2,FALSE,fossil_extraction_total,2045,0.5817659429665255
+GCAM 8s,Low,SSP2,FALSE,fossil_extraction_total,2050,0.6685176336667261
+GCAM 8s,Low,SSP2,FALSE,fossil_extraction_total,2055,0.8615156750878697
+GCAM 8s,Low,SSP2,FALSE,fossil_extraction_total,2060,0.8684014789717639
+GCAM 8s,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2020,1
+GCAM 8s,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2025,1.0573501944679975
+GCAM 8s,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2030,1.0576730426336405
+GCAM 8s,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2035,0.9173940325467329
+GCAM 8s,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2040,0.6153518316424077
+GCAM 8s,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2045,0.4770173184830764
+GCAM 8s,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2050,0.45179685262116026
+GCAM 8s,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2055,0.6152218955400264
+GCAM 8s,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2060,0.624739982114723
+GCAM 8s,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2020,1
+GCAM 8s,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2025,1.0718086705374679
+GCAM 8s,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2030,0.9850010152859037
+GCAM 8s,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2035,1.0508159423749328
+GCAM 8s,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2040,1.2432865307663132
+GCAM 8s,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2045,1.0688562189154018
+GCAM 8s,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2050,1.2849806279242548
+GCAM 8s,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2055,2.0188938485014063
+GCAM 8s,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2060,1.4688465546157332
+GCAM 8s,Medium,SSP2,FALSE,fossil_extraction_total,2020,1
+GCAM 8s,Medium,SSP2,FALSE,fossil_extraction_total,2025,1.0718677853335652
+GCAM 8s,Medium,SSP2,FALSE,fossil_extraction_total,2030,0.9852964894711523
+GCAM 8s,Medium,SSP2,FALSE,fossil_extraction_total,2035,1.051259916968841
+GCAM 8s,Medium,SSP2,FALSE,fossil_extraction_total,2040,1.2455890429244383
+GCAM 8s,Medium,SSP2,FALSE,fossil_extraction_total,2045,1.4326426759642559
+GCAM 8s,Medium,SSP2,FALSE,fossil_extraction_total,2050,2.00261772497548
+GCAM 8s,Medium,SSP2,FALSE,fossil_extraction_total,2055,3.852269147430017
+GCAM 8s,Medium,SSP2,FALSE,fossil_extraction_total,2060,3.9370214008185593
+GCAM 8s,High,SSP3,TRUE,fossil_extraction_total,2020,1
+GCAM 8s,High,SSP3,TRUE,fossil_extraction_total,2025,1.0773084903903838
+GCAM 8s,High,SSP3,TRUE,fossil_extraction_total,2030,1.2093175427091944
+GCAM 8s,High,SSP3,TRUE,fossil_extraction_total,2035,1.399507769666825
+GCAM 8s,High,SSP3,TRUE,fossil_extraction_total,2040,1.6923506587829003
+GCAM 8s,High,SSP3,TRUE,fossil_extraction_total,2045,2.151230951942615
+GCAM 8s,High,SSP3,TRUE,fossil_extraction_total,2050,2.894669369826651
+GCAM 8s,High,SSP3,TRUE,fossil_extraction_total,2055,5.183302298455677
+GCAM 8s,High,SSP3,TRUE,fossil_extraction_total,2060,5.529754950229392
+GCAM 8s,High,SSP5,FALSE,fossil_extraction_total,2020,1
+GCAM 8s,High,SSP5,FALSE,fossil_extraction_total,2025,1.1141224744726062
+GCAM 8s,High,SSP5,FALSE,fossil_extraction_total,2030,1.2642068705796594
+GCAM 8s,High,SSP5,FALSE,fossil_extraction_total,2035,1.5241505742615595
+GCAM 8s,High,SSP5,FALSE,fossil_extraction_total,2040,2.0346744181313223
+GCAM 8s,High,SSP5,FALSE,fossil_extraction_total,2045,2.844091414976467
+GCAM 8s,High,SSP5,FALSE,fossil_extraction_total,2050,4.381158846313952
+GCAM 8s,High,SSP5,FALSE,fossil_extraction_total,2055,6.989590427365723
+GCAM 8s,High,SSP5,FALSE,fossil_extraction_total,2060,8.678632418884563
+GCAM 8s,High-to-Low,SSP5,FALSE,fossil_extraction_total,2020,1
+GCAM 8s,High-to-Low,SSP5,FALSE,fossil_extraction_total,2025,1.1141224744726062
+GCAM 8s,High-to-Low,SSP5,FALSE,fossil_extraction_total,2030,1.2642068705796594
+GCAM 8s,High-to-Low,SSP5,FALSE,fossil_extraction_total,2035,1.5241505742615595
+GCAM 8s,High-to-Low,SSP5,FALSE,fossil_extraction_total,2040,2.0346744181313223
+GCAM 8s,High-to-Low,SSP5,FALSE,fossil_extraction_total,2045,2.844091414976467
+GCAM 8s,High-to-Low,SSP5,FALSE,fossil_extraction_total,2050,4.381158846313952
+GCAM 8s,High-to-Low,SSP5,FALSE,fossil_extraction_total,2055,6.989590427365723
+GCAM 8s,High-to-Low,SSP5,FALSE,fossil_extraction_total,2060,8.678632418884563
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,fossil_extraction_total,2020,1
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,fossil_extraction_total,2025,0.965754874614414
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,fossil_extraction_total,2030,0.824233435434673
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,fossil_extraction_total,2035,0.7253299886199023
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,fossil_extraction_total,2040,0.6342222083392745
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,fossil_extraction_total,2045,0.5368511843115623
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,fossil_extraction_total,2050,0.4443802908091814
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,fossil_extraction_total,2055,0.35181836660786825
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,fossil_extraction_total,2060,0.2922226604606745
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,fossil_extraction_total,2020,1
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,fossil_extraction_total,2025,0.965754874614414
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,fossil_extraction_total,2030,0.8045154972962067
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,fossil_extraction_total,2035,0.583259202659146
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,fossil_extraction_total,2040,0.4344656202410104
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,fossil_extraction_total,2045,0.3488328122604739
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,fossil_extraction_total,2050,0.2740154763343679
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,fossil_extraction_total,2055,0.2031229962169043
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,fossil_extraction_total,2060,0.15666854327313584
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,fossil_extraction_total,2020,1
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,fossil_extraction_total,2025,0.9654628126966492
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,fossil_extraction_total,2030,0.894355383284723
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,fossil_extraction_total,2035,0.8283010847807436
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,fossil_extraction_total,2040,0.751792033915089
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,fossil_extraction_total,2045,0.6631078059258934
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,fossil_extraction_total,2050,0.5771660989522653
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,fossil_extraction_total,2055,0.48601790715182436
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,fossil_extraction_total,2060,0.42951327237920095
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2020,1
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2025,0.9654628126966492
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2030,0.9189367088692373
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2035,0.933407338640076
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2040,0.7706812490696655
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2045,0.6445143292756635
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2050,0.5246343998283998
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2055,0.40734129242070516
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2060,0.3286934241766558
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2020,1
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2025,0.9654628126966492
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2030,0.9189367088692373
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2035,0.933407338640076
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2040,0.9476920791830356
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2045,0.9233693236867955
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2050,0.9017070697492315
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2055,0.8826487493133084
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2060,0.8744083738801155
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,fossil_extraction_total,2020,1
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,fossil_extraction_total,2025,0.9715578871426576
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,fossil_extraction_total,2030,0.9231591466227256
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,fossil_extraction_total,2035,0.9508743276886528
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,fossil_extraction_total,2040,0.9702927157772396
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,fossil_extraction_total,2045,0.972515048138967
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,fossil_extraction_total,2050,0.9786967488554317
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,fossil_extraction_total,2055,0.9936816177602963
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,fossil_extraction_total,2060,1.0333999966648084
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,fossil_extraction_total,2020,1
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,fossil_extraction_total,2025,0.9874004858860148
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,fossil_extraction_total,2030,0.7997048428779994
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,fossil_extraction_total,2035,0.5994908020160538
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,fossil_extraction_total,2040,0.4533126026869474
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,fossil_extraction_total,2045,0.35693113365652684
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,fossil_extraction_total,2050,0.2673737696012518
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,fossil_extraction_total,2055,0.19936627542993723
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,fossil_extraction_total,2060,0.15180717239282723
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,fossil_extraction_total,2020,1
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,fossil_extraction_total,2025,0.9581070651520491
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,fossil_extraction_total,2030,0.9663440883298999
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,fossil_extraction_total,2035,1.0319909941006637
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,fossil_extraction_total,2040,1.0873907262666846
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,fossil_extraction_total,2045,1.1114930435128476
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,fossil_extraction_total,2050,1.129399791450312
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,fossil_extraction_total,2055,1.167600450916056
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,fossil_extraction_total,2060,1.2191537588513233
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,fossil_extraction_total,2020,1
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,fossil_extraction_total,2025,0.9581070651520491
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,fossil_extraction_total,2030,0.9663440883298999
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,fossil_extraction_total,2035,1.0319909941006637
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,fossil_extraction_total,2040,1.0873907262666846
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,fossil_extraction_total,2045,1.1114930435128476
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,fossil_extraction_total,2050,1.129399791450312
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,fossil_extraction_total,2055,1.167600450916056
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,fossil_extraction_total,2060,1.2191537588513233
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,fossil_extraction_total,2020,1
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,fossil_extraction_total,2025,0.9714238643351529
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,fossil_extraction_total,2030,0.9398391636579603
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,fossil_extraction_total,2035,0.9171320133586812
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,fossil_extraction_total,2040,0.8228880063234059
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,fossil_extraction_total,2045,0.701969305857044
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,fossil_extraction_total,2050,0.5836300236068513
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,fossil_extraction_total,2055,0.4819209530339328
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,fossil_extraction_total,2060,0.40334822337007054
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,fossil_extraction_total,2020,1
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,fossil_extraction_total,2025,0.9852632521836142
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,fossil_extraction_total,2030,1.0367632893215957
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,fossil_extraction_total,2035,1.162862721424675
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,fossil_extraction_total,2040,1.2945633115035147
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,fossil_extraction_total,2045,1.3998324466373424
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,fossil_extraction_total,2050,1.5084948694894778
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,fossil_extraction_total,2055,1.607482971903869
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,fossil_extraction_total,2060,1.7047897498945555
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,fossil_extraction_total,2020,1
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,fossil_extraction_total,2025,0.9852632521836142
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,fossil_extraction_total,2030,0.9762954466826431
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,fossil_extraction_total,2035,1.0472002318516749
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,fossil_extraction_total,2040,0.9082778821434828
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,fossil_extraction_total,2045,0.7575842583124566
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,fossil_extraction_total,2050,0.6216151915648807
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,fossil_extraction_total,2055,0.5192789908960279
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,fossil_extraction_total,2060,0.4781579785238256
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,fossil_extraction_total,2020,1
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,fossil_extraction_total,2025,0.9852632521836142
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,fossil_extraction_total,2030,1.0367632893215957
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,fossil_extraction_total,2035,1.162862721424675
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,fossil_extraction_total,2040,1.2945633115035147
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,fossil_extraction_total,2045,1.3998324466373424
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,fossil_extraction_total,2050,1.5084948694894778
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,fossil_extraction_total,2055,1.607482971903869
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,fossil_extraction_total,2060,1.7047897498945555
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,fossil_extraction_total,2020,1
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,fossil_extraction_total,2025,1.030397737608654
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,fossil_extraction_total,2030,0.9740777890229094
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,fossil_extraction_total,2035,0.7926987979561965
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,fossil_extraction_total,2040,0.6346142467554295
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,fossil_extraction_total,2045,0.5196320717394902
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,fossil_extraction_total,2050,0.4430154862948473
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,fossil_extraction_total,2055,0.3792051859064371
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,fossil_extraction_total,2060,0.3207648407961273
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,fossil_extraction_total,2020,1
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,fossil_extraction_total,2025,1.030397737608654
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,fossil_extraction_total,2030,0.9939160870292821
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,fossil_extraction_total,2035,0.9120181173222458
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,fossil_extraction_total,2040,0.815699711182029
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,fossil_extraction_total,2045,0.7022243344737935
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,fossil_extraction_total,2050,0.5860511987021603
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,fossil_extraction_total,2055,0.5141766103091044
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,fossil_extraction_total,2060,0.44963576228107527
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,fossil_extraction_total,2020,1
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,fossil_extraction_total,2025,1.030397737608654
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,fossil_extraction_total,2030,0.9939160870292821
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,fossil_extraction_total,2035,0.9120181173222458
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,fossil_extraction_total,2040,0.815699711182029
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,fossil_extraction_total,2045,0.7223461084186864
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,fossil_extraction_total,2050,0.6577314630645565
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,fossil_extraction_total,2055,0.6118791110782564
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,fossil_extraction_total,2060,0.5707727442679884
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,fossil_extraction_total,2020,1
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,fossil_extraction_total,2025,1.030397737608654
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,fossil_extraction_total,2030,0.9451711801986702
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,fossil_extraction_total,2035,0.6321262372372283
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,fossil_extraction_total,2040,0.3755508510588242
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,fossil_extraction_total,2045,0.21339282417786246
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,fossil_extraction_total,2050,0.1285035861694894
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,fossil_extraction_total,2055,0.09040311551237523
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,fossil_extraction_total,2060,0.056247819976863046
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,fossil_extraction_total,2020,1
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,fossil_extraction_total,2025,1.030397737608654
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,fossil_extraction_total,2030,1.037640099154935
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,fossil_extraction_total,2035,1.0837661803487553
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,fossil_extraction_total,2040,1.1269907854356322
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,fossil_extraction_total,2045,1.1549634138752765
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,fossil_extraction_total,2050,1.174213068004834
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,fossil_extraction_total,2055,1.1705514433484565
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,fossil_extraction_total,2060,1.1685602768855912
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,fossil_extraction_total,2020,1
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,fossil_extraction_total,2025,1.030397737608654
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,fossil_extraction_total,2030,0.9750995285739366
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,fossil_extraction_total,2035,0.7986369546631346
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,fossil_extraction_total,2040,0.6125134158021794
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,fossil_extraction_total,2045,0.4794128583318583
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,fossil_extraction_total,2050,0.39148340197489
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,fossil_extraction_total,2055,0.3292125974453043
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,fossil_extraction_total,2060,0.2746964141416312
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2020,1
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2025,1.030397737608654
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2030,1.004227197032774
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2035,0.9257295341190015
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2040,0.7782142568298509
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2045,0.6422782550474325
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2050,0.5358799581926601
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2055,0.4490026724937541
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,fossil_extraction_total,2060,0.37130004267991135
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2020,1
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2025,1.030397737608654
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2030,1.004227197032774
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2035,0.9546554593570301
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2040,0.8942509468794154
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2045,0.8068079548830298
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2050,0.6883198969179314
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2055,0.6103416887263646
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2060,0.5500325747806706
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,fossil_extraction_total,2020,1
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,fossil_extraction_total,2025,1.030397737608654
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,fossil_extraction_total,2030,1.004227197032774
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,fossil_extraction_total,2035,0.9546554593570301
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,fossil_extraction_total,2040,0.8942509468794154
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,fossil_extraction_total,2045,0.8349678034830215
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,fossil_extraction_total,2050,0.799949709266513
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,fossil_extraction_total,2055,0.7782869958389211
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,fossil_extraction_total,2060,0.7707676310172947
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,fossil_extraction_total,2020,1
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,fossil_extraction_total,2025,1.030397737608654
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,fossil_extraction_total,2030,0.9481850747317406
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,fossil_extraction_total,2035,0.6508534790315167
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,fossil_extraction_total,2040,0.389520574007566
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,fossil_extraction_total,2045,0.23575441158494193
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,fossil_extraction_total,2050,0.1519598772300114
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,fossil_extraction_total,2055,0.12080713663013272
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,fossil_extraction_total,2060,0.09019252347494384
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,fossil_extraction_total,2020,1
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,fossil_extraction_total,2025,1.030397737608654
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,fossil_extraction_total,2030,1.0676268412836374
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,fossil_extraction_total,2035,1.1662825900494236
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,fossil_extraction_total,2040,1.2511918256153975
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,fossil_extraction_total,2045,1.3157798210523832
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,fossil_extraction_total,2050,1.378456073551309
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,fossil_extraction_total,2055,1.4224474116408514
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,fossil_extraction_total,2060,1.4890699265189824
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,fossil_extraction_total,2020,1
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,fossil_extraction_total,2025,1.030397737608654
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,fossil_extraction_total,2030,1.0369128859232897
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,fossil_extraction_total,2035,1.074102791956637
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,fossil_extraction_total,2040,1.0891869113892132
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,fossil_extraction_total,2045,1.0395164451241183
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,fossil_extraction_total,2050,0.9109333221265347
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,fossil_extraction_total,2055,0.7859743777103948
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,fossil_extraction_total,2060,0.6624586151154525
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,fossil_extraction_total,2020,1
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,fossil_extraction_total,2025,1.030397737608654
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,fossil_extraction_total,2030,1.0369128859232897
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,fossil_extraction_total,2035,1.074102791956637
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,fossil_extraction_total,2040,1.0891869113892132
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,fossil_extraction_total,2045,1.0853819249704484
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,fossil_extraction_total,2050,1.0887482120256309
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,fossil_extraction_total,2055,1.088203959393795
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,fossil_extraction_total,2060,1.1011174516814828
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,fossil_extraction_total,2020,1
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,fossil_extraction_total,2025,1.0216149965027048
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,fossil_extraction_total,2030,0.9741062090530517
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,fossil_extraction_total,2035,0.9792415927140536
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,fossil_extraction_total,2040,0.892533661518607
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,fossil_extraction_total,2045,0.6983946778210987
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,fossil_extraction_total,2050,0.5560023730918798
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,fossil_extraction_total,2055,0.4561066298882757
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,fossil_extraction_total,2060,0.41138281089437095
+WITCH 6.0,Low,SSP2,FALSE,fossil_extraction_total,2020,1
+WITCH 6.0,Low,SSP2,FALSE,fossil_extraction_total,2025,1.0216149965027048
+WITCH 6.0,Low,SSP2,FALSE,fossil_extraction_total,2030,0.9647021074373612
+WITCH 6.0,Low,SSP2,FALSE,fossil_extraction_total,2035,0.8981275264169898
+WITCH 6.0,Low,SSP2,FALSE,fossil_extraction_total,2040,0.7874779445078403
+WITCH 6.0,Low,SSP2,FALSE,fossil_extraction_total,2045,0.6289056107511722
+WITCH 6.0,Low,SSP2,FALSE,fossil_extraction_total,2050,0.5247789554186135
+WITCH 6.0,Low,SSP2,FALSE,fossil_extraction_total,2055,0.4829696873637868
+WITCH 6.0,Low,SSP2,FALSE,fossil_extraction_total,2060,0.4581612282843968
+WITCH 6.0,Very Low,SSP2,FALSE,fossil_extraction_total,2020,1
+WITCH 6.0,Very Low,SSP2,FALSE,fossil_extraction_total,2025,1.0216149965027048
+WITCH 6.0,Very Low,SSP2,FALSE,fossil_extraction_total,2030,0.9467257136593553
+WITCH 6.0,Very Low,SSP2,FALSE,fossil_extraction_total,2035,0.8288110972994698
+WITCH 6.0,Very Low,SSP2,FALSE,fossil_extraction_total,2040,0.4989650441474825
+WITCH 6.0,Very Low,SSP2,FALSE,fossil_extraction_total,2045,0.3679515023219882
+WITCH 6.0,Very Low,SSP2,FALSE,fossil_extraction_total,2050,0.34199920453534804
+WITCH 6.0,Very Low,SSP2,FALSE,fossil_extraction_total,2055,0.3128196321851623
+WITCH 6.0,Very Low,SSP2,FALSE,fossil_extraction_total,2060,0.29666843389194514
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2020,1
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2025,1.0216149965027048
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2030,1.0452222226661305
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2035,1.0497499555219296
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2040,1.0477718755658252
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2045,0.916610807788218
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2050,0.8881365777495995
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2055,0.8591585759684237
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,fossil_extraction_total,2060,0.8082169834107455
+WITCH 6.0,Medium,SSP2,FALSE,fossil_extraction_total,2020,1
+WITCH 6.0,Medium,SSP2,FALSE,fossil_extraction_total,2025,1.0216149965027048
+WITCH 6.0,Medium,SSP2,FALSE,fossil_extraction_total,2030,1.0452222226661305
+WITCH 6.0,Medium,SSP2,FALSE,fossil_extraction_total,2035,1.0497499555219296
+WITCH 6.0,Medium,SSP2,FALSE,fossil_extraction_total,2040,1.0477718755658252
+WITCH 6.0,Medium,SSP2,FALSE,fossil_extraction_total,2045,1.055469588123481
+WITCH 6.0,Medium,SSP2,FALSE,fossil_extraction_total,2050,1.0625323599960366
+WITCH 6.0,Medium,SSP2,FALSE,fossil_extraction_total,2055,1.0634529728658535
+WITCH 6.0,Medium,SSP2,FALSE,fossil_extraction_total,2060,1.0787114870148204
+WITCH 6.0,High,SSP5,FALSE,fossil_extraction_total,2020,1
+WITCH 6.0,High,SSP5,FALSE,fossil_extraction_total,2025,1.0216149965027048
+WITCH 6.0,High,SSP5,FALSE,fossil_extraction_total,2030,1.0645333674517934
+WITCH 6.0,High,SSP5,FALSE,fossil_extraction_total,2035,1.0851013335580015
+WITCH 6.0,High,SSP5,FALSE,fossil_extraction_total,2040,1.1256653462089021
+WITCH 6.0,High,SSP5,FALSE,fossil_extraction_total,2045,1.2027875674469197
+WITCH 6.0,High,SSP5,FALSE,fossil_extraction_total,2050,1.27269584343046
+WITCH 6.0,High,SSP5,FALSE,fossil_extraction_total,2055,1.331144206669111
+WITCH 6.0,High,SSP5,FALSE,fossil_extraction_total,2060,1.3934660620884225
+WITCH 6.0,High-to-Low,SSP5,TRUE,fossil_extraction_total,2020,1
+WITCH 6.0,High-to-Low,SSP5,TRUE,fossil_extraction_total,2025,1.0216149965027048
+WITCH 6.0,High-to-Low,SSP5,TRUE,fossil_extraction_total,2030,1.0645333674517934
+WITCH 6.0,High-to-Low,SSP5,TRUE,fossil_extraction_total,2035,1.0851013335580015
+WITCH 6.0,High-to-Low,SSP5,TRUE,fossil_extraction_total,2040,1.1256653462089021
+WITCH 6.0,High-to-Low,SSP5,TRUE,fossil_extraction_total,2045,1.2027875674469197
+WITCH 6.0,High-to-Low,SSP5,TRUE,fossil_extraction_total,2050,1.27269584343046
+WITCH 6.0,High-to-Low,SSP5,TRUE,fossil_extraction_total,2055,1.331144206669111
+WITCH 6.0,High-to-Low,SSP5,TRUE,fossil_extraction_total,2060,1.3934660620884225

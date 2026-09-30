@@ -1,43 +1,30 @@
-Global Material Consumption Study — Data Sources
-Input Datasets
+# Inputs: data sources and setup
 
+All raw inputs sit in this folder, in the sub-folders listed below. Files under ~50 MB are tracked in git. Larger files are not tracked: download them from the public link and save them under the exact path shown, then run `Rscript Scripts/00-RunAll.R` from the project root.
 
-1. Material Flow Data
+## Files needed by the pipeline
 
-Source: UNEP International Resource Panel (IRP) Global Material Flows Database
-URL: https://unep-irp.fineprint.global/mfa13
-Coverage: ~200 countries, 1970–2024, 13 aggregate / 22 standard / 78 detailed material categories
-Key indicators used:
+| Path (under `Inputs/`) | In git? | Source / download | Used by |
+|---|---|---|---|
+| `UNEP/mfa13_export.csv` | yes | UNEP IRP Global Material Flows Database, https://unep-irp.fineprint.global/mfa13 (export all countries, 1970-2024, 13-category detail, all flow indicators) | `01-PrepareData/01-Aggregate_UNEP.R` |
+| `UN/WPP2024_GEN_F01_DEMOGRAPHIC_INDICATORS_COMPACT.xlsx` | yes | UN World Population Prospects 2024, https://population.un.org/wpp/downloads/files/wpp2024/excel/ | `01-PrepareData/02-Aggregate_UN.R` |
+| `WorldBank/API_NY.GDP.MKTP.KD_DS2_en_excel_v2_753.xls` | yes | World Bank WDI, GDP (constant 2015 US$), https://data.worldbank.org/indicator/NY.GDP.MKTP.KD (Download > Excel) | `01-PrepareData/03-Aggregate_GDP.R`, `04-Simulation/01-Sampling.R` |
+| `MISO/miso2_global_data_v1.csv` | yes | MISO2 model data, https://zenodo.org/records/12794253 | `01-PrepareData/05_Aggregate_MISO.R` |
+| `MISO/SI_Wiedenhofer2024_globalStocks.xlsx` | yes | Supporting information of Wiedenhofer et al. (2024), https://onlinelibrary.wiley.com/doi/10.1111/jiec.13575 | `02-HistoricalStock/01b_UNEP_enduse_detail.R` |
+| `IIASA_SSP/ssp_basic_drivers_release_3.2_full.xlsx` | **no (60 MB)** | IIASA SSP Scenario Database v3.2, https://data.ece.iiasa.ac.at/ssp (Downloads > basic drivers release 3.2) | `03-SSP Trajectories/00_preprocess_ssp_drivers.R` |
+| `IIASA_SSP/2026-MIP-CMIP7/*.csv` (6 files) | yes | ScenarioMIP for CMIP7 IAM scenarios, IIASA Scenario Explorer, https://data.ece.iiasa.ac.at/ (TODO: add exact project link) | `03-SSP Trajectories/01_load_and_check.R`, `05_climate_figures.R`, `05-Figures/Figure 4 - Climate*.R` |
+| `MC_Assumptions.xlsx` | yes | project assumptions: Monte Carlo sampling bounds (Parameters, Stock_Bounds, Lifetimes sheets) | `04-Simulation/*`, figures |
+| `MatIntensity_Assumptions.xlsx` | yes | project assumptions: material-intensity bounds by material group | `04-Simulation/*`, figures |
+| `Recycling_Assumptions.xlsx` | yes | project assumptions: end-of-life recycling and downcycling rates | `04-Simulation/*`, figures |
+| `Dict_Countries.xlsx`, `Dict_Materials.xlsx` | yes | project dictionaries: country-to-region and material-category mappings | most scripts |
 
-DE — Domestic Extraction: materials physically extracted within national territory
-DMC — Domestic Material Consumption: DE + Imports − Exports; materials that enter and remain in the domestic economy (primary indicator for Kaya decomposition)
-DMI — Direct Material Input: DE + Imports (not used as primary; retained for sensitivity)
-Imports / Exports / PTB (Physical Trade Balance): used to assess trade-driven material flows
+Not used by the main pipeline: `UNDP/hdr-data.xlsx` (exploratory HDI figure), `WorldBank/API_NY.GDP.PCAP.PP.KD*`, `API_SP.URB*`, `CLASS_*` (alternatives and classification), `IIASA_SSP/2018_Quantification/`, `Cheng2025_*`/`Wang2023_*` (literature reference), and the `Temp/`, `MaterialFlows/`, `oldData/` and `99-Deprecated/` folders.
 
+## Citations
 
-Exclusion: Excavated earthen materials excluded from all analyses (negligible economic value; distorts mass-based indicators)
-Units: metric tonnes (t)
-Citation: Schandl, H. et al. (2024). Global material flows and resource productivity: The 2024 update. Journal of Industrial Ecology. https://doi.org/10.1111/jiec.13593
-
-2. Population Data
-
-Source: United Nations, Department of Economic and Social Affairs, Population Division
-Dataset: World Population Prospects 2024 — Total Population by Country (medium variant)
-URL: https://population.un.org/wpp/downloads/files/wpp2024/excel/
-File: WPP2024_GEN_F01_DEMOGRAPHIC_INDICATORS_COMPACT.xlsx
-Coverage: 1950–2100 (~240 countries and territories); historical data used for 1970–2024
-Units: Thousands of persons
-Citation: United Nations, Department of Economic and Social Affairs, Population Division (2024). World Population Prospects 2024. UN DESA/POP/2024/DC/NO. 1.
-
-3. GDP Data (primary)
-
-Source: World Bank, World Development Indicators
-Indicator: NY.GDP.MKTP.PP.KD — GDP, PPP (constant 2015 international USD)
-URL: https://data.worldbank.org/indicator/NY.GDP.MKTP.PP.KD
-Bulk download: https://api.worldbank.org/v2/en/indicator/NY.GDP.MKTP.PP.KD?downloadformat=csv
-Coverage: 1990–2024 for most countries; 1960+ for OECD countries
-Units: Constant 2015 international dollars, PPP-adjusted
-Note: PPP-adjusted GDP used (not nominal) to enable cross-country material intensity comparisons
-Citation: World Bank (2024). World Development Indicators. Washington, D.C.: The World Bank.
-
-Country classification: https://datahelpdesk.worldbank.org/knowledgebase/articles/906519
+1. **Material flows.** Schandl, H. et al. (2024). Global material flows and resource productivity: The 2024 update. *Journal of Industrial Ecology*. https://doi.org/10.1111/jiec.13593. Indicators: DE (domestic extraction), DMC (domestic material consumption = DE + imports - exports; primary indicator), DMI, IMP, EXP, PTB. Excavated earthen materials are excluded from all analyses. Units: tonnes.
+2. **Population.** United Nations, DESA, Population Division (2024). World Population Prospects 2024. Medium variant; historical 1970-2024. Units: thousands of persons.
+3. **GDP.** World Bank (2024). World Development Indicators, NY.GDP.MKTP.KD, GDP in constant 2015 US$ (market exchange rates). Regional aggregates are built from World Bank regions with country corrections. Country classification: https://datahelpdesk.worldbank.org/knowledgebase/articles/906519
+4. **Material stocks (MISO2).** Wiedenhofer, D. et al. (2024). *Journal of Industrial Ecology*. https://doi.org/10.1111/jiec.13575. Data: https://zenodo.org/records/12794253
+5. **SSP drivers.** IIASA SSP Scenario Database, release 3.2 (population and GDP projections). https://data.ece.iiasa.ac.at/ssp
+6. **ScenarioMIP (CMIP7).** IAM scenario data (energy, capacity, food, regional, climate variables) from the IIASA Scenario Explorer.

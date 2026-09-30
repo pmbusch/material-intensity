@@ -1,0 +1,546 @@
+model,family,ssp,marker,region,year,metric,value
+AIM 3.0,Medium,SSP1,FALSE,World,2020,forestry_production_pc,0.38752116962267824
+AIM 3.0,Medium,SSP1,FALSE,World,2025,forestry_production_pc,0.36476803310795697
+AIM 3.0,Medium,SSP1,FALSE,World,2030,forestry_production_pc,0.3544391463444302
+AIM 3.0,Medium,SSP1,FALSE,World,2035,forestry_production_pc,0.3458983740266954
+AIM 3.0,Medium,SSP1,FALSE,World,2040,forestry_production_pc,0.33833699014576696
+AIM 3.0,Medium,SSP1,FALSE,World,2045,forestry_production_pc,0.33273674319695684
+AIM 3.0,Medium,SSP1,FALSE,World,2050,forestry_production_pc,0.32487526465489347
+AIM 3.0,Medium,SSP1,FALSE,World,2055,forestry_production_pc,0.3158421391519979
+AIM 3.0,Medium,SSP1,FALSE,World,2060,forestry_production_pc,0.3067802733606151
+AIM 3.0,Very Low,SSP1,FALSE,World,2020,forestry_production_pc,0.38752064006324544
+AIM 3.0,Very Low,SSP1,FALSE,World,2025,forestry_production_pc,0.36475247708890846
+AIM 3.0,Very Low,SSP1,FALSE,World,2030,forestry_production_pc,0.3555974100686479
+AIM 3.0,Very Low,SSP1,FALSE,World,2035,forestry_production_pc,0.35137687117998606
+AIM 3.0,Very Low,SSP1,FALSE,World,2040,forestry_production_pc,0.34702830652758
+AIM 3.0,Very Low,SSP1,FALSE,World,2045,forestry_production_pc,0.34208979967086767
+AIM 3.0,Very Low,SSP1,FALSE,World,2050,forestry_production_pc,0.3267973428802591
+AIM 3.0,Very Low,SSP1,FALSE,World,2055,forestry_production_pc,0.3058070316093683
+AIM 3.0,Very Low,SSP1,FALSE,World,2060,forestry_production_pc,0.29867682532210926
+AIM 3.0,Low,SSP2,FALSE,World,2020,forestry_production_pc,0.3875202525807336
+AIM 3.0,Low,SSP2,FALSE,World,2025,forestry_production_pc,0.3647527120367319
+AIM 3.0,Low,SSP2,FALSE,World,2030,forestry_production_pc,0.35499587447010983
+AIM 3.0,Low,SSP2,FALSE,World,2035,forestry_production_pc,0.3454513756820084
+AIM 3.0,Low,SSP2,FALSE,World,2040,forestry_production_pc,0.33496088263338986
+AIM 3.0,Low,SSP2,FALSE,World,2045,forestry_production_pc,0.3257572451770696
+AIM 3.0,Low,SSP2,FALSE,World,2050,forestry_production_pc,0.31289776928647994
+AIM 3.0,Low,SSP2,FALSE,World,2055,forestry_production_pc,0.30118236737383547
+AIM 3.0,Low,SSP2,FALSE,World,2060,forestry_production_pc,0.2903007146148918
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2020,forestry_production_pc,0.3875202525807336
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2025,forestry_production_pc,0.3647526502083573
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2030,forestry_production_pc,0.354367703559889
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2035,forestry_production_pc,0.34311556421054445
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2040,forestry_production_pc,0.34222884803042647
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2045,forestry_production_pc,0.3330261568519679
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2050,forestry_production_pc,0.3214668175775494
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2055,forestry_production_pc,0.3018534429203915
+AIM 3.0,Low-to-Negative,SSP2,TRUE,World,2060,forestry_production_pc,0.2895711443346102
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2020,forestry_production_pc,0.3875201621681475
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2025,forestry_production_pc,0.3647525636486328
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2030,forestry_production_pc,0.3546157999906479
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2035,forestry_production_pc,0.3433605487873972
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2040,forestry_production_pc,0.33238406597825626
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2045,forestry_production_pc,0.32391186416239515
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2050,forestry_production_pc,0.313399417286993
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2055,forestry_production_pc,0.3022144988135131
+AIM 3.0,Medium-to-Low,SSP2,FALSE,World,2060,forestry_production_pc,0.2912538134158588
+AIM 3.0,Medium,SSP2,FALSE,World,2020,forestry_production_pc,0.3875206013149942
+AIM 3.0,Medium,SSP2,FALSE,World,2025,forestry_production_pc,0.36475299644725506
+AIM 3.0,Medium,SSP2,FALSE,World,2030,forestry_production_pc,0.3545418752019083
+AIM 3.0,Medium,SSP2,FALSE,World,2035,forestry_production_pc,0.34315400235237314
+AIM 3.0,Medium,SSP2,FALSE,World,2040,forestry_production_pc,0.3322930776112301
+AIM 3.0,Medium,SSP2,FALSE,World,2045,forestry_production_pc,0.3238542840261059
+AIM 3.0,Medium,SSP2,FALSE,World,2050,forestry_production_pc,0.3132573687332875
+AIM 3.0,Medium,SSP2,FALSE,World,2055,forestry_production_pc,0.3022591568112525
+AIM 3.0,Medium,SSP2,FALSE,World,2060,forestry_production_pc,0.2915603552090605
+AIM 3.0,Very Low,SSP2,FALSE,World,2020,forestry_production_pc,0.38752014925206385
+AIM 3.0,Very Low,SSP2,FALSE,World,2025,forestry_production_pc,0.364752551282958
+AIM 3.0,Very Low,SSP2,FALSE,World,2030,forestry_production_pc,0.35876671483719147
+AIM 3.0,Very Low,SSP2,FALSE,World,2035,forestry_production_pc,0.3557346015809449
+AIM 3.0,Very Low,SSP2,FALSE,World,2040,forestry_production_pc,0.3469188133816316
+AIM 3.0,Very Low,SSP2,FALSE,World,2045,forestry_production_pc,0.3369506903644404
+AIM 3.0,Very Low,SSP2,FALSE,World,2050,forestry_production_pc,0.3156222162384061
+AIM 3.0,Very Low,SSP2,FALSE,World,2055,forestry_production_pc,0.29957143366165717
+AIM 3.0,Very Low,SSP2,FALSE,World,2060,forestry_production_pc,0.285460575692881
+AIM 3.0,High,SSP3,FALSE,World,2020,forestry_production_pc,0.3875181343430026
+AIM 3.0,High,SSP3,FALSE,World,2025,forestry_production_pc,0.36476187500184715
+AIM 3.0,High,SSP3,FALSE,World,2030,forestry_production_pc,0.3540594267012639
+AIM 3.0,High,SSP3,FALSE,World,2035,forestry_production_pc,0.3401653394790422
+AIM 3.0,High,SSP3,FALSE,World,2040,forestry_production_pc,0.32575061259793964
+AIM 3.0,High,SSP3,FALSE,World,2045,forestry_production_pc,0.31333877349560163
+AIM 3.0,High,SSP3,FALSE,World,2050,forestry_production_pc,0.2988205371913786
+AIM 3.0,High,SSP3,FALSE,World,2055,forestry_production_pc,0.2838399483210614
+AIM 3.0,High,SSP3,FALSE,World,2060,forestry_production_pc,0.2693712704743956
+AIM 3.0,High,SSP5,FALSE,World,2020,forestry_production_pc,0.3875231199513209
+AIM 3.0,High,SSP5,FALSE,World,2025,forestry_production_pc,0.3647736842213951
+AIM 3.0,High,SSP5,FALSE,World,2030,forestry_production_pc,0.3563752866005139
+AIM 3.0,High,SSP5,FALSE,World,2035,forestry_production_pc,0.34961530324785434
+AIM 3.0,High,SSP5,FALSE,World,2040,forestry_production_pc,0.3450247641502756
+AIM 3.0,High,SSP5,FALSE,World,2045,forestry_production_pc,0.34312354753685886
+AIM 3.0,High,SSP5,FALSE,World,2050,forestry_production_pc,0.338330500631501
+AIM 3.0,High,SSP5,FALSE,World,2055,forestry_production_pc,0.33212095060800934
+AIM 3.0,High,SSP5,FALSE,World,2060,forestry_production_pc,0.32574325742184634
+GCAM 8s,Low,SSP2,FALSE,World,2020,forestry_production_pc,0.5216230614907527
+GCAM 8s,Low,SSP2,FALSE,World,2025,forestry_production_pc,0.5112401121844828
+GCAM 8s,Low,SSP2,FALSE,World,2030,forestry_production_pc,0.4926524983028365
+GCAM 8s,Low,SSP2,FALSE,World,2035,forestry_production_pc,0.4855589640825082
+GCAM 8s,Low,SSP2,FALSE,World,2040,forestry_production_pc,0.4877301194097049
+GCAM 8s,Low,SSP2,FALSE,World,2045,forestry_production_pc,0.48259376052283925
+GCAM 8s,Low,SSP2,FALSE,World,2050,forestry_production_pc,0.4761959434019204
+GCAM 8s,Low,SSP2,FALSE,World,2055,forestry_production_pc,0.4698976876619397
+GCAM 8s,Low,SSP2,FALSE,World,2060,forestry_production_pc,0.4613406190484653
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2020,forestry_production_pc,0.5216230614907527
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2025,forestry_production_pc,0.5115877534010937
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2030,forestry_production_pc,0.49143952308324046
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2035,forestry_production_pc,0.48442545984338303
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2040,forestry_production_pc,0.49176551140289937
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2045,forestry_production_pc,0.49938929375212304
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2050,forestry_production_pc,0.4809305791011335
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2055,forestry_production_pc,0.4755368014735857
+GCAM 8s,Low-to-Negative,SSP2,FALSE,World,2060,forestry_production_pc,0.47057033818081745
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2020,forestry_production_pc,0.5216230614907527
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2025,forestry_production_pc,0.5112475436164329
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2030,forestry_production_pc,0.48759532553559953
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2035,forestry_production_pc,0.480951182847109
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2040,forestry_production_pc,0.47391818253922263
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2045,forestry_production_pc,0.46393284269511154
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2050,forestry_production_pc,0.4581772009751155
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2055,forestry_production_pc,0.4619520956276092
+GCAM 8s,Medium-to-Low,SSP2,FALSE,World,2060,forestry_production_pc,0.46018804041334765
+GCAM 8s,Medium,SSP2,FALSE,World,2020,forestry_production_pc,0.5216230614907527
+GCAM 8s,Medium,SSP2,FALSE,World,2025,forestry_production_pc,0.5112680823716682
+GCAM 8s,Medium,SSP2,FALSE,World,2030,forestry_production_pc,0.48798069223255863
+GCAM 8s,Medium,SSP2,FALSE,World,2035,forestry_production_pc,0.4816230580558693
+GCAM 8s,Medium,SSP2,FALSE,World,2040,forestry_production_pc,0.4751190528000462
+GCAM 8s,Medium,SSP2,FALSE,World,2045,forestry_production_pc,0.4635556709933986
+GCAM 8s,Medium,SSP2,FALSE,World,2050,forestry_production_pc,0.4545142054664935
+GCAM 8s,Medium,SSP2,FALSE,World,2055,forestry_production_pc,0.45442338165630114
+GCAM 8s,Medium,SSP2,FALSE,World,2060,forestry_production_pc,0.4504012513291328
+GCAM 8s,High,SSP3,TRUE,World,2020,forestry_production_pc,0.5216230614907527
+GCAM 8s,High,SSP3,TRUE,World,2025,forestry_production_pc,0.5175266610270868
+GCAM 8s,High,SSP3,TRUE,World,2030,forestry_production_pc,0.4977279910945038
+GCAM 8s,High,SSP3,TRUE,World,2035,forestry_production_pc,0.488324017142079
+GCAM 8s,High,SSP3,TRUE,World,2040,forestry_production_pc,0.4744508079686679
+GCAM 8s,High,SSP3,TRUE,World,2045,forestry_production_pc,0.4564816268445725
+GCAM 8s,High,SSP3,TRUE,World,2050,forestry_production_pc,0.4427175418624782
+GCAM 8s,High,SSP3,TRUE,World,2055,forestry_production_pc,0.4346598029258835
+GCAM 8s,High,SSP3,TRUE,World,2060,forestry_production_pc,0.41915312142584565
+GCAM 8s,High,SSP5,FALSE,World,2020,forestry_production_pc,0.5216230614907527
+GCAM 8s,High,SSP5,FALSE,World,2025,forestry_production_pc,0.51260082532161
+GCAM 8s,High,SSP5,FALSE,World,2030,forestry_production_pc,0.493859935988641
+GCAM 8s,High,SSP5,FALSE,World,2035,forestry_production_pc,0.4931539991498802
+GCAM 8s,High,SSP5,FALSE,World,2040,forestry_production_pc,0.4951674194316205
+GCAM 8s,High,SSP5,FALSE,World,2045,forestry_production_pc,0.4926568366969061
+GCAM 8s,High,SSP5,FALSE,World,2050,forestry_production_pc,0.4909824883243441
+GCAM 8s,High,SSP5,FALSE,World,2055,forestry_production_pc,0.4953396640671161
+GCAM 8s,High,SSP5,FALSE,World,2060,forestry_production_pc,0.4947549666676804
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2020,forestry_production_pc,0.5216230614907527
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2025,forestry_production_pc,0.51260082532161
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2030,forestry_production_pc,0.493859935988641
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2035,forestry_production_pc,0.4931539991498802
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2040,forestry_production_pc,0.4951674194316205
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2045,forestry_production_pc,0.4926568366969061
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2050,forestry_production_pc,0.4909824883243441
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2055,forestry_production_pc,0.4953396640671161
+GCAM 8s,High-to-Low,SSP5,FALSE,World,2060,forestry_production_pc,0.4947549666676804
+IMAGE 3.4,Low,SSP1,FALSE,World,2020,forestry_production_pc,0.459160328470063
+IMAGE 3.4,Low,SSP1,FALSE,World,2025,forestry_production_pc,0.4541319724050099
+IMAGE 3.4,Low,SSP1,FALSE,World,2030,forestry_production_pc,0.4381279372785678
+IMAGE 3.4,Low,SSP1,FALSE,World,2035,forestry_production_pc,0.3895721944932248
+IMAGE 3.4,Low,SSP1,FALSE,World,2040,forestry_production_pc,0.3424637697774112
+IMAGE 3.4,Low,SSP1,FALSE,World,2045,forestry_production_pc,0.315267739443671
+IMAGE 3.4,Low,SSP1,FALSE,World,2050,forestry_production_pc,0.2982081009033471
+IMAGE 3.4,Low,SSP1,FALSE,World,2060,forestry_production_pc,0.2945450134922437
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2020,forestry_production_pc,0.459160328470063
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2025,forestry_production_pc,0.4541307513138803
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2030,forestry_production_pc,0.4394172058466715
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2035,forestry_production_pc,0.3920806236628068
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2040,forestry_production_pc,0.3480485350088006
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2045,forestry_production_pc,0.31805779806872714
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2050,forestry_production_pc,0.2967775368481369
+IMAGE 3.4,Low-to-Negative,SSP1,FALSE,World,2060,forestry_production_pc,0.29178779476824285
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2020,forestry_production_pc,0.459160328470063
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2025,forestry_production_pc,0.4541307513138803
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2030,forestry_production_pc,0.4394175591031976
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2035,forestry_production_pc,0.3920962963401559
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2040,forestry_production_pc,0.3480546841537343
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2045,forestry_production_pc,0.31919027557000806
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2050,forestry_production_pc,0.29878123488872876
+IMAGE 3.4,Medium-to-Low,SSP1,FALSE,World,2060,forestry_production_pc,0.2944412097987727
+IMAGE 3.4,Medium,SSP1,FALSE,World,2020,forestry_production_pc,0.459160328470063
+IMAGE 3.4,Medium,SSP1,FALSE,World,2025,forestry_production_pc,0.4541307513138803
+IMAGE 3.4,Medium,SSP1,FALSE,World,2030,forestry_production_pc,0.43940837443351893
+IMAGE 3.4,Medium,SSP1,FALSE,World,2035,forestry_production_pc,0.39208874599924326
+IMAGE 3.4,Medium,SSP1,FALSE,World,2040,forestry_production_pc,0.3480954921155668
+IMAGE 3.4,Medium,SSP1,FALSE,World,2045,forestry_production_pc,0.3195491932747922
+IMAGE 3.4,Medium,SSP1,FALSE,World,2050,forestry_production_pc,0.29968094710729015
+IMAGE 3.4,Medium,SSP1,FALSE,World,2060,forestry_production_pc,0.2958592538628804
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2020,forestry_production_pc,0.45916759945786495
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2025,forestry_production_pc,0.4541958354710875
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2030,forestry_production_pc,0.4389440776060431
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2035,forestry_production_pc,0.38561924782812074
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2040,forestry_production_pc,0.3327416362293819
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2045,forestry_production_pc,0.30355585545158814
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2050,forestry_production_pc,0.2876358335043238
+IMAGE 3.4,Very Low,SSP1,FALSE,World,2060,forestry_production_pc,0.27338104560525733
+IMAGE 3.4,Low,SSP2,FALSE,World,2020,forestry_production_pc,0.459160328470063
+IMAGE 3.4,Low,SSP2,FALSE,World,2025,forestry_production_pc,0.4541318502958969
+IMAGE 3.4,Low,SSP2,FALSE,World,2030,forestry_production_pc,0.4432755010793993
+IMAGE 3.4,Low,SSP2,FALSE,World,2035,forestry_production_pc,0.4085730410863377
+IMAGE 3.4,Low,SSP2,FALSE,World,2040,forestry_production_pc,0.3755408068313901
+IMAGE 3.4,Low,SSP2,FALSE,World,2045,forestry_production_pc,0.35220215606465605
+IMAGE 3.4,Low,SSP2,FALSE,World,2050,forestry_production_pc,0.33522966609118926
+IMAGE 3.4,Low,SSP2,FALSE,World,2060,forestry_production_pc,0.33903092165455606
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2020,forestry_production_pc,0.459160328470063
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2025,forestry_production_pc,0.4541306292047674
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2030,forestry_production_pc,0.4457018542974549
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2035,forestry_production_pc,0.4127580177111844
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2040,forestry_production_pc,0.3803256152924497
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2045,forestry_production_pc,0.3582856955120661
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2050,forestry_production_pc,0.3372684597526314
+IMAGE 3.4,Low-to-Negative,SSP2,FALSE,World,2060,forestry_production_pc,0.3359591347739931
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2020,forestry_production_pc,0.459160328470063
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2025,forestry_production_pc,0.4541306292047674
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2030,forestry_production_pc,0.4456859253518255
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2035,forestry_production_pc,0.41265160469934087
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2040,forestry_production_pc,0.3801908811655996
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2045,forestry_production_pc,0.360539098039618
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2050,forestry_production_pc,0.341906453629703
+IMAGE 3.4,Medium-to-Low,SSP2,FALSE,World,2060,forestry_production_pc,0.3393301509675633
+IMAGE 3.4,Medium,SSP2,TRUE,World,2020,forestry_production_pc,0.459160328470063
+IMAGE 3.4,Medium,SSP2,TRUE,World,2025,forestry_production_pc,0.4541306292047674
+IMAGE 3.4,Medium,SSP2,TRUE,World,2030,forestry_production_pc,0.4456776095052103
+IMAGE 3.4,Medium,SSP2,TRUE,World,2035,forestry_production_pc,0.41262926135220934
+IMAGE 3.4,Medium,SSP2,TRUE,World,2040,forestry_production_pc,0.3801464429244101
+IMAGE 3.4,Medium,SSP2,TRUE,World,2045,forestry_production_pc,0.3603722658080299
+IMAGE 3.4,Medium,SSP2,TRUE,World,2050,forestry_production_pc,0.3423664285302917
+IMAGE 3.4,Medium,SSP2,TRUE,World,2060,forestry_production_pc,0.3375518166249341
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2020,forestry_production_pc,0.45916759945786495
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2025,forestry_production_pc,0.4541958354710875
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2030,forestry_production_pc,0.44252953450062943
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2035,forestry_production_pc,0.3992393899351129
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2040,forestry_production_pc,0.34842190610975704
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2045,forestry_production_pc,0.3143994793954844
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2050,forestry_production_pc,0.2931872553938481
+IMAGE 3.4,Very Low,SSP2,FALSE,World,2060,forestry_production_pc,0.2831144361423086
+IMAGE 3.4,High,SSP3,FALSE,World,2020,forestry_production_pc,0.45916759945786495
+IMAGE 3.4,High,SSP3,FALSE,World,2025,forestry_production_pc,0.45417373372164194
+IMAGE 3.4,High,SSP3,FALSE,World,2030,forestry_production_pc,0.4479531741384517
+IMAGE 3.4,High,SSP3,FALSE,World,2035,forestry_production_pc,0.431116603092338
+IMAGE 3.4,High,SSP3,FALSE,World,2040,forestry_production_pc,0.4202851141783989
+IMAGE 3.4,High,SSP3,FALSE,World,2045,forestry_production_pc,0.4093248144937266
+IMAGE 3.4,High,SSP3,FALSE,World,2050,forestry_production_pc,0.38929888278299135
+IMAGE 3.4,High,SSP3,FALSE,World,2060,forestry_production_pc,0.3720836766610479
+IMAGE 3.4,High,SSP5,FALSE,World,2020,forestry_production_pc,0.45916759945786495
+IMAGE 3.4,High,SSP5,FALSE,World,2025,forestry_production_pc,0.45420987801907775
+IMAGE 3.4,High,SSP5,FALSE,World,2030,forestry_production_pc,0.45172978736518854
+IMAGE 3.4,High,SSP5,FALSE,World,2035,forestry_production_pc,0.4253796172129695
+IMAGE 3.4,High,SSP5,FALSE,World,2040,forestry_production_pc,0.39752276620064125
+IMAGE 3.4,High,SSP5,FALSE,World,2045,forestry_production_pc,0.3837342023369025
+IMAGE 3.4,High,SSP5,FALSE,World,2050,forestry_production_pc,0.37659113122344
+IMAGE 3.4,High,SSP5,FALSE,World,2060,forestry_production_pc,0.39199747101516896
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2020,forestry_production_pc,0.45916759945786495
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2025,forestry_production_pc,0.45420987801907775
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2030,forestry_production_pc,0.4517295518504923
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2035,forestry_production_pc,0.4253805325159368
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2040,forestry_production_pc,0.3975377504171777
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2045,forestry_production_pc,0.3837135759664727
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2050,forestry_production_pc,0.37659026598725065
+IMAGE 3.4,High-to-Low,SSP5,FALSE,World,2060,forestry_production_pc,0.3919916923893337
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2020,forestry_production_pc,0.48787683004322085
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2025,forestry_production_pc,0.4892502276082581
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2030,forestry_production_pc,0.4542707610702648
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2035,forestry_production_pc,0.4395664988477754
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2040,forestry_production_pc,0.4278559616735775
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2045,forestry_production_pc,0.4173464333867172
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2050,forestry_production_pc,0.4090219559071166
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2055,forestry_production_pc,0.4001105647531042
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP1,FALSE,World,2060,forestry_production_pc,0.3937081757424464
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2020,forestry_production_pc,0.48787683004322085
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2025,forestry_production_pc,0.4892502276082581
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2030,forestry_production_pc,0.45428183734804733
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2035,forestry_production_pc,0.4397530891128571
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2040,forestry_production_pc,0.4282102073780625
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2045,forestry_production_pc,0.41896609184618455
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2050,forestry_production_pc,0.4118730600870962
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2055,forestry_production_pc,0.4032415541486927
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP1,FALSE,World,2060,forestry_production_pc,0.3971351361605956
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2020,forestry_production_pc,0.48787683004322085
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2025,forestry_production_pc,0.4892502276082581
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2030,forestry_production_pc,0.4907608671131472
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2035,forestry_production_pc,0.4832834619443414
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2040,forestry_production_pc,0.4777236508394402
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2045,forestry_production_pc,0.470793471137068
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2050,forestry_production_pc,0.4660759219946127
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2055,forestry_production_pc,0.4620306999907699
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low,SSP2,TRUE,World,2060,forestry_production_pc,0.45994361197369577
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2020,forestry_production_pc,0.48787683004322085
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2025,forestry_production_pc,0.4892502276082581
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2030,forestry_production_pc,0.49064667637904735
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2035,forestry_production_pc,0.4830669113744525
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2040,forestry_production_pc,0.4774110071882224
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2045,forestry_production_pc,0.4708119699827438
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2050,forestry_production_pc,0.4664089538957764
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2055,forestry_production_pc,0.4628232128040308
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP2,FALSE,World,2060,forestry_production_pc,0.4611838224195909
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2020,forestry_production_pc,0.48787683004322085
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2025,forestry_production_pc,0.4892502276082581
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2030,forestry_production_pc,0.49064667637904735
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2035,forestry_production_pc,0.4800875088976584
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2040,forestry_production_pc,0.47164433111937054
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2045,forestry_production_pc,0.4620689037229375
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2050,forestry_production_pc,0.4548048385301115
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2055,forestry_production_pc,0.4459724530972036
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium-to-Low,SSP2,FALSE,World,2060,forestry_production_pc,0.43919012183593953
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2020,forestry_production_pc,0.48787683004322085
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2025,forestry_production_pc,0.4892502276082581
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2030,forestry_production_pc,0.4907461863673429
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2035,forestry_production_pc,0.4801329355747764
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2040,forestry_production_pc,0.4716394531391219
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2045,forestry_production_pc,0.462028824073716
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2050,forestry_production_pc,0.4547311719973589
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2055,forestry_production_pc,0.4456654506310017
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Medium,SSP2,FALSE,World,2060,forestry_production_pc,0.43865614469930175
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2020,forestry_production_pc,0.48787683004322085
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2025,forestry_production_pc,0.4892502276082581
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2030,forestry_production_pc,0.4470856760128486
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2035,forestry_production_pc,0.4290648738148899
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2040,forestry_production_pc,0.4135138201777598
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2045,forestry_production_pc,0.3997385123586443
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2050,forestry_production_pc,0.388239436872806
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2055,forestry_production_pc,0.3782218601054551
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Very Low,SSP2,FALSE,World,2060,forestry_production_pc,0.3700249371441184
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2020,forestry_production_pc,0.48787683004322085
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2025,forestry_production_pc,0.4892502276082581
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2030,forestry_production_pc,0.4890873659825334
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2035,forestry_production_pc,0.48799036235527576
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2040,forestry_production_pc,0.48683585698358767
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2045,forestry_production_pc,0.4755340537499851
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2050,forestry_production_pc,0.46615817752344874
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2055,forestry_production_pc,0.45436211049795416
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP3,FALSE,World,2060,forestry_production_pc,0.4433753650706925
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2020,forestry_production_pc,0.48787683004322085
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2025,forestry_production_pc,0.4892502276082581
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2030,forestry_production_pc,0.4890873659825334
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2035,forestry_production_pc,0.487988431703707
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2040,forestry_production_pc,0.48683216064289825
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2045,forestry_production_pc,0.4755191311494665
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2050,forestry_production_pc,0.4661327957546283
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2055,forestry_production_pc,0.4543624479918468
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP3,FALSE,World,2060,forestry_production_pc,0.4433998320347547
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2020,forestry_production_pc,0.48787683004322085
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2025,forestry_production_pc,0.4892502276082581
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2030,forestry_production_pc,0.45835706893783607
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2035,forestry_production_pc,0.44813917348358306
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2040,forestry_production_pc,0.43915657869157165
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2045,forestry_production_pc,0.4245917845428124
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2050,forestry_production_pc,0.4121481528166852
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2055,forestry_production_pc,0.4010174524335084
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP4,FALSE,World,2060,forestry_production_pc,0.3909862634140362
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2020,forestry_production_pc,0.48787683004322085
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2025,forestry_production_pc,0.4892502276082581
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2030,forestry_production_pc,0.46583618186722264
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2035,forestry_production_pc,0.4562185022019638
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2040,forestry_production_pc,0.44941589746771626
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2045,forestry_production_pc,0.4412072361210178
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2050,forestry_production_pc,0.4351887136071896
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2055,forestry_production_pc,0.4235838567236509
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High,SSP5,FALSE,World,2060,forestry_production_pc,0.4146486791483009
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2020,forestry_production_pc,0.48787683004322085
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2025,forestry_production_pc,0.4892502276082581
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2030,forestry_production_pc,0.46596833947815786
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2035,forestry_production_pc,0.4565866141997878
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2040,forestry_production_pc,0.4500100188591551
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2045,forestry_production_pc,0.4446867018627643
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2050,forestry_production_pc,0.44147475760971233
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2055,forestry_production_pc,0.4325633690853412
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,Low-to-Negative,SSP5,FALSE,World,2060,forestry_production_pc,0.42634782818651834
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2020,forestry_production_pc,0.48787683004322085
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2025,forestry_production_pc,0.4892502276082581
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2030,forestry_production_pc,0.465836231935846
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2035,forestry_production_pc,0.45622936404087694
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2040,forestry_production_pc,0.4494370846720244
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2045,forestry_production_pc,0.44125556291978313
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2050,forestry_production_pc,0.4352635071098776
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2055,forestry_production_pc,0.42370296387387313
+MESSAGEix-GLOBIOM-GAINS 2.1-M-R12,High-to-Low,SSP5,FALSE,World,2060,forestry_production_pc,0.4148123581727541
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2020,forestry_production_pc,0.4758242657023293
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2025,forestry_production_pc,0.46499874070752184
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2030,forestry_production_pc,0.450466817009642
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2035,forestry_production_pc,0.4316760034315658
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2040,forestry_production_pc,0.41389199049256015
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2045,forestry_production_pc,0.3979000362504616
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2050,forestry_production_pc,0.3843409407037629
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2055,forestry_production_pc,0.3726128543459761
+REMIND-MAgPIE 3.5-4.11,Low,SSP1,FALSE,World,2060,forestry_production_pc,0.3624517352105785
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2020,forestry_production_pc,0.4758242657023293
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2025,forestry_production_pc,0.46499874070752184
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2030,forestry_production_pc,0.450466817009642
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2035,forestry_production_pc,0.4316760034315658
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2040,forestry_production_pc,0.41389199049256015
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2045,forestry_production_pc,0.3979000362504616
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2050,forestry_production_pc,0.3843409407037629
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2055,forestry_production_pc,0.3726128543459761
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP1,FALSE,World,2060,forestry_production_pc,0.3624517352105785
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2020,forestry_production_pc,0.4758242657023293
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2025,forestry_production_pc,0.46499874070752184
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2030,forestry_production_pc,0.450466817009642
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2035,forestry_production_pc,0.4316760034315658
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2040,forestry_production_pc,0.41389199049256015
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2045,forestry_production_pc,0.3979000362504616
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2050,forestry_production_pc,0.3843409407037629
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2055,forestry_production_pc,0.3726128543459761
+REMIND-MAgPIE 3.5-4.11,Medium,SSP1,FALSE,World,2060,forestry_production_pc,0.3624517352105785
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2020,forestry_production_pc,0.4758242657023293
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2025,forestry_production_pc,0.46499874070752184
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2030,forestry_production_pc,0.450466817009642
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2035,forestry_production_pc,0.4316760034315658
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2040,forestry_production_pc,0.41389199049256015
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2045,forestry_production_pc,0.3979000362504616
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2050,forestry_production_pc,0.3843409407037629
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2055,forestry_production_pc,0.3726128543459761
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP1,TRUE,World,2060,forestry_production_pc,0.3624517352105785
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2020,forestry_production_pc,0.4758242657023293
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2025,forestry_production_pc,0.46499874070752184
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2030,forestry_production_pc,0.4507697525770046
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2035,forestry_production_pc,0.43530683039006873
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2040,forestry_production_pc,0.42133947263684846
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2045,forestry_production_pc,0.4082217313681637
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2050,forestry_production_pc,0.3961288558750161
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2055,forestry_production_pc,0.3846377201919576
+REMIND-MAgPIE 3.5-4.11,High,SSP2,FALSE,World,2060,forestry_production_pc,0.37396377146001875
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2020,forestry_production_pc,0.4758242657023293
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2025,forestry_production_pc,0.46499874070752184
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2030,forestry_production_pc,0.4507697525770046
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2035,forestry_production_pc,0.43530683039006873
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2040,forestry_production_pc,0.42133947263684846
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2045,forestry_production_pc,0.4082217313681637
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2050,forestry_production_pc,0.3961288558750161
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2055,forestry_production_pc,0.3846377201919576
+REMIND-MAgPIE 3.5-4.11,Low,SSP2,FALSE,World,2060,forestry_production_pc,0.37396377146001875
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2020,forestry_production_pc,0.4758242657023293
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2025,forestry_production_pc,0.46499874070752184
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2030,forestry_production_pc,0.4507697525770046
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2035,forestry_production_pc,0.43530683039006873
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2040,forestry_production_pc,0.42133947263684846
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2045,forestry_production_pc,0.4082217313681637
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2050,forestry_production_pc,0.3961288558750161
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2055,forestry_production_pc,0.3846377201919576
+REMIND-MAgPIE 3.5-4.11,Low-to-Negative,SSP2,FALSE,World,2060,forestry_production_pc,0.37396377146001875
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2020,forestry_production_pc,0.4758242657023293
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2025,forestry_production_pc,0.46499874070752184
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2030,forestry_production_pc,0.4507697525770046
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2035,forestry_production_pc,0.43530683039006873
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2040,forestry_production_pc,0.42133947263684846
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2045,forestry_production_pc,0.4082217313681637
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2050,forestry_production_pc,0.3961288558750161
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2055,forestry_production_pc,0.3846377201919576
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP2,FALSE,World,2060,forestry_production_pc,0.37396377146001875
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2020,forestry_production_pc,0.4758242657023293
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2025,forestry_production_pc,0.46499874070752184
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2030,forestry_production_pc,0.4507697525770046
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2035,forestry_production_pc,0.43530683039006873
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2040,forestry_production_pc,0.42133947263684846
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2045,forestry_production_pc,0.4082217313681637
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2050,forestry_production_pc,0.3961288558750161
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2055,forestry_production_pc,0.3846377201919576
+REMIND-MAgPIE 3.5-4.11,Medium,SSP2,FALSE,World,2060,forestry_production_pc,0.37396377146001875
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2020,forestry_production_pc,0.4758242657023293
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2025,forestry_production_pc,0.46499874070752184
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2030,forestry_production_pc,0.4507697525770046
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2035,forestry_production_pc,0.43530683039006873
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2040,forestry_production_pc,0.42133947263684846
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2045,forestry_production_pc,0.4082217313681637
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2050,forestry_production_pc,0.3961288558750161
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2055,forestry_production_pc,0.3846377201919576
+REMIND-MAgPIE 3.5-4.11,Very Low,SSP2,FALSE,World,2060,forestry_production_pc,0.37396377146001875
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2020,forestry_production_pc,0.4758242657023293
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2025,forestry_production_pc,0.46499874070752184
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2030,forestry_production_pc,0.4509342981753888
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2035,forestry_production_pc,0.43842214330428264
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2040,forestry_production_pc,0.42896543165080386
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2045,forestry_production_pc,0.4214008457366943
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2050,forestry_production_pc,0.4151053233359307
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2055,forestry_production_pc,0.4093166373018659
+REMIND-MAgPIE 3.5-4.11,High,SSP3,FALSE,World,2060,forestry_production_pc,0.4043281551934203
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2020,forestry_production_pc,0.4758242657023293
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2025,forestry_production_pc,0.46499874070752184
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2030,forestry_production_pc,0.4509342981753888
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2035,forestry_production_pc,0.43842214330428264
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2040,forestry_production_pc,0.42896543165080386
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2045,forestry_production_pc,0.4214008457366943
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2050,forestry_production_pc,0.4151053233359307
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2055,forestry_production_pc,0.4093166373018659
+REMIND-MAgPIE 3.5-4.11,Medium-to-Low,SSP3,FALSE,World,2060,forestry_production_pc,0.4043281551934203
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2020,forestry_production_pc,0.4758242657023293
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2025,forestry_production_pc,0.46499874070752184
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2030,forestry_production_pc,0.4509342981753888
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2035,forestry_production_pc,0.43842214330428264
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2040,forestry_production_pc,0.42896543165080386
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2045,forestry_production_pc,0.4214008457366943
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2050,forestry_production_pc,0.4151053233359307
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2055,forestry_production_pc,0.4093166373018659
+REMIND-MAgPIE 3.5-4.11,Medium,SSP3,FALSE,World,2060,forestry_production_pc,0.4043281551934203
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2020,forestry_production_pc,0.4874999973136144
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2025,forestry_production_pc,0.4961351456221771
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2030,forestry_production_pc,0.4624969732954768
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2035,forestry_production_pc,0.4543235423602629
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2040,forestry_production_pc,0.441534596146272
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2045,forestry_production_pc,0.4275325459286011
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2050,forestry_production_pc,0.4208424617440083
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2055,forestry_production_pc,0.4246892378431369
+WITCH 6.0,Low-to-Negative,SSP1,FALSE,World,2060,forestry_production_pc,0.431601208975478
+WITCH 6.0,Low,SSP2,FALSE,World,2020,forestry_production_pc,0.4874999973136144
+WITCH 6.0,Low,SSP2,FALSE,World,2025,forestry_production_pc,0.4961351456221771
+WITCH 6.0,Low,SSP2,FALSE,World,2030,forestry_production_pc,0.5100242481061397
+WITCH 6.0,Low,SSP2,FALSE,World,2035,forestry_production_pc,0.5095895898220684
+WITCH 6.0,Low,SSP2,FALSE,World,2040,forestry_production_pc,0.4989008398332868
+WITCH 6.0,Low,SSP2,FALSE,World,2045,forestry_production_pc,0.4925614218277093
+WITCH 6.0,Low,SSP2,FALSE,World,2050,forestry_production_pc,0.48959312405095945
+WITCH 6.0,Low,SSP2,FALSE,World,2055,forestry_production_pc,0.49762073953825353
+WITCH 6.0,Low,SSP2,FALSE,World,2060,forestry_production_pc,0.5008483013844788
+WITCH 6.0,Very Low,SSP2,FALSE,World,2020,forestry_production_pc,0.4874999973136144
+WITCH 6.0,Very Low,SSP2,FALSE,World,2025,forestry_production_pc,0.4961351456221771
+WITCH 6.0,Very Low,SSP2,FALSE,World,2030,forestry_production_pc,0.4617796213236408
+WITCH 6.0,Very Low,SSP2,FALSE,World,2035,forestry_production_pc,0.4498285068975355
+WITCH 6.0,Very Low,SSP2,FALSE,World,2040,forestry_production_pc,0.43634725490651793
+WITCH 6.0,Very Low,SSP2,FALSE,World,2045,forestry_production_pc,0.4158542127005928
+WITCH 6.0,Very Low,SSP2,FALSE,World,2050,forestry_production_pc,0.4069276516659572
+WITCH 6.0,Very Low,SSP2,FALSE,World,2055,forestry_production_pc,0.4048439347130229
+WITCH 6.0,Very Low,SSP2,FALSE,World,2060,forestry_production_pc,0.4018407549020138
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2020,forestry_production_pc,0.4874999973136144
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2025,forestry_production_pc,0.4961351456221771
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2030,forestry_production_pc,0.5095007643520393
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2035,forestry_production_pc,0.509617513710737
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2040,forestry_production_pc,0.5037912584557008
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2045,forestry_production_pc,0.4851234650686239
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2050,forestry_production_pc,0.4772708458901931
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2055,forestry_production_pc,0.47498940570433906
+WITCH 6.0,Medium-to-Low,SSP2,FALSE,World,2060,forestry_production_pc,0.4763672853728279
+WITCH 6.0,Medium,SSP2,FALSE,World,2020,forestry_production_pc,0.4874999973136144
+WITCH 6.0,Medium,SSP2,FALSE,World,2025,forestry_production_pc,0.4961351456221771
+WITCH 6.0,Medium,SSP2,FALSE,World,2030,forestry_production_pc,0.5094382101310702
+WITCH 6.0,Medium,SSP2,FALSE,World,2035,forestry_production_pc,0.5096918205925258
+WITCH 6.0,Medium,SSP2,FALSE,World,2040,forestry_production_pc,0.5038071090918139
+WITCH 6.0,Medium,SSP2,FALSE,World,2045,forestry_production_pc,0.48640324114305816
+WITCH 6.0,Medium,SSP2,FALSE,World,2050,forestry_production_pc,0.4765219884802276
+WITCH 6.0,Medium,SSP2,FALSE,World,2055,forestry_production_pc,0.4714196953326407
+WITCH 6.0,Medium,SSP2,FALSE,World,2060,forestry_production_pc,0.4691858364168752
+WITCH 6.0,High,SSP5,FALSE,World,2020,forestry_production_pc,0.4874999973136144
+WITCH 6.0,High,SSP5,FALSE,World,2025,forestry_production_pc,0.4961351456221771
+WITCH 6.0,High,SSP5,FALSE,World,2030,forestry_production_pc,0.4735023204171323
+WITCH 6.0,High,SSP5,FALSE,World,2035,forestry_production_pc,0.4683784109890774
+WITCH 6.0,High,SSP5,FALSE,World,2040,forestry_production_pc,0.4610962831569339
+WITCH 6.0,High,SSP5,FALSE,World,2045,forestry_production_pc,0.45101911269979295
+WITCH 6.0,High,SSP5,FALSE,World,2050,forestry_production_pc,0.44553023941309594
+WITCH 6.0,High,SSP5,FALSE,World,2055,forestry_production_pc,0.44107499215867496
+WITCH 6.0,High,SSP5,FALSE,World,2060,forestry_production_pc,0.4392811409216343
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2020,forestry_production_pc,0.4874999973136144
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2025,forestry_production_pc,0.4961351456221771
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2030,forestry_production_pc,0.4735023204171323
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2035,forestry_production_pc,0.4683784109890774
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2040,forestry_production_pc,0.4610962831569339
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2045,forestry_production_pc,0.45101911269979295
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2050,forestry_production_pc,0.44553023941309594
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2055,forestry_production_pc,0.44107499215867496
+WITCH 6.0,High-to-Low,SSP5,TRUE,World,2060,forestry_production_pc,0.4392811409216343

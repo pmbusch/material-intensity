@@ -4,12 +4,46 @@ If you identify any error in the source code or have any further suggestions ple
 
 # Organization
 
-* **Inputs**: Data inputs used in the analysis. 
-* **Figures**: PNG version of the figures of the article main body. 
-* **Scripts**: All code to process the data, run models and create figures. Each script starts with a description of the file purpose. Through the file there are several explanatory  comments.  
-* **Parameters**: Intermediate Results needed to run Optimization or re-create figures.
-* **Results**: Aggregated results stored to recreate tables and figures.
+* **Inputs**: raw data inputs and assumption workbooks (see [Inputs/README.md](Inputs/README.md)).
+* **Parameters**: intermediate datasets produced by the scripts and consumed downstream (see [Parameters/README.md](Parameters/README.md)).
+* **Results**: Monte Carlo and deterministic model outputs (`Results/MC/`).
+* **Figures**: main-text figures (`Figures/Fig1` to `Fig5`, `Table1_Results.html`). Running the pipeline also writes the supporting figures S01-S21 to `Figures/Supporting-Figures/` and SVG versions of all figures to `Figures/SVG/` (not tracked in git for now).
+* **Scripts**: all code, organised by pipeline stage. Each script starts with a description of its purpose.
+
+Folders or scripts prefixed `98` (exploratory) or `99` (deprecated), and `old/` folders, are not part of the main analysis and are not tracked in git.
+
+# Reproducing the analysis
+
+From the project root:
+
+```
+Rscript Scripts/00-RunAll.R        # full pipeline, each script in a fresh R process
+Rscript Scripts/00-RunAll.R 22     # resume from script #22 of the list
+```
+
+| Stage | Folder | What it does | Main outputs |
+|---|---|---|---|
+| 0 | `Scripts/00-*.R`, `00-Functions/` | Libraries, theme, palettes, shared constants, DSM functions | sourced by every script |
+| 1 | `01-PrepareData/` | Aggregate UNEP material flows, UN population, World Bank GDP and MISO2 stocks to regions | `Parameters/UNEP-Materials`, `UN-Population`, `Worldbank-GDP`, `MISO-Stock` |
+| 2 | `02-HistoricalStock/` | End-use split of DMC, ore-grade factor g, historical stock-flow model 1970-2024, secondary flows | `Parameters/Intermediate`, `Parameters/MISO-Stock` |
+| 3 | `03-SSP Trajectories/` | SSP population/GDP drivers and ScenarioMIP intensity ratios 2060/2025 | `Parameters/IIASA-Trajectories` |
+| 4 | `04-Simulation/` | Latin-hypercube sampling, Monte Carlo DSM runs, deterministic runs, diagnostics, decoupling classification | `Parameters/Simulation`, `Results/MC` |
+| 5 | `05-Figures/` | Main figures, Table 1 and supporting figures | `Figures/` |
+
+All model constants and Monte Carlo settings live in `Scripts/04-Simulation/00-Parameters.R` (`N_RUNS`, seed, sampling bounds read from `Inputs/MC_Assumptions.xlsx`). Colour palettes and the projection horizon live in `Scripts/00-CommonParameters.R`.
+
+# Figures
+
+| Figure | Script (`Scripts/05-Figures/`) |
+|---|---|
+| Fig1 - Historical Timeseries | `Figure 1 - HistoricalTimeseries.R` |
+| Fig2 - Assumptions | `Figure 2 - Assumptions.R` |
+| Fig3 - Contours-GrowthRate | `Figure 3 - Contours-GrowthRate.R` |
+| Fig4 - Climate | `Figure 4 - Climate - PrepareData.R`, then `Figure 4 - Climate.R` |
+| Fig5 - Sensitivity | `Figure 5 - Sensitivity - PrepareData.R`, then `Figure 5 - Sensitivity.R` |
+| Table 1 | `Table 1 - Results.R` |
+
+Supporting figures S01-S21 are written by the scripts in `Scripts/05-Figures/Supporting-Figures/` and by the pipeline scripts in stages 2-3. The header of each script names the figures it writes.
 
 # License
 This project is covered under the **MIT License**
-

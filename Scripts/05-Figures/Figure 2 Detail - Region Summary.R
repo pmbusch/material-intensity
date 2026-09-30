@@ -16,7 +16,7 @@
 ## =============================================================================
 
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
-source("Scripts/model_parameters.R", encoding = "UTF-8")
+source("Scripts/04-Simulation/00-Parameters.R", encoding = "UTF-8")
 library(patchwork)
 
 # ── Constants ----------------------------------------------------------------
@@ -43,10 +43,10 @@ FONT_BUMP <- theme(
 
 cat("A: Loading historical data\n")
 
-gdp_region_hist <- read_csv("Parameters/gdp_region.csv", show_col_types = FALSE) |> rename(region = Region)
-pop_region_hist <- read_csv("Parameters/population_region_historical.csv", show_col_types = FALSE) |>
+gdp_region_hist <- read_csv("Parameters/Worldbank-GDP/gdp_region.csv", show_col_types = FALSE) |> rename(region = Region)
+pop_region_hist <- read_csv("Parameters/UN-Population/population_region_historical.csv", show_col_types = FALSE) |>
   rename(region = Region)
-dmc_hist <- read_csv("Parameters/materials_region_DMC.csv", show_col_types = FALSE) |> rename(region = Region)
+dmc_hist <- read_csv("Parameters/UNEP-Materials/materials_region_DMC.csv", show_col_types = FALSE) |> rename(region = Region)
 flows_enduse_hist <- read_csv("Parameters/Intermediate/UNEP_flows_enduse.csv", show_col_types = FALSE) |>
   rename(region = Region)
 stock_enduse_hist <- read_csv("Parameters/Intermediate/stock_trajectory_1970_2024.csv", show_col_types = FALSE) |>
@@ -105,7 +105,7 @@ fossil_hist <- dmc_hist |>
 # ── SECTION D: Metal ores / Non-metallic minerals, M/G and S/G, by end-use --
 # Both M/G and S/G use the same 4 end-uses (buildings, civil_infrastructure,
 # machinery, short_lived -> ENDUSE_LABELS/PALETTE_ENDUSE, already defined in
-# model_parameters.R / 00-CommonParameters.R): M/G from UNEP_flows_enduse.csv
+# 04-Simulation/00-Parameters.R / 00-CommonParameters.R): M/G from UNEP_flows_enduse.csv
 # (flow_Mt), S/G from stock_trajectory_1970_2024.csv (stock_Mt).
 
 cat("D: 2024 M/G and S/G for metal ores / non-metallic minerals by end-use\n")

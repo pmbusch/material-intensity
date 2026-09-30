@@ -1,6 +1,6 @@
 ## =============================================================================
 ## Figure 2 Detail - Region.R
-## Region-level version of Figure 2 (see "Figure 2 - ProjectionMethod.R"):
+## Region-level version of Figure 2 (see "Figure 2 - Assumptions.R"):
 ## same eight-panel Kaya layout (population, GDP/cap, M/G biomass, M/G fossil,
 ## S/G metal, S/G non-metallic, total DMC, total stock), rebuilt per region
 ## using that region's own population/GDP as the denominator, instead of
@@ -13,7 +13,7 @@
 ## =============================================================================
 
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
-source("Scripts/model_parameters.R", encoding = "UTF-8")
+source("Scripts/04-Simulation/00-Parameters.R", encoding = "UTF-8")
 library(patchwork)
 
 # ── Constants ----------------------------------------------------------------
@@ -127,15 +127,16 @@ env_quantiles <- function(df, val_col, group_cols) {
 
 cat("A: Loading historical data\n")
 
-pop_region_hist <- read_csv("Parameters/population_region_historical.csv", show_col_types = FALSE) |>
+pop_region_hist <- read_csv("Parameters/UN-Population/population_region_historical.csv", show_col_types = FALSE) |>
   rename(region = Region)
-gdp_region_hist <- read_csv("Parameters/gdp_region.csv", show_col_types = FALSE) |> rename(region = Region)
-ssp_drivers <- read_csv("Parameters/IIASA/ssp_drivers.csv", show_col_types = FALSE)
-dmc_hist <- read_csv("Parameters/materials_region_DMC.csv", show_col_types = FALSE) |> rename(region = Region)
+gdp_region_hist <- read_csv("Parameters/Worldbank-GDP/gdp_region.csv", show_col_types = FALSE) |> rename(region = Region)
+ssp_drivers <- read_csv("Parameters/IIASA-Trajectories/ssp_drivers.csv", show_col_types = FALSE)
+dmc_hist <- read_csv("Parameters/UNEP-Materials/materials_region_DMC.csv", show_col_types = FALSE) |> rename(region = Region)
 stock_hist_raw <- read_csv("Parameters/Intermediate/stock_trajectory_1970_2024.csv", show_col_types = FALSE) |>
   rename(region = Region)
 stock_subenduse_hist <- read_csv("Parameters/Intermediate/stock_trajectory_subenduse.csv", show_col_types = FALSE) |>
   rename(region = Region)
+hist_flows_model <- read_csv("Results/MC/hist_flows_model_basis.csv", show_col_types = FALSE)
 
 
 # ── SECTION B: Load MC results -----------------------------------------------
@@ -147,7 +148,7 @@ results <- arrow::read_parquet("Results/MC/mc_results.parquet") |>
 cat("  Runs:", n_distinct(results$run_id), "| Years:", paste(range(results$year), collapse = "-"), "\n")
 
 run_ssp <- results |>
-  distinct(run_id, pop_ssp_lo, pop_ssp_hi, pop_ssp_share_lo, gdppc_ssp_lo, gdppc_ssp_hi, gdppc_ssp_share_lo)
+  distinct(run_id, ssp_lo, ssp_hi, ssp_share_lo)
 
 
 # ── SECTION C: 2024 regional GDP/population baselines ------------------------
@@ -174,23 +175,23 @@ gdppc_idx_region <- ssp_drivers |>
   dplyr::select(scenario, region, year, gdppc_idx = index)
 
 pop_idx_blend <- run_ssp |>
-  dplyr::select(run_id, pop_ssp_lo, pop_ssp_hi, pop_ssp_share_lo) |>
-  left_join(pop_idx_region |> rename(pop_ssp_lo = scenario), by = "pop_ssp_lo", relationship = "many-to-many") |>
+  dplyr::select(run_id, ssp_lo, ssp_hi, ssp_share_lo) |>
+  left_join(pop_idx_region |> rename(ssp_lo = scenario), by = "ssp_lo", relationship = "many-to-many") |>
   left_join(
-    pop_idx_region |> rename(pop_ssp_hi = scenario, pop_idx_hi = pop_idx),
-    by = c("pop_ssp_hi", "region", "year")
+    pop_idx_region |> rename(ssp_hi = scenario, pop_idx_hi = pop_idx),
+    by = c("ssp_hi", "region", "year")
   ) |>
-  mutate(pop_idx_blend = pop_ssp_share_lo * pop_idx + (1 - pop_ssp_share_lo) * pop_idx_hi) |>
+  mutate(pop_idx_blend = ssp_share_lo * pop_idx + (1 - ssp_share_lo) * pop_idx_hi) |>
   dplyr::select(run_id, region, year, pop_idx_blend)
 
 gdppc_idx_blend <- run_ssp |>
-  dplyr::select(run_id, gdppc_ssp_lo, gdppc_ssp_hi, gdppc_ssp_share_lo) |>
-  left_join(gdppc_idx_region |> rename(gdppc_ssp_lo = scenario), by = "gdppc_ssp_lo", relationship = "many-to-many") |>
+  dplyr::select(run_id, ssp_lo, ssp_hi, ssp_share_lo) |>
+  left_join(gdppc_idx_region |> rename(ssp_lo = scenario), by = "ssp_lo", relationship = "many-to-many") |>
   left_join(
-    gdppc_idx_region |> rename(gdppc_ssp_hi = scenario, gdppc_idx_hi = gdppc_idx),
-    by = c("gdppc_ssp_hi", "region", "year")
+    gdppc_idx_region |> rename(ssp_hi = scenario, gdppc_idx_hi = gdppc_idx),
+    by = c("ssp_hi", "region", "year")
   ) |>
-  mutate(gdppc_idx_blend = gdppc_ssp_share_lo * gdppc_idx + (1 - gdppc_ssp_share_lo) * gdppc_idx_hi) |>
+  mutate(gdppc_idx_blend = ssp_share_lo * gdppc_idx + (1 - ssp_share_lo) * gdppc_idx_hi) |>
   dplyr::select(run_id, region, year, gdppc_idx_blend)
 
 pop_by_run_region <- pop_idx_blend |>
@@ -330,7 +331,17 @@ dmc_total_hist <- dmc_hist |>
   ) |>
   filter(!is.na(mat_group), year <= HIST_END) |>
   group_by(region, year, mat_group) |>
-  summarise(DMC_Gt = sum(DMC_Mt, na.rm = TRUE) / 1e3, .groups = "drop")
+  summarise(DMC_Gt = sum(DMC_Mt, na.rm = TRUE) / 1e3, .groups = "drop") |>
+  # Metals/minerals: historical primary on the model basis (DSM inflow - secondary,
+  # 02-RunSimulations.R STEP 8) instead of UNEP DMC, so history meets the projection
+  filter(mat_group %in% c("Biomass", "Fossil fuels")) |>
+  bind_rows(
+    hist_flows_model |>
+      filter(year <= HIST_END) |>
+      mutate(mat_group = if_else(material == "Non-metallic minerals", "Non-metallic minerals", "Metal ores")) |>
+      group_by(region, year, mat_group) |>
+      summarise(DMC_Gt = sum(primary_Mt, na.rm = TRUE) / 1e3, .groups = "drop")
+  )
 
 # Stacking order fixed globally (world totals) so colour/order match Figure 2 across all regions
 mat_order <- dmc_total_hist |>
