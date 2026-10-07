@@ -223,11 +223,11 @@ x_minerals <- results_target |>
   dplyr::mutate(material = "Non-metallic minerals")
 
 # Shape (panel c, Metal ores): ore grade, High/Low, median split ------------
-# Fe and NonFe each have their own sampled 2050 target grade (grade_ore_fe_u,
-# grade_ore_nonfe_u, both in [0,1]); pooled per run as their simple average.
+# Fe and NonFe each have their own sampled target grade draw (grade_ore_fe,
+# grade_ore_nonfe, both in [0,1]); pooled per run as their simple average.
 
 ore_grade_df <- mc_input_matrix |>
-  dplyr::transmute(run_id, grade_u = (grade_ore_fe_u + grade_ore_nonfe_u) / 2) |>
+  dplyr::transmute(run_id, grade_u = (grade_ore_fe + grade_ore_nonfe) / 2) |>
   dplyr::mutate(
     ore_grade = factor(
       dplyr::if_else(grade_u >= median(grade_u), "High ore grade", "Low ore grade"),
@@ -540,7 +540,11 @@ MC_POINT_LAYER <- if (SHOW_MC_POINTS) {
 # Smoothness of every panel's GAM-fitted contour surface (mgcv::gam(z_var ~
 # te(x_var, y_var, k = GAM_SMOOTH_K), ...) below) -- lower = smoother/coarser,
 # higher = more flexible and closer to following the raw MC scatter's noise.
-GAM_SMOOTH_K <- 8
+# Optional command-line override for the SI smoothness comparison, e.g.
+#   Rscript "Scripts/05-Figures/Figure 3 - Contours-GrowthRate.R" 5
+# (non-default K saves only the main figure, as S24_Fig3_SmoothK<K>.png)
+GAM_SMOOTH_K_DEFAULT <- 8L
+GAM_SMOOTH_K <- if (length(commandArgs(TRUE)) > 0) as.integer(commandArgs(TRUE)[1]) else GAM_SMOOTH_K_DEFAULT
 
 X_LAB_CONTOUR <- "GDP annual growth rate (2025-2060)"
 RECYC_LAB <- "Recycling rate (%)"
@@ -708,19 +712,32 @@ nonmet_region_2024 <- secondary_flows_region_2024 |>
 
 # World assumption-midpoint anchor (panels e/f) -- ore grade and lifetime have
 # no real 2024 empirical calibration anywhere in the live pipeline (no region
-# breakdown, no measured "now" value): GRADE_ORE_FE/NONFE_MIN/MAX (Inputs/
+# breakdown, no measured "now" value): GRADE_ORE_FE/NONFE_MIN/CENTRAL/MAX (Inputs/
 # MC_Assumptions.xlsx sheet "Parameters", loaded generically in
 # Scripts/04-Simulation/00-Parameters.R) and LIFETIME_SAMPLE_PARAMS' own
 # mean_life column (sheet "Lifetimes") both use their central assumption
 # value as the deterministic "now" anchor -- which for both metals' ore grade
-# is EXACTLY the range midpoint (u = 0.5 in the same u-space x_metal_grade
+# sits EXACTLY at u = 0.5 under semi-uniform sampling (same u-space x_metal_grade
 # below uses), so grade_u_star is hardcoded rather than recomputed; any
 # mass-weighted average of two values that are both 0.5 is still 0.5, so this
 # holds regardless of the Fe/NonFe mass weighting x_metal_grade applies.
 # The star therefore marks a central assumption, not a measurement -- flagged
 # as such in the plot (no "(2024)" label, unlike panels a-d).
 
-grade_u_star <- 0.5 # GRADE_ORE_FE/NONFE central assumption = exact range midpoint (u = 0.5)
+# UPDATE: the 2024 grade (GRADE_ORE_*_2024, 00-CommonParameters.R) is no longer
+# the central value; star = simple Fe/NonFe average of its semi-uniform u.
+grade_u_star <- mean(c(
+  dplyr::if_else(
+    GRADE_ORE_FE_2024 < GRADE_ORE_FE_CENTRAL,
+    0.5 * (GRADE_ORE_FE_2024 - GRADE_ORE_FE_MIN) / (GRADE_ORE_FE_CENTRAL - GRADE_ORE_FE_MIN),
+    0.5 + 0.5 * (GRADE_ORE_FE_2024 - GRADE_ORE_FE_CENTRAL) / (GRADE_ORE_FE_MAX - GRADE_ORE_FE_CENTRAL)
+  ),
+  dplyr::if_else(
+    GRADE_ORE_NONFE_2024 < GRADE_ORE_NONFE_CENTRAL,
+    0.5 * (GRADE_ORE_NONFE_2024 - GRADE_ORE_NONFE_MIN) / (GRADE_ORE_NONFE_CENTRAL - GRADE_ORE_NONFE_MIN),
+    0.5 + 0.5 * (GRADE_ORE_NONFE_2024 - GRADE_ORE_NONFE_CENTRAL) / (GRADE_ORE_NONFE_MAX - GRADE_ORE_NONFE_CENTRAL)
+  )
+))
 
 lifetime_star <- LIFETIME_SAMPLE_PARAMS |>
   dplyr::filter(super_category %in% c("buildings", "civil_infrastructure")) |>
@@ -752,7 +769,7 @@ region_points_all <- dplyr::bind_rows(biomass_region_2024, fossil_region_2024, m
 # dominant-metal classification used by panel c's point colour (further
 # below). (Panel e's ore grade used to be a Fe/NonFe mass-weighted average
 # built from this -- since panel e is now split into separate Ferrous/
-# Non-ferrous contour panels, each just uses its own grade_ore_*_u draw
+# Non-ferrous contour panels, each just uses its own grade_ore_* draw
 # directly; see panel_e_fe_contour_df/panel_e_nonfe_contour_df further down.)
 
 metal_mass_by_type <- results_target |>
@@ -764,21 +781,28 @@ metal_mass_by_type <- results_target |>
 
 # Y (panels c/d, replacing Fig3_dots's secondary-share axis): each run's targeted
 # recycling rate (metals) / downcycling rate (minerals), decoded from the same
-# mc_input_matrix u-columns and MIN/MAX bounds Scripts/04-Simulation/
+# mc_input_matrix columns and min/central/max values Scripts/04-Simulation/
 # 02-RunSimulations.R uses to build its recycling/downcycling endpoints
-# (RECYCLING_RATE_FE_MIN/MAX, RECYCLING_RATE_NONFE_MIN/MAX, DOWNCYCLING_MIN/MAX
-# -- all loaded via Scripts/04-Simulation/00-Parameters.R, sourced at the top
-# of this script). This is the plain u -> bound-scaled value (same approach as
-# ore_grade_df/lifetime_dr above), which is exactly the endpoint rate the
-# simulation applies to every region (shared absolute bounds) -- it shows where each
-# run's recycling ambition sits, without re-deriving the whole trajectory.
+# (RECYCLING_RATE_FE_*, RECYCLING_RATE_NONFE_*, DOWNCYCLING_* -- all loaded via
+# Scripts/04-Simulation/00-Parameters.R, sourced at the top of this script),
+# with the same semi-uniform mapping (u < 0.5: min..central, else central..max).
+# This is exactly the endpoint rate the simulation applies to every region
+# (shared global value) -- it shows where each run's recycling ambition sits,
+# without re-deriving the whole trajectory.
 
 x_metals_recyc <- mc_input_matrix |>
   dplyr::transmute(
     run_id,
-    recycling_fe = RECYCLING_RATE_FE_MIN + recycling_Fe_global * (RECYCLING_RATE_FE_MAX - RECYCLING_RATE_FE_MIN),
-    recycling_nonfe = RECYCLING_RATE_NONFE_MIN +
-      recycling_NonFe_global * (RECYCLING_RATE_NONFE_MAX - RECYCLING_RATE_NONFE_MIN),
+    recycling_fe = dplyr::if_else(
+      recycling_rate_fe < 0.5,
+      RECYCLING_RATE_FE_MIN + 2 * recycling_rate_fe * (RECYCLING_RATE_FE_CENTRAL - RECYCLING_RATE_FE_MIN),
+      RECYCLING_RATE_FE_CENTRAL + 2 * (recycling_rate_fe - 0.5) * (RECYCLING_RATE_FE_MAX - RECYCLING_RATE_FE_CENTRAL)
+    ),
+    recycling_nonfe = dplyr::if_else(
+      recycling_rate_nonfe < 0.5,
+      RECYCLING_RATE_NONFE_MIN + 2 * recycling_rate_nonfe * (RECYCLING_RATE_NONFE_CENTRAL - RECYCLING_RATE_NONFE_MIN),
+      RECYCLING_RATE_NONFE_CENTRAL + 2 * (recycling_rate_nonfe - 0.5) * (RECYCLING_RATE_NONFE_MAX - RECYCLING_RATE_NONFE_CENTRAL)
+    ),
     x = (recycling_fe + recycling_nonfe) / 2,
     material = "Metal ores"
   ) |>
@@ -787,9 +811,11 @@ x_metals_recyc <- mc_input_matrix |>
 x_minerals_downcyc <- mc_input_matrix |>
   dplyr::transmute(
     run_id,
-    downcycling_buildings = DOWNCYCLING_MIN + downcycling_buildings_global * (DOWNCYCLING_MAX - DOWNCYCLING_MIN),
-    downcycling_civil = DOWNCYCLING_MIN + downcycling_civil_infrastructure_global * (DOWNCYCLING_MAX - DOWNCYCLING_MIN),
-    x = (downcycling_buildings + downcycling_civil) / 2,
+    x = dplyr::if_else(
+      downcycling < 0.5,
+      DOWNCYCLING_MIN + 2 * downcycling * (DOWNCYCLING_CENTRAL - DOWNCYCLING_MIN),
+      DOWNCYCLING_CENTRAL + 2 * (downcycling - 0.5) * (DOWNCYCLING_MAX - DOWNCYCLING_CENTRAL)
+    ),
     material = "Non-metallic minerals"
   ) |>
   dplyr::select(run_id, x, material)
@@ -869,7 +895,7 @@ nonmet_civil_cagr <- results |>
 
 # Star anchors for the 4 new split panels -- ferrous/non-ferrous ore grade
 # each convert the shared u = 0.5 central-assumption midpoint into that
-# metal's OWN real-unit grade (GRADE_ORE_FE/NONFE_MIN/MAX, loaded via
+# metal's OWN real-unit grade (GRADE_ORE_FE/NONFE_CENTRAL, loaded via
 # Scripts/04-Simulation/00-Parameters.R) -- these differ a lot in real units
 # (~0.4 vs ~0.016 metal fraction) even though both sit at u = 0.5; buildings/
 # civil lifetime average LIFETIME_SAMPLE_PARAMS' own central "mean_life"
@@ -878,8 +904,8 @@ nonmet_civil_cagr <- results |>
 # each super_category's own sub_use rows still need averaging down to a
 # single anchor, same idea as the pooled lifetime_star above, just scoped to
 # one super_category instead of both).
-grade_fe_star <- GRADE_ORE_FE_MIN + grade_u_star * (GRADE_ORE_FE_MAX - GRADE_ORE_FE_MIN)
-grade_nonfe_star <- GRADE_ORE_NONFE_MIN + grade_u_star * (GRADE_ORE_NONFE_MAX - GRADE_ORE_NONFE_MIN)
+grade_fe_star <- GRADE_ORE_FE_2024 # 2024 baseline (00-CommonParameters.R)
+grade_nonfe_star <- GRADE_ORE_NONFE_2024
 buildings_lifetime_star <- LIFETIME_SAMPLE_PARAMS |>
   dplyr::filter(super_category == "buildings") |>
   dplyr::summarise(mean_life = mean(mean_life, na.rm = TRUE)) |>
@@ -929,12 +955,19 @@ star_df <- dplyr::bind_rows(
   )
 )
 
-# Y = the actual ore grade (real units, GRADE_ORE_*_MIN/MAX-scaled), not the
+# Y = the actual ore grade (real units, semi-uniform GRADE_ORE_*_MIN/CENTRAL/MAX), not the
 # raw [0,1] sampling index -- Fe and NonFe each get their own real-unit scale
 # rather than sharing the [0,1] u-space, since their real grades live on very
 # different magnitudes (~0.4 vs ~0.016 metal fraction).
 panel_e_fe_contour_df <- mc_input_matrix |>
-  dplyr::transmute(run_id, y_var = GRADE_ORE_FE_MIN + grade_ore_fe_u * (GRADE_ORE_FE_MAX - GRADE_ORE_FE_MIN)) |>
+  dplyr::transmute(
+    run_id,
+    y_var = dplyr::if_else(
+      grade_ore_fe < 0.5,
+      GRADE_ORE_FE_MIN + 2 * grade_ore_fe * (GRADE_ORE_FE_CENTRAL - GRADE_ORE_FE_MIN),
+      GRADE_ORE_FE_CENTRAL + 2 * (grade_ore_fe - 0.5) * (GRADE_ORE_FE_MAX - GRADE_ORE_FE_CENTRAL)
+    )
+  ) |>
   dplyr::inner_join(growth_decoupling_total |> dplyr::filter(material == "Metal ores"), by = "run_id") |>
   dplyr::rename(x_var = gdp_cagr) |>
   dplyr::inner_join(metal_fe_cagr, by = "run_id") |>
@@ -943,7 +976,11 @@ panel_e_fe_contour_df <- mc_input_matrix |>
 panel_e_nonfe_contour_df <- mc_input_matrix |>
   dplyr::transmute(
     run_id,
-    y_var = GRADE_ORE_NONFE_MIN + grade_ore_nonfe_u * (GRADE_ORE_NONFE_MAX - GRADE_ORE_NONFE_MIN)
+    y_var = dplyr::if_else(
+      grade_ore_nonfe < 0.5,
+      GRADE_ORE_NONFE_MIN + 2 * grade_ore_nonfe * (GRADE_ORE_NONFE_CENTRAL - GRADE_ORE_NONFE_MIN),
+      GRADE_ORE_NONFE_CENTRAL + 2 * (grade_ore_nonfe - 0.5) * (GRADE_ORE_NONFE_MAX - GRADE_ORE_NONFE_CENTRAL)
+    )
   ) |>
   dplyr::inner_join(growth_decoupling_total |> dplyr::filter(material == "Metal ores"), by = "run_id") |>
   dplyr::rename(x_var = gdp_cagr) |>
@@ -2602,15 +2639,20 @@ fig_main <- (p_a2 + p_b2 + p_metals_int + p_nonmet_int + p_c2 + p_d2_main) +
 # Main text: the compact 6-panel fig_main, capped at 18cm width (design
 # pre-prompt max) instead of the SI's 4-column ~34cm.
 
-fig3_si_png <- "Figures/Supporting-Figures/S17_GrowthDecoupling_Contours.png"
-fig3_si_svg <- "Figures/SVG/Supporting-Figures/S17_GrowthDecoupling_Contours.svg"
-ggsave(fig3_si_png, fig_contour, units = "cm", dpi = 600, width = 8.7 * 4.12, height = 8.7 * 3)
-ggsave(fig3_si_svg, fig_contour, units = "cm", width = 8.7 * 4.12, height = 8.7 * 3)
-clean_svg(fig3_si_svg)
-cat("  Saved:", fig3_si_png, ",", fig3_si_svg, "\n")
-
-fig3_png <- "Figures/Fig3 - Contours-GrowthRate.png"
-fig3_svg <- "Figures/SVG/Fig3 - Contours-GrowthRate.svg"
+if (GAM_SMOOTH_K == GAM_SMOOTH_K_DEFAULT) {
+  fig3_si_png <- "Figures/Supporting-Figures/S17_GrowthDecoupling_Contours.png"
+  fig3_si_svg <- "Figures/SVG/Supporting-Figures/S17_GrowthDecoupling_Contours.svg"
+  ggsave(fig3_si_png, fig_contour, units = "cm", dpi = 600, width = 8.7 * 4.12, height = 8.7 * 3)
+  ggsave(fig3_si_svg, fig_contour, units = "cm", width = 8.7 * 4.12, height = 8.7 * 3)
+  clean_svg(fig3_si_svg)
+  cat("  Saved:", fig3_si_png, ",", fig3_si_svg, "\n")
+  fig3_png <- "Figures/Fig3 - Contours-GrowthRate.png"
+  fig3_svg <- "Figures/SVG/Fig3 - Contours-GrowthRate.svg"
+} else {
+  # SI smoothness comparison: main figure only, at this K
+  fig3_png <- paste0("Figures/Supporting-Figures/S24_Fig3_SmoothK", GAM_SMOOTH_K, ".png")
+  fig3_svg <- paste0("Figures/SVG/Supporting-Figures/S24_Fig3_SmoothK", GAM_SMOOTH_K, ".svg")
+}
 ggsave(fig3_png, fig_main, units = "cm", dpi = 600, width = 18, height = 8.7 * 3)
 ggsave(fig3_svg, fig_main, units = "cm", width = 18, height = 8.7 * 3)
 clean_svg(fig3_svg)

@@ -32,6 +32,9 @@ DIST_FLOOR <- 1e-6 # guards a zero distance (run exactly on a scenario)
 
 CLIMATE_FILE <- "Inputs/IIASA_SSP/2026-MIP-CMIP7/climate_iamc_data-0e7dfab0-46ee-486b-b50d-4faf3de27da4.csv"
 TEMP_MEDIAN_VAR <- "Climate Assessment|Surface Temperature (GSAT)|Median [MAGICC v7.6.0a3]"
+# 33rd / 67th percentile of each scenario's warming (SI: bounds instead of median)
+TEMP_P33_VAR <- "Climate Assessment|Surface Temperature (GSAT)|33rd Percentile [MAGICC v7.6.0a3]"
+TEMP_P67_VAR <- "Climate Assessment|Surface Temperature (GSAT)|67th Percentile [MAGICC v7.6.0a3]"
 
 # ScenarioMIP /GDP variable -> MC flow material key (same map as 01-Sampling.R)
 FLOW_VAR_MAP <- c(
@@ -88,14 +91,17 @@ scen_u <- readr::read_csv("Parameters/IIASA-Trajectories/metrics_levels_raw.csv"
 # FIG_END median GSAT of every ScenarioMIP run
 scen_temp <- readr::read_csv(CLIMATE_FILE, col_types = readr::cols(.default = "c")) |>
   dplyr::distinct() |>
-  dplyr::filter(variable == TEMP_MEDIAN_VAR) |>
+  dplyr::filter(variable %in% c(TEMP_MEDIAN_VAR, TEMP_P33_VAR, TEMP_P67_VAR)) |>
   dplyr::mutate(
     scenario_clean = stringr::str_squish(stringr::str_remove(scenario, stringr::fixed("(Marker)"))),
     ssp = stringr::str_extract(scenario_clean, "SSP[1-5]"),
     family = stringr::str_squish(stringr::str_remove(scenario_clean, "-\\s*SSP[1-5]$")),
-    t_med = as.numeric(.data[[as.character(FIG_END)]])
+    stat = dplyr::case_when(variable == TEMP_MEDIAN_VAR ~ "t_med", variable == TEMP_P33_VAR ~ "t_p33", TRUE ~ "t_p67"),
+    value = as.numeric(.data[[as.character(FIG_END)]])
   ) |>
-  dplyr::select(model, family, ssp, t_med)
+  dplyr::select(model, family, ssp, stat, value) |>
+  tidyr::pivot_wider(names_from = stat, values_from = value) |>
+  dplyr::filter(!is.na(t_med))
 
 # Run temperature from nearest scenarios -------------------------------------
 
@@ -119,6 +125,8 @@ run_map <- run_scen_dist |>
   dplyr::summarise(
     ssp = ssp[1],
     t_nearest = t_med[1],
+    t_p33 = sum(t_p33 / pmax(dist, DIST_FLOOR)^IDW_POWER) / sum(1 / pmax(dist, DIST_FLOOR)^IDW_POWER),
+    t_p67 = sum(t_p67 / pmax(dist, DIST_FLOOR)^IDW_POWER) / sum(1 / pmax(dist, DIST_FLOOR)^IDW_POWER),
     t_med = sum(t_med / pmax(dist, DIST_FLOOR)^IDW_POWER) / sum(1 / pmax(dist, DIST_FLOOR)^IDW_POWER),
     model = model[1], family = family[1], dist = dist[1],
     .groups = "drop"

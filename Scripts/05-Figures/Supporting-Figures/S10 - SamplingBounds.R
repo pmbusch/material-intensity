@@ -11,8 +11,8 @@
 ##   Fossil fuel flow intensities (kg/$)
 ##   Metal ore stock intensities (4 panels, 2 rows)
 ##   Non-metallic mineral stock intensities
-##   Recycling / downcycling rates (one shared bar, regional 2024 points) +
-##     secondary factors + target years
+##   Recycling / downcycling endpoint rates (one shared bar, regional 2024 points) +
+##     non-metallic secondary room shares + target years (central value marked)
 ##   Ore grade (Fe, non-Fe) + mean lifetime + Weibull shape + region legend
 ##
 ## Input:  Parameters/Simulation/flow_ratio_bounds.csv, stock_ratio_bounds.csv (01-Sampling.R),
@@ -221,28 +221,27 @@ p_gdp <- p_pop +
   labs(x = "Thousand $ per person (PPP)", title = paste0("GDP per capita, ", FORECAST_END, " (range across SSPs)"))
 
 
-# Step 5: Recycling / downcycling -- one panel, 4 rows -------------------------
+# Step 5: Recovery rates -- one panel, 3 rows ----------------------------------
 
-# Absolute bounds shared by all regions (black bar); points = 2024 regional rates on the same row
+# Target-year endpoint bounds shared by all regions (black bar, black tick = central);
+# open circles = 2024 regional anchors on the same row
 recycling_raw <- readxl::read_excel(RECYCLING_FILE, sheet = "Recycling_EOL") |>
   dplyr::filter(!stringr::str_detect(Region, "—"))
 downcycling_raw <- readxl::read_excel(RECYCLING_FILE, sheet = "Downcycling") |>
   dplyr::filter(!stringr::str_detect(Region, "—"))
 
 RATE_VARS <- tibble::tribble(
-  ~var_label, ~lo, ~hi,
-  "Recycling rate, Fe", RECYCLING_RATE_FE_MIN, RECYCLING_RATE_FE_MAX,
-  "Recycling rate, non-Fe", RECYCLING_RATE_NONFE_MIN, RECYCLING_RATE_NONFE_MAX,
-  "Downcycling rate, buildings", DOWNCYCLING_MIN, DOWNCYCLING_MAX,
-  "Downcycling rate, civil infrastructure", DOWNCYCLING_MIN, DOWNCYCLING_MAX
+  ~var_label, ~lo, ~hi, ~central,
+  "Recycling rate, Fe", RECYCLING_RATE_FE_MIN, RECYCLING_RATE_FE_MAX, RECYCLING_RATE_FE_CENTRAL,
+  "Recycling rate, non-Fe", RECYCLING_RATE_NONFE_MIN, RECYCLING_RATE_NONFE_MAX, RECYCLING_RATE_NONFE_CENTRAL,
+  "Downcycling rate, construction minerals", DOWNCYCLING_MIN, DOWNCYCLING_MAX, DOWNCYCLING_CENTRAL
 )
 RATE_LEVELS <- rev(RATE_VARS$var_label)
 
 rate_now <- dplyr::bind_rows(
   recycling_raw |> dplyr::transmute(var_label = "Recycling rate, Fe", region = Region, now = Recycling_rate_Fe),
   recycling_raw |> dplyr::transmute(var_label = "Recycling rate, non-Fe", region = Region, now = Recycling_rate_NonFe),
-  downcycling_raw |> dplyr::transmute(var_label = "Downcycling rate, buildings", region = Region, now = Downcycling_Buildings),
-  downcycling_raw |> dplyr::transmute(var_label = "Downcycling rate, civil infrastructure", region = Region, now = Downcycling_Civil)
+  downcycling_raw |> dplyr::transmute(var_label = "Downcycling rate, construction minerals", region = Region, now = `Downcycling rate`)
 ) |>
   dplyr::mutate(var_label = factor(var_label, levels = RATE_LEVELS))
 
@@ -252,6 +251,13 @@ p_recyc <- ggplot() +
     aes(x = lo, xend = hi, y = var_label, yend = var_label),
     colour = "black",
     linewidth = 0.8
+  ) +
+  geom_point(
+    data = RATE_VARS |> dplyr::mutate(var_label = factor(var_label, levels = RATE_LEVELS)),
+    aes(x = central, y = var_label),
+    shape = "|",
+    colour = "black",
+    size = 2.5
   ) +
   geom_point(
     data = rate_now,
@@ -271,34 +277,35 @@ p_recyc <- ggplot() +
 
 # Step 6: Global scalars -------------------------------------------------------
 
-param_sheet <- readxl::read_excel("Inputs/MC_Assumptions.xlsx", sheet = "Parameters")
-param_central <- setNames(param_sheet$central_value, param_sheet$parameter_name)
-
+# Global scalars (MC_PARAMS, 00-Parameters.R): bar = min-max, open circle = central value
 scalar_data <- tibble::tribble(
   ~panel, ~item, ~lo, ~hi, ~now,
-  "Target years", "Intensity target year", TARGET_YEAR_MIN, TARGET_YEAR_MAX, NA_real_,
-  "Target years", "Recycling convergence year", RECYC_CONVERGENCE_YR_MIN, RECYC_CONVERGENCE_YR_MAX, NA_real_,
-  "Ore grade", "Fe", GRADE_ORE_FE_MIN, GRADE_ORE_FE_MAX, (GRADE_ORE_FE_MIN + GRADE_ORE_FE_MAX) / 2,
-  "Ore grade", "Non-Fe", GRADE_ORE_NONFE_MIN, GRADE_ORE_NONFE_MAX, (GRADE_ORE_NONFE_MIN + GRADE_ORE_NONFE_MAX) / 2,
-  "Secondary factors", "Same-sector efficiency, buildings", SUB_FACTOR_RECYCLING_SAME_MIN, SUB_FACTOR_RECYCLING_SAME_MAX, param_central[["SUB_FACTOR_RECYCLING_SAME"]],
-  "Secondary factors", "Same-sector efficiency, civil", SUB_FACTOR_RECYCLING_SAME_CIVIL_MIN, SUB_FACTOR_RECYCLING_SAME_CIVIL_MAX, param_central[["SUB_FACTOR_RECYCLING_SAME_CIVIL"]],
-  "Secondary factors", "Road aggregate efficiency", SUB_FACTOR_DOWNCYCLING_ROADS_MIN, SUB_FACTOR_DOWNCYCLING_ROADS_MAX, param_central[["SUB_FACTOR_DOWNCYCLING_ROADS"]],
-  "Secondary factors", "Max secondary share, roads", MAX_SECONDARY_ROADS_MIN, MAX_SECONDARY_ROADS_MAX, param_central[["MAX_SECONDARY_ROADS"]]
+  "Target years", "Intensity target year", TARGET_YEAR_MIN, TARGET_YEAR_MAX, TARGET_YEAR_CENTRAL,
+  "Target years", "Recycling convergence year", RECYC_CONVERGENCE_YR_MIN, RECYC_CONVERGENCE_YR_MAX, RECYC_CONVERGENCE_YR_CENTRAL,
+  "Ore grade", "Fe", GRADE_ORE_FE_MIN, GRADE_ORE_FE_MAX, GRADE_ORE_FE_CENTRAL,
+  "Ore grade", "Non-Fe", GRADE_ORE_NONFE_MIN, GRADE_ORE_NONFE_MAX, GRADE_ORE_NONFE_CENTRAL,
+  "Secondary room", "Max secondary share, buildings and civil", MAX_SECONDARY_BUILD_CIVIL_MIN, MAX_SECONDARY_BUILD_CIVIL_MAX, MAX_SECONDARY_BUILD_CIVIL_CENTRAL,
+  "Secondary room", "Max secondary share, roads", MAX_SECONDARY_ROADS_MIN, MAX_SECONDARY_ROADS_MAX, MAX_SECONDARY_ROADS_CENTRAL,
+  "Secondary room", "Concrete share, buildings", SHARE_CONCRETE_BUILDINGS_MIN, SHARE_CONCRETE_BUILDINGS_MAX, SHARE_CONCRETE_BUILDINGS_CENTRAL,
+  "Secondary room", "Concrete share, civil engineering", SHARE_CONCRETE_CIVIL_MIN, SHARE_CONCRETE_CIVIL_MAX, SHARE_CONCRETE_CIVIL_CENTRAL,
+  "Secondary room", "Aggregate share of concrete", SHARE_AGG_CONCRETE_MIN, SHARE_AGG_CONCRETE_MAX, SHARE_AGG_CONCRETE_CENTRAL,
+  "Secondary room", "Granular share, roads", SHARE_GRANULAR_ROAD_MIN, SHARE_GRANULAR_ROAD_MAX, SHARE_GRANULAR_ROAD_CENTRAL
 ) |>
   dplyr::mutate(item = factor(item, levels = rev(unique(item))))
 
-p_second <- ggplot(scalar_data |> dplyr::filter(panel == "Secondary factors", !is.na(item)) |> droplevels()) +
+p_second <- ggplot(scalar_data |> dplyr::filter(panel == "Secondary room", !is.na(item)) |> droplevels()) +
   geom_segment(aes(x = lo, xend = hi, y = item, yend = item), colour = "black", linewidth = 0.8) +
   geom_point(aes(x = now, y = item), shape = 21, fill = "white", stroke = 0.4, size = 1.0) +
   X_PCT +
   scale_y_discrete(labels = scales::label_wrap(22)) +
   coord_cartesian(clip = "off") +
-  labs(x = "Efficiency or share (%)", y = NULL, title = "Secondary material factors") +
+  labs(x = "Share of demand or material (%)", y = NULL, title = "Secondary room, non-metallic minerals") +
   THEME_ROW
 
 # Years: axis cannot start at 0; round the range out to the nearest decade, label every 10 years
 p_target <- ggplot(scalar_data |> dplyr::filter(panel == "Target years") |> droplevels()) +
   geom_segment(aes(x = lo, xend = hi, y = item, yend = item), colour = "black", linewidth = 0.8) +
+  geom_point(aes(x = now, y = item), shape = 21, fill = "white", stroke = 0.4, size = 1.0) +
   scale_x_continuous(
     limits = c(
       floor(min(TARGET_YEAR_MIN, RECYC_CONVERGENCE_YR_MIN) / 10) * 10,
@@ -407,13 +414,14 @@ wrap_plots(
   wrap_elements(full = row_rates),
   wrap_elements(full = row_life),
   ncol = 1,
-  heights = c(0.45, 1, 1, 0.9, 0.45, 1.3, 1.6)
+  heights = c(0.45, 1, 1, 0.9, 0.45, 1.6, 1.6)
 ) +
   plot_annotation(
     caption = paste0(
       "Bars: sampled min–max of the target-year value (one LHS draw per variable, shared by all regions, mapped into each\n",
-      "region's own bounds); black = one range for all regions. Open circles: current 2024 value (scalars: central value;\n",
-      "lifetimes: historical central value; target years: none). Flow intensities: ScenarioMIP R10 2060/2025 ratios,\n",
+      "region's own bounds); black = one range for all regions. Open circles: current 2024 value (scalars and target years:\n",
+      "central value; lifetimes: historical central value); black tick on recovery rates: central endpoint. Global scalars are\n",
+      "sampled with half of the draws on each side of the central value. Flow intensities: ScenarioMIP R10 2060/2025 ratios,\n",
       "GDP-weighted to model regions; SSP4 excluded (single ScenarioMIP run)."
     ),
     theme = theme(plot.caption = element_text(size = 7, hjust = 0, colour = "#666666"))

@@ -66,15 +66,15 @@ ENERGY_DENSITY_MJ_PER_KG <- c("Coal" = 25.8, "Petroleum" = 42.3, "Natural Gas" =
 
 # Panel d: 2060 world metric per material that splits runs into a Low / High
 # group; metals/minerals also require the run's sampled recovery rate (mean of
-# Fe/NonFe recycling, or of buildings/civil downcycling target rates):
+# Fe/NonFe recycling, or the shared downcycling target rate):
 #   Low  = metric < lo AND rate > low_rate_min;  High = metric > hi AND rate < high_rate_max
 DENSITY_GROUPS <- tibble::tribble(
   ~material               , ~metric_label              , ~unit   , ~lo , ~hi  , ~rate_label   , ~low_rate_min , ~high_rate_max ,
-  "Biomass"               , "biomass consumption"      , "t/cap" , 3   , 3.5  , NA_character_ , NA_real_      , NA_real_       ,
-  "Fossil fuels"          , "primary energy intensity" , "MJ/$"  , 3   , 6    , NA_character_ , NA_real_      , NA_real_       ,
-  "Metal ores"            , "metal stock intensity"    , "kg/$"  , 0.4 , 0.45 , "recycled"    , 0.70          , 0.30           ,
-  "Non-metallic minerals" , "mineral stock intensity"  , "kg/$"  , 12  , 16   , "downcycled"  , 0.60          , 0.40
-)
+  "Biomass"               , "biomass consumption"      , "t/cap" , 3.2  , 3.5  , NA_character_ , NA_real_      , NA_real_       ,
+  "Fossil fuels"          , "primary energy intensity" , "MJ/$"  , 3    , 6    , NA_character_ , NA_real_      , NA_real_       ,
+  "Metal ores"            , "metal stock intensity"    , "kg/$"  , 0.41 , 0.42 , "recycled"    , 0.55          , 0.45           ,
+  "Non-metallic minerals" , "mineral stock intensity"  , "kg/$"  , 14.5 , 15.5 , "downcycled"  , 0.55          , 0.45
+) # thresholds relaxed so each Low/High group holds >= ~150 runs
 SSP_GROWTH_YEARS <- FORECAST_END - 2024L # ssp_u bound window (2024->FORECAST_END)
 
 family_pal <- c(
@@ -119,6 +119,13 @@ growth_df <- decoupling |>
   dplyr::filter(variant_id == FIG_VARIANT_ID, material_group == "Total") |>
   dplyr::transmute(run_id, mat_cagr = mf_total_cagr, gdp_cagr = gdp_total_cagr) |>
   tidyr::drop_na(mat_cagr, gdp_cagr) |>
+  dplyr::left_join(run_dom, by = "run_id") |> # dominant SSP (panel b point colour)
+  # 2060 median warming per run: fossil-index bracket of emissions scenarios
+  # within each of the run's two SSPs, blended by the SSP weights (02-RunSimulations.R)
+  dplyr::left_join(
+    readr::read_csv("Results/MC/mc_power_run_link.csv", show_col_types = FALSE) |> dplyr::select(run_id, fossil_index_world, t_2060),
+    by = "run_id"
+  ) |>
   dplyr::mutate(
     abs_decouple = mat_cagr < 0,
     growth_bin = cut(mat_cagr, breaks = GROWTH_BIN_BREAKS, labels = GROWTH_BIN_LEVELS, right = FALSE)
@@ -205,27 +212,30 @@ bound_lkp_lifetime <- dplyr::bind_rows(
     dplyr::transmute(param = paste0("lifetime_k_", super_category), bound_min = k_min, bound_max = k_max, unit = "shape")
 )
 
-bound_lkp_scalar <- tibble::tribble(
-  ~param                                    , ~bound_min                          , ~bound_max                          , ~unit      ,
-  "target_year_u"                           , TARGET_YEAR_MIN                     , TARGET_YEAR_MAX                     , "year_abs" ,
-  "recyc_convergence_yr_global"             , RECYC_CONVERGENCE_YR_MIN            , RECYC_CONVERGENCE_YR_MAX            , "year_abs" ,
-  "grade_ore_fe_u"                          , GRADE_ORE_FE_MIN                    , GRADE_ORE_FE_MAX                    , "pct"      ,
-  "grade_ore_nonfe_u"                       , GRADE_ORE_NONFE_MIN                 , GRADE_ORE_NONFE_MAX                 , "pct"      ,
-  "recycling_Fe_global"                     , RECYCLING_RATE_FE_MIN               , RECYCLING_RATE_FE_MAX               , "pct"      ,
-  "recycling_NonFe_global"                  , RECYCLING_RATE_NONFE_MIN            , RECYCLING_RATE_NONFE_MAX            , "pct"      ,
-  "downcycling_buildings_global"            , DOWNCYCLING_MIN                     , DOWNCYCLING_MAX                     , "pct"      ,
-  "downcycling_civil_infrastructure_global" , DOWNCYCLING_MIN                     , DOWNCYCLING_MAX                     , "pct"      ,
-  "sub_factor_recycling_same"               , SUB_FACTOR_RECYCLING_SAME_MIN       , SUB_FACTOR_RECYCLING_SAME_MAX       , "pct"      ,
-  "sub_factor_recycling_same_civil"         , SUB_FACTOR_RECYCLING_SAME_CIVIL_MIN , SUB_FACTOR_RECYCLING_SAME_CIVIL_MAX , "pct"      ,
-  "max_secondary_roads"                     , MAX_SECONDARY_ROADS_MIN             , MAX_SECONDARY_ROADS_MAX             , "pct"      ,
-  "sub_factor_downcycling_roads"            , SUB_FACTOR_DOWNCYCLING_ROADS_MIN    , SUB_FACTOR_DOWNCYCLING_ROADS_MAX    , "pct"      ,
+# Global scalars (MC_PARAMS, 00-Parameters.R): min/central/max, sampled
+# semi-uniformly around the central value (STEP 4 applies the same mapping)
+bound_lkp_scalar <- dplyr::bind_rows(
+  MC_PARAMS |>
+    dplyr::transmute(
+      param = col,
+      bound_min = min,
+      bound_max = max,
+      bound_central = central,
+      unit = dplyr::if_else(col %in% c("target_year", "recyc_convergence_yr"), "year_abs", "pct")
+    ),
   # Population/GDP-per-capita: real-unit bound is the ANNUALIZED equivalent
   # growth rate (ratio^(1/SSP_GROWTH_YEARS) - 1), not the raw cumulative
   # 2024->FORECAST_END ratio -- so a lever regression coefficient here is
   # directly "growth-outcome pp per +1pp of population/GDP-per-capita annual
   # growth", matching every other lever's fixed real-unit delta convention
   # used in panel c (STEP 7 below).
-  "ssp_u"                                   , min(ssp_ratio_gdp_total$val)^(1 / SSP_GROWTH_YEARS) - 1 , max(ssp_ratio_gdp_total$val)^(1 / SSP_GROWTH_YEARS) - 1 , "pct_annual"
+  tibble::tibble(
+    param = "ssp_u",
+    bound_min = min(ssp_ratio_gdp_total$val)^(1 / SSP_GROWTH_YEARS) - 1,
+    bound_max = max(ssp_ratio_gdp_total$val)^(1 / SSP_GROWTH_YEARS) - 1,
+    bound_central = NA_real_,
+    unit = "pct_annual"
+  )
 )
 
 bound_lkp <- dplyr::bind_rows(bound_lkp_scalar, bound_lkp_intensity, bound_lkp_lifetime)
@@ -244,11 +254,19 @@ cat("  Parameters with real-value bounds:", nrow(bound_lkp), "of", n_feat, "\n\n
 
 cat("STEP 4: Rescale draws to real units\n")
 
+# Linear min..max, except global scalars with a central value: semi-uniform
+# (u < 0.5 -> min..central, else central..max), as in 02-RunSimulations.R
 real_matrix <- input_matrix
 for (p in feature_cols) {
   bmin <- bound_lkp$bound_min[bound_lkp$param == p]
   bmax <- bound_lkp$bound_max[bound_lkp$param == p]
-  real_matrix[[p]] <- bmin + real_matrix[[p]] * (bmax - bmin)
+  bcen <- bound_lkp$bound_central[bound_lkp$param == p]
+  u <- real_matrix[[p]]
+  if (is.na(bcen)) {
+    real_matrix[[p]] <- bmin + u * (bmax - bmin)
+  } else {
+    real_matrix[[p]] <- ifelse(u < 0.5, bmin + 2 * u * (bcen - bmin), bcen + 2 * (u - 0.5) * (bmax - bcen))
+  }
 }
 
 
@@ -258,7 +276,7 @@ cat("STEP 5: Display labels & family classification\n")
 
 label_map <- c(
   ssp_u = "SSP position",
-  target_year_u = "Intensity target year",
+  target_year = "Intensity target year",
   intensity_crops_global = "M/G: Crops",
   intensity_grazed_biomass_global = "M/G: Grazed biomass",
   intensity_wood_global = "M/G: Wood",
@@ -271,17 +289,18 @@ label_map <- c(
   intensity_civil_nonMetallic_global = "S/G: Infrastructure minerals",
   intensity_machinery_metalOres_global = "S/G: Machinery metal",
   intensity_sl_products_metalOres_global = "S/G: Short-lived metal",
-  recycling_Fe_global = "Recycling % - Fe",
-  recycling_NonFe_global = "Recycling % - NonFe",
-  grade_ore_fe_u = "Ore grade - Fe",
-  grade_ore_nonfe_u = "Ore grade - NonFe",
-  recyc_convergence_yr_global = "Recycling target year",
-  downcycling_buildings_global = "Downcycling: Buildings",
-  downcycling_civil_infrastructure_global = "Downcycling: Infrastructure",
-  sub_factor_recycling_same = "Recycling substitution factor",
-  sub_factor_recycling_same_civil = "Recycling substitution (civil)",
-  max_secondary_roads = "Max secondary roads",
-  sub_factor_downcycling_roads = "Downcycling substitution factor",
+  recycling_rate_fe = "Recycling % - Fe",
+  recycling_rate_nonfe = "Recycling % - NonFe",
+  grade_ore_fe = "Ore grade - Fe",
+  grade_ore_nonfe = "Ore grade - NonFe",
+  recyc_convergence_yr = "Recycling target year",
+  downcycling = "Downcycling %",
+  max_secondary_build_civil = "Max secondary: Buildings & civil",
+  max_secondary_roads = "Max secondary: Roads",
+  share_concrete_buildings = "Concrete share: Buildings",
+  share_concrete_civil = "Concrete share: Civil",
+  share_agg_concrete = "Aggregate share of concrete",
+  share_granular_road = "Granular share: Roads",
   lifetime_mean_buildings = "Lifetime Buildings",
   lifetime_mean_civil_infrastructure = "Lifetime Infrastructure",
   lifetime_mean_machinery = "Lifetime Machinery",
@@ -300,7 +319,7 @@ family_by_param <- tibble::tibble(param = feature_cols) |>
       param %in% c("ssp_u") ~ "Driver SSP",
       stringr::str_detect(param, "grade_ore") ~ "Mining",
       stringr::str_detect(param, "intensity|target_year") ~ "Intensity",
-      stringr::str_detect(param, "recyc|downcycl|sub_factor|max_secondary") ~ "Material recovery",
+      stringr::str_detect(param, "recyc|downcycl|max_secondary|^share_") ~ "Material recovery",
       stringr::str_detect(param, "lifetime") ~ "Lifetime",
       TRUE ~ "Other"
     ),
@@ -465,10 +484,10 @@ LEVER_META <- tibble::tribble(
   "intensity_sl_products_metalOres_global"     , "Short-lived"    , "sg_metal"  , "Metal stock (S/G)"   , 0.1         , "+0.1 kg/USD",
   "intensity_buildings_nonMetallic_global"     , "Buildings"      , "sg_mineral", "Mineral stock (S/G)" , 1.0         , "+1 kg/USD"  ,
   "intensity_civil_nonMetallic_global"        , "Infrastructure" , "sg_mineral", "Mineral stock (S/G)" , 1.0         , "+1 kg/USD"  ,
-  "recycling_Fe_global"                       , "Fe"             , "recycling" , "Recycling rate"      , 0.25        , "+25%"       ,
-  "recycling_NonFe_global"                    , "NonFe"          , "recycling" , "Recycling rate"      , 0.25        , "+25%"       ,
-  "grade_ore_fe_u"                            , "Fe"             , "ore_grade" , "Ore grade"            , 0.25        , "+25%"       ,
-  "grade_ore_nonfe_u"                         , "NonFe"          , "ore_grade" , "Ore grade"            , 0.01        , "+1%"        ,
+  "recycling_rate_fe"                         , "Fe"             , "recycling" , "Recycling rate"      , 0.25        , "+25%"       ,
+  "recycling_rate_nonfe"                      , "NonFe"          , "recycling" , "Recycling rate"      , 0.25        , "+25%"       ,
+  "grade_ore_fe"                              , "Fe"             , "ore_grade" , "Ore grade"            , 0.25        , "+25%"       ,
+  "grade_ore_nonfe"                           , "NonFe"          , "ore_grade" , "Ore grade"            , 0.01        , "+1%"        ,
   "lifetime_mean_buildings"                   , "Buildings"      , "lifetime"  , "Lifetime"             , 20          , "+20yr"      ,
   "lifetime_mean_civil_infrastructure"        , "Infrastructure" , "lifetime"  , "Lifetime"             , 20          , "+20yr"      ,
   "lifetime_mean_machinery"                   , "Machinery"      , "lifetime"  , "Lifetime"             , 5           , "+5yr"       ,
@@ -596,14 +615,12 @@ mat_by_run <- results_fig |>
   )
 
 # Sampled target recovery rates per run (real units): metals = mean Fe/NonFe
-# recycling, minerals = mean buildings/civil downcycling
-rate_by_run <- input_matrix |>
+# recycling, minerals = shared downcycling endpoint (real_matrix: semi-uniform mapped)
+rate_by_run <- real_matrix |>
   dplyr::transmute(
     run_id,
-    `Metal ores` = ((RECYCLING_RATE_FE_MIN + recycling_Fe_global * (RECYCLING_RATE_FE_MAX - RECYCLING_RATE_FE_MIN)) +
-      (RECYCLING_RATE_NONFE_MIN + recycling_NonFe_global * (RECYCLING_RATE_NONFE_MAX - RECYCLING_RATE_NONFE_MIN))) / 2,
-    `Non-metallic minerals` = DOWNCYCLING_MIN +
-      (downcycling_buildings_global + downcycling_civil_infrastructure_global) / 2 * (DOWNCYCLING_MAX - DOWNCYCLING_MIN)
+    `Metal ores` = (recycling_rate_fe + recycling_rate_nonfe) / 2,
+    `Non-metallic minerals` = downcycling
   ) |>
   tidyr::pivot_longer(-run_id, names_to = "material", values_to = "rate")
 
@@ -616,9 +633,12 @@ density_df <- mat_by_run |>
       metric < lo & (is.na(low_rate_min) | rate > low_rate_min) ~ "Low",
       metric > hi & (is.na(high_rate_max) | rate < high_rate_max) ~ "High",
       TRUE ~ NA_character_
-    )
+    ),
+    mg = primary_Mt * 1e9 / world_gdp # material consumption per GDP, kg/$ (Alt1 v2 panel c)
   ) |>
-  dplyr::select(run_id, material, percap_t, metric, grp)
+  # sampled target ore grades (real units), for the Alt1 v2 panel c metal groups
+  dplyr::left_join(real_matrix |> dplyr::select(run_id, grade_ore_fe, grade_ore_nonfe), by = "run_id") |>
+  dplyr::select(run_id, material, percap_t, metric, grp, mg, rate, grade_ore_fe, grade_ore_nonfe)
 
 # Reference lines: 2025 per-capita level (median across runs) held flat (0%/yr) or grown at 2.5%/yr to FORECAST_END
 density_lines <- mat_by_run |>

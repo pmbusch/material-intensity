@@ -33,7 +33,10 @@ ENDUSE_MAP <- c(
   "Residential" = "Buildings", "Non-residential" = "Buildings",
   "Roads" = "Civil infrastructure", "Civil engineering" = "Civil infrastructure",
   "Machinery" = "Machinery", "Vehicles" = "Machinery",
-  "Durables" = "Short-lived products", "Packaging" = "Short-lived products"
+  "Durables" = "Short-lived products", "Packaging" = "Short-lived products",
+  # Power-sector end uses: carved out of civil engineering -> reported there
+  "Power: thermal" = "Civil infrastructure", "Power: solar & wind" = "Civil infrastructure",
+  "Power: hydro & nuclear" = "Civil infrastructure", "Power: batteries" = "Civil infrastructure"
 )
 
 CATEGORY_ORDER <- c("Biomass", "Fossil fuels", "Metals", "Non-metallic minerals")

@@ -144,7 +144,11 @@ hist_flows_model <- read_csv("Results/MC/hist_flows_model_basis.csv", show_col_t
 cat("B: Loading MC results\n")
 
 results <- arrow::read_parquet("Results/MC/mc_results.parquet") |>
-  mutate(material_group = ifelse(material_group %in% c("metal_fe", "metal_nonfe"), "metal_ores", material_group))
+  mutate(
+    material_group = ifelse(material_group %in% c("metal_fe", "metal_nonfe"), "metal_ores", material_group),
+    # Power-sector end uses folded into civil engineering, the 2024 stock they were carved out of
+    material_key = ifelse(startsWith(material_key, "Power: "), "Civil engineering", material_key)
+  )
 cat("  Runs:", n_distinct(results$run_id), "| Years:", paste(range(results$year), collapse = "-"), "\n")
 
 run_ssp <- results |>

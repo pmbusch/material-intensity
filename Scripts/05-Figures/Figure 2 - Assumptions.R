@@ -60,6 +60,9 @@ FONT_BUMP <- theme(
 LABEL_YEAR <- 1982L
 STACK_LABEL_YEAR <- 2005L
 HIST_LABEL_YEAR <- 2020L
+POWER_LABEL_YEAR <- 1990L # panel d: label on the historical power-sector line
+SIDE_BAR_W <- 1.35 # panels g/h: composition bar width (3x the 0.45 range bars of panels c-f)
+HIST_LABEL_X <- HIST_END + 2 # panels g/h: x of the rotated HIST_END share labels, just right of the historical stack
 
 SUB_USE_LABELS <- c(
   "residential" = "Residential Bldg",
@@ -178,7 +181,11 @@ hist_flows_model <- read_csv("Results/MC/hist_flows_model_basis.csv", show_col_t
 cat("B: Loading MC results\n")
 
 results <- arrow::read_parquet("Results/MC/mc_results.parquet") |>
-  mutate(material_group = ifelse(material_group %in% c("metal_fe", "metal_nonfe"), "metal_ores", material_group))
+  mutate(
+    material_group = ifelse(material_group %in% c("metal_fe", "metal_nonfe"), "metal_ores", material_group),
+    # The four power-sector end uses (02-RunSimulations.R) shown as one "Power sector" end use
+    material_key = ifelse(startsWith(material_key, "Power: "), "Power sector", material_key)
+  )
 cat("  Runs:", n_distinct(results$run_id), "| Years:", paste(range(results$year), collapse = "-"), "\n")
 
 # One row per run with its continuous SSP blend (population & GDP/capita independent)
@@ -289,7 +296,74 @@ fossil_hist <- dmc_hist |>
   filter(!is.na(GDP_2015USD), year <= HIST_END) |>
   mutate(mg = DMC_Mt * 1e9 / GDP_2015USD)
 
-# Panels e/f: 8 sub-end-use historical lines from sub-enduse stock file
+# Power sector history (panels d/f): EIA installed capacity per region, 1980-HIST_END
+# (01-PrepareData/06-Aggregate_EIA_Capacity.R) x the model's static material
+# intensities (power_material_intensity.csv, t/GW and t/GWh). EIA aggregates are
+# split into model technologies with each region's 2025 model anchor mix (fossil
+# -> coal/gas/oil, solar -> PV/CSP, wind -> onshore/offshore), held constant;
+# batteries = BATTERY_GWH_PER_GW x (solar + wind) GW, as in the model. Pumped
+# storage and tide/wave have no model technology.
+eia_gw <- read_csv("Parameters/EIA-Capacity/capacity_region_historical.csv", show_col_types = FALSE) |>
+  filter(year <= HIST_END)
+
+EIA_SPLIT <- c(coal = "fossil", gas = "fossil", oil = "fossil", solar_pv = "solar", solar_csp = "solar", wind_onshore = "wind", wind_offshore = "wind")
+power_split <- read_csv("Parameters/Simulation/power_capacity_anchor.csv", show_col_types = FALSE) |>
+  mutate(eia_tech = coalesce(unname(EIA_SPLIT[tech]), tech)) |>
+  group_by(region, eia_tech) |>
+  mutate(split = if (sum(cap_2025_gw) > 0) cap_2025_gw / sum(cap_2025_gw) else 1 / n()) |>
+  ungroup() |>
+  dplyr::select(region, tech, eia_tech, split)
+
+power_units_hist <- eia_gw |>
+  inner_join(power_split, by = c("region", "eia_tech"), relationship = "many-to-many") |>
+  transmute(region, year, unit_key = tech, units = gw * split)
+power_units_hist <- bind_rows(
+  power_units_hist,
+  eia_gw |>
+    filter(eia_tech %in% c("solar", "wind")) |>
+    group_by(region, year) |>
+    summarise(units = BATTERY_GWH_PER_GW * sum(gw), .groups = "drop") |>
+    mutate(unit_key = "battery")
+)
+
+# Region x year x model material (Metal_Fe, Metal_NonFe, Non-metallic minerals), Mt
+POWER_MATERIAL_LABEL <- c("metal_fe" = "Metal_Fe", "metal_nonfe" = "Metal_NonFe", "nonmetallic_minerals" = "Non-metallic minerals")
+power_hist_region <- power_units_hist |>
+  inner_join(read_csv("Parameters/Simulation/power_material_intensity.csv", show_col_types = FALSE), by = "unit_key", relationship = "many-to-many") |>
+  mutate(material = unname(POWER_MATERIAL_LABEL[material_group])) |>
+  group_by(Region = region, material, year) |>
+  summarise(power_Mt = sum(units * t_per_unit) / 1e6, .groups = "drop") # GW x t/GW -> Mt
+
+# Same carve-out as the model (01b-PowerSector.R): the power stock is removed from
+# civil engineering, per region x material, in every historical year
+stock_subenduse_hist <- stock_subenduse_hist |>
+  left_join(power_hist_region |> mutate(sub_use = POWER_CARVEOUT_SUB_USE), by = c("Region", "material", "sub_use", "year")) |>
+  mutate(stock_Mt = stock_Mt - coalesce(power_Mt, 0)) |>
+  dplyr::select(-power_Mt)
+neg_hist <- stock_subenduse_hist |> filter(sub_use == POWER_CARVEOUT_SUB_USE, stock_Mt < 0)
+if (nrow(neg_hist) > 0) {
+  print(neg_hist |> arrange(stock_Mt) |> head(20) |> as.data.frame())
+  stop("Historical power carve-out makes ", POWER_CARVEOUT_SUB_USE, " stock negative (", nrow(neg_hist), " region x material x year cells) -- see table above")
+}
+
+power_hist_mg <- power_hist_region |>
+  mutate(is_metal = material != "Non-metallic minerals") |>
+  group_by(year, is_metal) |>
+  summarise(stock_Mt = sum(power_Mt), .groups = "drop") |>
+  left_join(gdp_world_hist, by = "year") |>
+  filter(!is.na(GDP_2015USD)) |>
+  mutate(end_use_label = "Power sector", mg = stock_Mt * 1e9 / GDP_2015USD)
+power_hist_metal <- power_hist_mg |> filter(is_metal)
+power_hist_nonmet <- power_hist_mg |> filter(!is_metal)
+
+cat(
+  "  Power sector (EIA x model t/GW), world stock", HIST_END, ": metals", round(power_hist_metal$stock_Mt[power_hist_metal$year == HIST_END]),
+  "Mt, minerals", round(power_hist_nonmet$stock_Mt[power_hist_nonmet$year == HIST_END]), "Mt (model 2025 carve-out:",
+  round(sum(read_csv("Parameters/Simulation/power_carveout_2025.csv", show_col_types = FALSE) |> filter(material != "Non-metallic minerals") |> pull(carve_Mt))), "/",
+  round(sum(read_csv("Parameters/Simulation/power_carveout_2025.csv", show_col_types = FALSE) |> filter(material == "Non-metallic minerals") |> pull(carve_Mt))), "Mt)\n"
+)
+
+# Panels e/f: 8 sub-end-use historical lines from sub-enduse stock file (civil engineering net of power)
 metal_hist_eu <- stock_subenduse_hist |>
   filter(material %in% c("Metal_Fe", "Metal_NonFe")) |>
   mutate(end_use_label = SUB_USE_LABELS[sub_use]) |>
@@ -513,6 +587,16 @@ nonmet_env <- nonmet_env |>
       transmute(end_use_label, year, p_min = mg, p25 = mg, p50 = mg, p75 = mg, p_max = mg)
   )
 
+# Anchor the power projection to the EIA HIST_END value, as for every other end use
+metal_env <- bind_rows(
+  metal_env,
+  power_hist_metal |> filter(year == HIST_END) |> transmute(end_use_label, year, p_min = mg, p25 = mg, p50 = mg, p75 = mg, p_max = mg)
+)
+nonmet_env <- bind_rows(
+  nonmet_env,
+  power_hist_nonmet |> filter(year == HIST_END) |> transmute(end_use_label, year, p_min = mg, p25 = mg, p50 = mg, p75 = mg, p_max = mg)
+)
+
 dmc_env <- dmc_env |>
   filter(year > HIST_END) |>
   bind_rows(
@@ -528,6 +612,82 @@ stock_env <- stock_env |>
       filter(year == HIST_END) |>
       transmute(year, p_min = stock_Gt, p25 = stock_Gt, p50 = stock_Gt, p75 = stock_Gt, p_max = stock_Gt)
   )
+
+
+# ── SECTION F3: Median-run composition bars for panels g/h --------------------
+# One stacked bar right of each panel at PROJ_END: the run whose PROJ_END total
+# is closest to the median across runs, split by material (g) or end use (h);
+# stacked in the same order as the historical areas, labelled with % shares.
+
+cat("F3: Median-run composition bars\n")
+
+run_total_g <- results |>
+  filter(year == PROJ_END) |>
+  group_by(run_id) |>
+  summarise(v = sum(primary_consumption_Mt, na.rm = TRUE), .groups = "drop")
+median_run_g <- run_total_g$run_id[which.min(abs(run_total_g$v - median(run_total_g$v)))]
+
+# One bar at PROJ_END, outside the box (median run); the HIST_END composition is
+# labelled directly on the historical stack (hist_lab_g / hist_lab_h below)
+bar_g <- results |>
+  filter(year == PROJ_END, run_id == median_run_g) |>
+  mutate(
+    mat_group = case_when(
+      material_group == "biomass" ~ "Biomass",
+      material_group == "fossil_fuels" ~ "Fossil fuels",
+      material_group == "metal_ores" ~ "Metal ores",
+      material_group == "nonmetallic_minerals" ~ "Non-metallic minerals"
+    )
+  ) |>
+  group_by(year, mat_group) |>
+  summarise(v = sum(primary_consumption_Mt, na.rm = TRUE) / 1e3, .groups = "drop") |>
+  mutate(mat_group = factor(mat_group, levels = mat_order)) |>
+  # last factor level at the bottom, as in the stacked historical area
+  arrange(year, desc(mat_group)) |>
+  group_by(year) |>
+  mutate(ymax = cumsum(v), ymin = dplyr::lag(ymax, default = 0), share = v / sum(v)) |>
+  ungroup() |>
+  mutate(x0 = PROJ_END + 1)
+
+run_total_h <- results |>
+  filter(year == PROJ_END, material_group %in% c("metal_ores", "nonmetallic_minerals")) |>
+  group_by(run_id) |>
+  summarise(v = sum(in_use_stock_Mt, na.rm = TRUE), .groups = "drop")
+median_run_h <- run_total_h$run_id[which.min(abs(run_total_h$v - median(run_total_h$v)))]
+
+bar_h <- results |>
+  filter(year == PROJ_END, run_id == median_run_h, material_group %in% c("metal_ores", "nonmetallic_minerals")) |>
+  mutate(
+    end_use_label = case_when(
+      material_key %in% c("Residential", "Non-residential") ~ "Buildings",
+      material_key %in% c("Roads", "Civil engineering") ~ "Civil infrastructure",
+      material_key %in% c("Machinery", "Vehicles") ~ "Machinery",
+      material_key %in% c("Durables", "Packaging") ~ "Short-lived products",
+      material_key == "Power sector" ~ "Power sector"
+    )
+  ) |>
+  group_by(year, end_use_label) |>
+  summarise(v = sum(in_use_stock_Mt, na.rm = TRUE) / 1e6, .groups = "drop") |>
+  # Power sector (not in the historical stacked area) on top of the historical end-use order
+  mutate(end_use_label = factor(end_use_label, levels = c("Power sector", enduse_order))) |>
+  arrange(year, desc(end_use_label)) |>
+  group_by(year) |>
+  mutate(ymax = cumsum(v), ymin = dplyr::lag(ymax, default = 0), share = v / sum(v)) |>
+  ungroup() |>
+  mutate(x0 = PROJ_END + 1)
+stopifnot(!anyNA(bar_g$mat_group), !anyNA(bar_h$end_use_label))
+
+cat("  Median run (g):", median_run_g, "| (h):", median_run_h, "\n")
+
+# HIST_END shares, written on the historical stacked areas (same stacking order)
+hist_lab_g <- dmc_total_hist |>
+  filter(year == HIST_END) |>
+  arrange(desc(mat_group)) |>
+  mutate(ymax = cumsum(DMC_Gt), ymin = dplyr::lag(ymax, default = 0), share = DMC_Gt / sum(DMC_Gt))
+hist_lab_h <- stock_total_hist |>
+  filter(year == HIST_END) |>
+  arrange(desc(end_use_label)) |>
+  mutate(ymax = cumsum(stock_Gt), ymin = dplyr::lag(ymax, default = 0), share = stock_Gt / sum(stock_Gt))
 
 
 # ── SECTION G: Build panels --------------------------------------------------
@@ -657,6 +817,7 @@ metal_range <- metal_env |>
       end_use_label == "Vehicles" ~ 2,
       end_use_label == "Durables" ~ 0,
       end_use_label == "Packaging" ~ 1,
+      end_use_label == "Power sector" ~ 3,
       T ~ 0
     )
   )
@@ -669,6 +830,7 @@ nonmet_range <- nonmet_env |>
       end_use_label == "Non-residential" ~ 1,
       end_use_label == "Roads" ~ 2,
       str_detect(end_use_label, "Civil") ~ 3,
+      end_use_label == "Power sector" ~ 4,
       T ~ 0
     )
   )
@@ -875,6 +1037,7 @@ p5 <- ggplot() +
     show.legend = FALSE
   ) +
   geom_line(data = metal_hist_eu, aes(x = year, y = mg, colour = end_use_label), linewidth = HIST_LW) +
+  geom_line(data = power_hist_metal, aes(x = year, y = mg, colour = end_use_label), linewidth = HIST_LW) +
   geom_line(
     data = metal_env |> filter(year >= HIST_END),
     aes(x = year, y = p50, colour = end_use_label),
@@ -900,6 +1063,12 @@ p5 <- ggplot() +
     hjust = c(1,1,1,0.5,1,0.5,1,1),
      lineheight = 0.8,
     size = LABEL_SZ, show.legend = FALSE
+  ) +
+  # Power sector: labelled on its historical (EIA) line
+  geom_text(
+    data = power_hist_metal |> filter(year == POWER_LABEL_YEAR),
+    aes(x = year, y = mg, label = end_use_label, colour = end_use_label),
+    vjust = -0.4, size = LABEL_SZ, show.legend = FALSE
   ) +
   present_line +
   x_sc +
@@ -931,6 +1100,7 @@ p6 <- ggplot() +
     show.legend = FALSE
   ) +
   geom_line(data = nonmet_hist_eu, aes(x = year, y = mg, colour = end_use_label), linewidth = HIST_LW) +
+  geom_line(data = power_hist_nonmet, aes(x = year, y = mg, colour = end_use_label), linewidth = HIST_LW) +
   geom_line(
     data = nonmet_env |> filter(year >= HIST_END),
     aes(x = year, y = p50, colour = end_use_label),
@@ -992,6 +1162,23 @@ p7 <- ggplot() +
     linewidth = PROJ_LW,
     linetype = "dashed"
   ) +
+  # Median-run PROJ_END composition by material (SECTION F3)
+  geom_rect(
+    data = bar_g,
+    aes(xmin = x0, xmax = x0 + SIDE_BAR_W, ymin = ymin, ymax = ymax, fill = mat_group),
+    alpha = 0.5, colour = "black", linewidth = 0.15
+  ) +
+  geom_text(
+    data = bar_g |> filter(share >= 0.05),
+    aes(x = x0 + SIDE_BAR_W + 0.3, y = (ymin + ymax) / 2, label = scales::percent(share, accuracy = 1), colour = mat_group),
+    angle = 90, hjust = 0.5, vjust = 1, size = LABEL_SZ # rotated, reading upward, right of the bar
+  ) +
+  # HIST_END shares on the historical stack (no bar)
+  geom_text(
+    data = hist_lab_g |> filter(share >= 0.05),
+    aes(x = HIST_LABEL_X, y = (ymin + ymax) / 2, label = scales::percent(share, accuracy = 1), colour = mat_group),
+    angle = 90, hjust = 0.5, vjust = 0.5, size = LABEL_SZ
+  ) +
   present_line +
   x_sc +
   scale_y_continuous(expand = expansion(mult = c(0, 0.05)), breaks = seq(0, 300, 50), labels = function(x) {
@@ -1029,6 +1216,23 @@ p8 <- ggplot() +
     linewidth = PROJ_LW,
     linetype = "dashed"
   ) +
+  # Median-run PROJ_END composition by end use (SECTION F3)
+  geom_rect(
+    data = bar_h,
+    aes(xmin = x0, xmax = x0 + SIDE_BAR_W, ymin = ymin, ymax = ymax, fill = end_use_label),
+    alpha = 0.5, colour = "black", linewidth = 0.15
+  ) +
+  geom_text(
+    data = bar_h |> filter(share >= 0.05),
+    aes(x = x0 + SIDE_BAR_W + 0.3, y = (ymin + ymax) / 2, label = scales::percent(share, accuracy = 1), colour = end_use_label),
+    angle = 90, hjust = 0.5, vjust = 1, size = LABEL_SZ # rotated, reading upward, right of the bar
+  ) +
+  # HIST_END shares on the historical stack (no bar)
+  geom_text(
+    data = hist_lab_h |> filter(share >= 0.05),
+    aes(x = HIST_LABEL_X, y = (ymin + ymax) / 2, label = scales::percent(share, accuracy = 1), colour = end_use_label),
+    angle = 90, hjust = 0.5, vjust = 0.5, size = LABEL_SZ
+  ) +
   present_line +
   x_sc +
   y_sc +
@@ -1049,7 +1253,7 @@ fig <- wrap_plots(p1, p2, p3, p5, p4, p6, p7, p8, ncol = 2) &
   theme(
     plot.background = element_rect(fill = "transparent", color = NA),
     panel.background = element_rect(fill = "transparent", color = NA),
-    plot.margin = margin(5.5, 5.5, 5.5, 5.5)
+    plot.margin = margin(5.5, 16, 5.5, 5.5) # right: room for the g/h composition-bar labels
   )
 
 ggsave("Figures/Fig2 - Assumptions.png", fig, units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7 * 3)

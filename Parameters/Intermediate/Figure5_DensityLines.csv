@@ -1,6 +1,6 @@
 material,v0,v25,metric_label,unit,lo,hi,rate_label,low_rate_min,high_rate_max
-Biomass,3.4262910409778113,8.131291667420827,biomass consumption,t/cap,3,3.5,NA,NA,NA
-Fossil fuels,2.063098089472919,4.896155085300477,primary energy intensity,MJ/$,3,6,NA,NA,NA
-Metal ores,1.6530935016336452,3.9231300711293624,metal stock intensity,kg/$,0.4,0.45,recycled,0.7,0.3
-Non-metallic minerals,6.712745576972974,15.930722616015457,mineral stock intensity,kg/$,12,16,downcycled,0.6,0.4
-All materials,13.845022554893015,32.857079328476125,NA,NA,NA,NA,NA,NA,NA
+Biomass,3.426415415161223,8.131586832877913,biomass consumption,t/cap,3.2,3.5,NA,NA,NA
+Fossil fuels,2.0628567374283318,4.8955823073765945,primary energy intensity,MJ/$,3,6,NA,NA,NA
+Metal ores,1.6455990387603416,3.9053441729716574,metal stock intensity,kg/$,0.41,0.42,recycled,0.55,0.45
+Non-metallic minerals,6.139631258491045,14.570604743185326,mineral stock intensity,kg/$,14.5,15.5,downcycled,0.55,0.45
+All materials,13.266204651565378,31.483425678510994,NA,NA,NA,NA,NA,NA,NA

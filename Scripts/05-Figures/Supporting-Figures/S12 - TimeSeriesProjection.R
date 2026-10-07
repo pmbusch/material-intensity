@@ -236,10 +236,19 @@ run_vars <- mc_input_matrix |>
     coal_intensity = coal_min + intensity_coal_global * (coal_max - coal_min),
     gas_intensity = gas_min + intensity_gas_global * (gas_max - gas_min),
     oil_intensity = oil_min + intensity_oil_global * (oil_max - oil_min),
+    # Recycling endpoints: semi-uniform around the central value (as 02-RunSimulations.R)
     recycling_index = (w_fe *
-      (RECYCLING_RATE_FE_MIN + recycling_Fe_global * (RECYCLING_RATE_FE_MAX - RECYCLING_RATE_FE_MIN)) +
+      dplyr::if_else(
+        recycling_rate_fe < 0.5,
+        RECYCLING_RATE_FE_MIN + 2 * recycling_rate_fe * (RECYCLING_RATE_FE_CENTRAL - RECYCLING_RATE_FE_MIN),
+        RECYCLING_RATE_FE_CENTRAL + 2 * (recycling_rate_fe - 0.5) * (RECYCLING_RATE_FE_MAX - RECYCLING_RATE_FE_CENTRAL)
+      ) +
       w_nonfe *
-        (RECYCLING_RATE_NONFE_MIN + recycling_NonFe_global * (RECYCLING_RATE_NONFE_MAX - RECYCLING_RATE_NONFE_MIN))) /
+        dplyr::if_else(
+          recycling_rate_nonfe < 0.5,
+          RECYCLING_RATE_NONFE_MIN + 2 * recycling_rate_nonfe * (RECYCLING_RATE_NONFE_CENTRAL - RECYCLING_RATE_NONFE_MIN),
+          RECYCLING_RATE_NONFE_CENTRAL + 2 * (recycling_rate_nonfe - 0.5) * (RECYCLING_RATE_NONFE_MAX - RECYCLING_RATE_NONFE_CENTRAL)
+        )) /
       (w_fe + w_nonfe),
     intensity_bldg_metal = bldg_metal_min + intensity_buildings_metalOres_global * (bldg_metal_max - bldg_metal_min),
     intensity_civil_metal = civil_metal_min + intensity_civil_metalOres_global * (civil_metal_max - civil_metal_min),

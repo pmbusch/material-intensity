@@ -1,10 +1,15 @@
 ## =============================================================================
-## S01-S02 - CumulativeIntensityCurve.R  -> Supporting Figures S01, S02
-## Step curve: regions sorted high→low by total DMC per capita (2024).
-## X = cumulative population; each region rectangle stacked by material group.
+## S01-S02 - CumulativeIntensityCurve.R  -> Supporting Figure S01 (two panels)
+## Step curves, each region rectangle stacked by material group (2024):
+##   a) regions sorted high→low by DMC per capita, X = cumulative population
+##   b) regions sorted high→low by DMC per GDP,    X = cumulative GDP
+## (Former S02 is now panel b.)
 ## =============================================================================
 
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
+library(patchwork)
+
+pb_set_geom_defaults("wide")
 
 YEAR <- 2024
 
@@ -52,8 +57,11 @@ region_labels <- region_meta |>
   left_join(df_rect |> group_by(Region) |> summarise(y_top = max(y_max), .groups = "drop"), by = "Region") |>
   mutate(
     x_label = (x_min + x_max) / 2,
-    angle = if_else(Region == "Sub-Saharan Africa", 75, 35),
-    label = paste0(Region, " (", sprintf("%.1f Gt", DMC_Mt_total / 1e3), ")")
+    angle = 50,
+    label = paste0(
+      dplyr::recode(Region, "Sub-Saharan Africa" = "SS Africa", "Middle East & North Africa" = "MENA"),
+      " (", sprintf("%.1f Gt", DMC_Mt_total / 1e3), ")"
+    )
   )
 
 # Direct material group labels inside East Asia bars
@@ -61,8 +69,8 @@ east_asia_labels <- df_rect |>
   filter(Region == "East Asia") |>
   mutate(x_label = (x_min + x_max) / 2, y_label = (y_min + y_max) / 2)
 
-# ── Plot ──────────────────────────────────────────────────────────────────────
-ggplot(df_rect) +
+# ── Panel a: per capita ───────────────────────────────────────────────────────
+p_pop <- ggplot(df_rect) +
   geom_rect(
     aes(xmin = x_min, xmax = x_max, ymin = y_min, ymax = y_max, fill = Material_group),
     alpha = 0.5,
@@ -72,14 +80,14 @@ ggplot(df_rect) +
   geom_text(
     data = region_labels,
     aes(x = x_label, y = y_top, label = label,angle=angle),
-    size = 1.8, vjust = -0.3, hjust = 0, lineheight = 0.9
+    size = pb_annot_size("wide", 7), vjust = 0, hjust = 0, nudge_y = 0.3
   ) +
   geom_text(
     data = east_asia_labels,
-    aes(x = x_label, y = y_label, 
+    aes(x = x_label, y = y_label,
       #  colour = Material_group,
        label = Material_group),
-    size = 1.8, fontface = "bold"
+    size = pb_annot_size("wide", 7), fontface = "bold"
   ) +
   scale_fill_manual(values = PALETTE_MATERIAL_GROUPS, breaks = STACK_ORDER, guide = "none") +
   scale_colour_manual(values = PALETTE_MATERIAL_GROUPS, guide = "none") +
@@ -89,17 +97,16 @@ ggplot(df_rect) +
     expand = expansion(mult = c(0, 0.01))
   ) +
   scale_y_continuous(
-    name = "2024 Material Consumption per capita (tonnes / person)",
-    expand = expansion(mult = c(0, 0.25))
+    name = NULL,
+    expand = expansion(mult = c(0, 0.45))
   ) +
-  theme_pb_large()
+  labs(title = "2024 material consumption per capita (t/person)") +
+  coord_cartesian(clip = "off") +
+  theme_pb_wide() +
+  theme(plot.margin = margin(t = 4, r = 22, b = 4, l = 4))
 
-ggsave("Figures/Supporting-Figures/S01_CumulativeIntensityCurve.png", width = 8.7, height = 8.7, units = "cm", dpi = 300)
-ggsave("Figures/SVG/Supporting-Figures/S01_CumulativeIntensityCurve.svg", width = 8.7, height = 8.7, units = "cm")
-clean_svg("Figures/SVG/Supporting-Figures/S01_CumulativeIntensityCurve.svg")
 
-
-# ── Figure 2: by GDP ──────────────────────────────────────────────────────────
+# ── Panel b: per GDP ──────────────────────────────────────────────────────────
 
 gdp <- read_csv("Parameters/Worldbank-GDP/gdp_region.csv", show_col_types = FALSE) |>
   filter(year == YEAR) |>
@@ -126,15 +133,18 @@ region_labels_gdp <- region_meta_gdp |>
   left_join(df_rect_gdp |> group_by(Region) |> summarise(y_top = max(y_max), .groups = "drop"), by = "Region") |>
   mutate(
     x_label = (x_min + x_max) / 2,
-    angle = if_else(Region == last(Region), 75, 35),
-    label = paste0(Region, " (", sprintf("%.1f Gt", DMC_Mt_total / 1e3), ")")
+    angle = 50,
+    label = paste0(
+      dplyr::recode(Region, "Sub-Saharan Africa" = "SS Africa", "Middle East & North Africa" = "MENA"),
+      " (", sprintf("%.1f Gt", DMC_Mt_total / 1e3), ")"
+    )
   )
 
 east_asia_labels_gdp <- df_rect_gdp |>
   filter(Region == "East Asia") |>
   mutate(x_label = (x_min + x_max) / 2, y_label = (y_min + y_max) / 2)
 
-ggplot(df_rect_gdp) +
+p_gdp <- ggplot(df_rect_gdp) +
   geom_rect(
     aes(xmin = x_min, xmax = x_max, ymin = y_min, ymax = y_max, fill = Material_group),
     alpha = 0.5,
@@ -144,12 +154,12 @@ ggplot(df_rect_gdp) +
   geom_text(
     data = region_labels_gdp,
     aes(x = x_label, y = y_top, label = label, angle = angle),
-    size = 1.8, vjust = -0.3, hjust = 0, lineheight = 0.9
+    size = pb_annot_size("wide", 7), vjust = 0, hjust = 0, nudge_y = 0.03
   ) +
   geom_text(
     data = east_asia_labels_gdp,
     aes(x = x_label, y = y_label, label = Material_group),
-    size = 1.8, fontface = "bold"
+    size = pb_annot_size("wide", 7), fontface = "bold"
   ) +
   scale_fill_manual(values = PALETTE_MATERIAL_GROUPS, breaks = STACK_ORDER, guide = "none") +
   scale_colour_manual(values = PALETTE_MATERIAL_GROUPS, guide = "none") +
@@ -159,11 +169,19 @@ ggplot(df_rect_gdp) +
     expand = expansion(mult = c(0, 0.01))
   ) +
   scale_y_continuous(
-    name = "2024 Material Consumption per $1,000 GDP (tonnes)",
-    expand = expansion(mult = c(0, 0.25))
+    name = NULL,
+    expand = expansion(mult = c(0, 0.45))
   ) +
-  theme_pb_large()
+  labs(title = "2024 material consumption per $1,000 GDP (t)") +
+  coord_cartesian(clip = "off") +
+  theme_pb_wide() +
+  theme(plot.margin = margin(t = 4, r = 22, b = 4, l = 4))
 
-ggsave("Figures/Supporting-Figures/S02_CumulativeIntensityCurve_GDP.png", width = 8.7, height = 8.7, units = "cm", dpi = 300)
-ggsave("Figures/SVG/Supporting-Figures/S02_CumulativeIntensityCurve_GDP.svg", width = 8.7, height = 8.7, units = "cm")
-clean_svg("Figures/SVG/Supporting-Figures/S02_CumulativeIntensityCurve_GDP.svg")
+
+# ── Combine: S01 with panels a/b ──────────────────────────────────────────────
+p_pop + p_gdp + patchwork::plot_annotation(tag_levels = "a") &
+  theme(plot.tag = element_text(face = "bold"))
+
+ggsave("Figures/Supporting-Figures/S01_CumulativeIntensityCurve.png", ggplot2::last_plot(), width = 17, height = 8.7, units = "cm", dpi = 600)
+ggsave("Figures/SVG/Supporting-Figures/S01_CumulativeIntensityCurve.svg", ggplot2::last_plot(), width = 17, height = 8.7, units = "cm")
+clean_svg("Figures/SVG/Supporting-Figures/S01_CumulativeIntensityCurve.svg")

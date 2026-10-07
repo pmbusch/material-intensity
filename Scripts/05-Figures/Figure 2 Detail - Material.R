@@ -63,7 +63,11 @@ stock_subenduse_hist <- read_csv("Parameters/Intermediate/stock_trajectory_suben
   rename(region = Region)
 
 results <- arrow::read_parquet("Results/MC/mc_results.parquet") |>
-  mutate(material_group = ifelse(material_group %in% c("metal_fe", "metal_nonfe"), "metal_ores", material_group))
+  mutate(
+    material_group = ifelse(material_group %in% c("metal_fe", "metal_nonfe"), "metal_ores", material_group),
+    # Power-sector end uses folded into civil engineering, the 2024 stock they were carved out of
+    material_key = ifelse(startsWith(material_key, "Power: "), "Civil engineering", material_key)
+  )
 
 ssp_drivers <- read_csv("Parameters/IIASA-Trajectories/ssp_drivers.csv", show_col_types = FALSE)
 gdp_2024_region <- gdp_region_hist |> filter(year == HIST_END) |> transmute(region, gdp_2024 = GDP_2015USD)

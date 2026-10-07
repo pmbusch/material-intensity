@@ -60,10 +60,12 @@ COLS_DETAIL <- c(
   "Metals – Civil infra" = "#D32F2F",
   "Metals – Machinery" = "#E57373",
   "Metals – Short-lived" = "#FFCDD2",
+  "Metals – Power sector" = "#7F0000",
   "Minerals – Buildings" = "#455A64",
   "Minerals – Civil infra" = "#607D8B",
   "Minerals – Machinery" = "#90A4AE",
-  "Minerals – Short-lived" = "#CFD8DC"
+  "Minerals – Short-lived" = "#CFD8DC",
+  "Minerals – Power sector" = "#263238"
 )
 
 LABEL_COL_DETAIL <- c(
@@ -80,10 +82,12 @@ LABEL_COL_DETAIL <- c(
   "Metals – Civil infra" = "white",
   "Metals – Machinery" = "black",
   "Metals – Short-lived" = "black",
+  "Metals – Power sector" = "white",
   "Minerals – Buildings" = "white",
   "Minerals – Civil infra" = "white",
   "Minerals – Machinery" = "black",
-  "Minerals – Short-lived" = "black"
+  "Minerals – Short-lived" = "black",
+  "Minerals – Power sector" = "white"
 )
 
 N_BINS <- 50L
@@ -134,6 +138,9 @@ run_2050 <- results |>
       material_group == "nonmetallic_minerals" & material_key %in% c("Machinery", "Vehicles") ~ "Minerals – Machinery",
       material_group == "nonmetallic_minerals" &
         material_key %in% c("Durables", "Packaging") ~ "Minerals – Short-lived",
+      # Power-sector end uses (generation + batteries) as their own category
+      material_group %in% c("metal_fe", "metal_nonfe") & startsWith(material_key, "Power: ") ~ "Metals – Power sector",
+      material_group == "nonmetallic_minerals" & startsWith(material_key, "Power: ") ~ "Minerals – Power sector",
       material_group == "nonmetallic_minerals" ~ paste0("Minerals – ", material_key),
       material_group %in% c("metal_fe", "metal_nonfe") ~ paste0("Metals – ", material_key),
       TRUE ~ material_key
@@ -335,6 +342,9 @@ run_cumul <- results |>
       material_group == "nonmetallic_minerals" & material_key %in% c("Machinery", "Vehicles") ~ "Minerals – Machinery",
       material_group == "nonmetallic_minerals" &
         material_key %in% c("Durables", "Packaging") ~ "Minerals – Short-lived",
+      # Power-sector end uses (generation + batteries) as their own category
+      material_group %in% c("metal_fe", "metal_nonfe") & startsWith(material_key, "Power: ") ~ "Metals – Power sector",
+      material_group == "nonmetallic_minerals" & startsWith(material_key, "Power: ") ~ "Minerals – Power sector",
       material_group == "nonmetallic_minerals" ~ paste0("Minerals – ", material_key),
       material_group %in% c("metal_fe", "metal_nonfe") ~ paste0("Metals – ", material_key),
       TRUE ~ material_key

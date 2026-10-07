@@ -1,43 +1,43 @@
 order,row_text,display_label,mean_u,metric
-1,GDP,GDP,0.07879704589489847,abs_decouple
-2,Crops,Crops,0.3297770040073166,abs_decouple
-3,Grazed biomass,Grazed biomass,0.40749245382702376,abs_decouple
-4,Wood,Wood,0.45083793395869104,abs_decouple
-5,Coal,Coal,0.3789680538884963,abs_decouple
-6,Natural gas,Natural gas,0.47565783640571,abs_decouple
-7,Oil,Oil,0.19067632820778194,abs_decouple
-8,Buildings,Buildings,0.48108424043394293,abs_decouple
-9,Infrastructure,Infrastructure,0.4558267573563083,abs_decouple
-10,Machinery,Machinery,0.4088822923647406,abs_decouple
-11,Short-lived,Short-lived,0.45303671445539556,abs_decouple
-12,Buildings,Buildings,0.38352759204498893,abs_decouple
-13,Infrastructure,Infrastructure,0.3448487828115301,abs_decouple
-14,Fe,Fe,0.5092104001699814,abs_decouple
-15,NonFe,NonFe,0.597483928075293,abs_decouple
-16,Fe (+25%),Fe (+25%),0.558585955953159,abs_decouple
-17,NonFe (+1%),NonFe (+1%),0.46445179952827415,abs_decouple
-18,Buildings (+20yr),Buildings (+20yr),0.5877351902212082,abs_decouple
-19,Infrastructure (+20yr),Infrastructure (+20yr),0.5304499110383747,abs_decouple
-20,Machinery (+5yr),Machinery (+5yr),0.46924639966779585,abs_decouple
-21,Short-lived (+1yr),Short-lived (+1yr),0.5218910628396718,abs_decouple
-1,GDP,GDP,0.5190814112120619,selected
-2,Crops,Crops,0.34550534900320606,selected
-3,Grazed biomass,Grazed biomass,0.4264073758721049,selected
-4,Wood,Wood,0.49543932903633786,selected
-5,Coal,Coal,0.4164874685028447,selected
-6,Natural gas,Natural gas,0.4418413763707096,selected
-7,Oil,Oil,0.3751285354951712,selected
-8,Buildings,Buildings,0.44913205632317077,selected
-9,Infrastructure,Infrastructure,0.4969510615006192,selected
-10,Machinery,Machinery,0.4552474115651619,selected
-11,Short-lived,Short-lived,0.4982743979575465,selected
-12,Buildings,Buildings,0.34146496957342937,selected
-13,Infrastructure,Infrastructure,0.3382289489700556,selected
-14,Fe,Fe,0.5307527424908496,selected
-15,NonFe,NonFe,0.5997595847113582,selected
-16,Fe (+25%),Fe (+25%),0.540228408203084,selected
-17,NonFe (+1%),NonFe (+1%),0.5466886256400675,selected
-18,Buildings (+20yr),Buildings (+20yr),0.5161141607154406,selected
-19,Infrastructure (+20yr),Infrastructure (+20yr),0.5218390450905364,selected
-20,Machinery (+5yr),Machinery (+5yr),0.5174138603146046,selected
-21,Short-lived (+1yr),Short-lived (+1yr),0.49895948349223684,selected
+1,GDP,GDP,0.06405490645293611,abs_decouple
+2,Crops,Crops,0.19190818489813247,abs_decouple
+3,Grazed biomass,Grazed biomass,0.4720049595850287,abs_decouple
+4,Wood,Wood,0.37904475797368214,abs_decouple
+5,Coal,Coal,0.3239392381089507,abs_decouple
+6,Natural gas,Natural gas,0.38152493309103885,abs_decouple
+7,Oil,Oil,0.2676472585835261,abs_decouple
+8,Buildings,Buildings,0.5041568300547078,abs_decouple
+9,Infrastructure,Infrastructure,0.5301645782823674,abs_decouple
+10,Machinery,Machinery,0.538565336916712,abs_decouple
+11,Short-lived,Short-lived,0.29525987584602553,abs_decouple
+12,Buildings,Buildings,0.2761543686859077,abs_decouple
+13,Infrastructure,Infrastructure,0.3059445519107394,abs_decouple
+14,Fe,Fe,0.6254985820897855,abs_decouple
+15,NonFe,NonFe,0.7326985487556783,abs_decouple
+16,Fe (+25%),Fe (+25%),0.6452775793874869,abs_decouple
+17,NonFe (+1%),NonFe (+1%),0.7167794418888166,abs_decouple
+18,Buildings (+20yr),Buildings (+20yr),0.40940100786387923,abs_decouple
+19,Infrastructure (+20yr),Infrastructure (+20yr),0.5585445970741566,abs_decouple
+20,Machinery (+5yr),Machinery (+5yr),0.4708310013999464,abs_decouple
+21,Short-lived (+1yr),Short-lived (+1yr),0.49719893228199796,abs_decouple
+1,GDP,GDP,0.5284875352576793,selected
+2,Crops,Crops,0.37012271318176193,selected
+3,Grazed biomass,Grazed biomass,0.46399669035771846,selected
+4,Wood,Wood,0.47139227275986406,selected
+5,Coal,Coal,0.44567436457112214,selected
+6,Natural gas,Natural gas,0.43041981654593725,selected
+7,Oil,Oil,0.3657122186428375,selected
+8,Buildings,Buildings,0.48247389256055584,selected
+9,Infrastructure,Infrastructure,0.4684488735446011,selected
+10,Machinery,Machinery,0.4690476831495172,selected
+11,Short-lived,Short-lived,0.4779925935633917,selected
+12,Buildings,Buildings,0.3373844904291408,selected
+13,Infrastructure,Infrastructure,0.3872463465257934,selected
+14,Fe,Fe,0.5339833521560834,selected
+15,NonFe,NonFe,0.5888286605525874,selected
+16,Fe (+25%),Fe (+25%),0.5290942969421261,selected
+17,NonFe (+1%),NonFe (+1%),0.6543552646773744,selected
+18,Buildings (+20yr),Buildings (+20yr),0.5448524549971084,selected
+19,Infrastructure (+20yr),Infrastructure (+20yr),0.537191139966553,selected
+20,Machinery (+5yr),Machinery (+5yr),0.5109706037110263,selected
+21,Short-lived (+1yr),Short-lived (+1yr),0.4751553980973564,selected
