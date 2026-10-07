@@ -7,6 +7,8 @@
 ##   weibull_survival(age, mean_life, k)
 ##   get_survival(ages, mean_life, k)
 ##   run_forward_dsm(cohorts_2024, target_stock_traj, mean_life, k, ...)
+##   run_forward_dsm_fast(...)
+##   allocate_eol(group, demand, waste, rate, room)
 ## =============================================================================
 
 # -- Survival functions --------------------------------------------------------
@@ -334,5 +336,41 @@ run_forward_dsm_fast <- function(
     replacement = replacement,
     production = production,
     waste = waste
+  )
+}
+
+
+# -- End-of-life allocation (shared by metals and non-metallic minerals) -------
+#
+# One row = one end-use in one region-year (metals: Fe and NonFe called
+# separately). All pooling is within `group` (region x year [x material]); no
+# trade between groups. 1 t of secondary replaces 1 t of primary.
+#
+#   Pool          = sum over rows of rate x waste
+#   Secondary     = min(Pool, sum of room)
+#   Secondary_row = Secondary x room_row / sum of room
+#   Primary_row   = demand_row - Secondary_row
+#   Surplus_row   = (Pool - Secondary) x (rate x waste)_row / Pool
+#   NotRecov_row  = (1 - rate_row) x waste_row
+#
+# Mass balance closes per group: sum(waste) = sum(not_recovered + secondary + surplus).
+# Metals: room = demand. Minerals: room = capped secondary share x demand
+# (0 for sectors that do not receive); rate = 0 for sectors that do not give.
+#
+# Args (plain vectors, same length): group, demand (>= 0), waste (>= 0), rate, room (<= demand)
+# Returns list of row vectors: secondary, primary, surplus, not_recovered
+
+allocate_eol <- function(group, demand, waste, rate, room) {
+  pool_row <- rate * waste
+  pool <- stats::ave(pool_row, group, FUN = sum)
+  room_tot <- stats::ave(room, group, FUN = sum)
+  secondary_tot <- pmin(pool, room_tot)
+  secondary <- ifelse(room_tot > 0, secondary_tot * room / room_tot, 0)
+  surplus <- ifelse(pool > 0, (pool - secondary_tot) * pool_row / pool, 0)
+  list(
+    secondary = secondary,
+    primary = demand - secondary,
+    surplus = surplus,
+    not_recovered = waste - pool_row
   )
 }

@@ -1,18 +1,18 @@
-region,r10,weight
-East Asia,China+ (R10),0.7070478352929472
-East Asia,Pacific OECD (R10),0.15655773860363784
-East Asia,Reforming Economies (R10),0.01609569591675563
-East Asia,Rest of Asia (R10),0.12029873018665928
-Europe & Russia,Europe (R10),0.9250110268794609
-Europe & Russia,Reforming Economies (R10),0.07498897312053915
-Latin America,Latin America (R10),1
-Middle East & North Africa,Africa (R10),0.21057898582024243
-Middle East & North Africa,India+ (R10),0.09093449431732169
-Middle East & North Africa,Middle East (R10),0.6760351486768088
-Middle East & North Africa,Reforming Economies (R10),0.02245137118562714
-North America,North America (R10),1
-Oceania,North America (R10),0.002926642715639231
-Oceania,Pacific OECD (R10),0.9702748092461979
-Oceania,Rest of Asia (R10),0.026798548038162874
-South Asia,India+ (R10),1
-Sub-Saharan Africa,Africa (R10),1
+region,r10,weight,gdp
+East Asia,China+ (R10),0.7070478352929472,20801682355039.688
+East Asia,Pacific OECD (R10),0.15655773860363784,4606002855955.133
+East Asia,Reforming Economies (R10),0.01609569591675563,473543000955.42596
+East Asia,Rest of Asia (R10),0.12029873018665928,3539245646683.436
+Europe & Russia,Europe (R10),0.9250110268794609,21736792899382.133
+Europe & Russia,Reforming Economies (R10),0.07498897312053915,1762162537626.5947
+Latin America,Latin America (R10),1,5863991886731.99
+Middle East & North Africa,Africa (R10),0.21057898582024243,951104833926.3859
+Middle East & North Africa,India+ (R10),0.09093449431732169,410716372191.50397
+Middle East & North Africa,Middle East (R10),0.6760351486768088,3053392508783.029
+Middle East & North Africa,Reforming Economies (R10),0.02245137118562714,101404266811.0945
+North America,North America (R10),1,24402229764309.11
+Oceania,North America (R10),0.002926642715639231,5719850773.430391
+Oceania,Pacific OECD (R10),0.9702748092461979,1896311800702.57
+Oceania,Rest of Asia (R10),0.026798548038162874,52375267709.921844
+South Asia,India+ (R10),1,3966124518799.7603
+Sub-Saharan Africa,Africa (R10),1,2051305222039.457

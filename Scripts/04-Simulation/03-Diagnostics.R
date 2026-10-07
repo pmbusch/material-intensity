@@ -322,6 +322,148 @@ cat("  Saved: Results/MC/mc_envelope.csv\n")
 write_csv(srrc, "Results/MC/mc_srrc.csv")
 cat("  Saved: Results/MC/mc_srrc.csv\n\n")
 
+# =============================================================================
+# DIAGNOSTIC 4: Secondary recovery vs drawn recycling / downcycling rates
+# =============================================================================
+# FORECAST_END is past every run's recovery convergence year (RECYC_CONVERGENCE_YR_MAX),
+# so the EOL recovery achieved there must equal the drawn endpoint rate exactly:
+#   metals:   1 - sum(not_recovered) / sum(waste) over all end uses   = recycling_rate_fe / _nonfe
+#   minerals: same over the giving sectors (buildings, roads, civil eng., power) = downcycling
+# Tests (all region x year x material unless stated):
+#   T1 mass balance        waste = not_recovered + secondary + spilled (ore-equivalent for metals)
+#   T2 achieved = drawn    FORECAST_END achieved recovery rate vs drawn endpoint, per run x region
+#   T3 demand cap          secondary <= inflow per row (primary >= 0)
+#   T4 room cap (minerals) secondary <= room share x inflow per row (drawn room parameters)
+#   T5 response            Spearman(drawn rate, FORECAST_END world secondary share of inflow) > 0
+
+cat("DIAGNOSTIC 4: Secondary recovery vs drawn recycling rates\n")
+
+TOL <- 1e-6
+stopifnot(RECYC_CONVERGENCE_YR_MAX < FORECAST_END)
+GIVING_SECTORS <- c("Residential", "Non-residential", "Roads", "Civil engineering", POWER_LIFE_CLASSES$label)
+
+rec <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
+  filter(material_group %in% c("metal_fe", "metal_nonfe", "nonmetallic_minerals")) |>
+  dplyr::select(
+    run_id, region, material_group, material_key, year, total_inflow_Mt, primary_consumption_Mt,
+    secondary_supply_Mt, secondary_supply_Mt_pure, secondary_spilled_Mt, not_recovered_Mt, waste_Mt, waste_Mt_pure
+  ) |>
+  collect()
+
+# Drawn endpoint values in real units (same semi-uniform mapping as 02-RunSimulations.R)
+drawn <- input_matrix |>
+  dplyr::select(run_id, all_of(MC_PARAMS$col)) |>
+  pivot_longer(-run_id, names_to = "col", values_to = "u") |>
+  left_join(MC_PARAMS, by = "col") |>
+  mutate(value = if_else(u < 0.5, min + 2 * u * (central - min), central + 2 * (u - 0.5) * (max - central))) |>
+  dplyr::select(run_id, col, value) |>
+  pivot_wider(names_from = col, values_from = value)
+drawn_rate <- bind_rows(
+  drawn |> transmute(run_id, material_group = "metal_fe", rate_drawn = recycling_rate_fe),
+  drawn |> transmute(run_id, material_group = "metal_nonfe", rate_drawn = recycling_rate_nonfe),
+  drawn |> transmute(run_id, material_group = "nonmetallic_minerals", rate_drawn = downcycling)
+)
+
+# T1: mass balance per region x year x material
+t1 <- rec |>
+  group_by(run_id, region, material_group, year) |>
+  summarise(
+    waste = sum(waste_Mt),
+    resid = sum(waste_Mt) - sum(not_recovered_Mt + secondary_supply_Mt + secondary_spilled_Mt),
+    .groups = "drop"
+  ) |>
+  mutate(rel_resid = abs(resid) / pmax(waste, 1e-9))
+
+# T2: achieved EOL recovery at FORECAST_END = drawn endpoint
+t2 <- rec |>
+  filter(year == FORECAST_END, material_group != "nonmetallic_minerals" | material_key %in% GIVING_SECTORS) |>
+  group_by(run_id, region, material_group) |>
+  summarise(rate_achieved = 1 - sum(not_recovered_Mt) / sum(waste_Mt), .groups = "drop") |>
+  left_join(drawn_rate, by = c("run_id", "material_group")) |>
+  mutate(diff = rate_achieved - rate_drawn)
+
+# T3: secondary never exceeds demand (metal mass: inflow is metal, *_pure is metal)
+t3 <- rec |> mutate(excess = secondary_supply_Mt_pure - total_inflow_Mt)
+
+# T4: mineral secondary never exceeds its room (power sector receives like civil engineering)
+t4 <- rec |>
+  filter(material_group == "nonmetallic_minerals") |>
+  left_join(drawn, by = "run_id") |>
+  mutate(
+    room_share = case_when(
+      material_key %in% c("Residential", "Non-residential") ~ max_secondary_build_civil * share_concrete_buildings * share_agg_concrete,
+      material_key %in% c("Civil engineering", POWER_LIFE_CLASSES$label) ~ max_secondary_build_civil * share_concrete_civil * share_agg_concrete,
+      material_key == "Roads" ~ max_secondary_roads * share_granular_road,
+      TRUE ~ 0
+    ),
+    excess = secondary_supply_Mt - room_share * total_inflow_Mt
+  )
+
+# T5: response of the realised world secondary share to the drawn rate
+t5_data <- rec |>
+  filter(year == FORECAST_END) |>
+  group_by(run_id, material_group) |>
+  summarise(
+    secondary_share = sum(secondary_supply_Mt_pure) / sum(total_inflow_Mt), # metal mass / metal mass
+    spill_share = sum(secondary_spilled_Mt) / sum(waste_Mt),
+    .groups = "drop"
+  ) |>
+  left_join(drawn_rate, by = c("run_id", "material_group"))
+t5 <- t5_data |>
+  group_by(material_group) |>
+  summarise(spearman = cor(rate_drawn, secondary_share, method = "spearman"), runs_with_spill = sum(spill_share > 1e-9), .groups = "drop")
+
+recycling_tests <- tibble(
+  test = c(
+    "T1 mass balance (max relative residual)",
+    "T2 achieved vs drawn EOL rate at FORECAST_END (max |diff|)",
+    "T3 secondary <= inflow (max excess, Mt)",
+    "T4 mineral secondary <= room (max excess, Mt)",
+    paste0("T5 Spearman(drawn rate, secondary share) - ", t5$material_group)
+  ),
+  value = c(max(t1$rel_resid), max(abs(t2$diff)), max(t3$excess), max(t4$excess), t5$spearman),
+  pass = c(value[1:4] < c(TOL, TOL, TOL, TOL), t5$spearman > 0)
+)
+print(recycling_tests |> mutate(value = signif(value, 3)) |> as.data.frame())
+cat("  Runs with recovered surplus (spill) at", FORECAST_END, ":\n")
+print(as.data.frame(t5 |> dplyr::select(material_group, runs_with_spill)))
+if (!all(recycling_tests$pass)) {
+  warning("Recycling tests failed -- see table above")
+}
+write_csv(recycling_tests, "Results/MC/mc_recycling_tests.csv")
+
+# Figure: drawn endpoint rate vs achieved EOL recovery (should sit on 1:1) and vs
+# realised secondary share of inflow (below the rate: waste < demand, room caps)
+t5_plot <- t2 |>
+  group_by(run_id, material_group, rate_drawn) |>
+  summarise(rate_achieved = mean(rate_achieved), .groups = "drop") |>
+  left_join(t5_data |> dplyr::select(run_id, material_group, secondary_share), by = c("run_id", "material_group")) |>
+  pivot_longer(c(rate_achieved, secondary_share), names_to = "metric", values_to = "y") |>
+  mutate(
+    metric = recode(metric, rate_achieved = "EOL recovery achieved", secondary_share = "Secondary share of inflow"),
+    material_group = recode(material_group, metal_fe = "Fe metals (recycling)", metal_nonfe = "Non-Fe metals (recycling)", nonmetallic_minerals = "Minerals (downcycling)")
+  )
+
+pb_set_geom_defaults("wide")
+ggplot(t5_plot, aes(rate_drawn, y, colour = metric)) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", colour = "grey50", linewidth = 0.3) +
+  geom_point(size = 0.4, alpha = 0.5) +
+  facet_wrap(~material_group, nrow = 1) +
+  scale_colour_manual(values = c("EOL recovery achieved" = "#1B4F8A", "Secondary share of inflow" = "#B8896A"), name = NULL) +
+  scale_x_continuous(labels = scales::percent) +
+  scale_y_continuous(labels = scales::percent, limits = c(0, 1)) +
+  coord_cartesian(xlim = c(0, 1), expand = FALSE) +
+  labs(
+    x = paste0("Drawn endpoint rate (reached by ", RECYC_CONVERGENCE_YR_MAX, " at the latest)"),
+    y = NULL,
+    title = paste0("Secondary recovery in ", FORECAST_END, " vs drawn rate (world, 1 point = 1 run)")
+  ) +
+  theme_pb_wide() +
+  theme(legend.position = "inside", legend.position.inside = c(0.15, 0.85))
+
+ggsave("Figures/Simulation/03_recycling_tests.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 17, height = 8.7)
+cat("  Saved: Figures/Simulation/03_recycling_tests.png, Results/MC/mc_recycling_tests.csv\n\n")
+
 cat("=== Diagnostics complete ===\n")
 
 # EoF

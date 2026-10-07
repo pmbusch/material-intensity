@@ -1,8 +1,7 @@
 ## =============================================================================
 ## 00-Parameters.R
 ## Model configuration: base (deterministic) settings -- temporal bounds, input
-## file paths, end-use classification, DSM thresholds, downcycling constants,
-## lifetime anchors -- plus MC-specific run control and sampling settings.
+## file paths, end-use classification, DSM thresholds, lifetime anchors -- plus MC-specific run control and sampling settings.
 ## Sourced by every 04-Simulation script and by the figure scripts that need
 ## model constants.
 ##
@@ -29,11 +28,6 @@ ENDUSE_LABELS <- c(
   "short_lived" = "Short-lived products"
 )
 
-# -- Downcycling construction parameters ------------------------------------
-SUB_FACTOR_RECYCLING_SAME <- 0.7 # recycled concrete efficiency vs virgin (B→B)
-SUB_FACTOR_DOWNCYCLING_ROADS <- 0.9 # recycled aggregate efficiency vs virgin (→ roads)
-MAX_SECONDARY_ROADS <- 0.7 # max share of road demand met by secondary material
-
 # -- Lifetime parameters (deterministic anchor; also used by 02b) --------------
 lifetime_params <- read_excel("Inputs/MC_Assumptions.xlsx", sheet = "Lifetimes") |>
   dplyr::select(sub_use, super_category, mean_life, weibull_k)
@@ -43,12 +37,33 @@ N_RUNS <- 1000L
 # N_RUNS <- 200L # DEBUG
 GLOBAL_SEED <- 12062026L
 
-# READ ALL MONTECARLO PARAMETERS BOUNDS FROM ASSUMPTIONS
-p <- read_excel("Inputs/MC_Assumptions.xlsx", sheet = "Parameters")
-p <- p |> dplyr::filter(parameter_name != "DOWNCYCLING_BLDG_TO_ROADS")
-for (i in seq_len(nrow(p))) {
-  assign(paste0(p$parameter_name[i], "_MIN"), p$min[i])
-  assign(paste0(p$parameter_name[i], "_MAX"), p$max[i])
+# -- MC: global scalar parameters (min, central, max) ---------------------------
+# Read by parameter_name from the Parameters sheet; each becomes NAME_MIN,
+# NAME_CENTRAL, NAME_MAX. LHS column = tolower(NAME) (01-Sampling.R). Sampled
+# semi-uniformly: u < 0.5 -> min..central, u >= 0.5 -> central..max.
+MC_PARAM_NAMES <- c(
+  "RECYC_CONVERGENCE_YR",
+  "RECYCLING_RATE_FE",
+  "RECYCLING_RATE_NONFE",
+  "DOWNCYCLING",
+  "MAX_SECONDARY_BUILD_CIVIL",
+  "MAX_SECONDARY_ROADS",
+  "SHARE_CONCRETE_BUILDINGS",
+  "SHARE_CONCRETE_CIVIL",
+  "SHARE_AGG_CONCRETE",
+  "SHARE_GRANULAR_ROAD",
+  "GRADE_ORE_FE",
+  "GRADE_ORE_NONFE",
+  "TARGET_YEAR"
+)
+MC_PARAMS <- read_excel("Inputs/MC_Assumptions.xlsx", sheet = "Parameters") |>
+  dplyr::filter(parameter_name %in% MC_PARAM_NAMES) |>
+  dplyr::transmute(parameter_name, col = tolower(parameter_name), min, central = central_value, max)
+stopifnot(setequal(MC_PARAMS$parameter_name, MC_PARAM_NAMES))
+for (i in seq_len(nrow(MC_PARAMS))) {
+  assign(paste0(MC_PARAMS$parameter_name[i], "_MIN"), MC_PARAMS$min[i])
+  assign(paste0(MC_PARAMS$parameter_name[i], "_CENTRAL"), MC_PARAMS$central[i])
+  assign(paste0(MC_PARAMS$parameter_name[i], "_MAX"), MC_PARAMS$max[i])
 }
 
 # -- Stock-growth seam blend ----------------------------------------------------
@@ -66,6 +81,98 @@ STOCK_GROWTH_BLEND_YRS <- 3L
 # -- MC: lifetime sampling ranges (±20% around deterministic anchor) ----------
 LIFETIME_MIN <- 0.3 # MC: minimum sampled lifetime (years)
 LIFETIME_SAMPLE_PARAMS <- read_excel("Inputs/MC_Assumptions.xlsx", sheet = "Lifetimes")
+
+# -- Power sector (explicit generation + storage stock) ------------------------
+# Fixed coefficients only: nothing here is sampled, so the LHS design and the
+# sensitivity parameter list are unchanged. Capacity follows the run's own
+# fossil draws (01b-PowerSector.R builds the inputs, 02-RunSimulations.R runs it).
+WANG_FILE <- "Inputs/Wang2023_material_intensity_technology.xlsx"
+WANG_SHEET <- "Master - all intensity values"
+BATTERY_FILE <- "Inputs/Battery_intensity.xlsx"
+BATTERY_SHEET <- "Battery_Intensity"
+CLIMATE_FILE <- "Inputs/IIASA_SSP/2026-MIP-CMIP7/climate_iamc_data-0e7dfab0-46ee-486b-b50d-4faf3de27da4.csv"
+TEMP_MEDIAN_VAR <- "Climate Assessment|Surface Temperature (GSAT)|Median [MAGICC v7.6.0a3]"
+
+CAPACITY_ANCHOR_YEAR <- 2025L # ScenarioMIP "today" = the model's anchor stock (DSM start)
+
+# Fossil-fuel energy densities (MJ/kg) -> 2024 energy shares of coal/gas/oil.
+# PLACEHOLDER values to confirm: IPCC (2006) default NCVs, same as Figure 3.
+ENERGY_DENSITY_MJ_PER_KG <- c(coal = 25.8, gas = 48.0, oil = 42.3)
+if (anyNA(ENERGY_DENSITY_MJ_PER_KG) || length(ENERGY_DENSITY_MJ_PER_KG) != 3L) {
+  stop("ENERGY_DENSITY_MJ_PER_KG (00-Parameters.R) is empty -- fill in coal/gas/oil MJ/kg")
+}
+
+# Lifetime classes (fixed lifetimes; k = 2.5 as for every long-lived sub_use).
+# donor_sub_use: existing sub_use with the closest central lifetime -- its 2024
+# cohort shape is the power class's 2025 age profile (CEM splice from the
+# donor's lifetime, as for every other stock). Hydro/nuclear: no retirement
+# before FORECAST_END, modelled as a very long mean lifetime.
+POWER_LIFE_CLASSES <- tibble::tribble(
+  ~sub_use              , ~label                   , ~mean_life , ~weibull_k , ~donor_sub_use      ,
+  "power_thermal"       , "Power: thermal"         , 40         , 2.5        , "roads"             ,
+  "power_solar_wind"    , "Power: solar & wind"    , 27         , 2.5        , "machinery_group"   ,
+  "power_hydro_nuclear" , "Power: hydro & nuclear" , 1e4        , 2.5        , "civil_engineering" ,
+  "power_battery"       , "Power: batteries"       , 15         , 2.5        , "vehicles_group"
+)
+
+# IAMC capacity variable -> tech key, Wang (2023) technology (no CCS), class.
+# Capacity|Electricity|Fossil is NOT used (= Coal + Gas + Oil).
+POWER_TECHS <- tibble::tribble(
+  ~variable                            , ~tech           , ~wang_tech        , ~sub_use              ,
+  "Capacity|Electricity|Coal"          , "coal"          , "Coal"            , "power_thermal"       ,
+  "Capacity|Electricity|Gas"           , "gas"           , "Gas"             , "power_thermal"       ,
+  "Capacity|Electricity|Oil"           , "oil"           , "Gas"             , "power_thermal"       ,
+  "Capacity|Electricity|Hydrogen"      , "hydrogen"      , "Gas"             , "power_thermal"       ,
+  "Capacity|Electricity|Other"         , "other"         , "Gas"             , "power_thermal"       ,
+  "Capacity|Electricity|Biomass"       , "biomass"       , "Biomass"         , "power_thermal"       ,
+  "Capacity|Electricity|Geothermal"    , "geothermal"    , "Geothermal"      , "power_thermal"       ,
+  "Capacity|Electricity|Solar|PV"      , "solar_pv"      , "CSI_PV"          , "power_solar_wind"    ,
+  "Capacity|Electricity|Solar|CSP"     , "solar_csp"     , "CSP"             , "power_solar_wind"    ,
+  "Capacity|Electricity|Wind|Onshore"  , "wind_onshore"  , "Onshore_AG"      , "power_solar_wind"    ,
+  "Capacity|Electricity|Wind|Offshore" , "wind_offshore" , "Offshore_DD_PMG" , "power_solar_wind"    ,
+  "Capacity|Electricity|Hydro"         , "hydro"         , "Hydro"           , "power_hydro_nuclear" ,
+  "Capacity|Electricity|Nuclear"       , "nuclear"       , "Nuclear"         , "power_hydro_nuclear"
+)
+
+# Stationary storage: GWh = hours x coverage x (PV + onshore + offshore GW)
+BATTERY_HOURS <- 4
+BATTERY_COVERAGE <- 0.1 # was 0.2; IEA 2025 stock ~110 GW x 3 h = 330 GWh (utility + behind-the-meter)
+BATTERY_GWH_PER_GW <- BATTERY_HOURS * BATTERY_COVERAGE # 0.4
+BATTERY_SOURCE_TECHS <- c("solar_pv", "wind_onshore", "wind_offshore")
+BATTERY_CHEMISTRIES <- c("LFP", "NMC 811") # simple average, kg/kWh
+
+# Material -> model material group (metals in metal mass; ore via sampled grades)
+WANG_MATERIAL_GROUP <- c(
+  "Steel" = "metal_fe",
+  "Al" = "metal_nonfe",
+  "Cu" = "metal_nonfe",
+  "Si" = "nonmetallic_minerals", # ore is quartz
+  "Glass" = "nonmetallic_minerals",
+  "Cement" = "nonmetallic_minerals",
+  "Aggregates" = "nonmetallic_minerals" # = AGGREGATE_PER_CEMENT x cement
+)
+AGGREGATE_PER_CEMENT <- 7 # t aggregates per t cement (Kane 2026; no water)
+BATTERY_MATERIAL_GROUP <- c(
+  "Steel" = "metal_fe",
+  "Stainless steel" = "metal_fe",
+  "Aluminum" = "metal_nonfe",
+  "Cobalt" = "metal_nonfe",
+  "Copper" = "metal_nonfe",
+  "Lithium" = "metal_nonfe",
+  "Manganese" = "metal_nonfe",
+  "Nickel" = "metal_nonfe",
+  "Graphite" = "nonmetallic_minerals"
+)
+
+# Carve-out: 2025 power-sector stock is removed from this 2024 base stock
+POWER_CARVEOUT_SUB_USE <- "civil_engineering"
+# Ratio form (anchor x scenario GW/GDP ratio) = scenario path x calibration
+# factor (anchor / scenario's own 2025 GW). Tiny scenario bases blow this up
+# (e.g. 0.07 GW anchor / 3e-7 GW base), so outside [1/X, X] the scenario's own
+# level is used instead -- same threshold (5) as 04_summary_ratio.R's tiny-base fix.
+POWER_CALIB_MAX <- 5
+# Report (not drop) 2025->2030 world capacity jumps above this ratio
+POWER_JUMP_REPORT <- 1.5
 
 # SEE DISTRIBUTION
 # {lifetime <- 120

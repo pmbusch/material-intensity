@@ -22,6 +22,13 @@
 # choice independent of the horizon) live in Scripts/04-Simulation/00-Parameters.R.
 FORECAST_END <- 2060L
 
+# ── Ore grade 2024 baseline (ore -> metal conversion factor g) ─────────────────
+# 2024 "now" values: the historical series ramps linearly from its last observed
+# year (2016) to these, and each MC run then ramps from these to its sampled
+# target (Inputs/MC_Assumptions.xlsx GRADE_ORE_FE/NONFE: min/central/max).
+GRADE_ORE_FE_2024 <- 0.4
+GRADE_ORE_NONFE_2024 <- 0.016
+
 # ── Regions (Analysis_group, 8 levels) ────────────────────────────────────────
 # Based on Paul Tol's Vibrant palette with geographic-semantic adjustments.
 
@@ -93,7 +100,8 @@ PALETTE_ENDUSE <- c(
   "Buildings" = "#1B4F8A",
   "Civil infrastructure" = "#7A5230",
   "Machinery" = "#2D6A4F",
-  "Short-lived products" = "#7B2D8B"
+  "Short-lived products" = "#7B2D8B",
+  "Power sector" = "#E69F00" # generation + batteries (explicit stock, 02-RunSimulations.R)
 )
 
 # Sub-end-use palette: 2 tones per main category, keyed by display label.
@@ -108,7 +116,8 @@ PALETTE_SUBENDUSE <- c(
   "Machinery" = "#2D6A4F",
   "Vehicles" = "#5DAA80",
   "Durables" = "#7B2D8B",
-  "Packaging" = "#B068C0"
+  "Packaging" = "#B068C0",
+  "Power sector" = "#E69F00" # same as PALETTE_ENDUSE
 )
 
 SSP_COLORS <- c("SSP1" = "#2d7d46", "SSP2" = "#8db84e", "SSP3" = "#e8a628", "SSP4" = "#d4622a", "SSP5" = "#c0392b")

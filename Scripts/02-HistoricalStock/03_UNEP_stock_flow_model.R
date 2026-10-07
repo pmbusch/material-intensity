@@ -166,16 +166,11 @@ grade_wide <- grade_raw %>%
   pivot_wider(names_from = group, values_from = g) %>%
   rename(g_Fe = Ferrous, g_NonFe = `Non-ferrous`)
 
-# MC_Assumptions "mid" (= (min+max)/2) grade -- same value used as the 2024
-# "now" baseline for the MC ore-grade convergence ramp in
+# 2024 grade baseline (Scripts/00-CommonParameters.R) -- same value used as the
+# 2024 "now" baseline for the MC ore-grade convergence ramp in
 # Scripts/04-Simulation/02-RunSimulations.R (GRADE_ORE_FE_NOW / GRADE_ORE_NONFE_NOW).
-grade_mc_bounds <- read_excel("Inputs/MC_Assumptions.xlsx", sheet = "Parameters") %>%
-  filter(parameter_name %in% c("GRADE_ORE_FE", "GRADE_ORE_NONFE"))
-grade_mid_fe <- with(grade_mc_bounds, mean(c(min[parameter_name == "GRADE_ORE_FE"], max[parameter_name == "GRADE_ORE_FE"])))
-grade_mid_nonfe <- with(
-  grade_mc_bounds,
-  mean(c(min[parameter_name == "GRADE_ORE_NONFE"], max[parameter_name == "GRADE_ORE_NONFE"]))
-)
+grade_mid_fe <- GRADE_ORE_FE_2024
+grade_mid_nonfe <- GRADE_ORE_NONFE_2024
 
 yr_min <- min(unep_sub$year)
 yr_max <- max(unep_sub$year)

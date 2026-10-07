@@ -11,7 +11,7 @@
 ##     columns: run_id, ssp_u, <one column per sampled parameter, all in [0,1]>
 ##   Parameters/Simulation/flow_ratio_bounds.csv   (region, material_group, mat_key, ssp, ratio_min, ratio_max)
 ##   Parameters/Simulation/stock_ratio_bounds.csv  (region, material_group, mat_key, ratio_min, ratio_max)
-##   Parameters/Simulation/r10_region_weights.csv  (region, r10, weight = share of region's 2024 GDP in r10)
+##   Parameters/Simulation/r10_region_weights.csv  (region, r10, weight = share of region's 2024 GDP in r10, gdp)
 ##   Parameters/Simulation/intensity_world_bounds.csv (param, bound_min, bound_max, int_2024; world kg/$,
 ##     2024-GDP-weighted -- display only, for figures that express a draw u in kg/$)
 ##
@@ -98,11 +98,12 @@ r10_weights <- country_r10 |>
   dplyr::group_by(region) |>
   dplyr::mutate(weight = gdp / sum(gdp)) |>
   dplyr::ungroup() |>
-  dplyr::select(region, r10, weight)
+  dplyr::select(region, r10, weight, gdp) # gdp kept: 01b splits R10 absolute capacity by GDP share
 
 cat("\n  R10 -> model region weight matrix (rows sum to 1):\n")
 print(
   r10_weights |>
+    dplyr::select(-gdp) |>
     dplyr::mutate(weight = round(weight, 3), r10 = stringr::str_remove(r10, " \\(R10\\)")) |>
     tidyr::pivot_wider(names_from = r10, values_from = weight, values_fill = 0) |>
     as.data.frame()
@@ -256,25 +257,14 @@ lhs_col_names <- c(
   # SSP_SAMPLED SSPs ranked by world GDP/capita growth and blends the two bracketing SSPs
   # for population, GDP per capita AND flow-intensity bounds -- no discrete label.
   "ssp_u",
-  "target_year_u",
   # Intensity draws (one per material/group, shared by all regions, all in [0,1])
   paste0("intensity_", biomass_mats_sampled, "_global"),
   paste0("intensity_", fossil_mats_sampled, "_global"),
   paste0("intensity_", stock_combos, "_global"),
-  # Recycling draws — separate for Fe and NonFe metals
-  "recycling_Fe_global",
-  "recycling_NonFe_global",
-  "recyc_convergence_yr_global",
-  "downcycling_buildings_global",
-  "downcycling_civil_infrastructure_global",
-  # Scalar parameters
-  "sub_factor_recycling_same",
-  "sub_factor_recycling_same_civil",
-  "max_secondary_roads",
-  "sub_factor_downcycling_roads",
-  # Ore grade draws (primary ore → metal, central Fe=0.40, NonFe=0.016)
-  "grade_ore_fe_u",
-  "grade_ore_nonfe_u",
+  # Global scalars (Parameters sheet, lowercase names): recovery endpoints and
+  # convergence year, secondary room shares, ore grades, intensity target year.
+  # Mapped semi-uniformly around the central value downstream (02/02b).
+  MC_PARAMS$col,
   # Lifetime params (mean and k per super_category; applied proportionally to sub_uses)
   paste0("lifetime_mean_", lifetime_super_cats),
   paste0("lifetime_k_", lifetime_super_cats)

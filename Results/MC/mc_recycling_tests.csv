@@ -1,0 +1,8 @@
+test,value,pass
+T1 mass balance (max relative residual),4.3925843702469927e-16,TRUE
+T2 achieved vs drawn EOL rate at FORECAST_END (max |diff|),2.7755575615628914e-16,TRUE
+"T3 secondary <= inflow (max excess, Mt)",1.7763568394002505e-15,TRUE
+"T4 mineral secondary <= room (max excess, Mt)",1.8189894035458565e-12,TRUE
+"T5 Spearman(drawn rate, secondary share) - metal_fe",0.8795856155856157,TRUE
+"T5 Spearman(drawn rate, secondary share) - metal_nonfe",0.9028649188649189,TRUE
+"T5 Spearman(drawn rate, secondary share) - nonmetallic_minerals",0.7536821136821138,TRUE

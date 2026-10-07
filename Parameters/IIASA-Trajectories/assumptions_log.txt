@@ -1,4 +1,4 @@
-Assumptions / drop log -- generated 2026-09-30
+Assumptions / drop log -- generated 2026-10-07
 
 - Dropped 4195 exact duplicate rows after stacking (energy extract repeats Primary Energy variables already in the R10/World files, with identical values).
 - Dropped 140752 rows outside the 2020-2060 5-yr grid (includes the near-empty 2021 column, which is a data artifact, not a real annual series).

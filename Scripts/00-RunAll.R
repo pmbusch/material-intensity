@@ -15,6 +15,7 @@ scripts <- c(
   "Scripts/01-PrepareData/02-Aggregate_UN.R",
   "Scripts/01-PrepareData/03-Aggregate_GDP.R",
   "Scripts/01-PrepareData/05_Aggregate_MISO.R",
+  "Scripts/01-PrepareData/06-Aggregate_EIA_Capacity.R",
 
   # Stage 2: historical end-use split, ore grade, stock-flow model (-> Parameters/Intermediate, MISO-Stock)
   "Scripts/02-HistoricalStock/01_UNEP_enduse_shares.R",
@@ -39,8 +40,8 @@ scripts <- c(
 
   # Stage 4: Monte Carlo simulation (-> Parameters/Simulation, Results/MC)
   "Scripts/04-Simulation/01-Sampling.R",
+  "Scripts/04-Simulation/01b-PowerSector.R",
   "Scripts/04-Simulation/02-RunSimulations.R",
-  "Scripts/04-Simulation/02b-DeterministicRuns.R",
   "Scripts/04-Simulation/03-Diagnostics.R",
   "Scripts/04-Simulation/04-Decoupling.R",
 
@@ -52,9 +53,11 @@ scripts <- c(
   "Scripts/05-Figures/Figure 2 Detail - Region Summary.R",
   "Scripts/05-Figures/Figure 3 - Contours-GrowthRate.R",
   "Scripts/05-Figures/Figure 4 - Climate - PrepareData.R",
+  "Scripts/05-Figures/Figure 5 - Sensitivity - PrepareData.R", # before Figure 4: its panel b reads Figure5_Scatter.csv
   "Scripts/05-Figures/Figure 4 - Climate.R",
-  "Scripts/05-Figures/Figure 5 - Sensitivity - PrepareData.R",
   "Scripts/05-Figures/Figure 5 - Sensitivity.R",
+  "Scripts/05-Figures/Figure 5 - Alt1 - PrepareData.R",
+  "Scripts/05-Figures/Figure 5 - Alt1.R",
   "Scripts/05-Figures/Table 1 - Results.R",
 
   # Stage 6: supporting figures not produced above (-> Figures/Supporting-Figures)
