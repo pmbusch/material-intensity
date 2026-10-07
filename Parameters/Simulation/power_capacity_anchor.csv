@@ -1,0 +1,105 @@
+region,tech,cap_2025_gw
+East Asia,biomass,28.749323990808698
+East Asia,coal,1441.6458782470909
+East Asia,gas,420.4837854578535
+East Asia,geothermal,7.390527013477345
+East Asia,hydro,605.500474965789
+East Asia,hydrogen,0
+East Asia,nuclear,127.07331632420241
+East Asia,oil,54.283781977175224
+East Asia,other,0
+East Asia,solar_csp,0.6103219880445498
+East Asia,solar_pv,1168.5576534895145
+East Asia,wind_offshore,45.69828599878724
+East Asia,wind_onshore,514.5931297645881
+Europe & Russia,biomass,35.83362812050059
+Europe & Russia,coal,177.63712394954888
+Europe & Russia,gas,372.75421059137653
+Europe & Russia,geothermal,4.0423355142095465
+Europe & Russia,hydro,277.9723192792908
+Europe & Russia,hydrogen,0
+Europe & Russia,nuclear,139.6956322358614
+Europe & Russia,oil,27.90293695674876
+Europe & Russia,other,0
+Europe & Russia,solar_csp,2.3653023531991706
+Europe & Russia,solar_pv,393.7634004778081
+Europe & Russia,wind_offshore,39.307262949375044
+Europe & Russia,wind_onshore,271.43028850423303
+Latin America,biomass,19.2712504
+Latin America,coal,15.3040012
+Latin America,gas,99.6653177
+Latin America,geothermal,1.724277830018537
+Latin America,hydro,226.5998085
+Latin America,hydrogen,0
+Latin America,nuclear,5.369489863081315
+Latin America,oil,24.4229518
+Latin America,other,0
+Latin America,solar_csp,0.207342038489919
+Latin America,solar_pv,108.0735138
+Latin America,wind_offshore,0.242999999999999
+Latin America,wind_onshore,51.7503
+Middle East & North Africa,biomass,1.1807559312575235
+Middle East & North Africa,coal,51.468403577424475
+Middle East & North Africa,gas,442.37601995395966
+Middle East & North Africa,geothermal,0.2891254792417599
+Middle East & North Africa,hydro,44.35574620356658
+Middle East & North Africa,hydrogen,0
+Middle East & North Africa,nuclear,7.284224566938041
+Middle East & North Africa,oil,106.86675660463254
+Middle East & North Africa,other,0
+Middle East & North Africa,solar_csp,1.4800375414716866
+Middle East & North Africa,solar_pv,82.77524992769574
+Middle East & North Africa,wind_offshore,0.06661374933299902
+Middle East & North Africa,wind_onshore,15.031258517431874
+North America,biomass,16.643784029626065
+North America,coal,218.74555595155996
+North America,gas,530.3866454779244
+North America,geothermal,3.814105978542042
+North America,hydro,160.19590275384064
+North America,hydrogen,0
+North America,nuclear,115.12325914424187
+North America,oil,26.145877353899014
+North America,other,0
+North America,solar_csp,2.0571498067731135
+North America,solar_pv,258.48813271942436
+North America,wind_offshore,0.1942544670067405
+North America,wind_onshore,192.48673616054216
+Oceania,biomass,3.1073494432881077
+Oceania,coal,22.49309666481228
+Oceania,gas,27.717304048438418
+Oceania,geothermal,0.6235131239723681
+Oceania,hydro,12.318596244649923
+Oceania,hydrogen,0
+Oceania,nuclear,9.691562255419745
+Oceania,oil,4.7513423348083
+Oceania,other,0
+Oceania,solar_csp,0.0014300156363224194
+Oceania,solar_pv,44.117433260518176
+Oceania,wind_offshore,0.18990885040958852
+Oceania,wind_onshore,6.6194954352221504
+South Asia,biomass,5.199077286418717
+South Asia,coal,257.66497625089204
+South Asia,gas,39.792678189534556
+South Asia,geothermal,0
+South Asia,hydro,59.18913965720215
+South Asia,hydrogen,0
+South Asia,nuclear,9.39082302723798
+South Asia,oil,8.126455946298012
+South Asia,other,0
+South Asia,solar_csp,0.31036029901952156
+South Asia,solar_pv,143.14505673487648
+South Asia,wind_offshore,0.1467981560325903
+South Asia,wind_onshore,50.797551908115615
+Sub-Saharan Africa,biomass,0.6953610360423306
+Sub-Saharan Africa,coal,27.50826804421234
+Sub-Saharan Africa,gas,31.429104884631883
+Sub-Saharan Africa,geothermal,0.6129625047046087
+Sub-Saharan Africa,hydro,24.134777773464005
+Sub-Saharan Africa,hydrogen,0
+Sub-Saharan Africa,nuclear,1.2201207142142738
+Sub-Saharan Africa,oil,2.616739042844175
+Sub-Saharan Africa,other,0
+Sub-Saharan Africa,solar_csp,0.4503783218023547
+Sub-Saharan Africa,solar_pv,11.610586136712143
+Sub-Saharan Africa,wind_offshore,0.11068156573419449
+Sub-Saharan Africa,wind_onshore,6.486132829866286

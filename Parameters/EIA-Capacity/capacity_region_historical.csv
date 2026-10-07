@@ -1,0 +1,3241 @@
+region,year,eia_tech,gw
+East Asia,1980,biomass,0
+East Asia,1981,biomass,0
+East Asia,1982,biomass,0
+East Asia,1983,biomass,0
+East Asia,1984,biomass,0
+East Asia,1985,biomass,0
+East Asia,1986,biomass,0
+East Asia,1987,biomass,0
+East Asia,1988,biomass,0
+East Asia,1989,biomass,0
+East Asia,1990,biomass,0
+East Asia,1991,biomass,0
+East Asia,1992,biomass,0
+East Asia,1993,biomass,0
+East Asia,1994,biomass,0
+East Asia,1995,biomass,0
+East Asia,1996,biomass,0
+East Asia,1997,biomass,0
+East Asia,1998,biomass,0
+East Asia,1999,biomass,0
+East Asia,2000,biomass,4.8907
+East Asia,2001,biomass,5.1215
+East Asia,2002,biomass,5.7562999999999995
+East Asia,2003,biomass,5.6551
+East Asia,2004,biomass,5.9927
+East Asia,2005,biomass,6.6046
+East Asia,2006,biomass,7.7524
+East Asia,2007,biomass,8.7657
+East Asia,2008,biomass,9.313
+East Asia,2009,biomass,11.4428
+East Asia,2010,biomass,10.6224
+East Asia,2011,biomass,11.5411
+East Asia,2012,biomass,12.307500000000001
+East Asia,2013,biomass,14.3309
+East Asia,2014,biomass,16.0653
+East Asia,2015,biomass,18.3562
+East Asia,2016,biomass,21.186700000000002
+East Asia,2017,biomass,23.9431
+East Asia,2018,biomass,27.0362
+East Asia,2019,biomass,31.1049
+East Asia,2020,biomass,38.5052
+East Asia,2021,biomass,44.467172
+East Asia,2022,biomass,48.441133
+East Asia,2023,biomass,51.170956
+East Asia,2024,biomass,53.025307
+East Asia,1980,fossil,180.812
+East Asia,1981,fossil,189.062
+East Asia,1982,fossil,196.625
+East Asia,1983,fossil,208.686
+East Asia,1984,fossil,215.321
+East Asia,1985,fossil,225.838
+East Asia,1986,fossil,236.649
+East Asia,1987,fossil,247.524
+East Asia,1988,fossil,260.647
+East Asia,1989,fossil,274.398
+East Asia,1990,fossil,293.844
+East Asia,1991,fossil,311.838
+East Asia,1992,fossil,367.252
+East Asia,1993,fossil,389.587
+East Asia,1994,fossil,410.58320000000003
+East Asia,1995,fossil,435.5802
+East Asia,1996,fossil,468.332
+East Asia,1997,fossil,502.91999999999996
+East Asia,1998,fossil,534.057
+East Asia,1999,fossil,553.102
+East Asia,2000,fossil,591.519
+East Asia,2001,fossil,615.414
+East Asia,2002,fossil,641.662
+East Asia,2003,fossil,673.5400000000001
+East Asia,2004,fossil,732.4653
+East Asia,2005,fossil,786.6016999999999
+East Asia,2006,fossil,885.2448
+East Asia,2007,fossil,963.3018
+East Asia,2008,fossil,1024.8548
+East Asia,2009,fossil,1089.7998
+East Asia,2010,fossil,1162.184
+East Asia,2011,fossil,1236.8323
+East Asia,2012,fossil,1302.7087999999999
+East Asia,2013,fossil,1366.9501
+East Asia,2014,fossil,1438.3928
+East Asia,2015,fossil,1523.0903
+East Asia,2016,fossil,1610.5752
+East Asia,2017,fossil,1668.34784
+East Asia,2018,fossil,1717.21602
+East Asia,2019,fossil,1768.0066399999998
+East Asia,2020,fossil,1841.30111
+East Asia,2021,fossil,1896.4401726
+East Asia,2022,fossil,1933.6717546000002
+East Asia,2023,fossil,2007.1107075999998
+East Asia,2024,fossil,2075.967329134
+East Asia,1980,geothermal,0
+East Asia,1981,geothermal,0
+East Asia,1982,geothermal,0
+East Asia,1983,geothermal,0
+East Asia,1984,geothermal,0
+East Asia,1985,geothermal,0
+East Asia,1986,geothermal,0
+East Asia,1987,geothermal,0
+East Asia,1988,geothermal,0
+East Asia,1989,geothermal,0
+East Asia,1990,geothermal,0
+East Asia,1991,geothermal,0
+East Asia,1992,geothermal,0
+East Asia,1993,geothermal,0
+East Asia,1994,geothermal,0
+East Asia,1995,geothermal,0
+East Asia,1996,geothermal,0
+East Asia,1997,geothermal,0
+East Asia,1998,geothermal,0
+East Asia,1999,geothermal,0
+East Asia,2000,geothermal,2.9267
+East Asia,2001,geothermal,3.1867
+East Asia,2002,geothermal,3.1867
+East Asia,2003,geothermal,3.2087
+East Asia,2004,geothermal,3.2237
+East Asia,2005,geothermal,3.2537
+East Asia,2006,geothermal,3.2507
+East Asia,2007,geothermal,3.3807
+East Asia,2008,geothermal,3.4558
+East Asia,2009,geothermal,3.5958
+East Asia,2010,geothermal,3.5971
+East Asia,2011,geothermal,3.6362
+East Asia,2012,geothermal,3.7212
+East Asia,2013,geothermal,3.7285
+East Asia,2014,geothermal,3.8539
+East Asia,2015,geothermal,3.8964999999999996
+East Asia,2016,geothermal,4.0015
+East Asia,2017,geothermal,4.2265
+East Asia,2018,geothermal,4.3755
+East Asia,2019,geothermal,4.5662
+East Asia,2020,geothermal,4.5662
+East Asia,2021,geothermal,4.7317
+East Asia,2022,geothermal,4.760498999999999
+East Asia,2023,geothermal,5.010849
+East Asia,2024,geothermal,5.085299
+East Asia,1980,hydro,49.69073
+East Asia,1981,hydro,52.57073
+East Asia,1982,hydro,55.83873
+East Asia,1983,hydro,56.98173
+East Asia,1984,hydro,59.63673
+East Asia,1985,hydro,61.32817
+East Asia,1986,hydro,64.59855
+East Asia,1987,hydro,67.69027
+East Asia,1988,hydro,71.45974
+East Asia,1989,hydro,72.75966
+East Asia,1990,hydro,75.17504
+East Asia,1991,hydro,77.33754
+East Asia,1992,hydro,91.81779
+East Asia,1993,hydro,96.38471
+East Asia,1994,hydro,101.31
+East Asia,1995,hydro,105.762
+East Asia,1996,hydro,110.09700000000001
+East Asia,1997,hydro,114.517
+East Asia,1998,hydro,121.14
+East Asia,1999,hydro,128.66400000000002
+East Asia,2000,hydro,130.5433
+East Asia,2001,hydro,139.0054
+East Asia,2002,hydro,143.1514
+East Asia,2003,hydro,152.7897
+East Asia,2004,hydro,163.4707
+East Asia,2005,hydro,175.6485
+East Asia,2006,hydro,188.62800000000001
+East Asia,2007,hydro,204.0013
+East Asia,2008,hydro,227.8173
+East Asia,2009,hydro,251.15900000000002
+East Asia,2010,hydro,271.65389999999996
+East Asia,2011,hydro,290.2453
+East Asia,2012,hydro,310.1804
+East Asia,2013,hydro,344.3754
+East Asia,2014,hydro,370.1508
+East Asia,2015,hydro,387.602
+East Asia,2016,hydro,399.4505
+East Asia,2017,hydro,409.5509
+East Asia,2018,hydro,418.682
+East Asia,2019,hydro,427.74
+East Asia,2020,hydro,442.60429999999997
+East Asia,2021,hydro,452.39957999999996
+East Asia,2022,hydro,466.77747999999997
+East Asia,2023,hydro,472.03881900000005
+East Asia,2024,hydro,479.6711485
+East Asia,1980,nuclear,16.689999999999998
+East Asia,1981,nuclear,19.308999999999997
+East Asia,1982,nuclear,20.88
+East Asia,1983,nuclear,23.896
+East Asia,1984,nuclear,27.477
+East Asia,1985,nuclear,32.193999999999996
+East Asia,1986,nuclear,36.176
+East Asia,1987,nuclear,37.126999999999995
+East Asia,1988,nuclear,39.392
+East Asia,1989,nuclear,41.397
+East Asia,1990,nuclear,42.915
+East Asia,1991,nuclear,44.099999999999994
+East Asia,1992,nuclear,46.783
+East Asia,1993,nuclear,51.441
+East Asia,1994,nuclear,54.838
+East Asia,1995,nuclear,55.882
+East Asia,1996,nuclear,59.624
+East Asia,1997,nuclear,60.294
+East Asia,1998,nuclear,62.705999999999996
+East Asia,1999,nuclear,63.286
+East Asia,2000,nuclear,63.286
+East Asia,2001,nuclear,65.032
+East Asia,2002,nuclear,69.164
+East Asia,2003,nuclear,70.645
+East Asia,2004,nuclear,72.543
+East Asia,2005,nuclear,76.134
+East Asia,2006,nuclear,77.757
+East Asia,2007,nuclear,78.507
+East Asia,2008,nuclear,78.507
+East Asia,2009,nuclear,78.108
+East Asia,2010,nuclear,80.728
+East Asia,2011,nuclear,79.926
+East Asia,2012,nuclear,82.958
+East Asia,2013,nuclear,84.291
+East Asia,2014,nuclear,44.868
+East Asia,2015,nuclear,54.814
+East Asia,2016,nuclear,61.368
+East Asia,2017,nuclear,67.924
+East Asia,2018,nuclear,78.51599999999999
+East Asia,2019,nuclear,81.19
+East Asia,2020,nuclear,84.772
+East Asia,2021,nuclear,86.82
+East Asia,2022,nuclear,89.3934
+East Asia,2023,nuclear,97.739
+East Asia,2024,nuclear,94.511
+East Asia,1980,pumped_storage,11.5
+East Asia,1981,pumped_storage,12.595
+East Asia,1982,pumped_storage,12.595
+East Asia,1983,pumped_storage,14.291
+East Asia,1984,pumped_storage,15.391
+East Asia,1985,pumped_storage,15.871
+East Asia,1986,pumped_storage,15.871
+East Asia,1987,pumped_storage,17.070999999999998
+East Asia,1988,pumped_storage,17.671
+East Asia,1989,pumped_storage,18.521
+East Asia,1990,pumped_storage,18.521
+East Asia,1991,pumped_storage,19.901
+East Asia,1992,pumped_storage,20.221
+East Asia,1993,pumped_storage,21.241
+East Asia,1994,pumped_storage,26.363
+East Asia,1995,pumped_storage,28.583
+East Asia,1996,pumped_storage,29.858
+East Asia,1997,pumped_storage,30.258
+East Asia,1998,pumped_storage,31.278000000000002
+East Asia,1999,pumped_storage,32.878
+East Asia,2000,pumped_storage,34.378
+East Asia,2001,pumped_storage,35.508
+East Asia,2002,pumped_storage,35.504
+East Asia,2003,pumped_storage,35.504
+East Asia,2004,pumped_storage,35.887
+East Asia,2005,pumped_storage,36.957
+East Asia,2006,pumped_storage,39.157
+East Asia,2007,pumped_storage,42.232
+East Asia,2008,pumped_storage,43.487
+East Asia,2009,pumped_storage,46.957
+East Asia,2010,pumped_storage,50.102
+East Asia,2011,pumped_storage,53.2545
+East Asia,2012,pumped_storage,55.6745
+East Asia,2013,pumped_storage,56.8745
+East Asia,2014,pumped_storage,58.057
+East Asia,2015,pumped_storage,59.177
+East Asia,2016,pumped_storage,62.759
+East Asia,2017,pumped_storage,65.459
+East Asia,2018,pumped_storage,66.059
+East Asia,2019,pumped_storage,66.359
+East Asia,2020,pumped_storage,66.389
+East Asia,2021,pumped_storage,72.379
+East Asia,2022,pumped_storage,81.779
+East Asia,2023,pumped_storage,86.92854
+East Asia,2024,pumped_storage,94.63154
+East Asia,1980,solar,0
+East Asia,1981,solar,0
+East Asia,1982,solar,0
+East Asia,1983,solar,0
+East Asia,1984,solar,0
+East Asia,1985,solar,0
+East Asia,1986,solar,0
+East Asia,1987,solar,0
+East Asia,1988,solar,0
+East Asia,1989,solar,0
+East Asia,1990,solar,0
+East Asia,1991,solar,0
+East Asia,1992,solar,0
+East Asia,1993,solar,0
+East Asia,1994,solar,0
+East Asia,1995,solar,0
+East Asia,1996,solar,0
+East Asia,1997,solar,0
+East Asia,1998,solar,0
+East Asia,1999,solar,0
+East Asia,2000,solar,0.368
+East Asia,2001,solar,0.4971
+East Asia,2002,solar,0.7002
+East Asia,2003,solar,0.9356
+East Asia,2004,solar,1.2230999999999999
+East Asia,2005,solar,1.6087
+East Asia,2006,solar,1.945
+East Asia,2007,solar,2.2483
+East Asia,2008,solar,2.8145000000000002
+East Asia,2009,solar,3.6401999999999997
+East Asia,2010,solar,5.4094
+East Asia,2011,solar,9.0045
+East Asia,2012,solar,15.0801
+East Asia,2013,solar,34.3892
+East Asia,2014,solar,56.5771
+East Asia,2015,solar,84.4016
+East Asia,2016,solar,129.6369
+East Asia,2017,solar,192.5062
+East Asia,2018,solar,247.7308
+East Asia,2019,solar,296.17
+East Asia,2020,solar,370.73121
+East Asia,2021,solar,436.593132669
+East Asia,2022,solar,535.251487154
+East Asia,2023,solar,765.383525284
+East Asia,2024,solar,1053.7438349459999
+East Asia,1980,tide_wave,0
+East Asia,1981,tide_wave,0
+East Asia,1982,tide_wave,0
+East Asia,1983,tide_wave,0
+East Asia,1984,tide_wave,0
+East Asia,1985,tide_wave,0
+East Asia,1986,tide_wave,0
+East Asia,1987,tide_wave,0
+East Asia,1988,tide_wave,0
+East Asia,1989,tide_wave,0
+East Asia,1990,tide_wave,0
+East Asia,1991,tide_wave,0
+East Asia,1992,tide_wave,0
+East Asia,1993,tide_wave,0
+East Asia,1994,tide_wave,0
+East Asia,1995,tide_wave,0
+East Asia,1996,tide_wave,0
+East Asia,1997,tide_wave,0
+East Asia,1998,tide_wave,0
+East Asia,1999,tide_wave,0
+East Asia,2000,tide_wave,0.0034
+East Asia,2001,tide_wave,0.0034
+East Asia,2002,tide_wave,0.0034
+East Asia,2003,tide_wave,0.0034
+East Asia,2004,tide_wave,0.0034
+East Asia,2005,tide_wave,0.004399999999999999
+East Asia,2006,tide_wave,0.004399999999999999
+East Asia,2007,tide_wave,0.004399999999999999
+East Asia,2008,tide_wave,0.004399999999999999
+East Asia,2009,tide_wave,0.004399999999999999
+East Asia,2010,tide_wave,0.0051
+East Asia,2011,tide_wave,0.2591
+East Asia,2012,tide_wave,0.2591
+East Asia,2013,tide_wave,0.2592
+East Asia,2014,tide_wave,0.2592
+East Asia,2015,tide_wave,0.2594
+East Asia,2016,tide_wave,0.2594
+East Asia,2017,tide_wave,0.2594
+East Asia,2018,tide_wave,0.2594
+East Asia,2019,tide_wave,0.26030000000000003
+East Asia,2020,tide_wave,0.26030000000000003
+East Asia,2021,tide_wave,0.26125
+East Asia,2022,tide_wave,0.26132999999999995
+East Asia,2023,tide_wave,0.26132999999999995
+East Asia,2024,tide_wave,0.26132999999999995
+East Asia,1980,wind,0
+East Asia,1981,wind,0
+East Asia,1982,wind,0
+East Asia,1983,wind,0
+East Asia,1984,wind,0
+East Asia,1985,wind,0
+East Asia,1986,wind,0
+East Asia,1987,wind,0
+East Asia,1988,wind,0
+East Asia,1989,wind,0
+East Asia,1990,wind,0
+East Asia,1991,wind,0
+East Asia,1992,wind,0
+East Asia,1993,wind,0
+East Asia,1994,wind,0
+East Asia,1995,wind,0
+East Asia,1996,wind,0
+East Asia,1997,wind,0
+East Asia,1998,wind,0
+East Asia,1999,wind,0
+East Asia,2000,wind,0.43470000000000003
+East Asia,2001,wind,0.5740999999999999
+East Asia,2002,wind,0.7476
+East Asia,2003,wind,1.0826
+East Asia,2004,wind,1.5696
+East Asia,2005,wind,2.443
+East Asia,2006,wind,4.1895999999999995
+East Asia,2007,wind,6.1448
+East Asia,2008,wind,10.735800000000001
+East Asia,2009,wind,20.372
+East Asia,2010,wind,32.857800000000005
+East Asia,2011,wind,49.797
+East Asia,2012,wind,65.37429999999999
+East Asia,2013,wind,80.93190000000001
+East Asia,2014,wind,101.5415
+East Asia,2015,wind,136.2714
+East Asia,2016,wind,154.7587
+East Asia,2017,wind,171.2418
+East Asia,2018,wind,192.4861
+East Asia,2019,wind,218.7961
+East Asia,2020,wind,292.0725
+East Asia,2021,wind,343.142004
+East Asia,2022,wind,382.449218
+East Asia,2023,wind,461.747525
+East Asia,2024,wind,543.6835156999999
+Europe & Russia,1980,biomass,0
+Europe & Russia,1981,biomass,0
+Europe & Russia,1982,biomass,0
+Europe & Russia,1983,biomass,0
+Europe & Russia,1984,biomass,0
+Europe & Russia,1985,biomass,0
+Europe & Russia,1986,biomass,0
+Europe & Russia,1987,biomass,0
+Europe & Russia,1988,biomass,0
+Europe & Russia,1989,biomass,0
+Europe & Russia,1990,biomass,0
+Europe & Russia,1991,biomass,0
+Europe & Russia,1992,biomass,0
+Europe & Russia,1993,biomass,0
+Europe & Russia,1994,biomass,0
+Europe & Russia,1995,biomass,0
+Europe & Russia,1996,biomass,0
+Europe & Russia,1997,biomass,0
+Europe & Russia,1998,biomass,0
+Europe & Russia,1999,biomass,0
+Europe & Russia,2000,biomass,9.481
+Europe & Russia,2001,biomass,10.4319
+Europe & Russia,2002,biomass,10.9612
+Europe & Russia,2003,biomass,12.7089
+Europe & Russia,2004,biomass,14.2888
+Europe & Russia,2005,biomass,17.5471
+Europe & Russia,2006,biomass,19.5872
+Europe & Russia,2007,biomass,19.8823
+Europe & Russia,2008,biomass,21.3851
+Europe & Russia,2009,biomass,24.239900000000002
+Europe & Russia,2010,biomass,26.2109
+Europe & Russia,2011,biomass,29.6019
+Europe & Russia,2012,biomass,31.3141
+Europe & Russia,2013,biomass,32.8367
+Europe & Russia,2014,biomass,34.7729
+Europe & Russia,2015,biomass,36.253
+Europe & Russia,2016,biomass,37.3239
+Europe & Russia,2017,biomass,38.878499999999995
+Europe & Russia,2018,biomass,41.8043
+Europe & Russia,2019,biomass,43.306599999999996
+Europe & Russia,2020,biomass,44.2386
+Europe & Russia,2021,biomass,44.647443
+Europe & Russia,2022,biomass,45.692043
+Europe & Russia,2023,biomass,43.431425
+Europe & Russia,2024,biomass,45.160425
+Europe & Russia,1980,fossil,557.092
+Europe & Russia,1981,fossil,563.0649999999999
+Europe & Russia,1982,fossil,574.999
+Europe & Russia,1983,fossil,579.866
+Europe & Russia,1984,fossil,590.535
+Europe & Russia,1985,fossil,600.049
+Europe & Russia,1986,fossil,604.598
+Europe & Russia,1987,fossil,610.817
+Europe & Russia,1988,fossil,622.042
+Europe & Russia,1989,fossil,626.554
+Europe & Russia,1990,fossil,624.365
+Europe & Russia,1991,fossil,624.634
+Europe & Russia,1992,fossil,582.908
+Europe & Russia,1993,fossil,586.612
+Europe & Russia,1994,fossil,590.394
+Europe & Russia,1995,fossil,586.078
+Europe & Russia,1996,fossil,591.679
+Europe & Russia,1997,fossil,595.459
+Europe & Russia,1998,fossil,596.105
+Europe & Russia,1999,fossil,603.262
+Europe & Russia,2000,fossil,629.117
+Europe & Russia,2001,fossil,631.896
+Europe & Russia,2002,fossil,636.689
+Europe & Russia,2003,fossil,639.9219
+Europe & Russia,2004,fossil,655.7971
+Europe & Russia,2005,fossil,665.5807
+Europe & Russia,2006,fossil,678.0491
+Europe & Russia,2007,fossil,688.1936
+Europe & Russia,2008,fossil,698.3175
+Europe & Russia,2009,fossil,707.9608000000001
+Europe & Russia,2010,fossil,726.5516
+Europe & Russia,2011,fossil,733.1466
+Europe & Russia,2012,fossil,746.6352
+Europe & Russia,2013,fossil,744.3277
+Europe & Russia,2014,fossil,761.7864
+Europe & Russia,2015,fossil,748.6529
+Europe & Russia,2016,fossil,745.0336599999999
+Europe & Russia,2017,fossil,743.0317
+Europe & Russia,2018,fossil,751.1015
+Europe & Russia,2019,fossil,762.3176
+Europe & Russia,2020,fossil,751.7311
+Europe & Russia,2021,fossil,745.315807
+Europe & Russia,2022,fossil,747.394916
+Europe & Russia,2023,fossil,734.901662
+Europe & Russia,2024,fossil,735.800696
+Europe & Russia,1980,geothermal,0
+Europe & Russia,1981,geothermal,0
+Europe & Russia,1982,geothermal,0
+Europe & Russia,1983,geothermal,0
+Europe & Russia,1984,geothermal,0
+Europe & Russia,1985,geothermal,0
+Europe & Russia,1986,geothermal,0
+Europe & Russia,1987,geothermal,0
+Europe & Russia,1988,geothermal,0
+Europe & Russia,1989,geothermal,0
+Europe & Russia,1990,geothermal,0
+Europe & Russia,1991,geothermal,0
+Europe & Russia,1992,geothermal,0
+Europe & Russia,1993,geothermal,0
+Europe & Russia,1994,geothermal,0
+Europe & Russia,1995,geothermal,0
+Europe & Russia,1996,geothermal,0
+Europe & Russia,1997,geothermal,0
+Europe & Russia,1998,geothermal,0
+Europe & Russia,1999,geothermal,0
+Europe & Russia,2000,geothermal,0.817
+Europe & Russia,2001,geothermal,0.828
+Europe & Russia,2002,geothermal,0.9720000000000001
+Europe & Russia,2003,geothermal,1.01
+Europe & Russia,2004,geothermal,0.9312
+Europe & Russia,2005,geothermal,1.0121
+Europe & Russia,2006,geothermal,1.2291
+Europe & Russia,2007,geothermal,1.2979
+Europe & Russia,2008,geothermal,1.3864
+Europe & Russia,2009,geothermal,1.4613999999999998
+Europe & Russia,2010,geothermal,1.5124
+Europe & Russia,2011,geothermal,1.635
+Europe & Russia,2012,geothermal,1.6914
+Europe & Russia,2013,geothermal,1.8509
+Europe & Russia,2014,geothermal,1.9859
+Europe & Russia,2015,geothermal,2.2047
+Europe & Russia,2016,geothermal,2.406
+Europe & Russia,2017,geothermal,2.696
+Europe & Russia,2018,geothermal,2.9734
+Europe & Russia,2019,geothermal,3.2183
+Europe & Russia,2020,geothermal,3.3141
+Europe & Russia,2021,geothermal,3.383613
+Europe & Russia,2022,geothermal,3.402613
+Europe & Russia,2023,geothermal,3.44244
+Europe & Russia,2024,geothermal,3.47744
+Europe & Russia,1980,hydro,190.292
+Europe & Russia,1981,hydro,193.314
+Europe & Russia,1982,hydro,198.719
+Europe & Russia,1983,hydro,203.002
+Europe & Russia,1984,hydro,204.618
+Europe & Russia,1985,hydro,206.879
+Europe & Russia,1986,hydro,210.031
+Europe & Russia,1987,hydro,213.928
+Europe & Russia,1988,hydro,217.13299999999998
+Europe & Russia,1989,hydro,218.318
+Europe & Russia,1990,hydro,204.346
+Europe & Russia,1991,hydro,199.84900000000002
+Europe & Russia,1992,hydro,185.575
+Europe & Russia,1993,hydro,186.547
+Europe & Russia,1994,hydro,188.465
+Europe & Russia,1995,hydro,190.239
+Europe & Russia,1996,hydro,190.99
+Europe & Russia,1997,hydro,192.272
+Europe & Russia,1998,hydro,192.434
+Europe & Russia,1999,hydro,195.3214
+Europe & Russia,2000,hydro,193.4406
+Europe & Russia,2001,hydro,194.17239999999998
+Europe & Russia,2002,hydro,195.44819999999999
+Europe & Russia,2003,hydro,197.3852
+Europe & Russia,2004,hydro,198.5238
+Europe & Russia,2005,hydro,199.7772
+Europe & Russia,2006,hydro,200.9392
+Europe & Russia,2007,hydro,203.6113
+Europe & Russia,2008,hydro,205.3514
+Europe & Russia,2009,hydro,206.9494
+Europe & Russia,2010,hydro,209.5482
+Europe & Russia,2011,hydro,212.3953
+Europe & Russia,2012,hydro,217.46020000000001
+Europe & Russia,2013,hydro,222.1739
+Europe & Russia,2014,hydro,224.541
+Europe & Russia,2015,hydro,228.7029
+Europe & Russia,2016,hydro,230.671
+Europe & Russia,2017,hydro,232.3391
+Europe & Russia,2018,hydro,234.473
+Europe & Russia,2019,hydro,236.01
+Europe & Russia,2020,hydro,240.7105
+Europe & Russia,2021,hydro,242.462799
+Europe & Russia,2022,hydro,243.46013
+Europe & Russia,2023,hydro,245.078811
+Europe & Russia,2024,hydro,244.960985
+Europe & Russia,1980,nuclear,59.986
+Europe & Russia,1981,nuclear,73.77
+Europe & Russia,1982,nuclear,80.339
+Europe & Russia,1983,nuclear,92.637
+Europe & Russia,1984,nuclear,111.02000000000001
+Europe & Russia,1985,nuclear,126.989
+Europe & Russia,1986,nuclear,140.528
+Europe & Russia,1987,nuclear,151.81
+Europe & Russia,1988,nuclear,160.666
+Europe & Russia,1989,nuclear,162.856
+Europe & Russia,1990,nuclear,163.038
+Europe & Russia,1991,nuclear,161.516
+Europe & Russia,1992,nuclear,162.928
+Europe & Russia,1993,nuclear,164.262
+Europe & Russia,1994,nuclear,163.322
+Europe & Russia,1995,nuclear,165.667
+Europe & Russia,1996,nuclear,167.089
+Europe & Russia,1997,nuclear,169.995
+Europe & Russia,1998,nuclear,169.525
+Europe & Russia,1999,nuclear,171.07999999999998
+Europe & Russia,2000,nuclear,170.989
+Europe & Russia,2001,nuclear,171.948
+Europe & Russia,2002,nuclear,172.734
+Europe & Russia,2003,nuclear,171.418
+Europe & Russia,2004,nuclear,174.159
+Europe & Russia,2005,nuclear,171.95
+Europe & Russia,2006,nuclear,170.82
+Europe & Russia,2007,nuclear,169.988
+Europe & Russia,2008,nuclear,169.59799999999998
+Europe & Russia,2009,nuclear,169.897
+Europe & Russia,2010,nuclear,169.975
+Europe & Russia,2011,nuclear,162.534
+Europe & Russia,2012,nuclear,161.975
+Europe & Russia,2013,nuclear,161.737
+Europe & Russia,2014,nuclear,162.944
+Europe & Russia,2015,nuclear,162.193
+Europe & Russia,2016,nuclear,162.966
+Europe & Russia,2017,nuclear,160.611
+Europe & Russia,2018,nuclear,161.888
+Europe & Russia,2019,nuclear,160.379
+Europe & Russia,2020,nuclear,159.049
+Europe & Russia,2021,nuclear,156.186
+Europe & Russia,2022,nuclear,151.52777
+Europe & Russia,2023,nuclear,151.41299999999998
+Europe & Russia,2024,nuclear,148.613
+Europe & Russia,1980,pumped_storage,6.487
+Europe & Russia,1981,pumped_storage,9.091000000000001
+Europe & Russia,1982,pumped_storage,11.48
+Europe & Russia,1983,pumped_storage,11.94
+Europe & Russia,1984,pumped_storage,17.131
+Europe & Russia,1985,pumped_storage,18.693
+Europe & Russia,1986,pumped_storage,20.029
+Europe & Russia,1987,pumped_storage,21.605
+Europe & Russia,1988,pumped_storage,21.79
+Europe & Russia,1989,pumped_storage,25.528
+Europe & Russia,1990,pumped_storage,37.778999999999996
+Europe & Russia,1991,pumped_storage,42.591
+Europe & Russia,1992,pumped_storage,43.785
+Europe & Russia,1993,pumped_storage,47.685
+Europe & Russia,1994,pumped_storage,46.621
+Europe & Russia,1995,pumped_storage,46.343
+Europe & Russia,1996,pumped_storage,47.086999999999996
+Europe & Russia,1997,pumped_storage,46.661
+Europe & Russia,1998,pumped_storage,48.432
+Europe & Russia,1999,pumped_storage,49.316
+Europe & Russia,2000,pumped_storage,54.5355
+Europe & Russia,2001,pumped_storage,54.7255
+Europe & Russia,2002,pumped_storage,54.7055
+Europe & Russia,2003,pumped_storage,54.3135
+Europe & Russia,2004,pumped_storage,55.4585
+Europe & Russia,2005,pumped_storage,56.6975
+Europe & Russia,2006,pumped_storage,57.0875
+Europe & Russia,2007,pumped_storage,57.3515
+Europe & Russia,2008,pumped_storage,57.6575
+Europe & Russia,2009,pumped_storage,58.653
+Europe & Russia,2010,pumped_storage,59.452
+Europe & Russia,2011,pumped_storage,59.835
+Europe & Russia,2012,pumped_storage,59.949
+Europe & Russia,2013,pumped_storage,61.119
+Europe & Russia,2014,pumped_storage,61.639
+Europe & Russia,2015,pumped_storage,62.272
+Europe & Russia,2016,pumped_storage,64.254
+Europe & Russia,2017,pumped_storage,65.026589
+Europe & Russia,2018,pumped_storage,64.825314
+Europe & Russia,2019,pumped_storage,64.862
+Europe & Russia,2020,pumped_storage,64.779969
+Europe & Russia,2021,pumped_storage,65.65398
+Europe & Russia,2022,pumped_storage,67.85958
+Europe & Russia,2023,pumped_storage,69.88938
+Europe & Russia,2024,pumped_storage,69.062506964
+Europe & Russia,1980,solar,0
+Europe & Russia,1981,solar,0
+Europe & Russia,1982,solar,0
+Europe & Russia,1983,solar,0
+Europe & Russia,1984,solar,0
+Europe & Russia,1985,solar,0
+Europe & Russia,1986,solar,0
+Europe & Russia,1987,solar,0
+Europe & Russia,1988,solar,0
+Europe & Russia,1989,solar,0
+Europe & Russia,1990,solar,0
+Europe & Russia,1991,solar,0
+Europe & Russia,1992,solar,0
+Europe & Russia,1993,solar,0
+Europe & Russia,1994,solar,0
+Europe & Russia,1995,solar,0
+Europe & Russia,1996,solar,0
+Europe & Russia,1997,solar,0
+Europe & Russia,1998,solar,0
+Europe & Russia,1999,solar,0
+Europe & Russia,2000,solar,0.20020000000000002
+Europe & Russia,2001,solar,0.3007
+Europe & Russia,2002,solar,0.3856
+Europe & Russia,2003,solar,0.6248
+Europe & Russia,2004,solar,1.3369
+Europe & Russia,2005,solar,2.3168
+Europe & Russia,2006,solar,3.2806
+Europe & Russia,2007,solar,5.0538
+Europe & Russia,2008,solar,10.5232
+Europe & Russia,2009,solar,17.1247
+Europe & Russia,2010,solar,30.8639
+Europe & Russia,2011,solar,54.728
+Europe & Russia,2012,solar,73.6451
+Europe & Russia,2013,solar,84.2092
+Europe & Russia,2014,solar,91.1406
+Europe & Russia,2015,solar,99.9155
+Europe & Russia,2016,solar,107.0834
+Europe & Russia,2017,solar,115.9459
+Europe & Russia,2018,solar,127.20190000000001
+Europe & Russia,2019,solar,149.5423
+Europe & Russia,2020,solar,170.886766
+Europe & Russia,2021,solar,199.734361
+Europe & Russia,2022,solar,244.284232
+Europe & Russia,2023,solar,293.012262
+Europe & Russia,2024,solar,360.804262
+Europe & Russia,1980,tide_wave,0
+Europe & Russia,1981,tide_wave,0
+Europe & Russia,1982,tide_wave,0
+Europe & Russia,1983,tide_wave,0
+Europe & Russia,1984,tide_wave,0
+Europe & Russia,1985,tide_wave,0
+Europe & Russia,1986,tide_wave,0
+Europe & Russia,1987,tide_wave,0
+Europe & Russia,1988,tide_wave,0
+Europe & Russia,1989,tide_wave,0
+Europe & Russia,1990,tide_wave,0
+Europe & Russia,1991,tide_wave,0
+Europe & Russia,1992,tide_wave,0
+Europe & Russia,1993,tide_wave,0
+Europe & Russia,1994,tide_wave,0
+Europe & Russia,1995,tide_wave,0
+Europe & Russia,1996,tide_wave,0
+Europe & Russia,1997,tide_wave,0
+Europe & Russia,1998,tide_wave,0
+Europe & Russia,1999,tide_wave,0
+Europe & Russia,2000,tide_wave,0.2144
+Europe & Russia,2001,tide_wave,0.2159
+Europe & Russia,2002,tide_wave,0.2189
+Europe & Russia,2003,tide_wave,0.2199
+Europe & Russia,2004,tide_wave,0.2189
+Europe & Russia,2005,tide_wave,0.2169
+Europe & Russia,2006,tide_wave,0.2159
+Europe & Russia,2007,tide_wave,0.2172
+Europe & Russia,2008,tide_wave,0.2212
+Europe & Russia,2009,tide_wave,0.21989999999999998
+Europe & Russia,2010,tide_wave,0.2234
+Europe & Russia,2011,tide_wave,0.2225
+Europe & Russia,2012,tide_wave,0.2291
+Europe & Russia,2013,tide_wave,0.229
+Europe & Russia,2014,tide_wave,0.2324
+Europe & Russia,2015,tide_wave,0.23149999999999998
+Europe & Russia,2016,tide_wave,0.2422
+Europe & Russia,2017,tide_wave,0.2464
+Europe & Russia,2018,tide_wave,0.2475
+Europe & Russia,2019,tide_wave,0.2447
+Europe & Russia,2020,tide_wave,0.2427
+Europe & Russia,2021,tide_wave,0.242438
+Europe & Russia,2022,tide_wave,0.242438
+Europe & Russia,2023,tide_wave,0.232146
+Europe & Russia,2024,tide_wave,0.233146
+Europe & Russia,1980,wind,0
+Europe & Russia,1981,wind,0
+Europe & Russia,1982,wind,0
+Europe & Russia,1983,wind,0
+Europe & Russia,1984,wind,0
+Europe & Russia,1985,wind,0
+Europe & Russia,1986,wind,0
+Europe & Russia,1987,wind,0
+Europe & Russia,1988,wind,0
+Europe & Russia,1989,wind,0
+Europe & Russia,1990,wind,0
+Europe & Russia,1991,wind,0
+Europe & Russia,1992,wind,0
+Europe & Russia,1993,wind,0
+Europe & Russia,1994,wind,0
+Europe & Russia,1995,wind,0
+Europe & Russia,1996,wind,0
+Europe & Russia,1997,wind,0
+Europe & Russia,1998,wind,0
+Europe & Russia,1999,wind,0
+Europe & Russia,2000,wind,12.7539
+Europe & Russia,2001,wind,17.4179
+Europe & Russia,2002,wind,23.314
+Europe & Russia,2003,wind,28.1809
+Europe & Russia,2004,wind,34.3483
+Europe & Russia,2005,wind,40.7152
+Europe & Russia,2006,wind,47.987899999999996
+Europe & Russia,2007,wind,56.4968
+Europe & Russia,2008,wind,64.4293
+Europe & Russia,2009,wind,76.6095
+Europe & Russia,2010,wind,86.2499
+Europe & Russia,2011,wind,96.4529
+Europe & Russia,2012,wind,109.4635
+Europe & Russia,2013,wind,120.9395
+Europe & Russia,2014,wind,133.8381
+Europe & Russia,2015,wind,147.5292
+Europe & Russia,2016,wind,161.4889
+Europe & Russia,2017,wind,177.1432
+Europe & Russia,2018,wind,188.8442
+Europe & Russia,2019,wind,203.7968
+Europe & Russia,2020,wind,217.688295
+Europe & Russia,2021,wind,234.078729
+Europe & Russia,2022,wind,253.89732899999998
+Europe & Russia,2023,wind,271.57797800000003
+Europe & Russia,2024,wind,286.191978
+Latin America,1980,biomass,0
+Latin America,1981,biomass,0
+Latin America,1982,biomass,0
+Latin America,1983,biomass,0
+Latin America,1984,biomass,0
+Latin America,1985,biomass,0
+Latin America,1986,biomass,0
+Latin America,1987,biomass,0
+Latin America,1988,biomass,0
+Latin America,1989,biomass,0
+Latin America,1990,biomass,0
+Latin America,1991,biomass,0
+Latin America,1992,biomass,0
+Latin America,1993,biomass,0
+Latin America,1994,biomass,0
+Latin America,1995,biomass,0
+Latin America,1996,biomass,0
+Latin America,1997,biomass,0
+Latin America,1998,biomass,0
+Latin America,1999,biomass,0
+Latin America,2000,biomass,3.5442
+Latin America,2001,biomass,3.7736
+Latin America,2002,biomass,3.8216
+Latin America,2003,biomass,3.9495999999999998
+Latin America,2004,biomass,4.5491
+Latin America,2005,biomass,5.5785
+Latin America,2006,biomass,5.8358
+Latin America,2007,biomass,6.5973
+Latin America,2008,biomass,7.625500000000001
+Latin America,2009,biomass,8.769
+Latin America,2010,biomass,11.2399
+Latin America,2011,biomass,12.486
+Latin America,2012,biomass,13.9126
+Latin America,2013,biomass,16.3852
+Latin America,2014,biomass,17.1315
+Latin America,2015,biomass,17.933699999999998
+Latin America,2016,biomass,19.369
+Latin America,2017,biomass,19.954800000000002
+Latin America,2018,biomass,20.2961
+Latin America,2019,biomass,21.2591
+Latin America,2020,biomass,21.6814
+Latin America,2021,biomass,22.118177000000003
+Latin America,2022,biomass,23.015063
+Latin America,2023,biomass,23.779186
+Latin America,2024,biomass,24.135106
+Latin America,1980,fossil,48.182
+Latin America,1981,fossil,52.397
+Latin America,1982,fossil,54.034
+Latin America,1983,fossil,56.532
+Latin America,1984,fossil,59.876
+Latin America,1985,fossil,60.52
+Latin America,1986,fossil,60.805
+Latin America,1987,fossil,61.737
+Latin America,1988,fossil,63.123999999999995
+Latin America,1989,fossil,63.741
+Latin America,1990,fossil,64.352
+Latin America,1991,fossil,67.2337
+Latin America,1992,fossil,68.6489
+Latin America,1993,fossil,72.2716
+Latin America,1994,fossil,75.1495
+Latin America,1995,fossil,76.8425
+Latin America,1996,fossil,80.6956
+Latin America,1997,fossil,85.6374
+Latin America,1998,fossil,88.6282
+Latin America,1999,fossil,90.29169999999999
+Latin America,2000,fossil,101.23556
+Latin America,2001,fossil,107.57356
+Latin America,2002,fossil,113.98556
+Latin America,2003,fossil,120.328756
+Latin America,2004,fossil,125.89652
+Latin America,2005,fossil,128.28175
+Latin America,2006,fossil,133.9607
+Latin America,2007,fossil,136.9068
+Latin America,2008,fossil,142.42249999999999
+Latin America,2009,fossil,152.2331
+Latin America,2010,fossil,162.4015
+Latin America,2011,fossil,169.2239
+Latin America,2012,fossil,176.6181
+Latin America,2013,fossil,191.1969
+Latin America,2014,fossil,191.5589
+Latin America,2015,fossil,196.0454
+Latin America,2016,fossil,204.6227114
+Latin America,2017,fossil,208.50459
+Latin America,2018,fossil,217.2400145
+Latin America,2019,fossil,220.2382077
+Latin America,2020,fossil,224.1839587
+Latin America,2021,fossil,236.234596
+Latin America,2022,fossil,233.748479
+Latin America,2023,fossil,224.065386
+Latin America,2024,fossil,229.422133118
+Latin America,1980,geothermal,0
+Latin America,1981,geothermal,0
+Latin America,1982,geothermal,0
+Latin America,1983,geothermal,0
+Latin America,1984,geothermal,0
+Latin America,1985,geothermal,0
+Latin America,1986,geothermal,0
+Latin America,1987,geothermal,0
+Latin America,1988,geothermal,0
+Latin America,1989,geothermal,0
+Latin America,1990,geothermal,0
+Latin America,1991,geothermal,0
+Latin America,1992,geothermal,0
+Latin America,1993,geothermal,0
+Latin America,1994,geothermal,0
+Latin America,1995,geothermal,0
+Latin America,1996,geothermal,0
+Latin America,1997,geothermal,0
+Latin America,1998,geothermal,0
+Latin America,1999,geothermal,0
+Latin America,2000,geothermal,1.2152
+Latin America,2001,geothermal,1.2032
+Latin America,2002,geothermal,1.2594
+Latin America,2003,geothermal,1.3944
+Latin America,2004,geothermal,1.3874
+Latin America,2005,geothermal,1.4083999999999999
+Latin America,2006,geothermal,1.4336
+Latin America,2007,geothermal,1.4868
+Latin America,2008,geothermal,1.4898
+Latin America,2009,geothermal,1.4918
+Latin America,2010,geothermal,1.4918
+Latin America,2011,geothermal,1.4506000000000001
+Latin America,2012,geothermal,1.4646
+Latin America,2013,geothermal,1.4485999999999999
+Latin America,2014,geothermal,1.4385999999999999
+Latin America,2015,geothermal,1.5315
+Latin America,2016,geothermal,1.5410000000000001
+Latin America,2017,geothermal,1.659
+Latin America,2018,geothermal,1.683
+Latin America,2019,geothermal,1.7802
+Latin America,2020,geothermal,1.7814
+Latin America,2021,geothermal,1.7464
+Latin America,2022,geothermal,1.77066
+Latin America,2023,geothermal,1.8072
+Latin America,2024,geothermal,1.8192
+Latin America,1980,hydro,50.29
+Latin America,1981,hydro,55.244
+Latin America,1982,hydro,60
+Latin America,1983,hydro,63.089
+Latin America,1984,hydro,67.065
+Latin America,1985,hydro,73.905
+Latin America,1986,hydro,77.474
+Latin America,1987,hydro,82.887
+Latin America,1988,hydro,88.236
+Latin America,1989,hydro,90.986
+Latin America,1990,hydro,93.504
+Latin America,1991,hydro,95.789
+Latin America,1992,hydro,97.807
+Latin America,1993,hydro,100.134
+Latin America,1994,hydro,103.8344
+Latin America,1995,hydro,106.5662
+Latin America,1996,hydro,112.4252
+Latin America,1997,hydro,115.7278
+Latin America,1998,hydro,117.90899999999999
+Latin America,1999,hydro,121.0647
+Latin America,2000,hydro,123.4554
+Latin America,2001,hydro,125.3946
+Latin America,2002,hydro,127.5858
+Latin America,2003,hydro,130.916
+Latin America,2004,hydro,135.6546
+Latin America,2005,hydro,138.5164
+Latin America,2006,hydro,141.7816
+Latin America,2007,hydro,146.6785
+Latin America,2008,hydro,148.069
+Latin America,2009,hydro,149.7685
+Latin America,2010,hydro,153.2294
+Latin America,2011,hydro,156.971
+Latin America,2012,hydro,159.4605
+Latin America,2013,hydro,161.7996
+Latin America,2014,hydro,167.4973
+Latin America,2015,hydro,171.6172
+Latin America,2016,hydro,183.1846
+Latin America,2017,hydro,187.1317
+Latin America,2018,hydro,192.3495
+Latin America,2019,hydro,198.0861
+Latin America,2020,hydro,198.57999999999998
+Latin America,2021,hydro,198.887128
+Latin America,2022,hydro,199.988407
+Latin America,2023,hydro,201.006629
+Latin America,2024,hydro,200.91671
+Latin America,1980,nuclear,0.335
+Latin America,1981,nuclear,0.9610000000000001
+Latin America,1982,nuclear,0.9610000000000001
+Latin America,1983,nuclear,1.561
+Latin America,1984,nuclear,1.561
+Latin America,1985,nuclear,1.561
+Latin America,1986,nuclear,1.561
+Latin America,1987,nuclear,1.561
+Latin America,1988,nuclear,1.561
+Latin America,1989,nuclear,2.215
+Latin America,1990,nuclear,2.201
+Latin America,1991,nuclear,2.201
+Latin America,1992,nuclear,2.215
+Latin America,1993,nuclear,2.215
+Latin America,1994,nuclear,2.817
+Latin America,1995,nuclear,2.817
+Latin America,1996,nuclear,2.835
+Latin America,1997,nuclear,2.803
+Latin America,1998,nuclear,2.871
+Latin America,1999,nuclear,2.9250000000000003
+Latin America,2000,nuclear,4.2010000000000005
+Latin America,2001,nuclear,4.2010000000000005
+Latin America,2002,nuclear,4.196
+Latin America,2003,nuclear,4.196
+Latin America,2004,nuclear,4.196
+Latin America,2005,nuclear,4.196
+Latin America,2006,nuclear,4.196
+Latin America,2007,nuclear,4.09
+Latin America,2008,nuclear,4.001
+Latin America,2009,nuclear,4.119
+Latin America,2010,nuclear,4.119
+Latin America,2011,nuclear,4.119
+Latin America,2012,nuclear,4.149
+Latin America,2013,nuclear,4.149
+Latin America,2014,nuclear,4.841
+Latin America,2015,nuclear,4.9559999999999995
+Latin America,2016,nuclear,5.068
+Latin America,2017,nuclear,5.069
+Latin America,2018,nuclear,5.069
+Latin America,2019,nuclear,5.077
+Latin America,2020,nuclear,5.077
+Latin America,2021,nuclear,5.077
+Latin America,2022,nuclear,5.077
+Latin America,2023,nuclear,5.077
+Latin America,2024,nuclear,5.077
+Latin America,1980,pumped_storage,0
+Latin America,1981,pumped_storage,0
+Latin America,1982,pumped_storage,0
+Latin America,1983,pumped_storage,0
+Latin America,1984,pumped_storage,0
+Latin America,1985,pumped_storage,0
+Latin America,1986,pumped_storage,0.974
+Latin America,1987,pumped_storage,0.974
+Latin America,1988,pumped_storage,0.974
+Latin America,1989,pumped_storage,0.974
+Latin America,1990,pumped_storage,0.974
+Latin America,1991,pumped_storage,0.974
+Latin America,1992,pumped_storage,0.974
+Latin America,1993,pumped_storage,0.974
+Latin America,1994,pumped_storage,0.974
+Latin America,1995,pumped_storage,0.974
+Latin America,1996,pumped_storage,0.974
+Latin America,1997,pumped_storage,0.974
+Latin America,1998,pumped_storage,0.974
+Latin America,1999,pumped_storage,0.974
+Latin America,2000,pumped_storage,0.974
+Latin America,2001,pumped_storage,0.974
+Latin America,2002,pumped_storage,0.974
+Latin America,2003,pumped_storage,0.974
+Latin America,2004,pumped_storage,0.974
+Latin America,2005,pumped_storage,0.974
+Latin America,2006,pumped_storage,0.974
+Latin America,2007,pumped_storage,0.974
+Latin America,2008,pumped_storage,0.974
+Latin America,2009,pumped_storage,0.974
+Latin America,2010,pumped_storage,0.974
+Latin America,2011,pumped_storage,0.974
+Latin America,2012,pumped_storage,0.974
+Latin America,2013,pumped_storage,0.974
+Latin America,2014,pumped_storage,0.974
+Latin America,2015,pumped_storage,0.974
+Latin America,2016,pumped_storage,0.974
+Latin America,2017,pumped_storage,0.974
+Latin America,2018,pumped_storage,0.974
+Latin America,2019,pumped_storage,0.974
+Latin America,2020,pumped_storage,1.004
+Latin America,2021,pumped_storage,0.994
+Latin America,2022,pumped_storage,0.994
+Latin America,2023,pumped_storage,0.98
+Latin America,2024,pumped_storage,0.98
+Latin America,1980,solar,0
+Latin America,1981,solar,0
+Latin America,1982,solar,0
+Latin America,1983,solar,0
+Latin America,1984,solar,0
+Latin America,1985,solar,0
+Latin America,1986,solar,0
+Latin America,1987,solar,0
+Latin America,1988,solar,0
+Latin America,1989,solar,0
+Latin America,1990,solar,0
+Latin America,1991,solar,0
+Latin America,1992,solar,0
+Latin America,1993,solar,0
+Latin America,1994,solar,0
+Latin America,1995,solar,0
+Latin America,1996,solar,0
+Latin America,1997,solar,0
+Latin America,1998,solar,0
+Latin America,1999,solar,0
+Latin America,2000,solar,0.0184
+Latin America,2001,solar,0.0223
+Latin America,2002,solar,0.0256
+Latin America,2003,solar,0.0282
+Latin America,2004,solar,0.0303
+Latin America,2005,solar,0.0328
+Latin America,2006,solar,0.0384
+Latin America,2007,solar,0.0475
+Latin America,2008,solar,0.0566
+Latin America,2009,solar,0.0828
+Latin America,2010,solar,0.145
+Latin America,2011,solar,0.1166
+Latin America,2012,solar,0.2782
+Latin America,2013,solar,0.4188
+Latin America,2014,solar,0.8052
+Latin America,2015,solar,2.0595
+Latin America,2016,solar,3.2760000000000002
+Latin America,2017,solar,6.2156
+Latin America,2018,solar,9.8818
+Latin America,2019,solar,15.5942
+Latin America,2020,solar,23.183656
+Latin America,2021,solar,33.509095
+Latin America,2022,solar,47.771327
+Latin America,2023,solar,65.48255499999999
+Latin America,2024,solar,85.579385
+Latin America,1980,tide_wave,0
+Latin America,1981,tide_wave,0
+Latin America,1982,tide_wave,0
+Latin America,1983,tide_wave,0
+Latin America,1984,tide_wave,0
+Latin America,1985,tide_wave,0
+Latin America,1986,tide_wave,0
+Latin America,1987,tide_wave,0
+Latin America,1988,tide_wave,0
+Latin America,1989,tide_wave,0
+Latin America,1990,tide_wave,0
+Latin America,1991,tide_wave,0
+Latin America,1992,tide_wave,0
+Latin America,1993,tide_wave,0
+Latin America,1994,tide_wave,0
+Latin America,1995,tide_wave,0
+Latin America,1996,tide_wave,0
+Latin America,1997,tide_wave,0
+Latin America,1998,tide_wave,0
+Latin America,1999,tide_wave,0
+Latin America,2000,tide_wave,0
+Latin America,2001,tide_wave,0
+Latin America,2002,tide_wave,0
+Latin America,2003,tide_wave,0
+Latin America,2004,tide_wave,0
+Latin America,2005,tide_wave,0
+Latin America,2006,tide_wave,0
+Latin America,2007,tide_wave,0
+Latin America,2008,tide_wave,0
+Latin America,2009,tide_wave,0
+Latin America,2010,tide_wave,0
+Latin America,2011,tide_wave,0
+Latin America,2012,tide_wave,0
+Latin America,2013,tide_wave,0
+Latin America,2014,tide_wave,0
+Latin America,2015,tide_wave,0
+Latin America,2016,tide_wave,0
+Latin America,2017,tide_wave,0
+Latin America,2018,tide_wave,0
+Latin America,2019,tide_wave,0
+Latin America,2020,tide_wave,0
+Latin America,2021,tide_wave,0
+Latin America,2022,tide_wave,0
+Latin America,2023,tide_wave,0
+Latin America,2024,tide_wave,0
+Latin America,1980,wind,0
+Latin America,1981,wind,0
+Latin America,1982,wind,0
+Latin America,1983,wind,0
+Latin America,1984,wind,0
+Latin America,1985,wind,0
+Latin America,1986,wind,0
+Latin America,1987,wind,0
+Latin America,1988,wind,0
+Latin America,1989,wind,0
+Latin America,1990,wind,0
+Latin America,1991,wind,0
+Latin America,1992,wind,0
+Latin America,1993,wind,0
+Latin America,1994,wind,0
+Latin America,1995,wind,0
+Latin America,1996,wind,0
+Latin America,1997,wind,0
+Latin America,1998,wind,0
+Latin America,1999,wind,0
+Latin America,2000,wind,0.1165
+Latin America,2001,wind,0.151
+Latin America,2002,wind,0.1543
+Latin America,2003,wind,0.1706
+Latin America,2004,wind,0.2145
+Latin America,2005,wind,0.2112
+Latin America,2006,wind,0.5125
+Latin America,2007,wind,0.543
+Latin America,2008,wind,0.7139
+Latin America,2009,wind,1.5302
+Latin America,2010,wind,2.0049
+Latin America,2011,wind,2.7698
+Latin America,2012,wind,4.8549
+Latin America,2013,wind,5.7575
+Latin America,2014,wind,10.0434
+Latin America,2015,wind,14.4667
+Latin America,2016,wind,18.4925
+Latin America,2017,wind,21.481099999999998
+Latin America,2018,wind,26.711399999999998
+Latin America,2019,wind,28.6536
+Latin America,2020,wind,33.109229
+Latin America,2021,wind,39.137147
+Latin America,2022,wind,43.258179
+Latin America,2023,wind,49.694229
+Latin America,2024,wind,54.513805000000005
+Middle East & North Africa,1980,biomass,0
+Middle East & North Africa,1981,biomass,0
+Middle East & North Africa,1982,biomass,0
+Middle East & North Africa,1983,biomass,0
+Middle East & North Africa,1984,biomass,0
+Middle East & North Africa,1985,biomass,0
+Middle East & North Africa,1986,biomass,0
+Middle East & North Africa,1987,biomass,0
+Middle East & North Africa,1988,biomass,0
+Middle East & North Africa,1989,biomass,0
+Middle East & North Africa,1990,biomass,0
+Middle East & North Africa,1991,biomass,0
+Middle East & North Africa,1992,biomass,0
+Middle East & North Africa,1993,biomass,0
+Middle East & North Africa,1994,biomass,0
+Middle East & North Africa,1995,biomass,0
+Middle East & North Africa,1996,biomass,0
+Middle East & North Africa,1997,biomass,0
+Middle East & North Africa,1998,biomass,0
+Middle East & North Africa,1999,biomass,0
+Middle East & North Africa,2000,biomass,0.2903
+Middle East & North Africa,2001,biomass,0.2903
+Middle East & North Africa,2002,biomass,0.2963
+Middle East & North Africa,2003,biomass,0.2963
+Middle East & North Africa,2004,biomass,0.3013
+Middle East & North Africa,2005,biomass,0.3013
+Middle East & North Africa,2006,biomass,0.3038
+Middle East & North Africa,2007,biomass,0.3222
+Middle East & North Africa,2008,biomass,0.34149999999999997
+Middle East & North Africa,2009,biomass,0.3483
+Middle East & North Africa,2010,biomass,0.35760000000000003
+Middle East & North Africa,2011,biomass,0.3766
+Middle East & North Africa,2012,biomass,0.3786
+Middle East & North Africa,2013,biomass,0.42660000000000003
+Middle East & North Africa,2014,biomass,0.4893
+Middle East & North Africa,2015,biomass,0.5233
+Middle East & North Africa,2016,biomass,0.5748
+Middle East & North Africa,2017,biomass,0.5801
+Middle East & North Africa,2018,biomass,0.6381
+Middle East & North Africa,2019,biomass,0.6496
+Middle East & North Africa,2020,biomass,0.6473
+Middle East & North Africa,2021,biomass,0.691486
+Middle East & North Africa,2022,biomass,0.720326
+Middle East & North Africa,2023,biomass,0.729226
+Middle East & North Africa,2024,biomass,0.73645
+Middle East & North Africa,1980,fossil,38.93
+Middle East & North Africa,1981,fossil,45.674
+Middle East & North Africa,1982,fossil,51.022
+Middle East & North Africa,1983,fossil,57.994
+Middle East & North Africa,1984,fossil,65.975
+Middle East & North Africa,1985,fossil,70.728
+Middle East & North Africa,1986,fossil,77.275
+Middle East & North Africa,1987,fossil,79.282
+Middle East & North Africa,1988,fossil,87.646
+Middle East & North Africa,1989,fossil,93.149
+Middle East & North Africa,1990,fossil,94.475
+Middle East & North Africa,1991,fossil,92.279
+Middle East & North Africa,1992,fossil,105.89
+Middle East & North Africa,1993,fossil,110.148
+Middle East & North Africa,1994,fossil,116.007
+Middle East & North Africa,1995,fossil,120.637
+Middle East & North Africa,1996,fossil,128.203
+Middle East & North Africa,1997,fossil,132.706
+Middle East & North Africa,1998,fossil,137.303
+Middle East & North Africa,1999,fossil,144.203
+Middle East & North Africa,2000,fossil,152.953
+Middle East & North Africa,2001,fossil,158.489
+Middle East & North Africa,2002,fossil,165.381
+Middle East & North Africa,2003,fossil,175.239
+Middle East & North Africa,2004,fossil,181.3948
+Middle East & North Africa,2005,fossil,188.9543
+Middle East & North Africa,2006,fossil,208.1293
+Middle East & North Africa,2007,fossil,215.7975
+Middle East & North Africa,2008,fossil,237.5478
+Middle East & North Africa,2009,fossil,254.6025
+Middle East & North Africa,2010,fossil,274.1195
+Middle East & North Africa,2011,fossil,292.9243
+Middle East & North Africa,2012,fossil,306.3002
+Middle East & North Africa,2013,fossil,329.6754
+Middle East & North Africa,2014,fossil,345.1095
+Middle East & North Africa,2015,fossil,360.9692
+Middle East & North Africa,2016,fossil,376.86473
+Middle East & North Africa,2017,fossil,397.9582
+Middle East & North Africa,2018,fossil,411.6026
+Middle East & North Africa,2019,fossil,419.6684
+Middle East & North Africa,2020,fossil,428.137059589
+Middle East & North Africa,2021,fossil,476.03983095899997
+Middle East & North Africa,2022,fossil,471.805409224
+Middle East & North Africa,2023,fossil,475.926081
+Middle East & North Africa,2024,fossil,482.40137238799997
+Middle East & North Africa,1980,geothermal,0
+Middle East & North Africa,1981,geothermal,0
+Middle East & North Africa,1982,geothermal,0
+Middle East & North Africa,1983,geothermal,0
+Middle East & North Africa,1984,geothermal,0
+Middle East & North Africa,1985,geothermal,0
+Middle East & North Africa,1986,geothermal,0
+Middle East & North Africa,1987,geothermal,0
+Middle East & North Africa,1988,geothermal,0
+Middle East & North Africa,1989,geothermal,0
+Middle East & North Africa,1990,geothermal,0
+Middle East & North Africa,1991,geothermal,0
+Middle East & North Africa,1992,geothermal,0
+Middle East & North Africa,1993,geothermal,0
+Middle East & North Africa,1994,geothermal,0
+Middle East & North Africa,1995,geothermal,0
+Middle East & North Africa,1996,geothermal,0
+Middle East & North Africa,1997,geothermal,0
+Middle East & North Africa,1998,geothermal,0
+Middle East & North Africa,1999,geothermal,0
+Middle East & North Africa,2000,geothermal,0
+Middle East & North Africa,2001,geothermal,0
+Middle East & North Africa,2002,geothermal,0
+Middle East & North Africa,2003,geothermal,0
+Middle East & North Africa,2004,geothermal,0
+Middle East & North Africa,2005,geothermal,0
+Middle East & North Africa,2006,geothermal,0
+Middle East & North Africa,2007,geothermal,0
+Middle East & North Africa,2008,geothermal,0
+Middle East & North Africa,2009,geothermal,0
+Middle East & North Africa,2010,geothermal,0
+Middle East & North Africa,2011,geothermal,0
+Middle East & North Africa,2012,geothermal,0
+Middle East & North Africa,2013,geothermal,0
+Middle East & North Africa,2014,geothermal,0
+Middle East & North Africa,2015,geothermal,0
+Middle East & North Africa,2016,geothermal,0
+Middle East & North Africa,2017,geothermal,0
+Middle East & North Africa,2018,geothermal,0
+Middle East & North Africa,2019,geothermal,0
+Middle East & North Africa,2020,geothermal,0
+Middle East & North Africa,2021,geothermal,0
+Middle East & North Africa,2022,geothermal,0
+Middle East & North Africa,2023,geothermal,0
+Middle East & North Africa,2024,geothermal,0
+Middle East & North Africa,1980,hydro,7.864
+Middle East & North Africa,1981,hydro,8.359
+Middle East & North Africa,1982,hydro,8.915
+Middle East & North Africa,1983,hydro,8.931
+Middle East & North Africa,1984,hydro,9.280999999999999
+Middle East & North Africa,1985,hydro,9.292
+Middle East & North Africa,1986,hydro,9.927
+Middle East & North Africa,1987,hydro,11.225
+Middle East & North Africa,1988,hydro,11.339
+Middle East & North Africa,1989,hydro,11.399000000000001
+Middle East & North Africa,1990,hydro,10.598
+Middle East & North Africa,1991,hydro,10.656
+Middle East & North Africa,1992,hydro,15.61
+Middle East & North Africa,1993,hydro,16.929000000000002
+Middle East & North Africa,1994,hydro,17.273
+Middle East & North Africa,1995,hydro,17.391
+Middle East & North Africa,1996,hydro,17.805
+Middle East & North Africa,1997,hydro,17.997
+Middle East & North Africa,1998,hydro,18.298
+Middle East & North Africa,1999,hydro,18.4694
+Middle East & North Africa,2000,hydro,18.9059
+Middle East & North Africa,2001,hydro,19.0847
+Middle East & North Africa,2002,hydro,18.8627
+Middle East & North Africa,2003,hydro,21.1205
+Middle East & North Africa,2004,hydro,23.86462
+Middle East & North Africa,2005,hydro,25.000420000000002
+Middle East & North Africa,2006,hydro,25.97622
+Middle East & North Africa,2007,hydro,27.05822
+Middle East & North Africa,2008,hydro,27.021819999999998
+Middle East & North Africa,2009,hydro,27.06572
+Middle East & North Africa,2010,hydro,27.906973
+Middle East & North Africa,2011,hydro,28.193573
+Middle East & North Africa,2012,hydro,29.311473
+Middle East & North Africa,2013,hydro,30.299673000000002
+Middle East & North Africa,2014,hydro,31.272173
+Middle East & North Africa,2015,hydro,30.818973
+Middle East & North Africa,2016,hydro,31.152273
+Middle East & North Africa,2017,hydro,31.238673000000002
+Middle East & North Africa,2018,hydro,33.921673
+Middle East & North Africa,2019,hydro,33.923873
+Middle East & North Africa,2020,hydro,34.232873
+Middle East & North Africa,2021,hydro,34.470914
+Middle East & North Africa,2022,hydro,35.197203
+Middle East & North Africa,2023,hydro,36.265
+Middle East & North Africa,2024,hydro,36.885
+Middle East & North Africa,1980,nuclear,0.125
+Middle East & North Africa,1981,nuclear,0.125
+Middle East & North Africa,1982,nuclear,0.125
+Middle East & North Africa,1983,nuclear,0.125
+Middle East & North Africa,1984,nuclear,0.125
+Middle East & North Africa,1985,nuclear,0.125
+Middle East & North Africa,1986,nuclear,0.125
+Middle East & North Africa,1987,nuclear,0.125
+Middle East & North Africa,1988,nuclear,0.125
+Middle East & North Africa,1989,nuclear,0.125
+Middle East & North Africa,1990,nuclear,0.125
+Middle East & North Africa,1991,nuclear,0.125
+Middle East & North Africa,1992,nuclear,0.125
+Middle East & North Africa,1993,nuclear,0.125
+Middle East & North Africa,1994,nuclear,0.125
+Middle East & North Africa,1995,nuclear,0.125
+Middle East & North Africa,1996,nuclear,0.501
+Middle East & North Africa,1997,nuclear,0.501
+Middle East & North Africa,1998,nuclear,0.501
+Middle East & North Africa,1999,nuclear,0.501
+Middle East & North Africa,2000,nuclear,0.8009999999999999
+Middle East & North Africa,2001,nuclear,0.8009999999999999
+Middle East & North Africa,2002,nuclear,0.8009999999999999
+Middle East & North Africa,2003,nuclear,0.8009999999999999
+Middle East & North Africa,2004,nuclear,0.8009999999999999
+Middle East & North Africa,2005,nuclear,0.8009999999999999
+Middle East & North Africa,2006,nuclear,0.8009999999999999
+Middle East & North Africa,2007,nuclear,0.8009999999999999
+Middle East & North Africa,2008,nuclear,0.8009999999999999
+Middle East & North Africa,2009,nuclear,0.8
+Middle East & North Africa,2010,nuclear,0.8
+Middle East & North Africa,2011,nuclear,2.015
+Middle East & North Africa,2012,nuclear,2.015
+Middle East & North Africa,2013,nuclear,1.98
+Middle East & North Africa,2014,nuclear,1.98
+Middle East & North Africa,2015,nuclear,1.98
+Middle East & North Africa,2016,nuclear,2.295
+Middle East & North Africa,2017,nuclear,2.608
+Middle East & North Africa,2018,nuclear,2.608
+Middle East & North Africa,2019,nuclear,2.608
+Middle East & North Africa,2020,nuclear,3.993
+Middle East & North Africa,2021,nuclear,6.457
+Middle East & North Africa,2022,nuclear,8.604000000000001
+Middle East & North Africa,2023,nuclear,9.914
+Middle East & North Africa,2024,nuclear,9.941
+Middle East & North Africa,1980,pumped_storage,0
+Middle East & North Africa,1981,pumped_storage,0
+Middle East & North Africa,1982,pumped_storage,0
+Middle East & North Africa,1983,pumped_storage,0
+Middle East & North Africa,1984,pumped_storage,0
+Middle East & North Africa,1985,pumped_storage,0
+Middle East & North Africa,1986,pumped_storage,0
+Middle East & North Africa,1987,pumped_storage,0
+Middle East & North Africa,1988,pumped_storage,0
+Middle East & North Africa,1989,pumped_storage,0.24
+Middle East & North Africa,1990,pumped_storage,0.24
+Middle East & North Africa,1991,pumped_storage,0.24
+Middle East & North Africa,1992,pumped_storage,0.24
+Middle East & North Africa,1993,pumped_storage,0.24
+Middle East & North Africa,1994,pumped_storage,0.24
+Middle East & North Africa,1995,pumped_storage,0.24
+Middle East & North Africa,1996,pumped_storage,0.24
+Middle East & North Africa,1997,pumped_storage,0.24
+Middle East & North Africa,1998,pumped_storage,0.24
+Middle East & North Africa,1999,pumped_storage,0.24
+Middle East & North Africa,2000,pumped_storage,0.24
+Middle East & North Africa,2001,pumped_storage,0.24
+Middle East & North Africa,2002,pumped_storage,0.24
+Middle East & North Africa,2003,pumped_storage,0.24
+Middle East & North Africa,2004,pumped_storage,0.473
+Middle East & North Africa,2005,pumped_storage,0.704
+Middle East & North Africa,2006,pumped_storage,0.704
+Middle East & North Africa,2007,pumped_storage,0.704
+Middle East & North Africa,2008,pumped_storage,0.704
+Middle East & North Africa,2009,pumped_storage,0.704
+Middle East & North Africa,2010,pumped_storage,0.704
+Middle East & North Africa,2011,pumped_storage,0.704
+Middle East & North Africa,2012,pumped_storage,0.704
+Middle East & North Africa,2013,pumped_storage,1.224
+Middle East & North Africa,2014,pumped_storage,1.224
+Middle East & North Africa,2015,pumped_storage,1.744
+Middle East & North Africa,2016,pumped_storage,1.744
+Middle East & North Africa,2017,pumped_storage,1.744
+Middle East & North Africa,2018,pumped_storage,1.744
+Middle East & North Africa,2019,pumped_storage,1.744
+Middle East & North Africa,2020,pumped_storage,2.044
+Middle East & North Africa,2021,pumped_storage,2.044
+Middle East & North Africa,2022,pumped_storage,2.044
+Middle East & North Africa,2023,pumped_storage,2.044
+Middle East & North Africa,2024,pumped_storage,2.394
+Middle East & North Africa,1980,solar,0
+Middle East & North Africa,1981,solar,0
+Middle East & North Africa,1982,solar,0
+Middle East & North Africa,1983,solar,0
+Middle East & North Africa,1984,solar,0
+Middle East & North Africa,1985,solar,0
+Middle East & North Africa,1986,solar,0
+Middle East & North Africa,1987,solar,0
+Middle East & North Africa,1988,solar,0
+Middle East & North Africa,1989,solar,0
+Middle East & North Africa,1990,solar,0
+Middle East & North Africa,1991,solar,0
+Middle East & North Africa,1992,solar,0
+Middle East & North Africa,1993,solar,0
+Middle East & North Africa,1994,solar,0
+Middle East & North Africa,1995,solar,0
+Middle East & North Africa,1996,solar,0
+Middle East & North Africa,1997,solar,0
+Middle East & North Africa,1998,solar,0
+Middle East & North Africa,1999,solar,0
+Middle East & North Africa,2000,solar,0.008
+Middle East & North Africa,2001,solar,0.0089
+Middle East & North Africa,2002,solar,0.0098
+Middle East & North Africa,2003,solar,0.0107
+Middle East & North Africa,2004,solar,0.012
+Middle East & North Africa,2005,solar,0.0164
+Middle East & North Africa,2006,solar,0.0181
+Middle East & North Africa,2007,solar,0.0205
+Middle East & North Africa,2008,solar,0.0313
+Middle East & North Africa,2009,solar,0.0701
+Middle East & North Africa,2010,solar,0.1665
+Middle East & North Africa,2011,solar,0.3377
+Middle East & North Africa,2012,solar,0.4717
+Middle East & North Africa,2013,solar,0.845
+Middle East & North Africa,2014,solar,1.175
+Middle East & North Africa,2015,solar,1.7246000000000001
+Middle East & North Africa,2016,solar,2.7841
+Middle East & North Africa,2017,solar,3.7827
+Middle East & North Africa,2018,solar,6.210076
+Middle East & North Africa,2019,solar,10.016976
+Middle East & North Africa,2020,solar,11.93267
+Middle East & North Africa,2021,solar,14.533155
+Middle East & North Africa,2022,solar,18.781254999999998
+Middle East & North Africa,2023,solar,26.486362
+Middle East & North Africa,2024,solar,30.122362
+Middle East & North Africa,1980,tide_wave,0
+Middle East & North Africa,1981,tide_wave,0
+Middle East & North Africa,1982,tide_wave,0
+Middle East & North Africa,1983,tide_wave,0
+Middle East & North Africa,1984,tide_wave,0
+Middle East & North Africa,1985,tide_wave,0
+Middle East & North Africa,1986,tide_wave,0
+Middle East & North Africa,1987,tide_wave,0
+Middle East & North Africa,1988,tide_wave,0
+Middle East & North Africa,1989,tide_wave,0
+Middle East & North Africa,1990,tide_wave,0
+Middle East & North Africa,1991,tide_wave,0
+Middle East & North Africa,1992,tide_wave,0
+Middle East & North Africa,1993,tide_wave,0
+Middle East & North Africa,1994,tide_wave,0
+Middle East & North Africa,1995,tide_wave,0
+Middle East & North Africa,1996,tide_wave,0
+Middle East & North Africa,1997,tide_wave,0
+Middle East & North Africa,1998,tide_wave,0
+Middle East & North Africa,1999,tide_wave,0
+Middle East & North Africa,2000,tide_wave,0
+Middle East & North Africa,2001,tide_wave,0
+Middle East & North Africa,2002,tide_wave,0
+Middle East & North Africa,2003,tide_wave,0
+Middle East & North Africa,2004,tide_wave,0
+Middle East & North Africa,2005,tide_wave,0
+Middle East & North Africa,2006,tide_wave,0
+Middle East & North Africa,2007,tide_wave,0
+Middle East & North Africa,2008,tide_wave,0
+Middle East & North Africa,2009,tide_wave,0
+Middle East & North Africa,2010,tide_wave,0
+Middle East & North Africa,2011,tide_wave,0
+Middle East & North Africa,2012,tide_wave,0
+Middle East & North Africa,2013,tide_wave,0
+Middle East & North Africa,2014,tide_wave,0
+Middle East & North Africa,2015,tide_wave,0
+Middle East & North Africa,2016,tide_wave,0
+Middle East & North Africa,2017,tide_wave,0
+Middle East & North Africa,2018,tide_wave,0
+Middle East & North Africa,2019,tide_wave,0
+Middle East & North Africa,2020,tide_wave,0
+Middle East & North Africa,2021,tide_wave,0
+Middle East & North Africa,2022,tide_wave,0
+Middle East & North Africa,2023,tide_wave,0
+Middle East & North Africa,2024,tide_wave,0
+Middle East & North Africa,1980,wind,0
+Middle East & North Africa,1981,wind,0
+Middle East & North Africa,1982,wind,0
+Middle East & North Africa,1983,wind,0
+Middle East & North Africa,1984,wind,0
+Middle East & North Africa,1985,wind,0
+Middle East & North Africa,1986,wind,0
+Middle East & North Africa,1987,wind,0
+Middle East & North Africa,1988,wind,0
+Middle East & North Africa,1989,wind,0
+Middle East & North Africa,1990,wind,0
+Middle East & North Africa,1991,wind,0
+Middle East & North Africa,1992,wind,0
+Middle East & North Africa,1993,wind,0
+Middle East & North Africa,1994,wind,0
+Middle East & North Africa,1995,wind,0
+Middle East & North Africa,1996,wind,0
+Middle East & North Africa,1997,wind,0
+Middle East & North Africa,1998,wind,0
+Middle East & North Africa,1999,wind,0
+Middle East & North Africa,2000,wind,0.1461
+Middle East & North Africa,2001,wind,0.1461
+Middle East & North Africa,2002,wind,0.15310000000000001
+Middle East & North Africa,2003,wind,0.1658
+Middle East & North Africa,2004,wind,0.24630000000000002
+Middle East & North Africa,2005,wind,0.261
+Middle East & North Africa,2006,wind,0.331
+Middle East & North Africa,2007,wind,0.507
+Middle East & North Africa,2008,wind,0.6137
+Middle East & North Africa,2009,wind,0.816
+Middle East & North Africa,2010,wind,0.9391
+Middle East & North Africa,2011,wind,0.9763000000000001
+Middle East & North Africa,2012,wind,1.1542000000000001
+Middle East & North Africa,2013,wind,1.488
+Middle East & North Africa,2014,wind,1.9655
+Middle East & North Africa,2015,wind,2.4072
+Middle East & North Africa,2016,wind,2.9596
+Middle East & North Africa,2017,wind,3.359
+Middle East & North Africa,2018,wind,4.494
+Middle East & North Africa,2019,wind,4.713
+Middle East & North Africa,2020,wind,5.3192
+Middle East & North Africa,2021,wind,5.83997
+Middle East & North Africa,2022,wind,6.972435
+Middle East & North Africa,2023,wind,7.884925
+Middle East & North Africa,2024,wind,8.515925
+North America,1980,biomass,0
+North America,1981,biomass,0
+North America,1982,biomass,0
+North America,1983,biomass,0
+North America,1984,biomass,0
+North America,1985,biomass,0
+North America,1986,biomass,0
+North America,1987,biomass,0
+North America,1988,biomass,0
+North America,1989,biomass,0
+North America,1990,biomass,0
+North America,1991,biomass,0
+North America,1992,biomass,0
+North America,1993,biomass,0
+North America,1994,biomass,0
+North America,1995,biomass,0
+North America,1996,biomass,0
+North America,1997,biomass,0
+North America,1998,biomass,0
+North America,1999,biomass,0
+North America,2000,biomass,12.2079
+North America,2001,biomass,11.853599999999998
+North America,2002,biomass,12.1692
+North America,2003,biomass,12.4331
+North America,2004,biomass,12.522100000000002
+North America,2005,biomass,12.645
+North America,2006,biomass,12.9472
+North America,2007,biomass,13.6489
+North America,2008,biomass,14.0164
+North America,2009,biomass,14.152999999999999
+North America,2010,biomass,14.3469
+North America,2011,biomass,15.094899999999999
+North America,2012,biomass,16.235500000000002
+North America,2013,biomass,18.1019
+North America,2014,biomass,18.9784
+North America,2015,biomass,18.5171
+North America,2016,biomass,18.7355
+North America,2017,biomass,19.625999999999998
+North America,2018,biomass,18.871499999999997
+North America,2019,biomass,18.3873
+North America,2020,biomass,18.7031
+North America,2021,biomass,21.377657000000003
+North America,2022,biomass,25.2324
+North America,2023,biomass,31.9772
+North America,2024,biomass,42.548100000000005
+North America,1980,fossil,470.327
+North America,1981,fossil,485.988
+North America,1982,fossil,496.812
+North America,1983,fossil,500.766
+North America,1984,fossil,507.585
+North America,1985,fossil,513.708
+North America,1986,fossil,517.1320000000001
+North America,1987,fossil,517.812
+North America,1988,fossil,517.289
+North America,1989,fossil,546.6400000000001
+North America,1990,fossil,558.214
+North America,1991,fossil,562.186
+North America,1992,fossil,568.6229999999999
+North America,1993,fossil,572.57
+North America,1994,fossil,583.3720000000001
+North America,1995,fossil,587.587
+North America,1996,fossil,595.655
+North America,1997,fossil,595.408
+North America,1998,fossil,595.153
+North America,1999,fossil,604.6759999999999
+North America,2000,fossil,632.2602
+North America,2001,fossil,669.7912
+North America,2002,fossil,724.6891999999999
+North America,2003,fossil,768.3091999999999
+North America,2004,fossil,781.966
+North America,2005,fossil,794.638
+North America,2006,fossil,799.0989999999999
+North America,2007,fossil,801.567
+North America,2008,fossil,807.533
+North America,2009,fossil,815.4868
+North America,2010,fossil,822.8789
+North America,2011,fossil,825.4656
+North America,2012,fossil,818.7268
+North America,2013,fossil,809.7288000000001
+North America,2014,fossil,809.9382
+North America,2015,fossil,795.547
+North America,2016,fossil,788.0394
+North America,2017,fossil,785.7424
+North America,2018,fossil,785.5313
+North America,2019,fossil,776.7149999999999
+North America,2020,fossil,770.5616
+North America,2021,fossil,771.3841
+North America,2022,fossil,763.8123999999999
+North America,2023,fossil,755.8716999999999
+North America,2024,fossil,748.804007373
+North America,1980,geothermal,0.909
+North America,1981,geothermal,0.909
+North America,1982,geothermal,1.022
+North America,1983,geothermal,1.207
+North America,1984,geothermal,1.2314
+North America,1985,geothermal,1.57961
+North America,1986,geothermal,1.55831
+North America,1987,geothermal,1.54931
+North America,1988,geothermal,1.667236
+North America,1989,geothermal,2.576626
+North America,1990,geothermal,2.66582
+North America,1991,geothermal,2.62194
+North America,1992,geothermal,2.87679
+North America,1993,geothermal,2.9448
+North America,1994,geothermal,2.97241
+North America,1995,geothermal,2.96774
+North America,1996,geothermal,2.89293
+North America,1997,geothermal,2.89273
+North America,1998,geothermal,2.89327
+North America,1999,geothermal,2.84605
+North America,2000,geothermal,2.793
+North America,2001,geothermal,2.216
+North America,2002,geothermal,2.252
+North America,2003,geothermal,2.133
+North America,2004,geothermal,2.152
+North America,2005,geothermal,2.2853
+North America,2006,geothermal,2.27398
+North America,2007,geothermal,2.2142
+North America,2008,geothermal,2.2288
+North America,2009,geothermal,2.3819
+North America,2010,geothermal,2.405
+North America,2011,geothermal,2.409
+North America,2012,geothermal,2.5921
+North America,2013,geothermal,2.607
+North America,2014,geothermal,2.5143
+North America,2015,geothermal,2.5415
+North America,2016,geothermal,2.5166
+North America,2017,geothermal,2.4833
+North America,2018,geothermal,2.4443
+North America,2019,geothermal,2.5554
+North America,2020,geothermal,2.5719
+North America,2021,geothermal,2.5967
+North America,2022,geothermal,2.6486
+North America,2023,geothermal,2.7018
+North America,2024,geothermal,2.7015
+North America,1980,hydro,129.619
+North America,1981,hydro,131.767
+North America,1982,hydro,133.007
+North America,1983,hydro,135.4
+North America,1984,hydro,140.249
+North America,1985,hydro,144.60500000000002
+North America,1986,hydro,146.1
+North America,1987,hydro,147.626
+North America,1988,hydro,147.642
+North America,1989,hydro,132.034934
+North America,1990,hydro,133.11805
+North America,1991,hydro,136.08831
+North America,1992,hydro,136.2577
+North America,1993,hydro,138.64042
+North America,1994,hydro,140.98193
+North America,1995,hydro,143.13473
+North America,1996,hydro,141.91842
+North America,1997,hydro,146.06058000000002
+North America,1998,hydro,145.92865
+North America,1999,hydro,146.33706999999998
+North America,2000,hydro,146.589079
+North America,2001,hydro,145.79778
+North America,2002,hydro,148.38490000000002
+North America,2003,hydro,148.89091000000002
+North America,2004,hydro,148.3205
+North America,2005,hydro,149.34187
+North America,2006,hydro,150.48196000000002
+North America,2007,hydro,151.166
+North America,2008,hydro,152.16000000000003
+North America,2009,hydro,153.02800000000002
+North America,2010,hydro,153.726
+North America,2011,hydro,154.048
+North America,2012,hydro,154.101
+North America,2013,hydro,154.537
+North America,2014,hydro,154.9773
+North America,2015,hydro,158.8952
+North America,2016,hydro,160.04289999999997
+North America,2017,hydro,160.4515
+North America,2018,hydro,161.0938
+North America,2019,hydro,160.99509999999998
+North America,2020,hydro,161.151
+North America,2021,hydro,162.0427
+North America,2022,hydro,163.2056
+North America,2023,hydro,163.1203
+North America,2024,hydro,164.0345
+North America,1980,nuclear,56.982
+North America,1981,nuclear,61.29
+North America,1982,nuclear,67.079
+North America,1983,nuclear,70.574
+North America,1984,nuclear,79.112
+North America,1985,nuclear,89.138
+North America,1986,nuclear,96.489
+North America,1987,nuclear,105.72
+North America,1988,nuclear,106.88
+North America,1989,nuclear,110.346
+North America,1990,nuclear,113.61699999999999
+North America,1991,nuclear,113.582
+North America,1992,nuclear,113.859
+North America,1993,nuclear,114.841
+North America,1994,nuclear,114.898
+North America,1995,nuclear,114.417
+North America,1996,nuclear,115.686
+North America,1997,nuclear,112.225
+North America,1998,nuclear,107.068
+North America,1999,nuclear,107.409
+North America,2000,nuclear,107.858
+North America,2001,nuclear,108.177
+North America,2002,nuclear,108.675
+North America,2003,nuclear,110.511
+North America,2004,nuclear,111.712
+North America,2005,nuclear,112.572
+North America,2006,nuclear,112.944
+North America,2007,nuclear,112.876
+North America,2008,nuclear,113.332
+North America,2009,nuclear,113.57300000000001
+North America,2010,nuclear,113.771
+North America,2011,nuclear,114.023
+North America,2012,nuclear,115.385
+North America,2013,nuclear,112.7403
+North America,2014,nuclear,112.0693
+North America,2015,nuclear,112.196
+North America,2016,nuclear,113.11880000000001
+North America,2017,nuclear,113.1829
+North America,2018,nuclear,112.9869
+North America,2019,nuclear,111.673
+North America,2020,nuclear,110.1246
+North America,2021,nuclear,109.1704
+North America,2022,nuclear,108.2829
+North America,2023,nuclear,109.445
+North America,2024,nuclear,111.1052
+North America,1980,pumped_storage,0
+North America,1981,pumped_storage,0
+North America,1982,pumped_storage,0
+North America,1983,pumped_storage,0
+North America,1984,pumped_storage,0
+North America,1985,pumped_storage,0
+North America,1986,pumped_storage,0
+North America,1987,pumped_storage,0
+North America,1988,pumped_storage,0
+North America,1989,pumped_storage,18.094424
+North America,1990,pumped_storage,19.64802
+North America,1991,pumped_storage,18.59657
+North America,1992,pumped_storage,21.37274
+North America,1993,pumped_storage,21.3294
+North America,1994,pumped_storage,21.3909
+North America,1995,pumped_storage,21.56357
+North America,1996,pumped_storage,21.28722
+North America,1997,pumped_storage,19.487099999999998
+North America,1998,pumped_storage,19.6955
+North America,1999,pumped_storage,19.7423
+North America,2000,pumped_storage,19.698999999999998
+North America,2001,pumped_storage,19.841
+North America,2002,pumped_storage,20.548
+North America,2003,pumped_storage,20.698999999999998
+North America,2004,pumped_storage,20.941
+North America,2005,pumped_storage,21.524
+North America,2006,pumped_storage,21.637999999999998
+North America,2007,pumped_storage,22.063
+North America,2008,pumped_storage,22.035
+North America,2009,pumped_storage,22.3374
+North America,2010,pumped_storage,22.375899999999998
+North America,2011,pumped_storage,22.4696
+North America,2012,pumped_storage,22.5423
+North America,2013,pumped_storage,22.563299999999998
+North America,2014,pumped_storage,22.6591
+North America,2015,pumped_storage,22.7491
+North America,2016,pumped_storage,22.9527
+North America,2017,pumped_storage,22.9844
+North America,2018,pumped_storage,23.0042
+North America,2019,pumped_storage,22.9553
+North America,2020,pumped_storage,23.1932
+North America,2021,pumped_storage,23.1817
+North America,2022,pumped_storage,23.2179
+North America,2023,pumped_storage,23.3244
+North America,2024,pumped_storage,23.3336
+North America,1980,solar,0
+North America,1981,solar,0
+North America,1982,solar,0
+North America,1983,solar,0
+North America,1984,solar,0
+North America,1985,solar,0
+North America,1986,solar,0
+North America,1987,solar,0
+North America,1988,solar,0
+North America,1989,solar,0
+North America,1990,solar,0
+North America,1991,solar,0
+North America,1992,solar,0
+North America,1993,solar,0
+North America,1994,solar,0
+North America,1995,solar,0
+North America,1996,solar,0
+North America,1997,solar,0
+North America,1998,solar,0
+North America,1999,solar,0
+North America,2000,solar,0.393
+North America,2001,solar,0.401
+North America,2002,solar,0.40700000000000003
+North America,2003,solar,0.40900000000000003
+North America,2004,solar,0.41200000000000003
+North America,2005,solar,0.429
+North America,2006,solar,0.433
+North America,2007,solar,0.531
+North America,2008,solar,0.5740000000000001
+North America,2009,solar,0.7255
+North America,2010,solar,1.1154
+North America,2011,solar,2.1515
+North America,2012,solar,3.9361
+North America,2013,solar,7.8325
+North America,2014,solar,19.4929
+North America,2015,solar,25.9608
+North America,2016,solar,37.3809
+North America,2017,solar,46.0467
+North America,2018,solar,54.5205
+North America,2019,solar,64.0089
+North America,2020,solar,80.01790000000001
+North America,2021,solar,99.8921
+North America,2022,solar,118.1285
+North America,2023,solar,145.6565
+North America,2024,solar,182.7869
+North America,1980,tide_wave,0
+North America,1981,tide_wave,0
+North America,1982,tide_wave,0
+North America,1983,tide_wave,0
+North America,1984,tide_wave,0
+North America,1985,tide_wave,0
+North America,1986,tide_wave,0
+North America,1987,tide_wave,0
+North America,1988,tide_wave,0
+North America,1989,tide_wave,0
+North America,1990,tide_wave,0
+North America,1991,tide_wave,0
+North America,1992,tide_wave,0
+North America,1993,tide_wave,0
+North America,1994,tide_wave,0
+North America,1995,tide_wave,0
+North America,1996,tide_wave,0
+North America,1997,tide_wave,0
+North America,1998,tide_wave,0
+North America,1999,tide_wave,0
+North America,2000,tide_wave,0.02
+North America,2001,tide_wave,0.02
+North America,2002,tide_wave,0.02
+North America,2003,tide_wave,0.02
+North America,2004,tide_wave,0.02
+North America,2005,tide_wave,0.02
+North America,2006,tide_wave,0.02
+North America,2007,tide_wave,0.02
+North America,2008,tide_wave,0.02
+North America,2009,tide_wave,0.02
+North America,2010,tide_wave,0.02
+North America,2011,tide_wave,0.02
+North America,2012,tide_wave,0.02
+North America,2013,tide_wave,0.02
+North America,2014,tide_wave,0.02
+North America,2015,tide_wave,0.02
+North America,2016,tide_wave,0.02
+North America,2017,tide_wave,0.02
+North America,2018,tide_wave,0.02
+North America,2019,tide_wave,0.02
+North America,2020,tide_wave,0.02
+North America,2021,tide_wave,0.001
+North America,2022,tide_wave,0.001
+North America,2023,tide_wave,0.001
+North America,2024,tide_wave,0.001
+North America,1980,wind,0
+North America,1981,wind,3.6e-4
+North America,1982,wind,0.005555
+North America,1983,wind,0.006171
+North America,1984,wind,0.016601
+North America,1985,wind,0.017501
+North America,1986,wind,0.019265
+North America,1987,wind,0.024765
+North America,1988,wind,0.006585
+North America,1989,wind,1.527736
+North America,1990,wind,1.79945
+North America,1991,wind,1.88538
+North America,1992,wind,1.82251
+North America,1993,wind,1.79634
+North America,1994,wind,1.74467
+North America,1995,wind,1.7311
+North America,1996,wind,1.67763
+North America,1997,wind,1.60969
+North America,1998,wind,1.72001
+North America,1999,wind,2.25181
+North America,2000,wind,2.469
+North America,2001,wind,3.995
+North America,2002,wind,4.577999999999999
+North America,2003,wind,6.322
+North America,2004,wind,6.9
+North America,2005,wind,9.38341
+North America,2006,wind,12.75179
+North America,2007,wind,18.3557
+North America,2008,wind,26.9879
+North America,2009,wind,37.5784
+North America,2010,wind,43.1021
+North America,2011,wind,50.9415
+North America,2012,wind,65.27640000000001
+North America,2013,wind,67.77499999999999
+North America,2014,wind,73.9255
+North America,2015,wind,83.7874
+North America,2016,wind,93.2596
+North America,2017,wind,99.8475
+North America,2018,wind,107.2337
+North America,2019,wind,116.9842
+North America,2020,wind,132.0057
+North America,2021,wind,146.5254
+North America,2022,wind,156.48319999999998
+North America,2023,wind,164.43370000000002
+North America,2024,wind,170.4733
+Oceania,1980,biomass,0
+Oceania,1981,biomass,0
+Oceania,1982,biomass,0
+Oceania,1983,biomass,0
+Oceania,1984,biomass,0
+Oceania,1985,biomass,0
+Oceania,1986,biomass,0
+Oceania,1987,biomass,0
+Oceania,1988,biomass,0
+Oceania,1989,biomass,0
+Oceania,1990,biomass,0
+Oceania,1991,biomass,0
+Oceania,1992,biomass,0
+Oceania,1993,biomass,0
+Oceania,1994,biomass,0
+Oceania,1995,biomass,0
+Oceania,1996,biomass,0
+Oceania,1997,biomass,0
+Oceania,1998,biomass,0
+Oceania,1999,biomass,0
+Oceania,2000,biomass,0.545
+Oceania,2001,biomass,0.881
+Oceania,2002,biomass,0.9209999999999999
+Oceania,2003,biomass,0.973
+Oceania,2004,biomass,1.0980999999999999
+Oceania,2005,biomass,0.9341
+Oceania,2006,biomass,1.0139
+Oceania,2007,biomass,1.0309
+Oceania,2008,biomass,0.9869
+Oceania,2009,biomass,1.021
+Oceania,2010,biomass,1.024
+Oceania,2011,biomass,1.0296999999999998
+Oceania,2012,biomass,1.0326
+Oceania,2013,biomass,1.0245
+Oceania,2014,biomass,1.0358
+Oceania,2015,biomass,1.0388
+Oceania,2016,biomass,1.0738
+Oceania,2017,biomass,1.0897999999999999
+Oceania,2018,biomass,1.0897999999999999
+Oceania,2019,biomass,1.0897999999999999
+Oceania,2020,biomass,1.0956
+Oceania,2021,biomass,1.104477
+Oceania,2022,biomass,1.110053
+Oceania,2023,biomass,1.107893
+Oceania,2024,biomass,1.1922059999999999
+Oceania,1980,fossil,20.719
+Oceania,1981,fossil,22.444
+Oceania,1982,fossil,24.447
+Oceania,1983,fossil,25.31
+Oceania,1984,fossil,28.06
+Oceania,1985,fossil,29.468
+Oceania,1986,fossil,29.873
+Oceania,1987,fossil,30.858
+Oceania,1988,fossil,31.124
+Oceania,1989,fossil,31.009
+Oceania,1990,fossil,32.934999999999995
+Oceania,1991,fossil,32.394
+Oceania,1992,fossil,33.047
+Oceania,1993,fossil,34.204
+Oceania,1994,fossil,36.035000000000004
+Oceania,1995,fossil,36.639
+Oceania,1996,fossil,37.25
+Oceania,1997,fossil,37.946999999999996
+Oceania,1998,fossil,38.937999999999995
+Oceania,1999,fossil,40.78
+Oceania,2000,fossil,41.1872
+Oceania,2001,fossil,42.026300000000006
+Oceania,2002,fossil,44.5908
+Oceania,2003,fossil,45.860899999999994
+Oceania,2004,fossil,46.1698
+Oceania,2005,fossil,45.3662
+Oceania,2006,fossil,45.8022
+Oceania,2007,fossil,48.5456
+Oceania,2008,fossil,49.140299999999996
+Oceania,2009,fossil,51.417532
+Oceania,2010,fossil,54.388134
+Oceania,2011,fossil,55.081233999999995
+Oceania,2012,fossil,55.299634000000005
+Oceania,2013,fossil,55.12263
+Oceania,2014,fossil,55.665350000000004
+Oceania,2015,fossil,60.8588
+Oceania,2016,fossil,58.77852
+Oceania,2017,fossil,55.95602
+Oceania,2018,fossil,56.5388
+Oceania,2019,fossil,56.550360000000005
+Oceania,2020,fossil,57.95564
+Oceania,2021,fossil,58.1739567
+Oceania,2022,fossil,58.215212
+Oceania,2023,fossil,56.693039999999996
+Oceania,2024,fossil,58.211273000000006
+Oceania,1980,geothermal,0
+Oceania,1981,geothermal,0
+Oceania,1982,geothermal,0
+Oceania,1983,geothermal,0
+Oceania,1984,geothermal,0
+Oceania,1985,geothermal,0
+Oceania,1986,geothermal,0
+Oceania,1987,geothermal,0
+Oceania,1988,geothermal,0
+Oceania,1989,geothermal,0
+Oceania,1990,geothermal,0
+Oceania,1991,geothermal,0
+Oceania,1992,geothermal,0
+Oceania,1993,geothermal,0
+Oceania,1994,geothermal,0
+Oceania,1995,geothermal,0
+Oceania,1996,geothermal,0
+Oceania,1997,geothermal,0
+Oceania,1998,geothermal,0
+Oceania,1999,geothermal,0
+Oceania,2000,geothermal,0.41819999999999996
+Oceania,2001,geothermal,0.41719999999999996
+Oceania,2002,geothermal,0.3722
+Oceania,2003,geothermal,0.3881
+Oceania,2004,geothermal,0.3881
+Oceania,2005,geothermal,0.4732
+Oceania,2006,geothermal,0.4731
+Oceania,2007,geothermal,0.5121
+Oceania,2008,geothermal,0.6341
+Oceania,2009,geothermal,0.6671
+Oceania,2010,geothermal,1.0191
+Oceania,2011,geothermal,1.0191
+Oceania,2012,geothermal,1.0451
+Oceania,2013,geothermal,1.1201
+Oceania,2014,geothermal,1.2461
+Oceania,2015,geothermal,1.2701
+Oceania,2016,geothermal,1.2651000000000001
+Oceania,2017,geothermal,1.2651000000000001
+Oceania,2018,geothermal,1.2890000000000001
+Oceania,2019,geothermal,1.2893000000000001
+Oceania,2020,geothermal,1.3233
+Oceania,2021,geothermal,1.09331
+Oceania,2022,geothermal,1.1003100000000001
+Oceania,2023,geothermal,1.1003100000000001
+Oceania,2024,geothermal,1.3263099999999999
+Oceania,1980,hydro,10.224
+Oceania,1981,hydro,10.427
+Oceania,1982,hydro,10.595
+Oceania,1983,hydro,10.91
+Oceania,1984,hydro,11.385
+Oceania,1985,hydro,11.871
+Oceania,1986,hydro,12.107
+Oceania,1987,hydro,12.243
+Oceania,1988,hydro,12.356
+Oceania,1989,hydro,12.356
+Oceania,1990,hydro,12.329
+Oceania,1991,hydro,12.33
+Oceania,1992,hydro,12.912
+Oceania,1993,hydro,12.92
+Oceania,1994,hydro,12.928
+Oceania,1995,hydro,13.292
+Oceania,1996,hydro,13.194
+Oceania,1997,hydro,13.301
+Oceania,1998,hydro,13.302
+Oceania,1999,hydro,13.5291
+Oceania,2000,hydro,12.393899999999999
+Oceania,2001,hydro,12.463099999999999
+Oceania,2002,hydro,12.5661
+Oceania,2003,hydro,12.5683
+Oceania,2004,hydro,12.6502
+Oceania,2005,hydro,13.257200000000001
+Oceania,2006,hydro,13.26
+Oceania,2007,hydro,13.268
+Oceania,2008,hydro,13.299
+Oceania,2009,hydro,13.2436
+Oceania,2010,hydro,13.2494
+Oceania,2011,hydro,13.3244
+Oceania,2012,hydro,13.388200000000001
+Oceania,2013,hydro,13.401299999999999
+Oceania,2014,hydro,13.4006
+Oceania,2015,hydro,13.4186
+Oceania,2016,hydro,13.418700000000001
+Oceania,2017,hydro,13.4231
+Oceania,2018,hydro,13.6753
+Oceania,2019,hydro,13.684800000000001
+Oceania,2020,hydro,13.687800000000001
+Oceania,2021,hydro,11.896917
+Oceania,2022,hydro,12.136917
+Oceania,2023,hydro,11.884769
+Oceania,2024,hydro,12.142769
+Oceania,1980,nuclear,0
+Oceania,1981,nuclear,0
+Oceania,1982,nuclear,0
+Oceania,1983,nuclear,0
+Oceania,1984,nuclear,0
+Oceania,1985,nuclear,0
+Oceania,1986,nuclear,0
+Oceania,1987,nuclear,0
+Oceania,1988,nuclear,0
+Oceania,1989,nuclear,0
+Oceania,1990,nuclear,0
+Oceania,1991,nuclear,0
+Oceania,1992,nuclear,0
+Oceania,1993,nuclear,0
+Oceania,1994,nuclear,0
+Oceania,1995,nuclear,0
+Oceania,1996,nuclear,0
+Oceania,1997,nuclear,0
+Oceania,1998,nuclear,0
+Oceania,1999,nuclear,0
+Oceania,2000,nuclear,0
+Oceania,2001,nuclear,0
+Oceania,2002,nuclear,0
+Oceania,2003,nuclear,0
+Oceania,2004,nuclear,0
+Oceania,2005,nuclear,0
+Oceania,2006,nuclear,0
+Oceania,2007,nuclear,0
+Oceania,2008,nuclear,0
+Oceania,2009,nuclear,0
+Oceania,2010,nuclear,0
+Oceania,2011,nuclear,0
+Oceania,2012,nuclear,0
+Oceania,2013,nuclear,0
+Oceania,2014,nuclear,0
+Oceania,2015,nuclear,0
+Oceania,2016,nuclear,0
+Oceania,2017,nuclear,0
+Oceania,2018,nuclear,0
+Oceania,2019,nuclear,0
+Oceania,2020,nuclear,0
+Oceania,2021,nuclear,0
+Oceania,2022,nuclear,0
+Oceania,2023,nuclear,0
+Oceania,2024,nuclear,0
+Oceania,1980,pumped_storage,0
+Oceania,1981,pumped_storage,0
+Oceania,1982,pumped_storage,0
+Oceania,1983,pumped_storage,0
+Oceania,1984,pumped_storage,0
+Oceania,1985,pumped_storage,0
+Oceania,1986,pumped_storage,0
+Oceania,1987,pumped_storage,0
+Oceania,1988,pumped_storage,0
+Oceania,1989,pumped_storage,0
+Oceania,1990,pumped_storage,0.94
+Oceania,1991,pumped_storage,0.94
+Oceania,1992,pumped_storage,0.94
+Oceania,1993,pumped_storage,0.94
+Oceania,1994,pumped_storage,0.94
+Oceania,1995,pumped_storage,0.94
+Oceania,1996,pumped_storage,0.94
+Oceania,1997,pumped_storage,0.94
+Oceania,1998,pumped_storage,1.49
+Oceania,1999,pumped_storage,1.49
+Oceania,2000,pumped_storage,1.49
+Oceania,2001,pumped_storage,1.49
+Oceania,2002,pumped_storage,1.49
+Oceania,2003,pumped_storage,1.49
+Oceania,2004,pumped_storage,1.416
+Oceania,2005,pumped_storage,2.61
+Oceania,2006,pumped_storage,2.61
+Oceania,2007,pumped_storage,2.61
+Oceania,2008,pumped_storage,2.61
+Oceania,2009,pumped_storage,2.61
+Oceania,2010,pumped_storage,2.61
+Oceania,2011,pumped_storage,2.61
+Oceania,2012,pumped_storage,2.61
+Oceania,2013,pumped_storage,2.61
+Oceania,2014,pumped_storage,2.61
+Oceania,2015,pumped_storage,2.61
+Oceania,2016,pumped_storage,2.61
+Oceania,2017,pumped_storage,2.61
+Oceania,2018,pumped_storage,2.61
+Oceania,2019,pumped_storage,2.61
+Oceania,2020,pumped_storage,2.61
+Oceania,2021,pumped_storage,2.61
+Oceania,2022,pumped_storage,2.61
+Oceania,2023,pumped_storage,2.61
+Oceania,2024,pumped_storage,2.712
+Oceania,1980,solar,0
+Oceania,1981,solar,0
+Oceania,1982,solar,0
+Oceania,1983,solar,0
+Oceania,1984,solar,0
+Oceania,1985,solar,0
+Oceania,1986,solar,0
+Oceania,1987,solar,0
+Oceania,1988,solar,0
+Oceania,1989,solar,0
+Oceania,1990,solar,0
+Oceania,1991,solar,0
+Oceania,1992,solar,0
+Oceania,1993,solar,0
+Oceania,1994,solar,0
+Oceania,1995,solar,0
+Oceania,1996,solar,0
+Oceania,1997,solar,0
+Oceania,1998,solar,0
+Oceania,1999,solar,0
+Oceania,2000,solar,0.0261
+Oceania,2001,solar,0.030600000000000002
+Oceania,2002,solar,0.0357
+Oceania,2003,solar,0.0414
+Oceania,2004,solar,0.0486
+Oceania,2005,solar,0.055
+Oceania,2006,solar,0.06430000000000001
+Oceania,2007,solar,0.0793
+Oceania,2008,solar,0.0916
+Oceania,2009,solar,0.3391
+Oceania,2010,solar,1.101
+Oceania,2011,solar,2.4926999999999997
+Oceania,2012,solar,3.8274
+Oceania,2013,solar,4.6072999999999995
+Oceania,2014,solar,5.3530999999999995
+Oceania,2015,solar,6.0725
+Oceania,2016,solar,6.8509
+Oceania,2017,solar,7.5672
+Oceania,2018,solar,8.8715
+Oceania,2019,solar,13.28308
+Oceania,2020,solar,20.155489
+Oceania,2021,solar,24.880839
+Oceania,2022,solar,29.551409
+Oceania,2023,solar,34.094733
+Oceania,2024,solar,39.524733000000005
+Oceania,1980,tide_wave,0
+Oceania,1981,tide_wave,0
+Oceania,1982,tide_wave,0
+Oceania,1983,tide_wave,0
+Oceania,1984,tide_wave,0
+Oceania,1985,tide_wave,0
+Oceania,1986,tide_wave,0
+Oceania,1987,tide_wave,0
+Oceania,1988,tide_wave,0
+Oceania,1989,tide_wave,0
+Oceania,1990,tide_wave,0
+Oceania,1991,tide_wave,0
+Oceania,1992,tide_wave,0
+Oceania,1993,tide_wave,0
+Oceania,1994,tide_wave,0
+Oceania,1995,tide_wave,0
+Oceania,1996,tide_wave,0
+Oceania,1997,tide_wave,0
+Oceania,1998,tide_wave,0
+Oceania,1999,tide_wave,0
+Oceania,2000,tide_wave,0
+Oceania,2001,tide_wave,0
+Oceania,2002,tide_wave,0
+Oceania,2003,tide_wave,0
+Oceania,2004,tide_wave,0
+Oceania,2005,tide_wave,0
+Oceania,2006,tide_wave,0
+Oceania,2007,tide_wave,0.001
+Oceania,2008,tide_wave,0.001
+Oceania,2009,tide_wave,0.001
+Oceania,2010,tide_wave,0.001
+Oceania,2011,tide_wave,0.001
+Oceania,2012,tide_wave,0.001
+Oceania,2013,tide_wave,0.001
+Oceania,2014,tide_wave,0.001
+Oceania,2015,tide_wave,0.001
+Oceania,2016,tide_wave,0.001
+Oceania,2017,tide_wave,0.001
+Oceania,2018,tide_wave,0
+Oceania,2019,tide_wave,0
+Oceania,2020,tide_wave,0
+Oceania,2021,tide_wave,4e-6
+Oceania,2022,tide_wave,4e-6
+Oceania,2023,tide_wave,4e-6
+Oceania,2024,tide_wave,4e-6
+Oceania,1980,wind,0
+Oceania,1981,wind,0
+Oceania,1982,wind,0
+Oceania,1983,wind,0
+Oceania,1984,wind,0
+Oceania,1985,wind,0
+Oceania,1986,wind,0
+Oceania,1987,wind,0
+Oceania,1988,wind,0
+Oceania,1989,wind,0
+Oceania,1990,wind,0
+Oceania,1991,wind,0
+Oceania,1992,wind,0
+Oceania,1993,wind,0
+Oceania,1994,wind,0
+Oceania,1995,wind,0
+Oceania,1996,wind,0
+Oceania,1997,wind,0
+Oceania,1998,wind,0
+Oceania,1999,wind,0
+Oceania,2000,wind,0.073
+Oceania,2001,wind,0.1166
+Oceania,2002,wind,0.1668
+Oceania,2003,wind,0.2724
+Oceania,2004,wind,0.5668
+Oceania,2005,wind,0.9298
+Oceania,2006,wind,1.0152999999999999
+Oceania,2007,wind,1.6108
+Oceania,2008,wind,1.808
+Oceania,2009,wind,2.2659000000000002
+Oceania,2010,wind,2.4537
+Oceania,2011,wind,2.8
+Oceania,2012,wind,3.234
+Oceania,2013,wind,3.894
+Oceania,2014,wind,4.5302
+Oceania,2015,wind,4.9212
+Oceania,2016,wind,5.0655
+Oceania,2017,wind,5.5532
+Oceania,2018,wind,6.1833
+Oceania,2019,wind,7.0216
+Oceania,2020,wind,10.9496
+Oceania,2021,wind,11.520595
+Oceania,2022,wind,13.034009999999999
+Oceania,2023,wind,14.04401
+Oceania,2024,wind,16.62601
+South Asia,1980,biomass,0
+South Asia,1981,biomass,0
+South Asia,1982,biomass,0
+South Asia,1983,biomass,0
+South Asia,1984,biomass,0
+South Asia,1985,biomass,0
+South Asia,1986,biomass,0
+South Asia,1987,biomass,0
+South Asia,1988,biomass,0
+South Asia,1989,biomass,0
+South Asia,1990,biomass,0
+South Asia,1991,biomass,0
+South Asia,1992,biomass,0
+South Asia,1993,biomass,0
+South Asia,1994,biomass,0
+South Asia,1995,biomass,0
+South Asia,1996,biomass,0
+South Asia,1997,biomass,0
+South Asia,1998,biomass,0
+South Asia,1999,biomass,0
+South Asia,2000,biomass,0.3469
+South Asia,2001,biomass,0.4154
+South Asia,2002,biomass,0.4839
+South Asia,2003,biomass,0.6134
+South Asia,2004,biomass,0.7505000000000001
+South Asia,2005,biomass,0.9614
+South Asia,2006,biomass,1.2490999999999999
+South Asia,2007,biomass,1.5477999999999998
+South Asia,2008,biomass,2.2238
+South Asia,2009,biomass,2.5231
+South Asia,2010,biomass,3.1569
+South Asia,2011,biomass,3.6908
+South Asia,2012,biomass,3.9432
+South Asia,2013,biomass,4.1967
+South Asia,2014,biomass,5.0542
+South Asia,2015,biomass,5.503
+South Asia,2016,biomass,8.9244
+South Asia,2017,biomass,9.4484
+South Asia,2018,biomass,10.179599999999999
+South Asia,2019,biomass,10.2708
+South Asia,2020,biomass,10.583
+South Asia,2021,biomass,10.688614999999999
+South Asia,2022,biomass,10.766974999999999
+South Asia,2023,biomass,10.853000000000002
+South Asia,2024,biomass,11.338000000000001
+South Asia,1980,fossil,21.872999999999998
+South Asia,1981,fossil,24.043
+South Asia,1982,fossil,26.625999999999998
+South Asia,1983,fossil,30.215
+South Asia,1984,fossil,33.812999999999995
+South Asia,1985,fossil,37.158
+South Asia,1986,fossil,39.183
+South Asia,1987,fossil,44.064
+South Asia,1988,fossil,49.797999999999995
+South Asia,1989,fossil,54.692
+South Asia,1990,fossil,57.169000000000004
+South Asia,1991,fossil,60.352
+South Asia,1992,fossil,63.986
+South Asia,1993,fossil,68.458
+South Asia,1994,fossil,72.602
+South Asia,1995,fossil,75.619
+South Asia,1996,fossil,77.045
+South Asia,1997,fossil,79.101
+South Asia,1998,fossil,81.836
+South Asia,1999,fossil,84.36
+South Asia,2000,fossil,86.8305
+South Asia,2001,fossil,95.9195
+South Asia,2002,fossil,100.8205
+South Asia,2003,fossil,102.52250000000001
+South Asia,2004,fossil,105.5755
+South Asia,2005,fossil,109.626
+South Asia,2006,fossil,114.26899999999999
+South Asia,2007,fossil,124.244
+South Asia,2008,fossil,128.752
+South Asia,2009,fossil,139.51299999999998
+South Asia,2010,fossil,153.99
+South Asia,2011,fossil,178.5138
+South Asia,2012,fossil,200.9668
+South Asia,2013,fossil,219.4215
+South Asia,2014,fossil,243.95680000000002
+South Asia,2015,fossil,270.882
+South Asia,2016,fossil,282.407
+South Asia,2017,fossil,290.4854
+South Asia,2018,fossil,315.87370000000004
+South Asia,2019,fossil,323.03209999999996
+South Asia,2020,fossil,331.96190979700003
+South Asia,2021,fossil,331.20345
+South Asia,2022,fossil,329.91464
+South Asia,2023,fossil,336.00926
+South Asia,2024,fossil,340.217692941
+South Asia,1980,geothermal,0
+South Asia,1981,geothermal,0
+South Asia,1982,geothermal,0
+South Asia,1983,geothermal,0
+South Asia,1984,geothermal,0
+South Asia,1985,geothermal,0
+South Asia,1986,geothermal,0
+South Asia,1987,geothermal,0
+South Asia,1988,geothermal,0
+South Asia,1989,geothermal,0
+South Asia,1990,geothermal,0
+South Asia,1991,geothermal,0
+South Asia,1992,geothermal,0
+South Asia,1993,geothermal,0
+South Asia,1994,geothermal,0
+South Asia,1995,geothermal,0
+South Asia,1996,geothermal,0
+South Asia,1997,geothermal,0
+South Asia,1998,geothermal,0
+South Asia,1999,geothermal,0
+South Asia,2000,geothermal,0
+South Asia,2001,geothermal,0
+South Asia,2002,geothermal,0
+South Asia,2003,geothermal,0
+South Asia,2004,geothermal,0
+South Asia,2005,geothermal,0
+South Asia,2006,geothermal,0
+South Asia,2007,geothermal,0
+South Asia,2008,geothermal,0
+South Asia,2009,geothermal,0
+South Asia,2010,geothermal,0
+South Asia,2011,geothermal,0
+South Asia,2012,geothermal,0
+South Asia,2013,geothermal,0
+South Asia,2014,geothermal,0
+South Asia,2015,geothermal,0
+South Asia,2016,geothermal,0
+South Asia,2017,geothermal,0
+South Asia,2018,geothermal,0
+South Asia,2019,geothermal,0
+South Asia,2020,geothermal,0
+South Asia,2021,geothermal,0
+South Asia,2022,geothermal,0
+South Asia,2023,geothermal,0
+South Asia,2024,geothermal,0
+South Asia,1980,hydro,12.943
+South Asia,1981,hydro,13.936
+South Asia,1982,hydro,14.772
+South Asia,1983,hydro,15.537999999999998
+South Asia,1984,hydro,16.688
+South Asia,1985,hydro,17.561
+South Asia,1986,hydro,18.860999999999997
+South Asia,1987,hydro,19.683
+South Asia,1988,hydro,20.302
+South Asia,1989,hydro,20.425
+South Asia,1990,hydro,20.877000000000002
+South Asia,1991,hydro,21.441000000000003
+South Asia,1992,hydro,21.828999999999997
+South Asia,1993,hydro,22.631999999999998
+South Asia,1994,hydro,23.086
+South Asia,1995,hydro,23.253
+South Asia,1996,hydro,23.367
+South Asia,1997,hydro,24.153000000000002
+South Asia,1998,hydro,24.703999999999997
+South Asia,1999,hydro,26.843
+South Asia,2000,hydro,25.9117
+South Asia,2001,hydro,27.0306
+South Asia,2002,hydro,27.1526
+South Asia,2003,hydro,29.8397
+South Asia,2004,hydro,31.324
+South Asia,2005,hydro,33.7156
+South Asia,2006,hydro,35.8337
+South Asia,2007,hydro,37.8188
+South Asia,2008,hydro,38.5516
+South Asia,2009,hydro,38.776700000000005
+South Asia,2010,hydro,39.9096
+South Asia,2011,hydro,41.6965
+South Asia,2012,hydro,42.525299999999994
+South Asia,2013,hydro,43.7491
+South Asia,2014,hydro,45.0484
+South Asia,2015,hydro,46.9496
+South Asia,2016,hydro,47.5713
+South Asia,2017,hydro,49.614200000000004
+South Asia,2018,hydro,50.3671
+South Asia,2019,hydro,51.4024
+South Asia,2020,hydro,51.992799999999995
+South Asia,2021,hydro,53.224238
+South Asia,2022,hydro,53.938725999999996
+South Asia,2023,hydro,54.45517
+South Asia,2024,hydro,55.612
+South Asia,1980,nuclear,0.832
+South Asia,1981,nuclear,0.86
+South Asia,1982,nuclear,0.832
+South Asia,1983,nuclear,1.014
+South Asia,1984,nuclear,0.975
+South Asia,1985,nuclear,1.143
+South Asia,1986,nuclear,1.154
+South Asia,1987,nuclear,1.154
+South Asia,1988,nuclear,1.154
+South Asia,1989,nuclear,1.364
+South Asia,1990,nuclear,1.324
+South Asia,1991,nuclear,1.324
+South Asia,1992,nuclear,1.55
+South Asia,1993,nuclear,1.561
+South Asia,1994,nuclear,1.55
+South Asia,1995,nuclear,1.746
+South Asia,1996,nuclear,1.658
+South Asia,1997,nuclear,1.658
+South Asia,1998,nuclear,1.708
+South Asia,1999,nuclear,1.908
+South Asia,2000,nuclear,2.68
+South Asia,2001,nuclear,2.86
+South Asia,2002,nuclear,2.72
+South Asia,2003,nuclear,2.72
+South Asia,2004,nuclear,2.72
+South Asia,2005,nuclear,2.77
+South Asia,2006,nuclear,3.36
+South Asia,2007,nuclear,3.9
+South Asia,2008,nuclear,4.12
+South Asia,2009,nuclear,4.12
+South Asia,2010,nuclear,4.56
+South Asia,2011,nuclear,4.78
+South Asia,2012,nuclear,4.78
+South Asia,2013,nuclear,4.78
+South Asia,2014,nuclear,4.78
+South Asia,2015,nuclear,5.78
+South Asia,2016,nuclear,5.78
+South Asia,2017,nuclear,6.78
+South Asia,2018,nuclear,6.78
+South Asia,2019,nuclear,6.78
+South Asia,2020,nuclear,6.78
+South Asia,2021,nuclear,6.78
+South Asia,2022,nuclear,6.78
+South Asia,2023,nuclear,6.92
+South Asia,2024,nuclear,7.55
+South Asia,1980,pumped_storage,0.712
+South Asia,1981,pumped_storage,0.712
+South Asia,1982,pumped_storage,0.712
+South Asia,1983,pumped_storage,0.712
+South Asia,1984,pumped_storage,0.712
+South Asia,1985,pumped_storage,0.712
+South Asia,1986,pumped_storage,0.712
+South Asia,1987,pumped_storage,1.11
+South Asia,1988,pumped_storage,1.11
+South Asia,1989,pumped_storage,1.11
+South Asia,1990,pumped_storage,1.284
+South Asia,1991,pumped_storage,1.284
+South Asia,1992,pumped_storage,1.284
+South Asia,1993,pumped_storage,1.284
+South Asia,1994,pumped_storage,1.284
+South Asia,1995,pumped_storage,1.554
+South Asia,1996,pumped_storage,1.554
+South Asia,1997,pumped_storage,1.554
+South Asia,1998,pumped_storage,1.554
+South Asia,1999,pumped_storage,1.554
+South Asia,2000,pumped_storage,1.5356
+South Asia,2001,pumped_storage,1.6856
+South Asia,2002,pumped_storage,2.1356
+South Asia,2003,pumped_storage,2.4356
+South Asia,2004,pumped_storage,2.4356
+South Asia,2005,pumped_storage,3.2356
+South Asia,2006,pumped_storage,3.6356
+South Asia,2007,pumped_storage,4.0856
+South Asia,2008,pumped_storage,4.7856
+South Asia,2009,pumped_storage,4.7856
+South Asia,2010,pumped_storage,4.7856
+South Asia,2011,pumped_storage,4.7856
+South Asia,2012,pumped_storage,4.7856
+South Asia,2013,pumped_storage,4.7856
+South Asia,2014,pumped_storage,4.7856
+South Asia,2015,pumped_storage,4.7856
+South Asia,2016,pumped_storage,4.7856
+South Asia,2017,pumped_storage,4.7856
+South Asia,2018,pumped_storage,4.7856
+South Asia,2019,pumped_storage,4.7856
+South Asia,2020,pumped_storage,4.7856
+South Asia,2021,pumped_storage,4.7856
+South Asia,2022,pumped_storage,4.7856
+South Asia,2023,pumped_storage,4.7856
+South Asia,2024,pumped_storage,4.7856
+South Asia,1980,solar,0
+South Asia,1981,solar,0
+South Asia,1982,solar,0
+South Asia,1983,solar,0
+South Asia,1984,solar,0
+South Asia,1985,solar,0
+South Asia,1986,solar,0
+South Asia,1987,solar,0
+South Asia,1988,solar,0
+South Asia,1989,solar,0
+South Asia,1990,solar,0
+South Asia,1991,solar,0
+South Asia,1992,solar,0
+South Asia,1993,solar,0
+South Asia,1994,solar,0
+South Asia,1995,solar,0
+South Asia,1996,solar,0
+South Asia,1997,solar,0
+South Asia,1998,solar,0
+South Asia,1999,solar,0
+South Asia,2000,solar,0.0013000000000000002
+South Asia,2001,solar,0.0068
+South Asia,2002,solar,0.0091
+South Asia,2003,solar,0.0122
+South Asia,2004,solar,0.0135
+South Asia,2005,solar,0.0197
+South Asia,2006,solar,0.02
+South Asia,2007,solar,0.0386
+South Asia,2008,solar,0.0468
+South Asia,2009,solar,0.0682
+South Asia,2010,solar,0.1095
+South Asia,2011,solar,0.6266999999999999
+South Asia,2012,solar,1.0844
+South Asia,2013,solar,1.7356
+South Asia,2014,solar,3.9491
+South Asia,2015,solar,5.9147
+South Asia,2016,solar,10.2639
+South Asia,2017,solar,18.6916
+South Asia,2018,solar,27.9951
+South Asia,2019,solar,35.9287
+South Asia,2020,solar,40.287465999999995
+South Asia,2021,solar,50.972285
+South Asia,2022,solar,64.64773699999999
+South Asia,2023,solar,74.789
+South Asia,2024,solar,99.98
+South Asia,1980,tide_wave,0
+South Asia,1981,tide_wave,0
+South Asia,1982,tide_wave,0
+South Asia,1983,tide_wave,0
+South Asia,1984,tide_wave,0
+South Asia,1985,tide_wave,0
+South Asia,1986,tide_wave,0
+South Asia,1987,tide_wave,0
+South Asia,1988,tide_wave,0
+South Asia,1989,tide_wave,0
+South Asia,1990,tide_wave,0
+South Asia,1991,tide_wave,0
+South Asia,1992,tide_wave,0
+South Asia,1993,tide_wave,0
+South Asia,1994,tide_wave,0
+South Asia,1995,tide_wave,0
+South Asia,1996,tide_wave,0
+South Asia,1997,tide_wave,0
+South Asia,1998,tide_wave,0
+South Asia,1999,tide_wave,0
+South Asia,2000,tide_wave,0
+South Asia,2001,tide_wave,0
+South Asia,2002,tide_wave,0
+South Asia,2003,tide_wave,0
+South Asia,2004,tide_wave,0
+South Asia,2005,tide_wave,0
+South Asia,2006,tide_wave,0
+South Asia,2007,tide_wave,0
+South Asia,2008,tide_wave,0
+South Asia,2009,tide_wave,0
+South Asia,2010,tide_wave,0
+South Asia,2011,tide_wave,0
+South Asia,2012,tide_wave,0
+South Asia,2013,tide_wave,0
+South Asia,2014,tide_wave,0
+South Asia,2015,tide_wave,0
+South Asia,2016,tide_wave,0
+South Asia,2017,tide_wave,0
+South Asia,2018,tide_wave,0
+South Asia,2019,tide_wave,0
+South Asia,2020,tide_wave,0
+South Asia,2021,tide_wave,0
+South Asia,2022,tide_wave,0
+South Asia,2023,tide_wave,0
+South Asia,2024,tide_wave,0
+South Asia,1980,wind,0
+South Asia,1981,wind,0
+South Asia,1982,wind,0
+South Asia,1983,wind,0
+South Asia,1984,wind,0
+South Asia,1985,wind,0
+South Asia,1986,wind,0
+South Asia,1987,wind,0
+South Asia,1988,wind,0
+South Asia,1989,wind,0
+South Asia,1990,wind,0
+South Asia,1991,wind,0
+South Asia,1992,wind,0
+South Asia,1993,wind,0
+South Asia,1994,wind,0
+South Asia,1995,wind,0
+South Asia,1996,wind,0
+South Asia,1997,wind,0
+South Asia,1998,wind,0
+South Asia,1999,wind,0
+South Asia,2000,wind,0.944
+South Asia,2001,wind,1.5659999999999998
+South Asia,2002,wind,1.609
+South Asia,2003,wind,2.464
+South Asia,2004,wind,3.8160000000000003
+South Asia,2005,wind,4.4378
+South Asia,2006,wind,6.3189
+South Asia,2007,wind,7.8494
+South Asia,2008,wind,10.248899999999999
+South Asia,2009,wind,10.9314
+South Asia,2010,wind,13.2213
+South Asia,2011,wind,16.2263
+South Asia,2012,wind,17.379800000000003
+South Asia,2013,wind,18.5054
+South Asia,2014,wind,22.5903
+South Asia,2015,wind,25.224700000000002
+South Asia,2016,wind,28.8369
+South Asia,2017,wind,32.9853
+South Asia,2018,wind,35.422
+South Asia,2019,wind,37.6391
+South Asia,2020,wind,38.7431
+South Asia,2021,wind,40.324771
+South Asia,2022,wind,42.187286
+South Asia,2023,wind,45.008506
+South Asia,2024,wind,48.435506
+Sub-Saharan Africa,1980,biomass,0
+Sub-Saharan Africa,1981,biomass,0
+Sub-Saharan Africa,1982,biomass,0
+Sub-Saharan Africa,1983,biomass,0
+Sub-Saharan Africa,1984,biomass,0
+Sub-Saharan Africa,1985,biomass,0
+Sub-Saharan Africa,1986,biomass,0
+Sub-Saharan Africa,1987,biomass,0
+Sub-Saharan Africa,1988,biomass,0
+Sub-Saharan Africa,1989,biomass,0
+Sub-Saharan Africa,1990,biomass,0
+Sub-Saharan Africa,1991,biomass,0
+Sub-Saharan Africa,1992,biomass,0
+Sub-Saharan Africa,1993,biomass,0
+Sub-Saharan Africa,1994,biomass,0
+Sub-Saharan Africa,1995,biomass,0
+Sub-Saharan Africa,1996,biomass,0
+Sub-Saharan Africa,1997,biomass,0
+Sub-Saharan Africa,1998,biomass,0
+Sub-Saharan Africa,1999,biomass,0
+Sub-Saharan Africa,2000,biomass,0.6992
+Sub-Saharan Africa,2001,biomass,0.7091
+Sub-Saharan Africa,2002,biomass,0.7311
+Sub-Saharan Africa,2003,biomass,0.7391
+Sub-Saharan Africa,2004,biomass,0.7481
+Sub-Saharan Africa,2005,biomass,0.8631
+Sub-Saharan Africa,2006,biomass,0.7953
+Sub-Saharan Africa,2007,biomass,0.8102
+Sub-Saharan Africa,2008,biomass,0.8388
+Sub-Saharan Africa,2009,biomass,0.8911
+Sub-Saharan Africa,2010,biomass,0.9176
+Sub-Saharan Africa,2011,biomass,0.9532
+Sub-Saharan Africa,2012,biomass,1.063
+Sub-Saharan Africa,2013,biomass,1.1369
+Sub-Saharan Africa,2014,biomass,1.2384
+Sub-Saharan Africa,2015,biomass,1.3162
+Sub-Saharan Africa,2016,biomass,1.3744
+Sub-Saharan Africa,2017,biomass,1.4533
+Sub-Saharan Africa,2018,biomass,1.5664
+Sub-Saharan Africa,2019,biomass,1.5665
+Sub-Saharan Africa,2020,biomass,1.5775
+Sub-Saharan Africa,2021,biomass,1.700062
+Sub-Saharan Africa,2022,biomass,1.700062
+Sub-Saharan Africa,2023,biomass,1.701202
+Sub-Saharan Africa,2024,biomass,1.791628
+Sub-Saharan Africa,1980,fossil,25.48585
+Sub-Saharan Africa,1981,fossil,28.04485
+Sub-Saharan Africa,1982,fossil,28.350849999999998
+Sub-Saharan Africa,1983,fossil,28.95765
+Sub-Saharan Africa,1984,fossil,29.77765
+Sub-Saharan Africa,1985,fossil,28.37165
+Sub-Saharan Africa,1986,fossil,31.16965
+Sub-Saharan Africa,1987,fossil,34.24865
+Sub-Saharan Africa,1988,fossil,35.79765
+Sub-Saharan Africa,1989,fossil,36.89475
+Sub-Saharan Africa,1990,fossil,38.82058
+Sub-Saharan Africa,1991,fossil,41.35798
+Sub-Saharan Africa,1992,fossil,41.99898
+Sub-Saharan Africa,1993,fossil,42.845980000000004
+Sub-Saharan Africa,1994,fossil,41.22598
+Sub-Saharan Africa,1995,fossil,42.94598
+Sub-Saharan Africa,1996,fossil,42.60098
+Sub-Saharan Africa,1997,fossil,45.196979999999996
+Sub-Saharan Africa,1998,fossil,45.30198
+Sub-Saharan Africa,1999,fossil,47.327980000000004
+Sub-Saharan Africa,2000,fossil,52.99720000000001
+Sub-Saharan Africa,2001,fossil,49.165600000000005
+Sub-Saharan Africa,2002,fossil,49.788700000000006
+Sub-Saharan Africa,2003,fossil,50.1666
+Sub-Saharan Africa,2004,fossil,50.676700000000004
+Sub-Saharan Africa,2005,fossil,51.047000000000004
+Sub-Saharan Africa,2006,fossil,53.60797
+Sub-Saharan Africa,2007,fossil,55.02112
+Sub-Saharan Africa,2008,fossil,57.607904999999995
+Sub-Saharan Africa,2009,fossil,58.198004999999995
+Sub-Saharan Africa,2010,fossil,60.826122
+Sub-Saharan Africa,2011,fossil,62.449822
+Sub-Saharan Africa,2012,fossil,63.531962
+Sub-Saharan Africa,2013,fossil,65.63906
+Sub-Saharan Africa,2014,fossil,65.143341
+Sub-Saharan Africa,2015,fossil,67.79094
+Sub-Saharan Africa,2016,fossil,71.210436
+Sub-Saharan Africa,2017,fossil,74.85388400000001
+Sub-Saharan Africa,2018,fossil,79.13647399999999
+Sub-Saharan Africa,2019,fossil,82.841509
+Sub-Saharan Africa,2020,fossil,83.60691
+Sub-Saharan Africa,2021,fossil,87.876409
+Sub-Saharan Africa,2022,fossil,88.035155
+Sub-Saharan Africa,2023,fossil,85.40089
+Sub-Saharan Africa,2024,fossil,86.202262192
+Sub-Saharan Africa,1980,geothermal,0
+Sub-Saharan Africa,1981,geothermal,0
+Sub-Saharan Africa,1982,geothermal,0
+Sub-Saharan Africa,1983,geothermal,0
+Sub-Saharan Africa,1984,geothermal,0
+Sub-Saharan Africa,1985,geothermal,0
+Sub-Saharan Africa,1986,geothermal,0
+Sub-Saharan Africa,1987,geothermal,0
+Sub-Saharan Africa,1988,geothermal,0
+Sub-Saharan Africa,1989,geothermal,0
+Sub-Saharan Africa,1990,geothermal,0
+Sub-Saharan Africa,1991,geothermal,0
+Sub-Saharan Africa,1992,geothermal,0
+Sub-Saharan Africa,1993,geothermal,0
+Sub-Saharan Africa,1994,geothermal,0
+Sub-Saharan Africa,1995,geothermal,0
+Sub-Saharan Africa,1996,geothermal,0
+Sub-Saharan Africa,1997,geothermal,0
+Sub-Saharan Africa,1998,geothermal,0
+Sub-Saharan Africa,1999,geothermal,0
+Sub-Saharan Africa,2000,geothermal,0.0653
+Sub-Saharan Africa,2001,geothermal,0.0653
+Sub-Saharan Africa,2002,geothermal,0.0653
+Sub-Saharan Africa,2003,geothermal,0.0653
+Sub-Saharan Africa,2004,geothermal,0.1353
+Sub-Saharan Africa,2005,geothermal,0.1353
+Sub-Saharan Africa,2006,geothermal,0.1353
+Sub-Saharan Africa,2007,geothermal,0.1353
+Sub-Saharan Africa,2008,geothermal,0.1353
+Sub-Saharan Africa,2009,geothermal,0.1703
+Sub-Saharan Africa,2010,geothermal,0.2053
+Sub-Saharan Africa,2011,geothermal,0.2053
+Sub-Saharan Africa,2012,geothermal,0.2128
+Sub-Saharan Africa,2013,geothermal,0.2128
+Sub-Saharan Africa,2014,geothermal,0.37339999999999995
+Sub-Saharan Africa,2015,geothermal,0.6262
+Sub-Saharan Africa,2016,geothermal,0.6602
+Sub-Saharan Africa,2017,geothermal,0.6802
+Sub-Saharan Africa,2018,geothermal,0.6910999999999999
+Sub-Saharan Africa,2019,geothermal,0.6910999999999999
+Sub-Saharan Africa,2020,geothermal,0.8704
+Sub-Saharan Africa,2021,geothermal,0.8704
+Sub-Saharan Africa,2022,geothermal,0.9564
+Sub-Saharan Africa,2023,geothermal,0.9923
+Sub-Saharan Africa,2024,geothermal,0.9472999999999999
+Sub-Saharan Africa,1980,hydro,10.975
+Sub-Saharan Africa,1981,hydro,11.368
+Sub-Saharan Africa,1982,hydro,11.551
+Sub-Saharan Africa,1983,hydro,12.027
+Sub-Saharan Africa,1984,hydro,12.673
+Sub-Saharan Africa,1985,hydro,12.803
+Sub-Saharan Africa,1986,hydro,13.176
+Sub-Saharan Africa,1987,hydro,13.706
+Sub-Saharan Africa,1988,hydro,14.457
+Sub-Saharan Africa,1989,hydro,14.8665
+Sub-Saharan Africa,1990,hydro,16.034
+Sub-Saharan Africa,1991,hydro,16.039
+Sub-Saharan Africa,1992,hydro,16.267
+Sub-Saharan Africa,1993,hydro,16.348
+Sub-Saharan Africa,1994,hydro,16.413
+Sub-Saharan Africa,1995,hydro,16.235
+Sub-Saharan Africa,1996,hydro,15.82
+Sub-Saharan Africa,1997,hydro,16.029
+Sub-Saharan Africa,1998,hydro,16.0367
+Sub-Saharan Africa,1999,hydro,16.0436
+Sub-Saharan Africa,2000,hydro,16.3447
+Sub-Saharan Africa,2001,hydro,16.668
+Sub-Saharan Africa,2002,hydro,17.0144
+Sub-Saharan Africa,2003,hydro,16.9834
+Sub-Saharan Africa,2004,hydro,17.3032
+Sub-Saharan Africa,2005,hydro,17.3415
+Sub-Saharan Africa,2006,hydro,17.2536
+Sub-Saharan Africa,2007,hydro,17.4895
+Sub-Saharan Africa,2008,hydro,17.8214
+Sub-Saharan Africa,2009,hydro,19.6107
+Sub-Saharan Africa,2010,hydro,20.3828
+Sub-Saharan Africa,2011,hydro,20.522199999999998
+Sub-Saharan Africa,2012,hydro,21.1501
+Sub-Saharan Africa,2013,hydro,22.4139
+Sub-Saharan Africa,2014,hydro,22.4377
+Sub-Saharan Africa,2015,hydro,22.9628
+Sub-Saharan Africa,2016,hydro,23.4756
+Sub-Saharan Africa,2017,hydro,26.6927
+Sub-Saharan Africa,2018,hydro,28.0174
+Sub-Saharan Africa,2019,hydro,28.7404
+Sub-Saharan Africa,2020,hydro,29.5459
+Sub-Saharan Africa,2021,hydro,30.11288
+Sub-Saharan Africa,2022,hydro,31.7144
+Sub-Saharan Africa,2023,hydro,33.1013
+Sub-Saharan Africa,2024,hydro,35.0343
+Sub-Saharan Africa,1980,nuclear,0
+Sub-Saharan Africa,1981,nuclear,0
+Sub-Saharan Africa,1982,nuclear,0
+Sub-Saharan Africa,1983,nuclear,0
+Sub-Saharan Africa,1984,nuclear,0.92
+Sub-Saharan Africa,1985,nuclear,1.84
+Sub-Saharan Africa,1986,nuclear,1.844
+Sub-Saharan Africa,1987,nuclear,1.84
+Sub-Saharan Africa,1988,nuclear,1.84
+Sub-Saharan Africa,1989,nuclear,1.844
+Sub-Saharan Africa,1990,nuclear,1.84
+Sub-Saharan Africa,1991,nuclear,1.84
+Sub-Saharan Africa,1992,nuclear,1.84
+Sub-Saharan Africa,1993,nuclear,1.84
+Sub-Saharan Africa,1994,nuclear,1.84
+Sub-Saharan Africa,1995,nuclear,1.84
+Sub-Saharan Africa,1996,nuclear,1.84
+Sub-Saharan Africa,1997,nuclear,1.84
+Sub-Saharan Africa,1998,nuclear,1.84
+Sub-Saharan Africa,1999,nuclear,1.84
+Sub-Saharan Africa,2000,nuclear,1.84
+Sub-Saharan Africa,2001,nuclear,1.84
+Sub-Saharan Africa,2002,nuclear,1.8
+Sub-Saharan Africa,2003,nuclear,1.8
+Sub-Saharan Africa,2004,nuclear,1.8
+Sub-Saharan Africa,2005,nuclear,1.8
+Sub-Saharan Africa,2006,nuclear,1.8
+Sub-Saharan Africa,2007,nuclear,1.8
+Sub-Saharan Africa,2008,nuclear,1.8
+Sub-Saharan Africa,2009,nuclear,1.8
+Sub-Saharan Africa,2010,nuclear,1.8
+Sub-Saharan Africa,2011,nuclear,1.83
+Sub-Saharan Africa,2012,nuclear,1.86
+Sub-Saharan Africa,2013,nuclear,1.86
+Sub-Saharan Africa,2014,nuclear,1.86
+Sub-Saharan Africa,2015,nuclear,1.86
+Sub-Saharan Africa,2016,nuclear,1.86
+Sub-Saharan Africa,2017,nuclear,1.86
+Sub-Saharan Africa,2018,nuclear,1.86
+Sub-Saharan Africa,2019,nuclear,1.86
+Sub-Saharan Africa,2020,nuclear,1.86
+Sub-Saharan Africa,2021,nuclear,1.854
+Sub-Saharan Africa,2022,nuclear,1.854
+Sub-Saharan Africa,2023,nuclear,1.854
+Sub-Saharan Africa,2024,nuclear,1.854
+Sub-Saharan Africa,1980,pumped_storage,0
+Sub-Saharan Africa,1981,pumped_storage,1
+Sub-Saharan Africa,1982,pumped_storage,1
+Sub-Saharan Africa,1983,pumped_storage,1
+Sub-Saharan Africa,1984,pumped_storage,1
+Sub-Saharan Africa,1985,pumped_storage,1
+Sub-Saharan Africa,1986,pumped_storage,1
+Sub-Saharan Africa,1987,pumped_storage,1
+Sub-Saharan Africa,1988,pumped_storage,1.4
+Sub-Saharan Africa,1989,pumped_storage,1.4
+Sub-Saharan Africa,1990,pumped_storage,1.4
+Sub-Saharan Africa,1991,pumped_storage,1.4
+Sub-Saharan Africa,1992,pumped_storage,1.4
+Sub-Saharan Africa,1993,pumped_storage,1.4
+Sub-Saharan Africa,1994,pumped_storage,1.4
+Sub-Saharan Africa,1995,pumped_storage,1.4
+Sub-Saharan Africa,1996,pumped_storage,1.4
+Sub-Saharan Africa,1997,pumped_storage,1.4
+Sub-Saharan Africa,1998,pumped_storage,1.4
+Sub-Saharan Africa,1999,pumped_storage,1.4
+Sub-Saharan Africa,2000,pumped_storage,1.4
+Sub-Saharan Africa,2001,pumped_storage,1.4
+Sub-Saharan Africa,2002,pumped_storage,1.4
+Sub-Saharan Africa,2003,pumped_storage,1.4
+Sub-Saharan Africa,2004,pumped_storage,1.4
+Sub-Saharan Africa,2005,pumped_storage,1.4
+Sub-Saharan Africa,2006,pumped_storage,1.4
+Sub-Saharan Africa,2007,pumped_storage,1.4
+Sub-Saharan Africa,2008,pumped_storage,1.4
+Sub-Saharan Africa,2009,pumped_storage,1.4
+Sub-Saharan Africa,2010,pumped_storage,1.4
+Sub-Saharan Africa,2011,pumped_storage,1.4
+Sub-Saharan Africa,2012,pumped_storage,1.4
+Sub-Saharan Africa,2013,pumped_storage,1.4
+Sub-Saharan Africa,2014,pumped_storage,1.4
+Sub-Saharan Africa,2015,pumped_storage,1.4
+Sub-Saharan Africa,2016,pumped_storage,2.399
+Sub-Saharan Africa,2017,pumped_storage,2.732
+Sub-Saharan Africa,2018,pumped_storage,2.732
+Sub-Saharan Africa,2019,pumped_storage,2.732
+Sub-Saharan Africa,2020,pumped_storage,2.732
+Sub-Saharan Africa,2021,pumped_storage,2.732
+Sub-Saharan Africa,2022,pumped_storage,2.732
+Sub-Saharan Africa,2023,pumped_storage,2.732
+Sub-Saharan Africa,2024,pumped_storage,2.732
+Sub-Saharan Africa,1980,solar,0
+Sub-Saharan Africa,1981,solar,0
+Sub-Saharan Africa,1982,solar,0
+Sub-Saharan Africa,1983,solar,0
+Sub-Saharan Africa,1984,solar,0
+Sub-Saharan Africa,1985,solar,0
+Sub-Saharan Africa,1986,solar,0
+Sub-Saharan Africa,1987,solar,0
+Sub-Saharan Africa,1988,solar,0
+Sub-Saharan Africa,1989,solar,0
+Sub-Saharan Africa,1990,solar,0
+Sub-Saharan Africa,1991,solar,0
+Sub-Saharan Africa,1992,solar,0
+Sub-Saharan Africa,1993,solar,0
+Sub-Saharan Africa,1994,solar,0
+Sub-Saharan Africa,1995,solar,0
+Sub-Saharan Africa,1996,solar,0
+Sub-Saharan Africa,1997,solar,0
+Sub-Saharan Africa,1998,solar,0
+Sub-Saharan Africa,1999,solar,0
+Sub-Saharan Africa,2000,solar,0.0032
+Sub-Saharan Africa,2001,solar,0.0045
+Sub-Saharan Africa,2002,solar,0.0056
+Sub-Saharan Africa,2003,solar,0.007
+Sub-Saharan Africa,2004,solar,0.0091
+Sub-Saharan Africa,2005,solar,0.0113
+Sub-Saharan Africa,2006,solar,0.0172
+Sub-Saharan Africa,2007,solar,0.0255
+Sub-Saharan Africa,2008,solar,0.0366
+Sub-Saharan Africa,2009,solar,0.0775
+Sub-Saharan Africa,2010,solar,0.149
+Sub-Saharan Africa,2011,solar,0.0815
+Sub-Saharan Africa,2012,solar,0.1278
+Sub-Saharan Africa,2013,solar,0.43910000000000005
+Sub-Saharan Africa,2014,solar,1.4052
+Sub-Saharan Africa,2015,solar,1.6819
+Sub-Saharan Africa,2016,solar,2.6210999999999998
+Sub-Saharan Africa,2017,solar,4.1368
+Sub-Saharan Africa,2018,solar,5.9291
+Sub-Saharan Africa,2019,solar,6.3625
+Sub-Saharan Africa,2020,solar,7.544154000000001
+Sub-Saharan Africa,2021,solar,8.354446000000001
+Sub-Saharan Africa,2022,solar,9.164707
+Sub-Saharan Africa,2023,solar,9.46685
+Sub-Saharan Africa,2024,solar,10.34365
+Sub-Saharan Africa,1980,tide_wave,0
+Sub-Saharan Africa,1981,tide_wave,0
+Sub-Saharan Africa,1982,tide_wave,0
+Sub-Saharan Africa,1983,tide_wave,0
+Sub-Saharan Africa,1984,tide_wave,0
+Sub-Saharan Africa,1985,tide_wave,0
+Sub-Saharan Africa,1986,tide_wave,0
+Sub-Saharan Africa,1987,tide_wave,0
+Sub-Saharan Africa,1988,tide_wave,0
+Sub-Saharan Africa,1989,tide_wave,0
+Sub-Saharan Africa,1990,tide_wave,0
+Sub-Saharan Africa,1991,tide_wave,0
+Sub-Saharan Africa,1992,tide_wave,0
+Sub-Saharan Africa,1993,tide_wave,0
+Sub-Saharan Africa,1994,tide_wave,0
+Sub-Saharan Africa,1995,tide_wave,0
+Sub-Saharan Africa,1996,tide_wave,0
+Sub-Saharan Africa,1997,tide_wave,0
+Sub-Saharan Africa,1998,tide_wave,0
+Sub-Saharan Africa,1999,tide_wave,0
+Sub-Saharan Africa,2000,tide_wave,0
+Sub-Saharan Africa,2001,tide_wave,0
+Sub-Saharan Africa,2002,tide_wave,0
+Sub-Saharan Africa,2003,tide_wave,0
+Sub-Saharan Africa,2004,tide_wave,0
+Sub-Saharan Africa,2005,tide_wave,0
+Sub-Saharan Africa,2006,tide_wave,0
+Sub-Saharan Africa,2007,tide_wave,0
+Sub-Saharan Africa,2008,tide_wave,0
+Sub-Saharan Africa,2009,tide_wave,0
+Sub-Saharan Africa,2010,tide_wave,0
+Sub-Saharan Africa,2011,tide_wave,0
+Sub-Saharan Africa,2012,tide_wave,0
+Sub-Saharan Africa,2013,tide_wave,0
+Sub-Saharan Africa,2014,tide_wave,0
+Sub-Saharan Africa,2015,tide_wave,0
+Sub-Saharan Africa,2016,tide_wave,0
+Sub-Saharan Africa,2017,tide_wave,0
+Sub-Saharan Africa,2018,tide_wave,0
+Sub-Saharan Africa,2019,tide_wave,0
+Sub-Saharan Africa,2020,tide_wave,0
+Sub-Saharan Africa,2021,tide_wave,0
+Sub-Saharan Africa,2022,tide_wave,0
+Sub-Saharan Africa,2023,tide_wave,0
+Sub-Saharan Africa,2024,tide_wave,0
+Sub-Saharan Africa,1980,wind,0
+Sub-Saharan Africa,1981,wind,0
+Sub-Saharan Africa,1982,wind,0
+Sub-Saharan Africa,1983,wind,0
+Sub-Saharan Africa,1984,wind,0
+Sub-Saharan Africa,1985,wind,0
+Sub-Saharan Africa,1986,wind,0
+Sub-Saharan Africa,1987,wind,0
+Sub-Saharan Africa,1988,wind,0
+Sub-Saharan Africa,1989,wind,0
+Sub-Saharan Africa,1990,wind,0
+Sub-Saharan Africa,1991,wind,0
+Sub-Saharan Africa,1992,wind,0
+Sub-Saharan Africa,1993,wind,0
+Sub-Saharan Africa,1994,wind,0
+Sub-Saharan Africa,1995,wind,0
+Sub-Saharan Africa,1996,wind,0
+Sub-Saharan Africa,1997,wind,0
+Sub-Saharan Africa,1998,wind,0
+Sub-Saharan Africa,1999,wind,0
+Sub-Saharan Africa,2000,wind,0.0024000000000000002
+Sub-Saharan Africa,2001,wind,0.0024000000000000002
+Sub-Saharan Africa,2002,wind,0.0056
+Sub-Saharan Africa,2003,wind,0.0058000000000000005
+Sub-Saharan Africa,2004,wind,0.0124
+Sub-Saharan Africa,2005,wind,0.0172
+Sub-Saharan Africa,2006,wind,0.0211
+Sub-Saharan Africa,2007,wind,0.0224
+Sub-Saharan Africa,2008,wind,0.0276
+Sub-Saharan Africa,2009,wind,0.0283
+Sub-Saharan Africa,2010,wind,0.036000000000000004
+Sub-Saharan Africa,2011,wind,0.1249
+Sub-Saharan Africa,2012,wind,0.1285
+Sub-Saharan Africa,2013,wind,0.47700000000000004
+Sub-Saharan Africa,2014,wind,0.7893
+Sub-Saharan Africa,2015,wind,1.5031999999999999
+Sub-Saharan Africa,2016,wind,1.9076000000000002
+Sub-Saharan Africa,2017,wind,2.5345
+Sub-Saharan Africa,2018,wind,2.8449999999999998
+Sub-Saharan Africa,2019,wind,2.9002
+Sub-Saharan Africa,2020,wind,3.4281
+Sub-Saharan Africa,2021,wind,3.507153
+Sub-Saharan Africa,2022,wind,4.255153
+Sub-Saharan Africa,2023,wind,4.556417000000001
+Sub-Saharan Africa,2024,wind,4.556417000000001
