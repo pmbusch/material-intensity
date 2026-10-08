@@ -48,6 +48,10 @@ DECOUPLE_COLORS <- PALETTE_DECOUPLING[DECOUPLE_LEVELS] # subset of the project p
 # colour above; these colour the point's border instead of its shape).
 ORE_GRADE_COLORS <- c("Low ore grade" = "#000000", "High ore grade" = "#D4A017") # black vs. gold, high contrast
 LIFETIME_COLORS <- c("<60 yr" = "#FF7F00", "60-80 yr" = "#377EB8", ">80 yr" = "#984EA3") # distinct qualitative hues
+# Historical star: yellow glyph drawn over a slightly larger black one (= black outline)
+STAR_FILL <- "#F2C200"
+STAR_SIZE <- 6
+STAR_OUTLINE_SIZE <- 7.4
 
 # Y axis + colour: per-capita CAGR & decoupling status, 3 classes -----------
 # FIG_VARIANT_ID window (2025-2060) matches this figure's FIG_YEAR snapshot.
@@ -335,7 +339,7 @@ p_b <- ggplot(panel_b_df, aes(x = x, y = y, colour = decoupling_class)) +
   scale_colour_manual(values = DECOUPLE_COLORS, guide = "none") +
   scale_x_continuous(labels = scales::label_number(accuracy = 0.1), expand = c(0, 0)) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 0.1), expand = c(0, 0)) +
-  labs(tag = "b", title = "Fossil fuels", x = "Primary energy intensity (MJ per $)", y = Y_LAB) +
+  labs(tag = "b", title = "Fossil fuels", x = "Primary fossil fuel energy intensity (MJ per $)", y = Y_LAB) +
   theme_pb_large() +
   theme(
     plot.tag = element_text(face = "bold"),
@@ -1731,7 +1735,11 @@ p_a2 <- ggplot(panel_a_contour_df, aes(x = x_var, y = y_var)) +
   region_layer_a +
   geom_point(
     data = dplyr::filter(star_df, panel == "a"),
-    aes(x = x_var, y = y_var), shape = "★", size = 6, colour = "black", inherit.aes = FALSE
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_OUTLINE_SIZE, colour = "black", inherit.aes = FALSE
+  ) +
+  geom_point(
+    data = dplyr::filter(star_df, panel == "a"),
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_SIZE, colour = STAR_FILL, inherit.aes = FALSE
   ) +
   geom_text(
     data = dplyr::filter(star_df, panel == "a"),
@@ -1807,12 +1815,16 @@ p_b2 <- ggplot(panel_b_contour_df, aes(x = x_var, y = y_var)) +
   region_layer_b +
   geom_point(
     data = dplyr::filter(star_df, panel == "b"),
-    aes(x = x_var, y = y_var), shape = "★", size = 6, colour = "black", inherit.aes = FALSE
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_OUTLINE_SIZE, colour = "black", inherit.aes = FALSE
+  ) +
+  geom_point(
+    data = dplyr::filter(star_df, panel == "b"),
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_SIZE, colour = STAR_FILL, inherit.aes = FALSE
   ) +
   FILL_SCALE_B +
   scale_x_continuous(labels = scales::percent_format(accuracy = 0.1)) +
   scale_y_continuous(breaks = yt_b$breaks, labels = yt_b$labels) +
-  labs(tag = "b", title = "Fossil fuels", x = X_LAB_CONTOUR, y = "Primary energy intensity (MJ per $)") +
+  labs(tag = "b", title = "Fossil fuels", x = X_LAB_CONTOUR, y = "Primary fossil fuel energy intensity (MJ per $)") +
   coord_cartesian(xlim = x_disp_rng_b, ylim = y_disp_rng_b, expand = FALSE) +
   theme_pb_large() +
   theme(
@@ -1854,7 +1866,11 @@ p_c2 <- ggplot(panel_c_contour_df, aes(x = x_var, y = y_var)) +
   region_label_layer_c +
   geom_point(
     data = dplyr::filter(star_df, panel == "c"),
-    aes(x = x_var, y = y_var), shape = "★", size = 6, colour = "black", inherit.aes = FALSE
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_OUTLINE_SIZE, colour = "black", inherit.aes = FALSE
+  ) +
+  geom_point(
+    data = dplyr::filter(star_df, panel == "c"),
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_SIZE, colour = STAR_FILL, inherit.aes = FALSE
   ) +
   FILL_SCALE_C +
   scale_x_continuous(labels = scales::percent_format(accuracy = 0.1)) +
@@ -1897,7 +1913,11 @@ p_d2 <- ggplot(panel_d_contour_df, aes(x = x_var, y = y_var)) +
   region_layer_d +
   geom_point(
     data = dplyr::filter(star_df, panel == "d"),
-    aes(x = x_var, y = y_var), shape = "★", size = 6, colour = "black", inherit.aes = FALSE
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_OUTLINE_SIZE, colour = "black", inherit.aes = FALSE
+  ) +
+  geom_point(
+    data = dplyr::filter(star_df, panel == "d"),
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_SIZE, colour = STAR_FILL, inherit.aes = FALSE
   ) +
   FILL_SCALE_D +
   scale_x_continuous(labels = scales::percent_format(accuracy = 0.1)) +
@@ -1945,7 +1965,11 @@ p_e_fe <- ggplot(panel_e_fe_contour_df, aes(x = x_var, y = y_var)) +
   scale_linewidth_identity() +
   geom_point(
     data = dplyr::filter(star_df, panel == "e_fe"),
-    aes(x = x_var, y = y_var), shape = "★", size = 6, colour = "black", inherit.aes = FALSE
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_OUTLINE_SIZE, colour = "black", inherit.aes = FALSE
+  ) +
+  geom_point(
+    data = dplyr::filter(star_df, panel == "e_fe"),
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_SIZE, colour = STAR_FILL, inherit.aes = FALSE
   ) +
   FILL_SCALE_E_FE +
   scale_x_continuous(labels = scales::percent_format(accuracy = 0.1)) +
@@ -1989,7 +2013,11 @@ p_e_nonfe <- ggplot(panel_e_nonfe_contour_df, aes(x = x_var, y = y_var)) +
   scale_linewidth_identity() +
   geom_point(
     data = dplyr::filter(star_df, panel == "e_nonfe"),
-    aes(x = x_var, y = y_var), shape = "★", size = 6, colour = "black", inherit.aes = FALSE
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_OUTLINE_SIZE, colour = "black", inherit.aes = FALSE
+  ) +
+  geom_point(
+    data = dplyr::filter(star_df, panel == "e_nonfe"),
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_SIZE, colour = STAR_FILL, inherit.aes = FALSE
   ) +
   FILL_SCALE_E_NONFE +
   scale_x_continuous(labels = scales::percent_format(accuracy = 0.1)) +
@@ -2038,7 +2066,11 @@ p_f_bldg <- ggplot(panel_f_bldg_contour_df, aes(x = x_var, y = y_var)) +
   scale_linewidth_identity() +
   geom_point(
     data = dplyr::filter(star_df, panel == "f_bldg"),
-    aes(x = x_var, y = y_var), shape = "★", size = 6, colour = "black", inherit.aes = FALSE
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_OUTLINE_SIZE, colour = "black", inherit.aes = FALSE
+  ) +
+  geom_point(
+    data = dplyr::filter(star_df, panel == "f_bldg"),
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_SIZE, colour = STAR_FILL, inherit.aes = FALSE
   ) +
   FILL_SCALE_F_BLDG +
   scale_x_continuous(labels = scales::percent_format(accuracy = 0.1)) +
@@ -2081,7 +2113,11 @@ p_f_civil <- ggplot(panel_f_civil_contour_df, aes(x = x_var, y = y_var)) +
   scale_linewidth_identity() +
   geom_point(
     data = dplyr::filter(star_df, panel == "f_civil"),
-    aes(x = x_var, y = y_var), shape = "★", size = 6, colour = "black", inherit.aes = FALSE
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_OUTLINE_SIZE, colour = "black", inherit.aes = FALSE
+  ) +
+  geom_point(
+    data = dplyr::filter(star_df, panel == "f_civil"),
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_SIZE, colour = STAR_FILL, inherit.aes = FALSE
   ) +
   FILL_SCALE_F_CIVIL +
   scale_x_continuous(labels = scales::percent_format(accuracy = 0.1)) +
@@ -2274,12 +2310,16 @@ p_metals_int <- ggplot(panel_metals_int_contour_df, aes(x = x_var, y = y_var)) +
   scale_linewidth_identity() +
   geom_point(
     data = dplyr::filter(star_df, panel == "metals_int"),
-    aes(x = x_var, y = y_var), shape = "★", size = 6, colour = "black", inherit.aes = FALSE
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_OUTLINE_SIZE, colour = "black", inherit.aes = FALSE
+  ) +
+  geom_point(
+    data = dplyr::filter(star_df, panel == "metals_int"),
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_SIZE, colour = STAR_FILL, inherit.aes = FALSE
   ) +
   FILL_SCALE_METALS_INT +
   scale_x_continuous(labels = scales::percent_format(accuracy = 0.1)) +
   scale_y_continuous(breaks = yt_metals_int$breaks, labels = yt_metals_int$labels) +
-  labs(tag = "c", title = "Metal ores", x = X_LAB_CONTOUR, y = "Metal stock intensity (kg per $ GDP)") +
+  labs(tag = "c", title = "Metal ores", x = X_LAB_CONTOUR, y = "Metal stock intensity (kg metal per $ GDP)") + # stock is metal mass, not ore
   coord_cartesian(xlim = x_disp_rng_metals_int, ylim = y_disp_rng_metals_int, expand = FALSE) +
   theme_pb_large() +
   theme(
@@ -2315,7 +2355,11 @@ p_nonmet_int <- ggplot(panel_nonmet_int_contour_df, aes(x = x_var, y = y_var)) +
   scale_linewidth_identity() +
   geom_point(
     data = dplyr::filter(star_df, panel == "nonmet_int"),
-    aes(x = x_var, y = y_var), shape = "★", size = 6, colour = "black", inherit.aes = FALSE
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_OUTLINE_SIZE, colour = "black", inherit.aes = FALSE
+  ) +
+  geom_point(
+    data = dplyr::filter(star_df, panel == "nonmet_int"),
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_SIZE, colour = STAR_FILL, inherit.aes = FALSE
   ) +
   FILL_SCALE_NONMET_INT +
   scale_x_continuous(labels = scales::percent_format(accuracy = 0.1)) +
@@ -2517,7 +2561,11 @@ p_metals_lt <- ggplot(panel_metals_lt_contour_df, aes(x = x_var, y = y_var)) +
   scale_linewidth_identity() +
   geom_point(
     data = dplyr::filter(star_df, panel == "metals_lt"),
-    aes(x = x_var, y = y_var), shape = "★", size = 6, colour = "black", inherit.aes = FALSE
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_OUTLINE_SIZE, colour = "black", inherit.aes = FALSE
+  ) +
+  geom_point(
+    data = dplyr::filter(star_df, panel == "metals_lt"),
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_SIZE, colour = STAR_FILL, inherit.aes = FALSE
   ) +
   FILL_SCALE_METALS_LT +
   scale_x_continuous(labels = scales::label_comma()) +
@@ -2558,7 +2606,11 @@ p_nonmet_lt <- ggplot(panel_nonmet_lt_contour_df, aes(x = x_var, y = y_var)) +
   scale_linewidth_identity() +
   geom_point(
     data = dplyr::filter(star_df, panel == "nonmet_lt"),
-    aes(x = x_var, y = y_var), shape = "★", size = 6, colour = "black", inherit.aes = FALSE
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_OUTLINE_SIZE, colour = "black", inherit.aes = FALSE
+  ) +
+  geom_point(
+    data = dplyr::filter(star_df, panel == "nonmet_lt"),
+    aes(x = x_var, y = y_var), shape = "★", size = STAR_SIZE, colour = STAR_FILL, inherit.aes = FALSE
   ) +
   FILL_SCALE_NONMET_LT +
   scale_x_continuous(labels = scales::label_comma()) +

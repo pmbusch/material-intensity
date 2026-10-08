@@ -17,6 +17,8 @@
 ##   metal mass; Ore = ore extracted. Fe and NonFe are separate groups, so the
 ##   ore terms (Fe, NonFe) are the change in ore grade only (not the Fe/NonFe mix).
 ##   Each log change times w_g is one term; the terms sum exactly to the total.
+##   Terms are then rescaled per run by CAGR / log rate, so they sum to the
+##   run's CAGR (compound annual growth rate) instead of its log growth rate.
 ## S22: GDP elasticity per material group: lm(CAGR_g ~ gdp_cagr + other levers,
 ##   real units, ssp_u excluded); slope on gdp_cagr.
 ##
@@ -109,6 +111,14 @@ c3 <- dec |>
     Total = 100 / T_YRS * log(dplyr::first(Mtot_b) / dplyr::first(Mtot_a)),
     .groups = "drop"
   )
+# Log growth -> CAGR: every term of a run scaled by CAGR / log rate, so the
+# terms still sum exactly to the total, now the run's CAGR = exp(log rate) - 1
+c3 <- c3 |>
+  dplyr::mutate(
+    cagr_scale = dplyr::if_else(abs(Total) < 1e-12, 1, (exp(Total / 100) - 1) / (Total / 100)),
+    dplyr::across(-c(run_id, cagr_scale), \(v) v * cagr_scale)
+  ) |>
+  dplyr::select(-cagr_scale)
 # Inflow / stock (yearly inflow as % of in-use stock) and stock growth, median across runs
 cat("  Inflow / stock and stock growth (median across runs, %/yr):\n")
 print(
@@ -121,7 +131,7 @@ print(
     dplyr::summarise(
       inflow_per_stock_2025 = round(100 * stats::median(In_a / S_a), 2),
       inflow_per_stock_2060 = round(100 * stats::median(In_b / S_b), 2),
-      stock_growth_2025_2060 = round(100 * stats::median(log(S_b / S_a) / T_YRS), 2),
+      stock_growth_2025_2060 = round(100 * stats::median((S_b / S_a)^(1 / T_YRS) - 1), 2), # CAGR
       .groups = "drop"
     ) |>
     as.data.frame()

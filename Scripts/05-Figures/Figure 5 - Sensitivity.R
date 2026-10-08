@@ -151,21 +151,45 @@ seg_pos_a <- stack_pos_a |>
 BAR_WIDTH_A <- 0.7 # bar thickness; the white gaps between bars also hold legend labels
 
 # Label slots: two rows above the top bar, then the white gaps between bars.
-# Greedy placement, labels in x order: each goes to the first slot where its
-# estimated text extent (pct units, ~2% per character at 6.5 pt bold) does
-# not overlap a label already placed there; if none is free, the slot with
-# the least overlap.
-SLOTS_A <- c(4 + BAR_WIDTH_A / 2 + 0.2, 4 + BAR_WIDTH_A / 2 + 0.47, 3.5, 2.5, 1.5)
+# Each slot is paired with an adjacent bar; a label placed there is centred on
+# its OWN segment in that bar (not its cross-bin average), so it sits directly
+# over/under the segment it names. Greedy placement, most important label
+# first: each takes the first (slot, bar) candidate where its estimated text
+# extent (pct units, ~2% per character at 6.5 pt bold) does not overlap a label
+# already placed in that slot; if none is free, the candidate with the least overlap.
+TOP_Y_A <- c(4 + BAR_WIDTH_A / 2 + 0.2, 4 + BAR_WIDTH_A / 2 + 0.47)
+SLOT_CAND_A <- tibble::tibble(
+  y = c(TOP_Y_A[1], TOP_Y_A[2], 3.5, 3.5, 2.5, 2.5, 1.5, 1.5),
+  bin = c(">2%", ">2%", ">2%", "1-2%", "1-2%", "0-1%", "0-1%", "<0%")
+)
 CHAR_PCT_A <- 2.0
+GAP_PCT_A <- 1 # minimum gap between neighbouring labels in a slot
 legend_df_a <- seg_pos_a |>
-  dplyr::mutate(half_w = nchar(as.character(display_label)) * CHAR_PCT_A / 2, x = pmin(pmax(x, half_w), 100 - half_w), y = NA_real_) |> # keep within 0-100%
-  dplyr::arrange(x)
-slot_right <- c(-Inf, 4, rep(-Inf, length(SLOTS_A) - 2)) # top row starts after the "a" tag
+  dplyr::left_join(plot_df_a |> dplyr::group_by(display_label) |> dplyr::summarise(imp = sum(pct), .groups = "drop"), by = "display_label") |>
+  dplyr::mutate(half_w = nchar(as.character(display_label)) * CHAR_PCT_A / 2, y = NA_real_) |>
+  dplyr::arrange(dplyr::desc(imp))
+placed_a <- tibble::tibble(y = TOP_Y_A[2], lo = -Inf, hi = 4) # top row starts after the "a" tag
 for (i in seq_len(nrow(legend_df_a))) {
-  overlap <- slot_right - (legend_df_a$x[i] - legend_df_a$half_w[i])
-  k <- if (any(overlap <= 0)) which(overlap <= 0)[1] else which.min(overlap)
-  legend_df_a$y[i] <- SLOTS_A[k]
-  slot_right[k] <- max(slot_right[k], legend_df_a$x[i] + legend_df_a$half_w[i])
+  lbl <- legend_df_a$display_label[i]
+  hw <- legend_df_a$half_w[i]
+  best_k <- NA_integer_
+  best_ov <- Inf
+  best_x <- NA_real_
+  for (k in seq_len(nrow(SLOT_CAND_A))) {
+    x_k <- stack_pos_a$mid_x[stack_pos_a$display_label == lbl & stack_pos_a$growth_bin == SLOT_CAND_A$bin[k]]
+    x_k <- min(max(x_k, hw), 100 - hw) # keep within 0-100%
+    in_slot <- placed_a[placed_a$y == SLOT_CAND_A$y[k], ]
+    ov <- sum(pmax(0, pmin(in_slot$hi, x_k + hw) - pmax(in_slot$lo, x_k - hw) + GAP_PCT_A))
+    if (ov < best_ov) {
+      best_ov <- ov
+      best_k <- k
+      best_x <- x_k
+    }
+    if (ov == 0) break
+  }
+  legend_df_a$x[i] <- best_x
+  legend_df_a$y[i] <- SLOT_CAND_A$y[best_k]
+  placed_a <- dplyr::bind_rows(placed_a, tibble::tibble(y = SLOT_CAND_A$y[best_k], lo = best_x - hw, hi = best_x + hw))
 }
 
 # In-bar value labels: every segment >= 3% of ITS OWN bin's total (each of
@@ -196,9 +220,9 @@ p_a <- ggplot(plot_df_a, aes(x = pct, y = growth_bin, fill = display_label)) +
   ) +
   scale_fill_manual(values = fill_vals_a, name = NULL, guide = "none") +
   scale_colour_identity() +
-  scale_x_continuous(labels = function(x) paste0(x, "%"), limits = c(0, 100.5), expand = c(0, 0)) +
-  scale_y_discrete(expand = expansion(add = c(0.4, 0.95))) + # top pad holds two label rows
-  coord_cartesian(clip = "off") +
+  scale_x_continuous(labels = function(x) paste0(x, "%")) +
+  # no expansion: x = 0-100%, y from the bottom bar's edge to just above the two label rows
+  coord_cartesian(xlim = c(0, 100), ylim = c(1 - BAR_WIDTH_A / 2, TOP_Y_A[2] + 0.2), expand = FALSE, clip = "off") +
   labs(
     title = "Variable importance",
     x = "Relative contribution (%)",

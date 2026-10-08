@@ -48,13 +48,12 @@ FLOW_VAR_MAP <- c(
 
 # Load data ---------------------------------------------------------------
 
-# Dominant SSP of each run (same rule as Figure 5 - Sensitivity - PrepareData.R)
+# SSP label of each run (closest world GDP/cap growth, 02-RunSimulations.R STEP 4;
+# same SSP pair and share drive the run's fossil-fuel bounds)
 run_dom <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
   dplyr::filter(year == RATIO_BASE_YEAR) |>
-  dplyr::distinct(run_id, ssp_lo, ssp_hi, ssp_share_lo) |>
-  dplyr::collect() |>
-  dplyr::mutate(ssp = dplyr::if_else(ssp_share_lo >= 0.5, ssp_lo, ssp_hi)) |>
-  dplyr::select(run_id, ssp)
+  dplyr::distinct(run_id, ssp = ssp_label) |>
+  dplyr::collect()
 
 # Run intensity draws, long (run_id, mat_key, u_run)
 run_u <- readr::read_csv("Parameters/Simulation/mc_input_matrix.csv", show_col_types = FALSE) |>
