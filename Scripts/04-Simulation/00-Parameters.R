@@ -36,6 +36,9 @@ lifetime_params <- read_excel("Inputs/MC_Assumptions.xlsx", sheet = "Lifetimes")
 N_RUNS <- 1000L
 # N_RUNS <- 200L # DEBUG
 GLOBAL_SEED <- 12062026L
+# Max relative departure of any SSP's share of runs (by ssp_label) from an
+# equal split before 02-RunSimulations.R warns (0.5 = +/-50%)
+SSP_SHARE_TOL <- 0.5
 
 # -- MC: global scalar parameters (min, central, max) ---------------------------
 # Read by parameter_name from the Parameters sheet; each becomes NAME_MIN,

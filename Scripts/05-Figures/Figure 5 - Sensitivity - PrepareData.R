@@ -56,7 +56,7 @@ cat("=== Figure 4 v2 - Prepare Data ===\n\n")
 
 GROWTH_WINDOW_START <- 2025L # matches FIG_VARIANT_ID below
 FIG_VARIANT_ID <- "window_2025_2060"
-N_TOP_OTHER <- 8L # panel a: the 4 SSP indicators + top-N other levers by global mean |SHAP|, rest collapsed to "Other"
+N_TOP_OTHER <- 8L # panel a: population + GDP-per-capita growth + top-N other levers by global mean |SHAP|, rest collapsed to "Other"
 
 GROWTH_BIN_BREAKS <- c(-Inf, 0, 0.01, 0.02, Inf)
 GROWTH_BIN_LEVELS <- c("<0%", "0-1%", "1-2%", ">2%")
@@ -96,14 +96,11 @@ input_matrix <- read_csv("Parameters/Simulation/mc_input_matrix.csv", show_col_t
 decoupling <- arrow::read_parquet("Results/MC/mc_decoupling.parquet")
 ssp_drivers <- read_csv("Parameters/IIASA-Trajectories/ssp_drivers.csv", show_col_types = FALSE)
 
-# Each run's continuous SSP blend -> its dominant ("actual") SSP: the bracketing
-# SSP with the larger blend share (panel a feature, panel d SSP row)
-run_dom <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
-  dplyr::filter(year == 2025L) |>
-  dplyr::distinct(run_id, ssp_lo, ssp_hi, ssp_share_lo) |>
-  dplyr::collect() |>
-  dplyr::mutate(ssp = dplyr::if_else(ssp_share_lo >= 0.5, ssp_lo, ssp_hi)) |>
-  dplyr::select(run_id, ssp)
+# Each run's SSP label (closest world GDP/cap growth, 02-RunSimulations.R STEP 4)
+# and its achieved world population / GDP-per-capita annual growth 2024 ->
+# FORECAST_END (panel a driver features)
+ssp_assign <- read_csv("Results/MC/mc_ssp_assignment.csv", show_col_types = FALSE)
+run_dom <- ssp_assign |> dplyr::select(run_id, ssp = ssp_label)
 
 feature_cols <- input_matrix |> dplyr::select(-run_id) |> names()
 n_feat <- length(feature_cols)
@@ -327,27 +324,24 @@ family_by_param <- tibble::tibble(param = feature_cols) |>
   ) |>
   dplyr::left_join(bound_lkp |> dplyr::select(param, unit), by = "param")
 
-# Panel a only: the continuous ssp_u draw is replaced by one 0/1 indicator per
-# sampled SSP (run's dominant SSP), so each SSP gets its own importance segment
-ssp_feats <- paste0("ssp_is_", SSP_SAMPLED)
-col_labels[ssp_feats] <- SSP_SAMPLED
+# Panel a only: the ssp_u draw is replaced by the run's achieved world
+# population and GDP-per-capita annual growth, so each driver gets its own segment
+ssp_feats <- c("pop_growth", "gdppc_growth")
+col_labels[ssp_feats] <- c("Population", "GDP per capita")
 family_by_param <- family_by_param |>
-  dplyr::bind_rows(tibble::tibble(param = ssp_feats, family = "Driver SSP", display_label = SSP_SAMPLED, unit = "ssp"))
+  dplyr::bind_rows(tibble::tibble(param = ssp_feats, family = "Driver SSP", display_label = col_labels[ssp_feats], unit = "pct_annual"))
 
 
 # STEP 6: Panel a -- LightGBM + TreeSHAP on growth rate, binned by growth category ----
 
 cat("STEP 6: Panel a -- LightGBM + SHAP on growth rate\n")
 
-# One 0/1 indicator per sampled SSP (dominant SSP of the run) instead of the continuous ssp_u draw
+# World population and GDP-per-capita growth instead of the ssp_u draw
 shap_cols <- c(setdiff(feature_cols, "ssp_u"), ssp_feats)
 
 df_shap <- input_matrix |>
   dplyr::inner_join(growth_df |> dplyr::select(run_id, mat_cagr, growth_bin), by = "run_id") |>
-  dplyr::left_join(run_dom, by = "run_id")
-for (s in SSP_SAMPLED) {
-  df_shap[[paste0("ssp_is_", s)]] <- as.integer(df_shap$ssp == s)
-}
+  dplyr::left_join(ssp_assign |> dplyr::select(run_id, dplyr::all_of(ssp_feats)), by = "run_id")
 
 X <- as.matrix(df_shap[, shap_cols])
 y <- df_shap$mat_cagr
@@ -383,7 +377,7 @@ colnames(shap_vals) <- shap_cols
 # bin, so a lever's presence/absence across bins is comparable) + "Other".
 global_mean_shap <- colMeans(abs(shap_vals))
 param_order <- sort(global_mean_shap, decreasing = TRUE)
-# All SSP indicators are always shown, plus the top non-SSP levers
+# Population and GDP per capita are always shown, plus the top other levers
 top_params <- c(ssp_feats, head(setdiff(names(param_order), ssp_feats), N_TOP_OTHER))
 other_params <- setdiff(names(param_order), top_params)
 
@@ -422,7 +416,6 @@ for (fam in setdiff(names(family_pal), "Other")) {
   fam_shades <- if (n_fam == 1) family_pal[[fam]] else grDevices::colorRampPalette(c(light_hex, family_pal[[fam]], dark_hex))(n_fam)
   SHAP_PARAM_COLORS <- c(SHAP_PARAM_COLORS, stats::setNames(fam_shades, fam_rows$display_label))
 }
-SHAP_PARAM_COLORS[SSP_SAMPLED] <- SSP_COLORS[SSP_SAMPLED] # SSP segments: project SSP colours
 fill_vals <- setNames(
   vapply(as.character(all_labels_ordered), function(lbl) if (lbl %in% names(SHAP_PARAM_COLORS)) SHAP_PARAM_COLORS[[lbl]] else "#AAAAAA", character(1L)),
   all_labels_ordered
@@ -634,17 +627,19 @@ density_df <- mat_by_run |>
       metric > hi & (is.na(high_rate_max) | rate < high_rate_max) ~ "High",
       TRUE ~ NA_character_
     ),
-    mg = primary_Mt * 1e9 / world_gdp # material consumption per GDP, kg/$ (Alt1 v2 panel c)
+    mg = primary_Mt * 1e9 / world_gdp, # material consumption per GDP, kg/$ (Alt1 v2 panel c)
+    total_Gt = primary_Mt / 1e3 # world primary consumption, Gt (Alt1 v2 panel c)
   ) |>
   # sampled target ore grades (real units), for the Alt1 v2 panel c metal groups
   dplyr::left_join(real_matrix |> dplyr::select(run_id, grade_ore_fe, grade_ore_nonfe), by = "run_id") |>
-  dplyr::select(run_id, material, percap_t, metric, grp, mg, rate, grade_ore_fe, grade_ore_nonfe)
+  dplyr::select(run_id, material, percap_t, total_Gt, metric, grp, mg, rate, grade_ore_fe, grade_ore_nonfe)
 
-# Reference lines: 2025 per-capita level (median across runs) held flat (0%/yr) or grown at 2.5%/yr to FORECAST_END
+# Reference lines: 2025 level (median across runs; per capita v0, total v0_Gt) held
+# flat (0%/yr) or grown at 2.5%/yr to FORECAST_END
 density_lines <- mat_by_run |>
   dplyr::filter(year == 2025L) |>
   dplyr::group_by(material) |>
-  dplyr::summarise(v0 = median(percap_t, na.rm = TRUE), .groups = "drop") |>
+  dplyr::summarise(v0 = median(percap_t, na.rm = TRUE), v0_Gt = median(primary_Mt, na.rm = TRUE) / 1e3, .groups = "drop") |>
   dplyr::mutate(v25 = v0 * 1.025^(FORECAST_END - 2025L)) |>
   dplyr::left_join(DENSITY_GROUPS, by = "material")
 

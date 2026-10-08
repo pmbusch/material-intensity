@@ -500,8 +500,11 @@ world_4mat_hist <- smooth_lowess(world_4mat_hist, group_cols = c("region_group3"
 ## Shared axis bounds for panels c & d -----------------------------------------
 # Panel c/d windows and the shared Y range are fixed per the project's figure
 # design (rather than data-driven), so the two panels line up exactly.
-x_lim_c <- c(0, 5.5)
-x_lim_d <- c(0, 1.7)
+x_lim_c <- c(0, 6)
+x_lim_d <- c(0, 1.8)
+TXT_CD <- pb_annot_size("largeFont", 8) # in-plot text, panels c & d
+LOGTICK_LW <- 0.4 # y-axis log tick marks, panels c & d
+LOGTICK_COL <- "grey20"
 y_lim_cd <- c(600, 1e5)
 
 # Iso-lines computed across the FULL displayed panel (not just the tight data
@@ -533,7 +536,7 @@ pFig1c <- ggplot(region_all, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_grou
     colour = "grey60",
     linetype = "dashed",
     linewidth = 0.22,
-    size = 2.0,
+    size = TXT_CD,
     hjust = 0.82,
     inherit.aes = FALSE
   ) +
@@ -566,7 +569,7 @@ pFig1c <- ggplot(region_all, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_grou
   geom_text_repel(
     data = filter(region_all, year == HIST_END),
     aes(label = Analysis_group),
-    size = 1.9,
+    size = TXT_CD,
     show.legend = FALSE,
     max.overlaps = Inf,
     seed = 42,
@@ -579,7 +582,7 @@ pFig1c <- ggplot(region_all, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_grou
     aes(x = mat_gdp, y = gdp_pc, label = "World avg"),
     colour = "black",
     fontface = "bold",
-    size = 2.0,
+    size = TXT_CD,
     show.legend = FALSE,
     inherit.aes = FALSE,
     segment.size = 0.25,
@@ -588,22 +591,22 @@ pFig1c <- ggplot(region_all, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_grou
   geom_text(
     data = filter(world_all, year %in% c(1970, HIST_END)),
     aes(label = year, vjust = c(1.5, 0), hjust = c(-0.2, 1.5)),
-    fontface = "bold", colour = "black", size = 2.0, show.legend = FALSE
+    fontface = "bold", colour = "black", size = TXT_CD, show.legend = FALSE
   ) +
   # fmt: skip
   annotate("text",x = Inf, y = Inf,label = "c",hjust = 1.5, vjust = 1.2,fontface = "bold",size = 14 * 5 / 14 * 0.8,colour = "black") +
   scale_colour_manual(values = PALETTE_REGIONS, name = NULL) +
   scale_alpha_continuous(range = c(0.4, 1), guide = "none") +
-  scale_x_continuous(breaks = c(0, 1, 2, 3, 4, 5)) +
+  # ticks every 0.5, labels on whole numbers only
+  scale_x_continuous(breaks = seq(0, 6, 0.5), labels = function(x) ifelse(abs(x - round(x)) < 1e-9, sprintf("%g", x), "")) +
   scale_y_log10(labels = label_dollar(accuracy = 1)) +
-  annotation_logticks(sides = "l", linewidth = 0.18, colour = "grey50") +
+  annotation_logticks(sides = "l", linewidth = LOGTICK_LW, colour = LOGTICK_COL) +
   coord_cartesian(clip = "off", expand = FALSE, xlim = x_lim_c, ylim = y_lim_cd) +
   theme_pb_large() +
   labs(title = " ", x = "Material Intensity (kg/$)", y = "GDP per Capita  ($/p)") +
   theme(
     legend.position = "none",
-    axis.text = element_text(size = 6),
-    plot.margin = margin(t = 0, r = 10, b = 5, l = 5, unit = "pt")
+    plot.margin = margin(t = -8, r = 10, b = 5, l = 5, unit = "pt") # t < 0: closer to panels a/b
   )
 pFig1c
 
@@ -622,7 +625,7 @@ pFig1d <- ggplot() +
     colour = "grey60",
     linetype = "dashed",
     linewidth = 0.2,
-    size = 2.0,
+    size = TXT_CD,
     hjust = 0.82,
     inherit.aes = FALSE
   ) +
@@ -640,7 +643,7 @@ pFig1d <- ggplot() +
   geom_text_repel(
     data = filter(world_4mat_hist, year == HIST_END, region_group3 == "Advanced Economies"),
     aes(x = mat_gdp, y = gdp_pc, label = mat4, colour = mat4),
-    size = 1.9,
+    size = TXT_CD,
     show.legend = FALSE,
     max.overlaps = Inf,
     seed = 42,
@@ -651,24 +654,28 @@ pFig1d <- ggplot() +
   geom_text(
     data = lbl_anchor_1970,
     aes(x = mat_gdp, y = gdp_pc, colour = mat4, label = year),
-    vjust = 1.5, hjust = -0.2, fontface = "bold", size = 2.0, show.legend = FALSE
+    vjust = 1.5, hjust = -0.2, fontface = "bold", size = TXT_CD, show.legend = FALSE
   ) +
   geom_text(
     data = lbl_anchor_end,
     aes(x = mat_gdp, y = gdp_pc, colour = mat4, label = year),
-    vjust = 0, hjust = 1.5, fontface = "bold", size = 2.0, show.legend = FALSE
+    vjust = 0, hjust = 1.5, fontface = "bold", size = TXT_CD, show.legend = FALSE
   ) +
-  annotate("text", x = 0.2, y = 50e3, label = "Advanced Economies", fontface = "bold", size = 2) +
-  annotate("text", x = 0.2, y = 10e3, label = "Asia", size = 2) +
-  annotate("text", x = 0.4, y = 3e3, label = "Rest of World", size = 1.6) +
+  annotate("text", x = 0.2, y = 50e3, label = "Advanced Economies", fontface = "bold", size = TXT_CD) +
+  annotate("text", x = 0.2, y = 10e3, label = "Asia", size = TXT_CD) +
+  annotate("text", x = 0.4, y = 3e3, label = "Rest of World", size = TXT_CD) +
   # fmt: skip
   annotate("text",x = Inf, y = Inf,label = "d",hjust = 1.5, vjust = 1.2,fontface = "bold",size = 14 * 5 / 14 * 0.8,colour = "black") +
   scale_colour_manual(values = PALETTE_MATERIAL_GROUPS, name = NULL, guide = "none") +
   scale_linewidth_manual(values = REGION_GROUP3_LINEWIDTHS, name = NULL) +
   scale_alpha_continuous(range = c(0.4, 1), guide = "none") +
-  scale_x_continuous(labels = label_number(accuracy = 0.01)) +
+  # ticks every 0.2, labels every 0.4 (one decimal)
+  scale_x_continuous(
+    breaks = seq(0, 1.8, 0.2),
+    labels = function(x) ifelse(abs(x / 0.4 - round(x / 0.4)) < 1e-9, sprintf("%g", round(x, 1)), "")
+  ) +
   scale_y_log10(labels = label_dollar(accuracy = 1)) +
-  annotation_logticks(sides = "l", linewidth = 0.18, colour = "grey50") +
+  annotation_logticks(sides = "l", linewidth = LOGTICK_LW, colour = LOGTICK_COL) +
   coord_cartesian(clip = "off", expand = FALSE, xlim = x_lim_d, ylim = y_lim_cd) +
   theme_pb_large() +
   labs(title = " ", x = "Material Intensity (kg/$)", y = "GDP per Capita ($/p)") +
@@ -678,8 +685,7 @@ pFig1d <- ggplot() +
     legend.text = element_text(size = 6),
     legend.key.size = unit(0.5, "lines"),
     legend.background = element_rect(fill = alpha("white", 0.75), colour = NA),
-    axis.text = element_text(size = 6),
-    plot.margin = margin(t = 0, r = 10, b = 5, l = 5, unit = "pt")
+    plot.margin = margin(t = -8, r = 10, b = 5, l = 5, unit = "pt") # t < 0: closer to panels a/b
   )
 pFig1d
 

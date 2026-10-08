@@ -28,9 +28,12 @@
 ##            mass balance per region x year x material:
 ##            waste = not_recovered + secondary + secondary_spilled (allocate_eol)
 ##          run_neg_primary, run_total_spill_Mt  (per-run diagnostic flags)
-##          ssp_lo, ssp_hi, ssp_share_lo
-##            (continuous SSP blend used for this run's population, GDP-percap
-##             and flow-intensity bounds; no discrete ssp_label -- see STEP 4)
+##          ssp_lo, ssp_hi, ssp_share_lo, ssp_label
+##            (SSP blend used for this run's population, GDP-percap, flow-
+##             intensity bounds and power-sector bracket; ssp_label = SSP whose
+##             world GDP/cap growth is closest to the run's target -- see STEP 4)
+## Also: Results/MC/mc_ssp_assignment.csv (one row per run: target and
+##   achieved world GDP/cap growth, world population growth, blend, label)
 ##
 ## Intensity endpoints are region-specific: endpoint = int_2024 * ratio, with
 ## ratio = min + u * (max - min) from each region's own bounds (01-Sampling.R),
@@ -238,7 +241,8 @@ m_2024_fossil <- unep_dmc |>
   dplyr::select(region = Region, mat_key, M_2024_Mt = DMC_Mt)
 
 # 2024 stock baseline -> nested lookup [material][region][sub_use] = stock_Mt
-stock_2024_raw <- readr::read_csv("Parameters/MISO-Stock/stock_2024_total.csv", show_col_types = FALSE) |> rename(region = Region)
+stock_2024_raw <- readr::read_csv("Parameters/MISO-Stock/stock_2024_total.csv", show_col_types = FALSE) |>
+  rename(region = Region)
 
 # Power-sector carve-out (01b-PowerSector.R): the 2025 generation + storage stock
 # is removed from the civil-engineering base stock before the stock-per-GDP rule;
@@ -247,7 +251,10 @@ power_carveout <- readr::read_csv("Parameters/Simulation/power_carveout_2025.csv
 stopifnot(all(power_carveout$remaining_Mt >= 0))
 carve_scale <- power_carveout |> transmute(material, region, sub_use, carve_scale = remaining_Mt / stock_Mt)
 stock_2024_raw <- stock_2024_raw |>
-  left_join(power_carveout |> dplyr::select(material, region, sub_use, carve_Mt), by = c("material", "region", "sub_use")) |>
+  left_join(
+    power_carveout |> dplyr::select(material, region, sub_use, carve_Mt),
+    by = c("material", "region", "sub_use")
+  ) |>
   mutate(stock_Mt = stock_Mt - dplyr::coalesce(carve_Mt, 0)) |>
   dplyr::select(-carve_Mt)
 
@@ -258,7 +265,10 @@ stock_2024_sub <- stock_2024_raw |>
 
 # Historical 2024 stock log-growth, log(S_2024 / S_2023), from the historical DSM
 # -> nested lookup [material][region][sub_use]; anchors the seam blend (STEP 5)
-stock_growth_hist <- readr::read_csv("Parameters/Intermediate/stock_trajectory_subenduse.csv", show_col_types = FALSE) |>
+stock_growth_hist <- readr::read_csv(
+  "Parameters/Intermediate/stock_trajectory_subenduse.csv",
+  show_col_types = FALSE
+) |>
   filter(year %in% c(2023L, 2024L)) |>
   dplyr::select(material, region = Region, sub_use, year, stock_Mt) |>
   tidyr::pivot_wider(names_from = year, values_from = stock_Mt, names_prefix = "S_") |>
@@ -306,7 +316,9 @@ power_age_lookup <- age_profile_raw |>
   ungroup() |>
   arrange(cohort_year) |>
   split(~region) |>
-  lapply(function(rd) split(rd, ~sub_use) |> lapply(function(sd) list(cohort_years = as.integer(sd$cohort_year), shares = sd$share)))
+  lapply(function(rd) {
+    split(rd, ~sub_use) |> lapply(function(sd) list(cohort_years = as.integer(sd$cohort_year), shares = sd$share))
+  })
 
 # Lookup: list[region][sub_use] = list(cohort_years, cohort_stocks)
 build_age_lookup <- function(material_label) {
@@ -375,8 +387,16 @@ power_factor_arr[cbind(
 )] <- power_factor$factor_gw
 
 power_anchor <- readr::read_csv("Parameters/Simulation/power_capacity_anchor.csv", show_col_types = FALSE)
-power_anchor_mat <- matrix(0, length(regions_vec), length(POWER_TECH_KEYS), dimnames = list(regions_vec, POWER_TECH_KEYS))
-power_anchor_mat[cbind(match(power_anchor$region, regions_vec), match(power_anchor$tech, POWER_TECH_KEYS))] <- power_anchor$cap_2025_gw
+power_anchor_mat <- matrix(
+  0,
+  length(regions_vec),
+  length(POWER_TECH_KEYS),
+  dimnames = list(regions_vec, POWER_TECH_KEYS)
+)
+power_anchor_mat[cbind(
+  match(power_anchor$region, regions_vec),
+  match(power_anchor$tech, POWER_TECH_KEYS)
+)] <- power_anchor$cap_2025_gw
 
 power_mi <- readr::read_csv("Parameters/Simulation/power_material_intensity.csv", show_col_types = FALSE)
 power_mi_mat <- tapply(power_mi$t_per_unit, list(power_mi$unit_key, power_mi$material_group), sum)
@@ -385,28 +405,35 @@ power_mi_mat[is.na(power_mi_mat)] <- 0
 # Unit (technology or battery) -> lifetime class (= power end use)
 POWER_UNIT_CLASS <- c(setNames(POWER_TECHS$sub_use, POWER_TECHS$tech), "battery" = "power_battery")
 
-# World GDP-per-capita growth (2024 -> FORECAST_END) ranking of the sampled SSPs
-# (SSP_SAMPLED; SSP4 excluded) -- used only to locate the two bracketing SSPs
-# for the continuous ssp_u draw below; the region-level blend itself uses
-# pop_mat/gdppc_mat above.
-world_agg <- ssp_drivers |>
-  filter(variable %in% c("Population", "GDP|PPP"), year %in% c(2024L, FORECAST_END), scenario %in% SSP_SAMPLED) |>
-  dplyr::select(scenario, region, variable, year, value) |>
-  tidyr::pivot_wider(names_from = variable, values_from = value) |>
-  dplyr::group_by(scenario, year) |>
-  dplyr::summarise(pop_world = sum(Population, na.rm = TRUE), gdp_world = sum(`GDP|PPP`, na.rm = TRUE), .groups = "drop") |>
-  dplyr::mutate(gdppc_world = gdp_world / pop_world)
+# Regional 2024 anchors for world aggregation (World Bank GDP, UN population),
+# same anchors as the figure scripts: world pop / GDP of a run = sum over
+# regions of anchor x blended index (pop_mat / gdppc_mat are 2024 = 1)
+world_anchor <- tibble::tibble(region = regions_vec) |>
+  left_join(gdp_base_vals, by = "region") |>
+  left_join(
+    readr::read_csv("Parameters/UN-Population/population_region_historical.csv", show_col_types = FALSE) |>
+      filter(year == 2024L) |>
+      dplyr::select(region = Region, pop_2024 = population),
+    by = "region"
+  )
+stopifnot(!anyNA(world_anchor$GDP_2015USD), !anyNA(world_anchor$pop_2024))
+pop0_vec <- setNames(world_anchor$pop_2024, world_anchor$region)
+gdppc0_vec <- setNames(world_anchor$GDP_2015USD / world_anchor$pop_2024, world_anchor$region)
+gdppc0_world <- sum(pop0_vec * gdppc0_vec) / sum(pop0_vec)
+SSP_GROWTH_YRS <- FORECAST_END - 2024L
+END_COL <- as.character(FORECAST_END)
 
-world_2024 <- world_agg |> dplyr::filter(year == 2024L) |> dplyr::select(scenario, pop_base = pop_world, gdppc_base = gdppc_world)
-world_end <- world_agg |>
-  dplyr::filter(year == FORECAST_END) |>
-  dplyr::select(scenario, pop_end = pop_world, gdppc_end = gdppc_world)
-
-ssp_rank_gdp <- world_end |>
-  dplyr::left_join(world_2024, by = "scenario") |>
-  dplyr::mutate(val = gdppc_end / gdppc_base) |>
-  dplyr::arrange(val) |>
-  dplyr::select(scenario, val)
+# World GDP/cap annual growth 2024 -> FORECAST_END of each pure sampled SSP
+# (SSP_SAMPLED; SSP4 excluded), ranked low -> high
+ssp_rank_gdp <- tibble::tibble(scenario = SSP_SAMPLED) |>
+  mutate(
+    g = purrr::map_dbl(scenario, \(s) {
+      p <- pop0_vec * pop_mat[[s]][regions_vec, END_COL]
+      (sum(p * gdppc0_vec * gdppc_mat[[s]][regions_vec, END_COL]) / sum(p) / gdppc0_world)^(1 / SSP_GROWTH_YRS) - 1
+    })
+  ) |>
+  arrange(g)
+stopifnot(!anyNA(ssp_rank_gdp$g))
 
 cat("  Static data loaded.\n")
 
@@ -416,25 +443,109 @@ cat("  Static data loaded.\n")
 # =============================================================================
 cat("\nSTEP 4: Rebuild trajectories from LHS draws\n")
 
-# -- Continuous SSP position (one draw -> population, GDP/capita, flow bounds) --
-# Equal-coverage mapping of ssp_u onto the N_SSP sampled SSPs ranked by world
-# GDP/capita growth (ssp_rank_gdp, STEP 3): p = clamp(N*u - 0.5, 0, N-1),
-# k = floor(p), share_hi = p - k; blend the SSPs at rank k and k+1 (0-based).
-# Each SSP gets an equal 1/N share of u (half of it pure-ish at the two ends).
+# -- SSP position (one draw -> population, GDP/capita, flow bounds, power) -----
+# ssp_u = target world GDP/cap annual growth 2024 -> FORECAST_END, spread evenly
+# between the lowest- and highest-growth SSP. The two rank-neighbour SSPs whose
+# growth brackets the target are blended with the share that reproduces it,
+# world growth computed exactly as run_one blends the regional indices:
+#   pop_r(s) = pop0_r * (s idx_lo + (1 - s) idx_hi), same for GDP/cap,
+#   world GDP/cap = sum(pop_r gdppc_r) / sum(pop_r)   (s = ssp_share_lo)
+# The same pair and share drive population, GDP/cap, the biomass/fossil flow
+# bounds (build_endpoints) and the power-sector bracket (fossil draws).
 N_SSP <- nrow(ssp_rank_gdp)
-ssp_p <- pmin(N_SSP - 1, pmax(0, N_SSP * mc_input_matrix$ssp_u - 0.5))
-ssp_k <- pmin(N_SSP - 2, floor(ssp_p)) # p = N-1 -> k = N-2 with share_hi = 1 (same point)
+ssp_target <- ssp_rank_gdp$g[1] + mc_input_matrix$ssp_u * (ssp_rank_gdp$g[N_SSP] - ssp_rank_gdp$g[1])
+ssp_k <- findInterval(ssp_target, ssp_rank_gdp$g, rightmost.closed = TRUE, all.inside = TRUE) # pair (k, k+1)
+
+# World growth of each adjacent pair on a fine share grid; must be strictly
+# monotone in the share (else the inversion is ambiguous) -> inverse by interpolation
+S_GRID <- seq(0, 1, length.out = 10001L)
+ssp_share_lo_vec <- rep(NA_real_, N_RUNS)
+for (k in seq_len(N_SSP - 1L)) {
+  s_lo <- ssp_rank_gdp$scenario[k]
+  s_hi <- ssp_rank_gdp$scenario[k + 1L]
+  p_grid <- outer(pop0_vec * pop_mat[[s_lo]][regions_vec, END_COL], S_GRID) +
+    outer(pop0_vec * pop_mat[[s_hi]][regions_vec, END_COL], 1 - S_GRID)
+  y_grid <- outer(gdppc0_vec * gdppc_mat[[s_lo]][regions_vec, END_COL], S_GRID) +
+    outer(gdppc0_vec * gdppc_mat[[s_hi]][regions_vec, END_COL], 1 - S_GRID)
+  g_grid <- (colSums(p_grid * y_grid) / colSums(p_grid) / gdppc0_world)^(1 / SSP_GROWTH_YRS) - 1
+  if (!all(diff(g_grid) < 0)) {
+    stop("World GDP/cap growth is not monotone in the blend share for ", s_lo, "-", s_hi)
+  }
+  in_k <- ssp_k == k
+  # rev(): growth decreases with the share on the lower SSP; rule 2: float noise at the pair ends
+  ssp_share_lo_vec[in_k] <- stats::approx(
+    rev(g_grid),
+    rev(S_GRID),
+    xout = ssp_target[in_k],
+    ties = "ordered",
+    rule = 2
+  )$y
+}
+ssp_lo_vec <- ssp_rank_gdp$scenario[ssp_k]
+ssp_hi_vec <- ssp_rank_gdp$scenario[ssp_k + 1L]
+stopifnot(!anyNA(ssp_share_lo_vec), all(ssp_share_lo_vec >= 0 & ssp_share_lo_vec <= 1))
+
+# Label: SSP whose own world growth is closest to the run's target
+ssp_label_vec <- ssp_rank_gdp$scenario[apply(abs(outer(ssp_target, ssp_rank_gdp$g, "-")), 1, which.min)]
+
 ssp_bracket <- tibble::tibble(
   run_id = mc_input_matrix$run_id,
-  ssp_lo = ssp_rank_gdp$scenario[ssp_k + 1],
-  ssp_hi = ssp_rank_gdp$scenario[ssp_k + 2],
-  ssp_share_lo = 1 - (ssp_p - ssp_k)
+  ssp_lo = ssp_lo_vec,
+  ssp_hi = ssp_hi_vec,
+  ssp_share_lo = ssp_share_lo_vec
 )
-ssp_lo_vec <- ssp_bracket$ssp_lo
-ssp_hi_vec <- ssp_bracket$ssp_hi
-ssp_share_lo_vec <- ssp_bracket$ssp_share_lo
 
-cat("  SSP rank (world GDP/capita growth):", paste(ssp_rank_gdp$scenario, collapse = " < "), "\n")
+# Achieved world growth per run (population and GDP/cap, same blend) -> check
+# against the target; saved for the figure scripts
+ssp_pop_end <- matrix(0, N_RUNS, length(regions_vec)) # run x region, FORECAST_END
+ssp_gdppc_end <- matrix(0, N_RUNS, length(regions_vec))
+for (s in SSP_SAMPLED) {
+  w_s <- ssp_share_lo_vec * (ssp_lo_vec == s) + (1 - ssp_share_lo_vec) * (ssp_hi_vec == s) # run's weight on SSP s
+  ssp_pop_end <- ssp_pop_end + outer(w_s, pop0_vec * pop_mat[[s]][regions_vec, END_COL])
+  ssp_gdppc_end <- ssp_gdppc_end + outer(w_s, gdppc0_vec * gdppc_mat[[s]][regions_vec, END_COL])
+}
+ssp_assignment <- ssp_bracket |>
+  mutate(
+    ssp_u = mc_input_matrix$ssp_u,
+    ssp_label = ssp_label_vec,
+    gdppc_growth_target = ssp_target,
+    gdppc_growth = (rowSums(ssp_pop_end * ssp_gdppc_end) / rowSums(ssp_pop_end) / gdppc0_world)^(1 / SSP_GROWTH_YRS) -
+      1,
+    pop_growth = (rowSums(ssp_pop_end) / sum(pop0_vec))^(1 / SSP_GROWTH_YRS) - 1
+  )
+stopifnot(max(abs(ssp_assignment$gdppc_growth - ssp_target)) < 1e-7)
+readr::write_csv(ssp_assignment, "Results/MC/mc_ssp_assignment.csv")
+
+cat(
+  "  SSP rank (world GDP/capita growth, %/yr):",
+  paste(sprintf("%s %.2f", ssp_rank_gdp$scenario, 100 * ssp_rank_gdp$g), collapse = " < "),
+  "\n"
+)
+
+# Share of runs per SSP label vs an equal split; warn beyond SSP_SHARE_TOL
+# (relative deviation, 00-Parameters.R)
+ssp_share_check <- tibble::tibble(ssp = ssp_rank_gdp$scenario) |>
+  mutate(
+    n_runs = purrr::map_int(ssp, \(s) sum(ssp_label_vec == s)),
+    share = n_runs / N_RUNS,
+    equal_share = 1 / N_SSP,
+    rel_dev = share / equal_share - 1
+  )
+cat("  Runs per SSP label vs equal split (tolerance +/-", 100 * SSP_SHARE_TOL, "% relative):\n")
+print(ssp_share_check |> mutate(dplyr::across(c(share, equal_share, rel_dev), \(x) round(x, 3))) |> as.data.frame())
+if (any(abs(ssp_share_check$rel_dev) > SSP_SHARE_TOL)) {
+  warning(
+    "SSP label shares depart from an equal split by more than ",
+    100 * SSP_SHARE_TOL,
+    "% (relative): ",
+    paste(
+      sprintf("%s %+.0f%%", ssp_share_check$ssp, 100 * ssp_share_check$rel_dev)[
+        abs(ssp_share_check$rel_dev) > SSP_SHARE_TOL
+      ],
+      collapse = ", "
+    )
+  )
+}
 
 # Collect the single global [0,1] draw per material into long format
 collect_u <- function(mc, prefix, suffix, mat_keys) {
@@ -472,7 +583,8 @@ build_endpoints <- function(bounds, ratio_bounds, mc, prefix, suffix, fixed_keys
         by = c("region", "mat_key", "ssp_hi")
       ) |>
       mutate(
-        ratio = ssp_share_lo * (min_lo + u_global * (max_lo - min_lo)) +
+        ratio = ssp_share_lo *
+          (min_lo + u_global * (max_lo - min_lo)) +
           (1 - ssp_share_lo) * (min_hi + u_global * (max_hi - min_hi))
       )
   } else {
@@ -491,7 +603,10 @@ build_endpoints <- function(bounds, ratio_bounds, mc, prefix, suffix, fixed_keys
     mutate(endpoint = int_2024 * ratio) |>
     dplyr::select(run_id, region, mat_key, int_2024, endpoint)
   if (anyNA(sampled$endpoint)) {
-    stop("Missing ratio bounds for: ", paste(unique(paste(sampled$region, sampled$mat_key)[is.na(sampled$endpoint)]), collapse = ", "))
+    stop(
+      "Missing ratio bounds for: ",
+      paste(unique(paste(sampled$region, sampled$mat_key)[is.na(sampled$endpoint)]), collapse = ", ")
+    )
   }
 
   # Fixed materials: endpoint frozen at 2024 value for every run
@@ -565,21 +680,39 @@ run_fossil_side <- collect_u(mc_input_matrix, "intensity_", "_global", c("coal",
   tidyr::pivot_longer(c(ssp_lo, ssp_hi), names_to = "side", values_to = "ssp") |>
   mutate(side_share = if_else(side == "ssp_lo", ssp_share_lo, 1 - ssp_share_lo)) |>
   inner_join(
-    flow_ratio_bounds |> filter(material_group == "fossil_fuels") |> dplyr::select(region, mat_key, ssp, ratio_min, ratio_max),
+    flow_ratio_bounds |>
+      filter(material_group == "fossil_fuels") |>
+      dplyr::select(region, mat_key, ssp, ratio_min, ratio_max),
     by = c("mat_key", "ssp"),
     relationship = "many-to-many"
   ) |>
   inner_join(power_shares |> dplyr::select(region, mat_key = fuel, share, world_weight), by = c("region", "mat_key")) |>
   group_by(run_id, side, ssp, side_share, region, world_weight) |>
-  summarise(fossil_index = sum(share * (ratio_min + u_global * (ratio_max - ratio_min))), n_fuel = n(), .groups = "drop")
+  summarise(
+    fossil_index = sum(share * (ratio_min + u_global * (ratio_max - ratio_min))),
+    n_fuel = n(),
+    .groups = "drop"
+  )
 stopifnot(all(run_fossil_side$n_fuel == 3L), nrow(run_fossil_side) == N_RUNS * 2L * length(regions_vec))
 
 run_power_bracket <- run_fossil_side |>
-  inner_join(power_scen_index |> rename(scen_index = fossil_index), by = c("ssp", "region"), relationship = "many-to-many") |>
+  inner_join(
+    power_scen_index |> rename(scen_index = fossil_index),
+    by = c("ssp", "region"),
+    relationship = "many-to-many"
+  ) |>
   group_by(run_id, side, ssp, side_share, region, fossil_index) |>
   summarise(
-    scen_lo = if (any(scen_index <= fossil_index)) scen_id[scen_index <= fossil_index][which.max(scen_index[scen_index <= fossil_index])] else scen_id[which.min(scen_index)],
-    scen_hi = if (any(scen_index >= fossil_index)) scen_id[scen_index >= fossil_index][which.min(scen_index[scen_index >= fossil_index])] else scen_id[which.max(scen_index)],
+    scen_lo = if (any(scen_index <= fossil_index)) {
+      scen_id[scen_index <= fossil_index][which.max(scen_index[scen_index <= fossil_index])]
+    } else {
+      scen_id[which.min(scen_index)]
+    },
+    scen_hi = if (any(scen_index >= fossil_index)) {
+      scen_id[scen_index >= fossil_index][which.min(scen_index[scen_index >= fossil_index])]
+    } else {
+      scen_id[which.max(scen_index)]
+    },
     idx_lo = scen_index[scen_id == scen_lo],
     idx_hi = scen_index[scen_id == scen_hi],
     .groups = "drop"
@@ -594,7 +727,9 @@ run_power_weights <- bind_rows(
   group_by(run_id, region, scen_id) |>
   summarise(w = sum(w), .groups = "drop") |>
   filter(w > 0)
-stopifnot(all(abs(tapply(run_power_weights$w, paste(run_power_weights$run_id, run_power_weights$region), sum) - 1) < 1e-9))
+stopifnot(all(
+  abs(tapply(run_power_weights$w, paste(run_power_weights$run_id, run_power_weights$region), sum) - 1) < 1e-9
+))
 power_w_by_run <- split(run_power_weights, run_power_weights$run_id)
 
 # World bracket -> 2060 median warming (scenarios with climate data only)
@@ -608,15 +743,26 @@ run_power_world <- run_fossil_side |>
   ) |>
   group_by(run_id, side, ssp, side_share, fossil_index) |>
   summarise(
-    scen_lo = if (any(scen_index <= fossil_index)) scen_id[scen_index <= fossil_index][which.max(scen_index[scen_index <= fossil_index])] else scen_id[which.min(scen_index)],
-    scen_hi = if (any(scen_index >= fossil_index)) scen_id[scen_index >= fossil_index][which.min(scen_index[scen_index >= fossil_index])] else scen_id[which.max(scen_index)],
+    scen_lo = if (any(scen_index <= fossil_index)) {
+      scen_id[scen_index <= fossil_index][which.max(scen_index[scen_index <= fossil_index])]
+    } else {
+      scen_id[which.min(scen_index)]
+    },
+    scen_hi = if (any(scen_index >= fossil_index)) {
+      scen_id[scen_index >= fossil_index][which.min(scen_index[scen_index >= fossil_index])]
+    } else {
+      scen_id[which.max(scen_index)]
+    },
     idx_lo = scen_index[scen_id == scen_lo],
     idx_hi = scen_index[scen_id == scen_hi],
     t_lo = t_2060[scen_id == scen_lo],
     t_hi = t_2060[scen_id == scen_hi],
     .groups = "drop"
   ) |>
-  mutate(w_hi = if_else(idx_hi > idx_lo, (fossil_index - idx_lo) / (idx_hi - idx_lo), 0), t_side = t_lo + w_hi * (t_hi - t_lo))
+  mutate(
+    w_hi = if_else(idx_hi > idx_lo, (fossil_index - idx_lo) / (idx_hi - idx_lo), 0),
+    t_side = t_lo + w_hi * (t_hi - t_lo)
+  )
 
 run_power_link <- run_power_world |>
   group_by(run_id) |>
@@ -625,7 +771,8 @@ stopifnot(nrow(run_power_link) == N_RUNS)
 
 cat(
   "  Power bracket: share of run x region x SSP cells clamped at the scenario range:",
-  round(mean(run_power_bracket$scen_lo == run_power_bracket$scen_hi), 3), "\n"
+  round(mean(run_power_bracket$scen_lo == run_power_bracket$scen_hi), 3),
+  "\n"
 )
 
 # -- Global scalar parameters (semi-uniform around the central value) ---------
@@ -643,8 +790,7 @@ param_draws <- mc_input_matrix |>
   arrange(run_id)
 
 # -- Recycling endpoints + trajectories (convergence with smoothstep ramp) -----
-recyc_conv_yr <- param_draws |>
-  transmute(run_id, recyc_convergence_yr = as.integer(round(recyc_convergence_yr)))
+recyc_conv_yr <- param_draws |> transmute(run_id, recyc_convergence_yr = as.integer(round(recyc_convergence_yr)))
 
 # Endpoint rate = the run's sampled global value (recycling_rate_fe,
 # recycling_rate_nonfe, downcycling), same for all regions (SSP-independent).
@@ -661,8 +807,7 @@ recyc_conv_yr <- param_draws |>
 # belong in a waste-based recycling rate; this model makes no trade
 # assumptions, so that anchor has been dropped.)
 make_recycling_traj <- function(recycling_now, G_col) {
-  G_df <- param_draws |>
-    dplyr::select(run_id, G = all_of(G_col))
+  G_df <- param_draws |> dplyr::select(run_id, G = all_of(G_col))
   recycling_now <- recycling_now |> mutate(anchor_2024 = rate_now)
   ep <- recycling_now |>
     tidyr::crossing(run_id = seq_len(N_RUNS)) |>
@@ -716,8 +861,7 @@ lifetime_by_run <- split(lifetime_dr, lifetime_dr$run_id)
 GRADE_ORE_FE_NOW <- GRADE_ORE_FE_2024 # Scripts/00-CommonParameters.R
 GRADE_ORE_NONFE_NOW <- GRADE_ORE_NONFE_2024
 
-grade_params <- param_draws |>
-  dplyr::select(run_id, grade_ore_fe, grade_ore_nonfe)
+grade_params <- param_draws |> dplyr::select(run_id, grade_ore_fe, grade_ore_nonfe)
 grade_by_run <- split(grade_params, grade_params$run_id)
 
 # -- Secondary room parameters (non-metallic minerals) ---------------------------
@@ -753,10 +897,8 @@ run_one <- function(i) {
   # Continuous SSP blend: convex combination of the two bracketing SSPs'
   # region x year matrices -- same bracket and share for population and GDP
   # per capita (and for the flow-intensity bounds, see build_endpoints).
-  pop_i <- ssp_share_lo_vec[i] * pop_mat[[ssp_lo_vec[i]]] +
-    (1 - ssp_share_lo_vec[i]) * pop_mat[[ssp_hi_vec[i]]]
-  gdppc_i <- ssp_share_lo_vec[i] * gdppc_mat[[ssp_lo_vec[i]]] +
-    (1 - ssp_share_lo_vec[i]) * gdppc_mat[[ssp_hi_vec[i]]]
+  pop_i <- ssp_share_lo_vec[i] * pop_mat[[ssp_lo_vec[i]]] + (1 - ssp_share_lo_vec[i]) * pop_mat[[ssp_hi_vec[i]]]
+  gdppc_i <- ssp_share_lo_vec[i] * gdppc_mat[[ssp_lo_vec[i]]] + (1 - ssp_share_lo_vec[i]) * gdppc_mat[[ssp_hi_vec[i]]]
 
   yr_vec <- YEARS_DSM
   # alpha: 0->1 time weight, smoothstep-eased (zero slope at both 2024 and
@@ -795,8 +937,14 @@ run_one <- function(i) {
     }
     target_units <- sweep(f_rg, 2, pop_i[rg, ] * gdppc_i[rg, ], "*")
     # Storage: battery GWh = BATTERY_GWH_PER_GW x (PV + onshore + offshore GW)
-    target_units <- rbind(target_units, battery = BATTERY_GWH_PER_GW * colSums(target_units[BATTERY_SOURCE_TECHS, , drop = FALSE]))
-    anchor_units <- c(power_anchor_mat[rg, ], battery = BATTERY_GWH_PER_GW * sum(power_anchor_mat[rg, BATTERY_SOURCE_TECHS]))
+    target_units <- rbind(
+      target_units,
+      battery = BATTERY_GWH_PER_GW * colSums(target_units[BATTERY_SOURCE_TECHS, , drop = FALSE])
+    )
+    anchor_units <- c(
+      power_anchor_mat[rg, ],
+      battery = BATTERY_GWH_PER_GW * sum(power_anchor_mat[rg, BATTERY_SOURCE_TECHS])
+    )
 
     for (uk in rownames(target_units)) {
       lc <- POWER_LIFE_CLASSES[POWER_LIFE_CLASSES$sub_use == POWER_UNIT_CLASS[[uk]], ]
@@ -1008,7 +1156,17 @@ run_one <- function(i) {
     # Power-sector end uses (built above) join the same end-of-life pool
     pw_g <- pw_i[pw_i$material_group == if (mat_label == "Metal_Fe") "metal_fe" else "metal_nonfe", ]
     if (nrow(pw_g) > 0) {
-      sr_rows[[length(sr_rows) + 1L]] <- pw_g[, c("region", "sub_use", "year", "total_stock_Mt", "new_additions_Mt", "replacement_Mt", "production_Mt", "waste_Mt", "target_stock_Mt")]
+      sr_rows[[length(sr_rows) + 1L]] <- pw_g[, c(
+        "region",
+        "sub_use",
+        "year",
+        "total_stock_Mt",
+        "new_additions_Mt",
+        "replacement_Mt",
+        "production_Mt",
+        "waste_Mt",
+        "target_stock_Mt"
+      )]
     }
     if (length(sr_rows) == 0) {
       return(NULL)
@@ -1133,7 +1291,18 @@ run_one <- function(i) {
   # Power-sector minerals join the same downcycling cascade
   pw_nm <- pw_i[pw_i$material_group == "nonmetallic_minerals", ]
   if (nrow(pw_nm) > 0) {
-    nm_rows[[length(nm_rows) + 1L]] <- pw_nm[, c("region", "sub_use", "super_key", "year", "total_stock_Mt", "new_additions_Mt", "replacement_Mt", "production_Mt", "waste_Mt", "target_stock_Mt")]
+    nm_rows[[length(nm_rows) + 1L]] <- pw_nm[, c(
+      "region",
+      "sub_use",
+      "super_key",
+      "year",
+      "total_stock_Mt",
+      "new_additions_Mt",
+      "replacement_Mt",
+      "production_Mt",
+      "waste_Mt",
+      "target_stock_Mt"
+    )]
   }
 
   if (length(nm_rows) > 0) {
@@ -1193,11 +1362,12 @@ run_one <- function(i) {
 
   out <- bind_rows(out_list)
 
-  # Continuous SSP blend used by this run (replaces the discrete ssp_label) --
-  # exact reconstruction of pop_i/gdppc_i requires only these three values.
+  # SSP blend used by this run -- exact reconstruction of pop_i/gdppc_i
+  # requires only the first three values; ssp_label = closest SSP (STEP 4)
   out$ssp_lo <- ssp_lo_vec[i]
   out$ssp_hi <- ssp_hi_vec[i]
   out$ssp_share_lo <- ssp_share_lo_vec[i]
+  out$ssp_label <- ssp_label_vec[i]
 
   # Per-run physical-sanity flags (kept, not filtered) -> screen pathological
   # runs downstream before SHAP/Sobol rather than letting them contaminate.
@@ -1302,7 +1472,10 @@ print(
 cat("\n  [Check 2] Power-sector share of world in-use stock (p05 / median / p95 across runs)\n")
 print(
   results |>
-    filter(year %in% c(DSM_START, FORECAST_END), material_group %in% c("metal_fe", "metal_nonfe", "nonmetallic_minerals")) |>
+    filter(
+      year %in% c(DSM_START, FORECAST_END),
+      material_group %in% c("metal_fe", "metal_nonfe", "nonmetallic_minerals")
+    ) |>
     group_by(run_id, year, material_group) |>
     summarise(share = sum(in_use_stock_Mt[material_key %in% POWER_LABELS]) / sum(in_use_stock_Mt), .groups = "drop") |>
     group_by(year, material_group) |>
@@ -1319,9 +1492,20 @@ print(
 cum_power_inflow <- power_materials |>
   group_by(run_id, material_group) |>
   summarise(cum_inflow_Mt = sum(total_inflow_Mt), .groups = "drop") |>
-  bind_rows(power_materials |> group_by(run_id) |> summarise(cum_inflow_Mt = sum(total_inflow_Mt), .groups = "drop") |> mutate(material_group = "all")) |>
+  bind_rows(
+    power_materials |>
+      group_by(run_id) |>
+      summarise(cum_inflow_Mt = sum(total_inflow_Mt), .groups = "drop") |>
+      mutate(material_group = "all")
+  ) |>
   inner_join(run_power_link, by = "run_id")
-cat("\n  [Check 3] Correlation across runs: world fossil index vs cumulative", DSM_START, "-", FORECAST_END, "power-sector inflow (expected < 0)\n")
+cat(
+  "\n  [Check 3] Correlation across runs: world fossil index vs cumulative",
+  DSM_START,
+  "-",
+  FORECAST_END,
+  "power-sector inflow (expected < 0)\n"
+)
 print(
   cum_power_inflow |>
     group_by(material_group) |>
@@ -1333,9 +1517,15 @@ print(
     as.data.frame()
 )
 cat(
-  "  Run", FORECAST_END, "warming (bracket + SSP blend):", round(min(run_power_link$t_2060), 2), "-",
-  round(max(run_power_link$t_2060), 2), "°C | cor(fossil index, warming):",
-  round(cor(run_power_link$fossil_index_world, run_power_link$t_2060), 3), "\n"
+  "  Run",
+  FORECAST_END,
+  "warming (bracket + SSP blend):",
+  round(min(run_power_link$t_2060), 2),
+  "-",
+  round(max(run_power_link$t_2060), 2),
+  "°C | cor(fossil index, warming):",
+  round(cor(run_power_link$fossil_index_world, run_power_link$t_2060), 3),
+  "\n"
 )
 
 # Check 4: no negative stocks
@@ -1384,10 +1574,12 @@ hist_flows <- readr::read_csv("Parameters/Intermediate/flow_trajectory_subenduse
     room = demand *
       dplyr::case_when(
         is_metal ~ 1,
-        sub_use %in% c("residential", "non_residential") ~
-          MAX_SECONDARY_BUILD_CIVIL_CENTRAL * SHARE_CONCRETE_BUILDINGS_CENTRAL * SHARE_AGG_CONCRETE_CENTRAL,
-        sub_use == "civil_engineering" ~
-          MAX_SECONDARY_BUILD_CIVIL_CENTRAL * SHARE_CONCRETE_CIVIL_CENTRAL * SHARE_AGG_CONCRETE_CENTRAL,
+        sub_use %in% c("residential", "non_residential") ~ MAX_SECONDARY_BUILD_CIVIL_CENTRAL *
+          SHARE_CONCRETE_BUILDINGS_CENTRAL *
+          SHARE_AGG_CONCRETE_CENTRAL,
+        sub_use == "civil_engineering" ~ MAX_SECONDARY_BUILD_CIVIL_CENTRAL *
+          SHARE_CONCRETE_CIVIL_CENTRAL *
+          SHARE_AGG_CONCRETE_CENTRAL,
         sub_use == "roads" ~ MAX_SECONDARY_ROADS_CENTRAL * SHARE_GRANULAR_ROAD_CENTRAL,
         TRUE ~ 0
       )
@@ -1407,10 +1599,7 @@ hist_flows_model_basis <- hist_flows |>
     primary_Mt = eol_hist$primary,
     surplus_Mt = eol_hist$surplus,
     not_recovered_Mt = eol_hist$not_recovered,
-    dplyr::across(
-      c(inflow_Mt, outflow_Mt, secondary_Mt, primary_Mt, surplus_Mt, not_recovered_Mt),
-      \(x) x / grade
-    ) # ore-equivalent for metals
+    dplyr::across(c(inflow_Mt, outflow_Mt, secondary_Mt, primary_Mt, surplus_Mt, not_recovered_Mt), \(x) x / grade) # ore-equivalent for metals
   ) |>
   dplyr::select(
     region,

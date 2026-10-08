@@ -353,6 +353,21 @@ power_hist_mg <- power_hist_region |>
   left_join(gdp_world_hist, by = "year") |>
   filter(!is.na(GDP_2015USD)) |>
   mutate(end_use_label = "Power sector", mg = stock_Mt * 1e9 / GDP_2015USD)
+
+# EIA starts in 1980: S/G extended back to 1970 (display only) with the average
+# annual change over 1980-1990, linear from the 1980 value (floored at 0)
+POWER_BACKCAST_FROM <- 1970L
+power_slope <- power_hist_mg |>
+  group_by(is_metal) |>
+  summarise(mg_1980 = mg[year == 1980L], slope = (mg[year == 1990L] - mg[year == 1980L]) / 10, .groups = "drop")
+power_hist_mg <- bind_rows(
+  power_slope |>
+    tidyr::crossing(year = seq(POWER_BACKCAST_FROM, 1979L)) |>
+    transmute(year, is_metal, end_use_label = "Power sector", mg = pmax(0, mg_1980 - slope * (1980L - year))),
+  power_hist_mg
+) |>
+  arrange(is_metal, year)
+
 power_hist_metal <- power_hist_mg |> filter(is_metal)
 power_hist_nonmet <- power_hist_mg |> filter(!is_metal)
 
@@ -446,6 +461,29 @@ stock_env <- results |>
   group_by(run_id, year) |>
   summarise(stock_Gt = sum(in_use_stock_Mt, na.rm = TRUE) / 1e6, .groups = "drop") |>
   env_quantiles("stock_Gt", "year")
+
+# Panel g: per-run total material consumption growth 2025 -> PROJ_END (ratio
+# and %/yr); median and 90% interval (p05-p95) across runs
+dmc_growth_g <- results |>
+  filter(year %in% c(2025L, PROJ_END)) |>
+  group_by(run_id, year) |>
+  summarise(DMC_Gt = sum(primary_consumption_Mt, na.rm = TRUE) / 1e3, .groups = "drop") |>
+  tidyr::pivot_wider(names_from = year, values_from = DMC_Gt, names_prefix = "M") |>
+  mutate(
+    ratio = .data[[paste0("M", PROJ_END)]] / M2025,
+    cagr = 100 * (ratio^(1 / (PROJ_END - 2025L)) - 1)
+  )
+cat("  Panel g -- total material consumption growth 2025 ->", PROJ_END, "across runs:\n")
+print(
+  tibble::tibble(
+    stat = c("p05", "median", "p95"),
+    Gt_2025 = round(quantile(dmc_growth_g$M2025, c(0.05, 0.5, 0.95), names = FALSE), 1),
+    Gt_end = round(quantile(dmc_growth_g[[paste0("M", PROJ_END)]], c(0.05, 0.5, 0.95), names = FALSE), 1),
+    ratio = round(quantile(dmc_growth_g$ratio, c(0.05, 0.5, 0.95), names = FALSE), 2),
+    pct_yr = round(quantile(dmc_growth_g$cagr, c(0.05, 0.5, 0.95), names = FALSE), 2)
+  ) |>
+    as.data.frame()
+)
 
 
 # ── SECTION F: Historical stacked data for panels g/h -----------------------
@@ -1079,7 +1117,7 @@ p5 <- ggplot() +
   scale_colour_manual(values = PALETTE_SUBENDUSE, guide = "none") +
   scale_fill_manual(values = PALETTE_SUBENDUSE, guide = "none") +
   panel_tag("d", side = "right") +
-  labs(x = "", y = "Stock per GDP (kg/$)", title = "S/G Metal ores") +
+  labs(x = "", y = "Metal stock per GDP (kg metal/$)", title = "S/G Metals") + # stock is metal mass, not ore
   theme_pb_large() +
   FONT_BUMP
 

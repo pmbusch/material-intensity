@@ -1,6 +1,6 @@
 ## Figure 4 - Climate.R  -> Figures/Fig4 - Climate.png (MAIN Figure 4)
 ##                         + Figures/Supporting-Figures/S23_Climate_Percentiles.png
-## Runs assigned to their dominant SSP; SSP4 is not sampled by the MC (SSP_SAMPLED).
+## Runs assigned to their SSP label (closest world GDP/cap growth); SSP4 is not sampled by the MC (SSP_SAMPLED).
 ##   Fig4 - Climate, one column, three panels:
 ##     a) material vs. GDP growth (Figure5_Scatter.csv), margins: material density
 ##        (top), GDP histogram (right)
@@ -38,7 +38,7 @@ TEMP_VARS <- c(
   "Climate Assessment|Surface Temperature (GSAT)|67th Percentile [MAGICC v7.6.0a3]" = "t_hi"
 )
 TEMP_MEDIAN_VAR <- "Climate Assessment|Surface Temperature (GSAT)|Median [MAGICC v7.6.0a3]"
-TEMP_TITLE <- paste0("Temperature in ", FIG_END, " (relative to 1850–1900)")
+TEMP_TITLE <- paste0("Temperature change ", FIG_END, " (vs. 1850–1900)")
 LABEL_RIGHT <- "SSP5" # SSP label placed right of its ridge (avoids overlap with SSP3)
 
 # Right-margin bars: full 2060 median-temperature range across each SSP's scenarios
@@ -71,13 +71,10 @@ MAT_LEVELS <- c("Non-metallic minerals", "Metal ores", "Fossil fuels", "Biomass"
 # Annual world primary consumption per run, year and material group (summed over regions)
 mc_annual <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
   dplyr::filter(year >= FIG_START, year <= FIG_END) |>
-  dplyr::group_by(run_id, year, material_group, ssp_lo, ssp_hi, ssp_share_lo) |>
+  dplyr::group_by(run_id, year, material_group, ssp = ssp_label) |> # SSP label: closest world GDP/cap growth
   dplyr::summarise(mass_Mt = sum(primary_consumption_Mt, na.rm = TRUE), .groups = "drop") |>
   dplyr::collect() |>
-  dplyr::mutate(
-    ssp = dplyr::if_else(ssp_share_lo >= 0.5, ssp_lo, ssp_hi), # dominant SSP of the blend
-    material = unname(MATERIAL_MAP[material_group])
-  )
+  dplyr::mutate(material = unname(MATERIAL_MAP[material_group]))
 stopifnot(!anyNA(mc_annual$material))
 
 clim_raw <- readr::read_csv(CLIMATE_FILE, col_types = readr::cols(.default = "c")) |>
@@ -249,7 +246,7 @@ for (yv in c("t_med", "t_p33", "t_p67")) {
   scale_x_continuous(labels = scales::label_comma()) +
   scale_y_continuous(breaks = Y_BREAKS_MAP, labels = Y_LABELS_MAP) +
   coord_cartesian(xlim = X_LIM_MAP, ylim = Y_LIM_MAP, expand = FALSE, clip = "off") +
-  labs(x = paste0("Cumulative material use (", FIG_START, "–", FIG_END, ", Gt)"), y = TEMP_TITLE) +
+  labs(x = paste0("Cumulative material use ", FIG_START, "–", FIG_END, " (Gt)"), y = TEMP_TITLE) +
   theme_pb_small() +
   theme(plot.margin = margin(5.5, 8, 5.5, 5.5))
 }
@@ -328,7 +325,7 @@ p_comp <- ggplot(comp_df, aes(x = share, y = ssp, fill = material)) +
 p4a_main <- map_panels$t_med +
   annotate("text", x = X_LIM_MAP[1], y = map_ylim$t_med[2], label = "b", fontface = "bold", hjust = -0.4, vjust = 1.3, size = pb_annot_size("small", 10)) +
   labs(title = "Material use & Climate change") +
-  theme(plot.margin = margin(t = 10, r = -2, b = 4, l = 4, unit = "pt"))
+  theme(plot.margin = margin(t = 10, r = 0, b = 4, l = 4, unit = "pt")) # r = 0: margin flush on the box
 
 # Temperature margin: Paris levels as dashed reference lines. Each SSP's curve
 # scaled to its own peak (SSP5's narrow spread would otherwise flatten the
@@ -340,9 +337,9 @@ p4a_right <- ggplot(mapped_df, aes(x = t_med)) +
   geom_vline(xintercept = paris_in, linetype = "dashed", colour = "grey20", linewidth = 0.4) +
   annotate("text", x = paris_in, y = Inf, label = paste0(sprintf("%.1f", paris_in), "°C"), hjust = -0.1, vjust = -0.3, size = pb_annot_size("small", 7), colour = "grey20") +
   scale_colour_manual(values = SSP_COLORS, guide = "none") +
-  coord_flip(xlim = map_ylim$t_med, expand = FALSE, clip = "off") +
+  coord_flip(xlim = map_ylim$t_med, ylim = c(0, NA), expand = FALSE, clip = "off") +
   theme_void() +
-  theme(plot.margin = margin(t = -2, r = 22, b = 4, l = -14, unit = "pt")) # r: room for the °C labels
+  theme(plot.margin = margin(t = 0, r = 22, b = 4, l = 0, unit = "pt")) # r: room for the °C labels; l = 0: flush on the box
 
 
 # Top panel (a): material vs. GDP growth (moved from Figure 5) ------------------------
@@ -407,19 +404,22 @@ p4b_main <- ggplot(scatter_df, aes(x = mat_cagr, y = gdp_cagr)) +
   ) +
   labs(x = paste0("Material consumption annual growth ", FIG_START, "–", FIG_END), y = paste0("GDP annual growth ", FIG_START, "–", FIG_END)) +
   theme_pb_small() +
-  theme(plot.margin = margin(t = -2, r = -2, b = 4, l = 4, unit = "pt"))
+  theme(plot.margin = margin(t = 0, r = 0, b = 4, l = 4, unit = "pt")) # t, r = 0: margins flush on the box
 
 # Panel a margins: densities per SSP over each SSP's own data range (truncated),
 # closed by a vertical drop line at both ends so the cut reads as a bound of the
-# runs, not a curve fading out. GDP growth is bounded by construction: runs with
-# ssp_u in the outer 1/8 of [0,1] are pure SSP3 / SSP5 (02-RunSimulations.R).
+# runs, not a curve fading out. GDP growth is bounded by construction: each
+# run's world GDP/cap growth lies between the lowest- and highest-growth SSP
+# (02-RunSimulations.R STEP 4).
 marg_a_rows <- list()
 for (s in unique(scatter_df$ssp)) {
   for (v in c("mat_cagr", "gdp_cagr")) {
     vals <- scatter_df[[v]][scatter_df$ssp == s]
     d <- stats::density(vals, from = min(vals), to = max(vals), n = 256)
-    # material: count-scaled (as before); GDP: each SSP scaled to its own peak
-    dens_y <- if (v == "mat_cagr") d$y * length(vals) else d$y / max(d$y)
+    # material: count-scaled (as before); GDP: each SSP's curve shifted so its
+    # lowest point sits on the box edge (truncated, fairly flat densities would
+    # otherwise float off the box), then scaled to its own peak
+    dens_y <- if (v == "mat_cagr") d$y * length(vals) else (d$y - min(d$y)) / (max(d$y) - min(d$y))
     marg_a_rows[[paste(s, v)]] <- tibble::tibble(ssp = s, var = v, x = d$x, y = dens_y)
   }
 }
@@ -439,40 +439,34 @@ p4b_top <- ggplot(marg_a |> dplyr::filter(var == "mat_cagr"), aes(x = x, y = y, 
   coord_cartesian(xlim = x_range_b, expand = FALSE, clip = "off") +
   labs(title = "Material use & GDP") +
   theme_void() +
-  theme(plot.title = theme_pb_small()$plot.title, plot.margin = margin(t = 2, r = -2, b = -5.5, l = 4, unit = "pt"))
+  theme(plot.title = theme_pb_small()$plot.title, plot.margin = margin(t = 2, r = 0, b = 0, l = 4, unit = "pt")) # b = 0: flush on the box
 
-# GDP-growth margin (right): 2%/yr reference line
+# GDP-growth margin (right): 2%/yr reference line; no end drop lines
 p4b_right <- ggplot(marg_a |> dplyr::filter(var == "gdp_cagr"), aes(x = x, y = y, colour = ssp)) +
   geom_line(linewidth = 0.4) +
-  geom_segment(data = marg_a_ends |> dplyr::filter(var == "gdp_cagr"), aes(xend = x, yend = 0), linewidth = 0.4) +
   geom_vline(xintercept = 0.02, linetype = "dashed", colour = "grey20", linewidth = 0.4) +
   annotate("text", x = 0.02, y = Inf, label = "2%", hjust = -0.1, vjust = -0.3, size = pb_annot_size("small", 7), colour = "grey20") +
   scale_colour_manual(values = SSP_COLORS, guide = "none") +
-  coord_flip(xlim = y_range_b, expand = FALSE, clip = "off") +
+  coord_flip(xlim = y_range_b, ylim = c(0, NA), expand = FALSE, clip = "off") +
   theme_void() +
-  theme(plot.margin = margin(t = -2, r = 22, b = 4, l = -14, unit = "pt"))
-
-
-# Bottom panel (c): cumulative material composition per SSP (former inset) ----------
-
-p4c <- p_comp +
-  labs(tag = "c") +
-  theme(plot.tag = element_text(face = "bold", size = 10), plot.tag.position = c(0, 1), plot.margin = margin(9, 3, 22, 4))
+  theme(plot.margin = margin(t = 0, r = 22, b = 4, l = 0, unit = "pt")) # l = 0: flush on the box
 
 
 # Assemble and save Figure 4 ------------------------------------------------------
 
-# One aligned grid: a = material use & GDP, b = material use & climate change,
-# c = material composition (short). Absolute sizes so a and b are equal squares.
+# One aligned grid: a = material use & GDP, b = material use & climate change
+# (material composition per SSP is the separate SI figure S24 below).
+# Absolute sizes so a and b are equal squares.
 BOX_CM <- 5.4 # side of panels a and b
 fig4 <- patchwork::wrap_plots(
-  p4b_top, patchwork::plot_spacer(), p4b_main, p4b_right,
-  p4a_main, p4a_right, p4c, patchwork::plot_spacer(),
-  design = "AB\nCD\nEF\nGH",
-  widths = grid::unit(c(BOX_CM, 0.8), "cm"), heights = grid::unit(c(0.9, BOX_CM, BOX_CM, 1.9), "cm")
+  # spacer margin 0: its default 5.5 pt would open a gap between the boxes and their margins
+  p4b_top, patchwork::plot_spacer() + theme(plot.margin = margin(0, 0, 0, 0)), p4b_main, p4b_right,
+  p4a_main, p4a_right,
+  design = "AB\nCD\nEF",
+  widths = grid::unit(c(BOX_CM, 0.8), "cm"), heights = grid::unit(c(0.9, BOX_CM, BOX_CM), "cm")
 )
-ggsave("Figures/Fig4 - Climate.png", fig4, units = "cm", dpi = 600, width = 8.7, height = 18.6, bg = "white")
-ggsave("Figures/SVG/Fig4 - Climate.svg", fig4, units = "cm", width = 8.7, height = 18.6, bg = "transparent")
+ggsave("Figures/Fig4 - Climate.png", fig4, units = "cm", dpi = 600, width = 8.7, height = 16.4, bg = "white")
+ggsave("Figures/SVG/Fig4 - Climate.svg", fig4, units = "cm", width = 8.7, height = 16.4, bg = "transparent")
 clean_svg("Figures/SVG/Fig4 - Climate.svg")
 
 
@@ -489,7 +483,54 @@ clean_svg("Figures/SVG/Supporting-Figures/S23_Climate_Percentiles.svg")
 
 print(comp_df |> dplyr::select(ssp, material, share) |> tidyr::pivot_wider(names_from = material, values_from = share))
 
-cat("  Saved: Figures/Fig4 - Climate.png, Supporting-Figures/S23_Climate_Percentiles.png (+ SVG)\n")
+
+# SI S24: cumulative material composition per SSP (former Figure 4 panel c) ------
+# One panel per material group (columns), one bar per SSP (rows): pooled share
+# of FIG_START-FIG_END cumulative use (= former panel c); whisker below each bar =
+# 95% range (2.5th-97.5th percentile) of the per-run share within that SSP.
+S24_BAR <- c(lo = -0.05, hi = 0.35) # bar extent around the row position (row units)
+S24_WHISK_Y <- -0.2 # whisker offset below the row position
+S24_CAP <- 0.07 # whisker end-cap half height
+
+s24_df <- cum_mat |>
+  dplyr::group_by(ssp, material) |>
+  dplyr::summarise(q_lo = stats::quantile(share, 0.025), q_hi = stats::quantile(share, 0.975), .groups = "drop") |>
+  dplyr::inner_join(comp_df |> dplyr::transmute(ssp = as.character(ssp), material = as.character(material), share), by = c("ssp", "material")) |>
+  dplyr::mutate(
+    y = match(ssp, rev(SSP_ORDER_INSET)), # SSP5 on top
+    material = factor(material, levels = MAT_ORDER_INSET)
+  )
+s24_title <- tibble::tibble(material = factor(MAT_ORDER_INSET, levels = MAT_ORDER_INSET))
+
+ggplot(s24_df) +
+  geom_rect(aes(xmin = 0, xmax = share, ymin = y + S24_BAR[["lo"]], ymax = y + S24_BAR[["hi"]], fill = material), colour = "black", linewidth = 0.15) +
+  geom_segment(aes(x = q_lo, xend = q_hi, y = y + S24_WHISK_Y, yend = y + S24_WHISK_Y), linewidth = 0.4) +
+  geom_segment(aes(x = q_lo, xend = q_lo, y = y + S24_WHISK_Y - S24_CAP, yend = y + S24_WHISK_Y + S24_CAP), linewidth = 0.4) +
+  geom_segment(aes(x = q_hi, xend = q_hi, y = y + S24_WHISK_Y - S24_CAP, yend = y + S24_WHISK_Y + S24_CAP), linewidth = 0.4) +
+  geom_text(aes(x = share, y = y + (S24_BAR[["lo"]] + S24_BAR[["hi"]]) / 2, label = paste0(round(share * 100), "%")), hjust = -0.2, size = pb_annot_size("small", 7)) +
+  # material name as the panel title, in its colour
+  geom_text(data = s24_title, aes(x = 0, y = n_ssp_comp + 0.8, label = material, colour = material), hjust = 0, fontface = "bold", size = pb_annot_size("small", 7)) +
+  scale_fill_manual(values = PALETTE_MATERIAL_GROUPS, guide = "none") +
+  scale_colour_manual(values = PALETTE_MATERIAL_GROUPS, guide = "none") +
+  scale_x_continuous(labels = scales::label_percent(accuracy = 1), expand = expansion(mult = c(0, 0.3))) +
+  scale_y_continuous(breaks = seq_len(n_ssp_comp), labels = rev(SSP_ORDER_INSET), limits = c(0.6, n_ssp_comp + 1), expand = c(0, 0)) +
+  facet_wrap(~material, nrow = 1, scales = "free_x") +
+  coord_cartesian(clip = "off") +
+  labs(x = paste0("Share of cumulative material use ", FIG_START, "–", FIG_END), y = NULL) +
+  theme_pb_small() +
+  theme(
+    panel.border = element_blank(), panel.background = element_blank(), panel.grid = element_blank(),
+    strip.text = element_blank(), strip.background = element_blank(),
+    axis.line.x = element_line(colour = "black", linewidth = 0.3), axis.line.y = element_blank(), axis.ticks.y = element_blank(),
+    axis.text.y = element_text(face = "bold", colour = unname(SSP_COLORS[rev(SSP_ORDER_INSET)])),
+    panel.spacing.x = unit(5, "pt")
+  )
+ggsave("Figures/Supporting-Figures/S24_MaterialShare_SSP.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 17, height = 6.5, bg = "white")
+ggsave("Figures/SVG/Supporting-Figures/S24_MaterialShare_SSP.svg", ggplot2::last_plot(), units = "cm", width = 17, height = 6.5, bg = "transparent")
+clean_svg("Figures/SVG/Supporting-Figures/S24_MaterialShare_SSP.svg")
+print(s24_df |> dplyr::select(ssp, material, share, q_lo, q_hi) |> dplyr::mutate(dplyr::across(c(share, q_lo, q_hi), \(v) round(100 * v, 1))) |> as.data.frame())
+
+cat("  Saved: Figures/Fig4 - Climate.png, Supporting-Figures/S23_Climate_Percentiles.png, S24_MaterialShare_SSP.png (+ SVG)\n")
 cat("=== Figure 6 done ===\n")
 
 # EoF
