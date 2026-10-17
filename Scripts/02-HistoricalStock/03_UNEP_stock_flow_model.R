@@ -10,7 +10,8 @@
 ## UNEP DMC. Non-metallic minerals are NOT corrected.
 ##
 ## Input:
-##   Parameters/Intermediate/UNEP_flows_subenduse.parquet  -- from Script 01b (8 sub-uses)
+##   Parameters/Intermediate/UNEP_flows_subenduse.csv  -- from Script 01b (8 sub-uses,
+##       material-specific split; zero cells such as metal in roads are absent)
 ##   Parameters/UNEP-Materials/materials_region_DMC.csv                   -- UNEP raw DMC for Fe/NonFe split
 ##   Parameters/MISO-Stock/MISO_stock_regional.csv               -- calibration anchor (super-cat level)
 ##   Parameters/MISO-Stock/metal_grade_ore.csv                   -- ore→metal conversion factor g (to 2016)

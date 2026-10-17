@@ -1339,7 +1339,8 @@ brks_a <- scales::extended_breaks(n = 6)(range(grid_a_df$z_var))
 if (!0 %in% brks_a) {
   brks_a <- sort(c(brks_a, 0))
 }
-brks_b <- scales::extended_breaks(n = 6)(range(grid_b_df$z_var))
+# Panel b: one isoline every 1 percentage point of growth
+brks_b <- seq(floor(min(grid_b_df$z_var) * 100), ceiling(max(grid_b_df$z_var) * 100)) / 100
 if (!0 %in% brks_b) {
   brks_b <- sort(c(brks_b, 0))
 }
@@ -1741,12 +1742,6 @@ p_a2 <- ggplot(panel_a_contour_df, aes(x = x_var, y = y_var)) +
     data = dplyr::filter(star_df, panel == "a"),
     aes(x = x_var, y = y_var), shape = "★", size = STAR_SIZE, colour = STAR_FILL, inherit.aes = FALSE
   ) +
-  geom_text(
-    data = dplyr::filter(star_df, panel == "a"),
-    aes(x = x_var, y = y_var, label = "Historical\n(2019-2024)"),
-    colour = "black", fontface = "bold", size = pb_annot_size("largeFont", pt = 11), vjust = -0.6, hjust = 0.5,
-    inherit.aes = FALSE
-  ) +
   annotate(
     "segment",
     x = x_disp_rng_a[1] + 0.15 * diff(x_disp_rng_a),
@@ -1820,6 +1815,13 @@ p_b2 <- ggplot(panel_b_contour_df, aes(x = x_var, y = y_var)) +
   geom_point(
     data = dplyr::filter(star_df, panel == "b"),
     aes(x = x_var, y = y_var), shape = "★", size = STAR_SIZE, colour = STAR_FILL, inherit.aes = FALSE
+  ) +
+  # "Historical" label above the star (moved here from panel a)
+  geom_text(
+    data = dplyr::filter(star_df, panel == "b"),
+    aes(x = x_var, y = y_var, label = "Historical\n(2019-2024)"),
+    colour = "black", fontface = "bold", size = pb_annot_size("largeFont", pt = 11), vjust = -0.6, hjust = 0.5,
+    inherit.aes = FALSE
   ) +
   FILL_SCALE_B +
   scale_x_continuous(labels = scales::percent_format(accuracy = 0.1)) +
@@ -2625,6 +2627,159 @@ p_nonmet_lt <- ggplot(panel_nonmet_lt_contour_df, aes(x = x_var, y = y_var)) +
     plot.title = element_text(colour = TITLE_COL_NONMET)
   )
 
+# Row 4 (SI only) -- recycling / downcycling vs stock intensity, panels m-p -----
+## X = 2060 in-use stock per $ GDP (kg/$), Y = the run's target recycling /
+## downcycling rate (same decoding as x_metals_recyc / x_minerals_downcyc),
+## fill + contour = that material's own total primary-consumption CAGR:
+##   m) Ferrous recycling vs Fe stock intensity        (z = Fe ore CAGR)
+##   n) Non-ferrous recycling vs non-Fe stock intensity (z = non-Fe ore CAGR)
+##   o) mean Fe/non-Fe recycling vs metal stock intensity (z = metal ores CAGR)
+##   p) downcycling vs mineral stock intensity          (z = minerals CAGR)
+## Same GAM/grid/contour recipe as every other panel, built in one loop over
+## the 4 panel specs. Star (real 2024 stock intensity, 2024 recovery rate) only
+## on o/p: no Fe- or non-Fe-specific 2024 recycling rate exists.
+
+recyc_fe_nonfe <- mc_input_matrix |>
+  dplyr::transmute(
+    run_id,
+    recycling_fe = dplyr::if_else(
+      recycling_rate_fe < 0.5,
+      RECYCLING_RATE_FE_MIN + 2 * recycling_rate_fe * (RECYCLING_RATE_FE_CENTRAL - RECYCLING_RATE_FE_MIN),
+      RECYCLING_RATE_FE_CENTRAL + 2 * (recycling_rate_fe - 0.5) * (RECYCLING_RATE_FE_MAX - RECYCLING_RATE_FE_CENTRAL)
+    ),
+    recycling_nonfe = dplyr::if_else(
+      recycling_rate_nonfe < 0.5,
+      RECYCLING_RATE_NONFE_MIN + 2 * recycling_rate_nonfe * (RECYCLING_RATE_NONFE_CENTRAL - RECYCLING_RATE_NONFE_MIN),
+      RECYCLING_RATE_NONFE_CENTRAL + 2 * (recycling_rate_nonfe - 0.5) * (RECYCLING_RATE_NONFE_MAX - RECYCLING_RATE_NONFE_CENTRAL)
+    )
+  )
+
+stock_int_by_metal <- results |>
+  dplyr::filter(year == FIG_YEAR, material_group %in% c("metal_fe", "metal_nonfe")) |>
+  dplyr::group_by(run_id, material_group) |>
+  dplyr::summarise(stock_Mt = sum(in_use_stock_Mt, na.rm = TRUE), .groups = "drop") |>
+  dplyr::inner_join(world_gdp_percap_target, by = "run_id") |>
+  dplyr::transmute(run_id, material_group, x = stock_Mt * 1e9 / (gdp_percap_usd * world_pop))
+
+row4_specs <- list(
+  list(
+    tag = "m", title = "Ferrous ores", title_col = TITLE_COL_FE, high = unname(PALETTE_MATERIALS["Ferrous ores"]),
+    x_lab = "Fe stock intensity (kg metal per $ GDP)", y_lab = "Ferrous recycling rate (%)", star = NULL,
+    df = stock_int_by_metal |>
+      dplyr::filter(material_group == "metal_fe") |>
+      dplyr::select(run_id, x_var = x) |>
+      dplyr::inner_join(recyc_fe_nonfe |> dplyr::select(run_id, y_var = recycling_fe), by = "run_id") |>
+      dplyr::inner_join(metal_fe_cagr, by = "run_id")
+  ),
+  list(
+    tag = "n", title = "Non-ferrous ores", title_col = TITLE_COL_NONFE, high = unname(PALETTE_MATERIALS["Non-ferrous ores"]),
+    x_lab = "Non-Fe stock intensity (kg metal per $ GDP)", y_lab = "Non-ferrous recycling rate (%)", star = NULL,
+    df = stock_int_by_metal |>
+      dplyr::filter(material_group == "metal_nonfe") |>
+      dplyr::select(run_id, x_var = x) |>
+      dplyr::inner_join(recyc_fe_nonfe |> dplyr::select(run_id, y_var = recycling_nonfe), by = "run_id") |>
+      dplyr::inner_join(metal_nonfe_cagr, by = "run_id")
+  ),
+  list(
+    tag = "o", title = "Metal ores", title_col = TITLE_COL_METAL, high = unname(PALETTE_MATERIAL_GROUPS["Metal ores"]),
+    x_lab = "Metal stock intensity (kg metal per $ GDP)", y_lab = RECYC_LAB,
+    star = tibble::tibble(x_var = metal_int_2024, y_var = recycling_world_2024),
+    df = x_metals_intensity |>
+      dplyr::select(run_id, x_var = x) |>
+      dplyr::inner_join(x_metals_recyc |> dplyr::select(run_id, y_var = x), by = "run_id") |>
+      dplyr::inner_join(growth_decoupling_total |> dplyr::filter(material == "Metal ores") |> dplyr::select(run_id, z_var = y), by = "run_id")
+  ),
+  list(
+    tag = "p", title = "Non-metallic minerals", title_col = TITLE_COL_NONMET, high = NONMET_FILL_HIGH,
+    x_lab = "Non-metallic minerals stock\nintensity (kg per $ GDP)", y_lab = DOWNCYC_LAB,
+    star = tibble::tibble(x_var = nonmet_int_2024, y_var = downcycling_world_2024),
+    df = x_minerals_intensity |>
+      dplyr::select(run_id, x_var = x) |>
+      dplyr::inner_join(x_minerals_downcyc |> dplyr::select(run_id, y_var = x), by = "run_id") |>
+      dplyr::inner_join(growth_decoupling_total |> dplyr::filter(material == "Non-metallic minerals") |> dplyr::select(run_id, z_var = y), by = "run_id")
+  )
+)
+
+p_row4 <- list()
+for (sp in row4_specs) {
+  df_r4 <- sp$df |> tidyr::drop_na(x_var, y_var, z_var)
+
+  # GAM fit + grid, clipped to the observed z range (same recipe as every panel)
+  gam_r4 <- mgcv::gam(z_var ~ te(x_var, y_var, k = GAM_SMOOTH_K), data = df_r4)
+  x_rng_r4 <- range(df_r4$x_var)
+  y_rng_r4 <- range(df_r4$y_var)
+  grid_r4 <- expand.grid(
+    x_var = seq(x_rng_r4[1] - 0.05 * diff(x_rng_r4), x_rng_r4[2] + 0.05 * diff(x_rng_r4), length.out = 100),
+    y_var = seq(y_rng_r4[1] - 0.05 * diff(y_rng_r4), y_rng_r4[2] + 0.05 * diff(y_rng_r4), length.out = 100)
+  )
+  grid_r4$z_var <- predict(gam_r4, newdata = grid_r4)
+  grid_r4$z_var <- pmin(pmax(grid_r4$z_var, min(df_r4$z_var)), max(df_r4$z_var))
+
+  brks_r4 <- scales::extended_breaks(n = 6)(range(grid_r4$z_var))
+  if (!0 %in% brks_r4) {
+    brks_r4 <- sort(c(brks_r4, 0))
+  }
+  z_lim_r4 <- max(abs(range(grid_r4$z_var)))
+  brks_legend_r4 <- scales::extended_breaks(n = 5)(c(-z_lim_r4, z_lim_r4))
+  if (!0 %in% brks_legend_r4) {
+    brks_legend_r4 <- sort(c(brks_legend_r4, 0))
+  }
+  lt_r4 <- legend_ticks(brks_legend_r4)
+  fill_scale_r4 <- if (USE_COMMON_FILL_SCALE) {
+    FILL_SCALE_COMMON
+  } else {
+    scale_fill_gradient2(
+      low = BLUE_SPECTRAL, mid = "white", high = sp$high, midpoint = 0,
+      limits = c(-z_lim_r4, z_lim_r4), breaks = lt_r4$breaks, labels = lt_r4$labels,
+      name = CONTOUR_FILL_NAME, guide = CONTOUR_FILL_GUIDE
+    )
+  }
+
+  x_disp_r4 <- range(c(x_rng_r4, sp$star$x_var))
+  y_disp_r4 <- range(c(y_rng_r4, sp$star$y_var))
+  star_r4 <- if (is.null(sp$star)) tibble::tibble(x_var = numeric(), y_var = numeric()) else sp$star
+
+  p_row4[[sp$tag]] <- ggplot(df_r4, aes(x = x_var, y = y_var)) +
+    geom_raster(data = grid_r4, aes(x = x_var, y = y_var, fill = z_var), inherit.aes = FALSE) +
+    MC_POINT_LAYER +
+    geomtextpath::geom_textcontour(
+      data = grid_r4,
+      aes(
+        x = x_var,
+        y = y_var,
+        z = z_var,
+        label = after_stat(ifelse(
+          level < 0,
+          paste0("−", sprintf("%.1f%%", abs(level * 100))),
+          paste0("+", sprintf("%.1f%%", level * 100))
+        )),
+        colour = after_stat(ifelse(level <= 0, "black", "white")),
+        linewidth = after_stat(ifelse(level == 0, CONTOUR_LINEWIDTH_ZERO, CONTOUR_LINEWIDTH))
+      ),
+      breaks = brks_r4,
+      straight = TRUE,
+      size = 2.4,
+      fontface = "bold",
+      hjust = 0.5,
+      show.legend = FALSE
+    ) +
+    scale_colour_identity() +
+    scale_linewidth_identity() +
+    geom_point(data = star_r4, aes(x = x_var, y = y_var), shape = "★", size = STAR_OUTLINE_SIZE, colour = "black", inherit.aes = FALSE) +
+    geom_point(data = star_r4, aes(x = x_var, y = y_var), shape = "★", size = STAR_SIZE, colour = STAR_FILL, inherit.aes = FALSE) +
+    fill_scale_r4 +
+    scale_x_continuous(labels = scales::label_number()) + # precision picked from the breaks (non-Fe ~0.04-0.07 needs 3 decimals)
+    scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+    labs(tag = sp$tag, title = sp$title, x = sp$x_lab, y = sp$y_lab) +
+    coord_cartesian(xlim = x_disp_r4, ylim = y_disp_r4, expand = FALSE) +
+    theme_pb_large() +
+    theme(
+      plot.tag = element_text(face = "bold"),
+      plot.tag.location = "panel",
+      plot.title = element_text(colour = sp$title_col)
+    )
+}
+
 # Assemble: 12 panels, 3 rows x 4 columns, row-major reading order a-l (see
 # tags set on each labs() call above); each contour panel keeps its OWN
 # Spectral-derived legend (guides are NOT collected). f/h are now
@@ -2647,6 +2802,9 @@ row_title_recycling <- ggplot() +
 row_title_stock <- ggplot() +
   theme_void() +
   annotate("text", x = 0, y = 0, label = "Stock detail", angle = 90, fontface = "bold", size = ROW_TITLE_SIZE)
+row_title_circ_stock <- ggplot() +
+  theme_void() +
+  annotate("text", x = 0, y = 0, label = "Circularity vs stock", angle = 90, fontface = "bold", size = ROW_TITLE_SIZE)
 
 ROW_WIDTHS <- c(0.12, 1, 1, 1, 1)
 fig_row1 <- (row_title_intensity + p_a2 + p_b2 + p_metals_int + p_nonmet_int) +
@@ -2655,8 +2813,10 @@ fig_row2 <- (row_title_recycling + p_c2 + p_metals_lt + p_d2 + p_nonmet_lt) +
   patchwork::plot_layout(nrow = 1, widths = ROW_WIDTHS)
 fig_row3 <- (row_title_stock + p_e_fe + p_e_nonfe + p_f_bldg + p_f_civil) +
   patchwork::plot_layout(nrow = 1, widths = ROW_WIDTHS)
+fig_row4 <- (row_title_circ_stock + p_row4$m + p_row4$n + p_row4$o + p_row4$p) +
+  patchwork::plot_layout(nrow = 1, widths = ROW_WIDTHS)
 
-fig_contour <- (fig_row1 / fig_row2 / fig_row3) &
+fig_contour <- (fig_row1 / fig_row2 / fig_row3 / fig_row4) &
   theme(
     legend.position = "right",
     axis.title = element_text(size = 11),
@@ -2694,8 +2854,8 @@ fig_main <- (p_a2 + p_b2 + p_metals_int + p_nonmet_int + p_c2 + p_d2_main) +
 if (GAM_SMOOTH_K == GAM_SMOOTH_K_DEFAULT) {
   fig3_si_png <- "Figures/Supporting-Figures/S17_GrowthDecoupling_Contours.png"
   fig3_si_svg <- "Figures/SVG/Supporting-Figures/S17_GrowthDecoupling_Contours.svg"
-  ggsave(fig3_si_png, fig_contour, units = "cm", dpi = 600, width = 8.7 * 4.12, height = 8.7 * 3)
-  ggsave(fig3_si_svg, fig_contour, units = "cm", width = 8.7 * 4.12, height = 8.7 * 3)
+  ggsave(fig3_si_png, fig_contour, units = "cm", dpi = 600, width = 8.7 * 4.12, height = 8.7 * 4) # 4 rows (row 4: circularity vs stock)
+  ggsave(fig3_si_svg, fig_contour, units = "cm", width = 8.7 * 4.12, height = 8.7 * 4)
   clean_svg(fig3_si_svg)
   cat("  Saved:", fig3_si_png, ",", fig3_si_svg, "\n")
   fig3_png <- "Figures/Fig3 - Contours-GrowthRate.png"
