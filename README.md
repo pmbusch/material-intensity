@@ -7,8 +7,8 @@ If you identify any error in the source code or have any further suggestions ple
 * **Inputs**: raw data inputs and assumption workbooks (see [Inputs/README.md](Inputs/README.md)).
 * **Parameters**: intermediate datasets produced by the scripts and consumed downstream (see [Parameters/README.md](Parameters/README.md)).
 * **Results**: Monte Carlo model outputs (`Results/MC/`).
-* **Figures**: main-text figures (`Figures/Fig1` to `Fig5`, `Table1_Results.html`). Running the pipeline also writes the supporting figures S01-S21 to `Figures/Supporting-Figures/` and SVG versions of all figures to `Figures/SVG/` (not tracked in git for now).
-* **Scripts**: all code, organised by pipeline stage. Each script starts with a description of its purpose.
+* **Figures**: main-text figures (`Figures/Fig1` to `Fig5`, `Table1_Results.html`). Running the pipeline also writes the supporting figures S01-S28 to `Figures/Supporting-Figures/` and SVG versions of all figures to `Figures/SVG/` (not tracked in git for now).
+* **Scripts**: all code, organised by pipeline stage. Each script starts with a description of its purpose. Each stage folder has a README documenting every script's steps, inputs and outputs (start at [Scripts/README.md](Scripts/README.md)).
 
 Folders or scripts prefixed `98` (exploratory) or `99` (deprecated), and `old/` folders, are not part of the main analysis and are not tracked in git.
 
@@ -24,7 +24,7 @@ Rscript Scripts/00-RunAll.R 22     # resume from script #22 of the list
 | Stage | Folder | What it does | Main outputs |
 |---|---|---|---|
 | 0 | `Scripts/00-*.R`, `00-Functions/` | Libraries, theme, palettes, shared constants, DSM functions | sourced by every script |
-| 1 | `01-PrepareData/` | Aggregate UNEP material flows, UN population, World Bank GDP and MISO2 stocks to regions | `Parameters/UNEP-Materials`, `UN-Population`, `Worldbank-GDP`, `MISO-Stock` |
+| 1 | `01-PrepareData/` | Aggregate UNEP material flows, UN population, World Bank GDP, MISO2 stocks and EIA power capacity to regions | `Parameters/UNEP-Materials`, `UN-Population`, `Worldbank-GDP`, `MISO-Stock`, `EIA-Capacity` |
 | 2 | `02-HistoricalStock/` | End-use split of DMC, ore-grade factor g, historical stock-flow model 1970-2024, secondary flows | `Parameters/Intermediate`, `Parameters/MISO-Stock` |
 | 3 | `03-SSP Trajectories/` | SSP population/GDP drivers and ScenarioMIP intensity ratios 2060/2025 | `Parameters/IIASA-Trajectories` |
 | 4 | `04-Simulation/` | Latin-hypercube sampling, power-sector inputs, Monte Carlo DSM runs, diagnostics, decoupling classification | `Parameters/Simulation`, `Results/MC` |
@@ -51,7 +51,7 @@ All model constants and Monte Carlo settings live in `Scripts/04-Simulation/00-P
 | Fig5 - Sensitivity | `Figure 5 - Sensitivity - PrepareData.R`, then `Figure 5 - Sensitivity.R` |
 | Table 1 | `Table 1 - Results.R` |
 
-Supporting figures S01-S21 are written by the scripts in `Scripts/05-Figures/Supporting-Figures/` and by the pipeline scripts in stages 2-3. The header of each script names the figures it writes.
+Supporting figures S01-S28 are written by the scripts in `Scripts/05-Figures/Supporting-Figures/` and by the pipeline scripts in stages 2-3. The header of each script names the figures it writes.
 
 # License
 This project is covered under the **MIT License**

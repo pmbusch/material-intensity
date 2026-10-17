@@ -12,13 +12,16 @@ All raw inputs sit in this folder, in the sub-folders listed below. Files under 
 | `MISO/miso2_global_data_v1.csv` | yes | MISO2 model data, https://zenodo.org/records/12794253 | `01-PrepareData/05_Aggregate_MISO.R` |
 | `MISO/SI_Wiedenhofer2024_globalStocks.xlsx` | yes | Supporting information of Wiedenhofer et al. (2024), https://onlinelibrary.wiley.com/doi/10.1111/jiec.13575 | `02-HistoricalStock/01b_UNEP_enduse_detail.R` |
 | `IIASA_SSP/ssp_basic_drivers_release_3.2_full.xlsx` | **no (60 MB)** | IIASA SSP Scenario Database v3.2, https://data.ece.iiasa.ac.at/ssp (Downloads > basic drivers release 3.2) | `03-SSP Trajectories/00_preprocess_ssp_drivers.R` |
-| `IIASA_SSP/2026-MIP-CMIP7/*.csv` (6 files) | yes | ScenarioMIP for CMIP7 IAM scenarios, IIASA ScenarioMIP Scenario Explorer, https://scenariomip.apps.ece.iiasa.ac.at/ | `03-SSP Trajectories/01_load_and_check.R`, `05_climate_figures.R`, `05-Figures/Figure 4 - Climate*.R` |
+| `IIASA_SSP/2026-MIP-CMIP7/*.csv` (6 files) | yes | ScenarioMIP for CMIP7 IAM scenarios, IIASA ScenarioMIP Scenario Explorer, https://scenariomip.apps.ece.iiasa.ac.at/ | `03-SSP Trajectories/01_load_and_check.R`, `05_climate_figures.R`, `04-Simulation/01b-PowerSector.R` (climate file), `05-Figures/Figure 4 - Climate*.R` |
 | `MC_Assumptions.xlsx` | yes | project assumptions: Monte Carlo sampling bounds (Parameters, Stock_Bounds, Lifetimes sheets) | `04-Simulation/*`, figures |
 | `MatIntensity_Assumptions.xlsx` | yes | project assumptions: material-intensity bounds by material group | `04-Simulation/*`, figures |
 | `Recycling_Assumptions.xlsx` | yes | project assumptions: end-of-life recycling and downcycling rates | `04-Simulation/*`, figures |
 | `Dict_Countries.xlsx`, `Dict_Materials.xlsx` | yes | project dictionaries: country-to-region and material-category mappings | most scripts |
+| `EIA/INT-Export-10-06-2026_16-08-02.csv` | yes | U.S. EIA International Energy Statistics, installed electricity capacity by country and technology (million kW), https://www.eia.gov/international/data/world | `01-PrepareData/06-Aggregate_EIA_Capacity.R` |
+| `Wang2023_material_intensity_technology.xlsx` | yes | literature dataset: material intensity (t/GW) of power-generation technologies, sheet "Master - all intensity values" | `04-Simulation/01b-PowerSector.R` |
+| `Battery_intensity.xlsx` | yes | battery material intensity (kg/kWh) by cathode chemistry, sheet "Battery_Intensity" (LFP and NMC 811 used) | `04-Simulation/01b-PowerSector.R` |
 
-Not used by the main pipeline: `UNDP/hdr-data.xlsx` (exploratory HDI figure), `WorldBank/API_NY.GDP.PCAP.PP.KD*`, `API_SP.URB*`, `CLASS_*` (alternatives and classification), `IIASA_SSP/2018_Quantification/`, `Cheng2025_*`/`Wang2023_*` (literature reference), and the `Temp/`, `MaterialFlows/`, `oldData/` and `99-Deprecated/` folders.
+Not used by the main pipeline: `UNDP/hdr-data.xlsx` (exploratory HDI figure), `WorldBank/API_NY.GDP.PCAP.PP.KD*`, `API_SP.URB*`, `CLASS_*` (alternatives and classification), `IIASA_SSP/2018_Quantification/`, `Cheng2025_*` (literature reference), and the `Temp/`, `MaterialFlows/`, `oldData/` and `99-Deprecated/` folders.
 
 ## Citations
 
