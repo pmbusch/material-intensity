@@ -1,31 +1,40 @@
 ## =============================================================================
 ## 01b_UNEP_enduse_detail.R
 ## Further disaggregate UNEP super-category flows (buildings, civil_infrastructure,
-## machinery, short_lived) into 8 sub-end-uses using inflow shares derived
-## from Wiedenhofer2024 global material stocks (SI figs 3a, 3c).
+## machinery, short_lived) into 8 sub-end-uses using MATERIAL-SPECIFIC inflow
+## shares derived from Wiedenhofer2024 global material stocks (SI figs 3a-3d).
 ##
-## Method: stock-driven Müller-type inversion of Wiedenhofer2024 global stocks
-## to recover gross inflows per sub-use. Inflow shares applied to UNEP flows.
-## Inflow shares (not stock shares) are used to avoid over-weighting long-lived
-## sub-uses, since S = I·τ inflates stock-shares by the lifetime ratio.
+## Method: stock-driven Müller-type inversion of Wiedenhofer2024 global total-mass
+## stocks (figs 3a, 3c) to recover gross inflows per sub-use; each sub-use inflow
+## is then multiplied by its 2016 material mass fraction (figs 3b, 3d) to get
+## metal / mineral inflows per sub-use. Shares are taken within super-category x
+## material, so e.g. civil-infrastructure metal goes to civil engineering only
+## (MISO roads hold no metal). Inflow shares (not stock shares) are used to avoid
+## over-weighting long-lived sub-uses, since S = I·τ inflates stock-shares by the
+## lifetime ratio.
 ##
 ## [ASSUMPTION] CV = 0.3 (lognormal σ_real / M); MISO gives only mean lifetimes.
 ## [ASSUMPTION] σ in log-space is constant across sub-uses (function of CV only,
 ##   not τ). This is a simplification — not a MISO result — flagged in output.
 ## [ASSUMPTION] Wiedenhofer2024 global inflow shares applied uniformly to all regions.
+## [ASSUMPTION] 2016 material composition of each sub-use stock (figs 3b, 3d) is
+##   held fixed for all years and applied to that sub-use's inflow.
 ##
 ## Input:
 ##   Parameters/Intermediate/UNEP_flows_enduse.csv  — 4 super-categories (from 01)
 ##   Inputs/MISO/SI_Wiedenhofer2024_globalStocks.xlsx
 ##     sheet data_from_fig_3a_in_manuscript  : stocks 1900–2016, buildings + civil
+##     sheet data_from_fig_3b_in_manuscript  : 2016 stocks by material, buildings + civil
 ##     sheet data_from_fig_3c_in_manuscript  : stocks 1900–2016, machinery + short_lived
+##     sheet data_from_fig_3d_in_manuscript  : 2016 stocks by material, machinery + short_lived
 ##
 ## Output:
-##   Parameters/Intermediate/UNEP_flows_subenduse.parquet
+##   Parameters/Intermediate/UNEP_flows_subenduse.csv
 ##     columns: year, Region, material, super_category, sub_use,
-##              inflow_share, flow_Mt
+##              mean_life, inflow_share, flow_Mt
+##     (material x sub_use cells with zero share, e.g. metal in roads, are dropped)
 ##   Figures/Inputs/MISO/:
-##     subenduse_shares_[category].png  — time-varying inflow share per super-cat
+##     subenduse_shares_[category].png  — time-varying inflow share per super-cat, by material
 ##   Console: inversion vs ΔS vs S·τ⁻¹ diagnostic table; CV sensitivity table
 ## =============================================================================
 
@@ -158,6 +167,81 @@ stock_2016_diag <- stock_tidy %>%
   dplyr::select(super_category, sub_use, mean_life, stock_Gt)
 cat("\n  Stock at 2016 (Gt):\n")
 print(stock_2016_diag, n = 10)
+
+
+# Step 3b: 2016 material composition of each sub-use stock (figs 3b, 3d) -------
+# Sheets 3b/3d are 2016 in-use STOCKS by material (header says "Gt/year", but
+# each row sums to the 2016 stock of sheets 3a/3c: e.g. Roads 312.85 vs 312.84,
+# Residential 289.84 vs 289.81, Machinery and equipment 4.195 vs 4.195 Gt).
+# The 9 machinery / short-lived sectors of 3d are only summed into the existing
+# 4 sub-uses (same mapping as sheet 3c above) -- no new end-uses.
+# Material mapping: Metal ores <- Metals; Non-metallic minerals <- Aggregates +
+# Asphalt + Bricks + Concrete + Glass.
+# Biomass, Plastic and Bitumen stay in the denominator (so the metal / mineral
+# fractions are of the full sub-use stock) but get no split of their own: the
+# stock model covers metals and minerals only (biomass and fossil fuels are Kaya
+# flows). They are small next to the 1,093 Gt global 2016 stock:
+#   Biomass ~16.3 Gt (~1.5%): civil eng. 8.0, machinery/short-lived 3.4
+#     (furniture, printed matter), residential 2.8, non-residential 2.1
+#   Plastic ~4.3 Gt (~0.4%): machinery/short-lived 2.0, civil eng. 1.1, buildings 1.2
+#   Bitumen ~0.45 Gt (~0.04%): buildings only (residential 0.26, non-res. 0.19)
+
+cat("\nSTEP 3b: Read MISO 2016 material composition per sub-use\n")
+
+comp_3b <- readxl::read_excel(
+  "Inputs/MISO/SI_Wiedenhofer2024_globalStocks.xlsx",
+  sheet = "data_from_fig_3b_in_manuscript",
+  range = "A4:J9"
+) %>%
+  mutate(
+    sub_use = case_when(
+      sector == "Residential buildings" ~ "residential",
+      sector == "Non-residential buildings" ~ "non_residential",
+      sector == "Roads" ~ "roads",
+      sector == "Civil engineering" ~ "civil_engineering",
+      TRUE ~ NA_character_ # "Machinery / short lived products" — covered by 3d
+    )
+  ) %>%
+  filter(!is.na(sub_use)) %>%
+  transmute(
+    sub_use,
+    total_Gt = Aggregates + Asphalt + Biomass + Bitumen + Bricks + Concrete + Glass + Metals + Plastic,
+    `Metal ores` = Metals,
+    `Non-metallic minerals` = Aggregates + Asphalt + Bricks + Concrete + Glass
+  )
+
+comp_3d <- readxl::read_excel(
+  "Inputs/MISO/SI_Wiedenhofer2024_globalStocks.xlsx",
+  sheet = "data_from_fig_3d_in_manuscript",
+  range = "A4:E13"
+) %>%
+  mutate(
+    sub_use = case_when(
+      sector %in% c("Machinery and equipment", "Electrical equipment", "Other transport") ~ "machinery_group",
+      sector %in% c("Motor vehicles", "Computers") ~ "vehicles_group",
+      sector %in% c("Furniture", "Printed matter", "Products nec") ~ "durables",
+      sector == "Food packaging" ~ "packaging",
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  filter(!is.na(sub_use)) %>%
+  group_by(sub_use) %>%
+  summarise(
+    total_Gt = sum(Metals + Biomass + Plastic + Glass),
+    `Metal ores` = sum(Metals),
+    `Non-metallic minerals` = sum(Glass),
+    .groups = "drop"
+  )
+
+# Material mass fraction c[material, sub_use] of the 2016 sub-use stock
+comp_frac <- bind_rows(comp_3b, comp_3d) %>%
+  pivot_longer(c(`Metal ores`, `Non-metallic minerals`), names_to = "material", values_to = "mass_Gt") %>%
+  mutate(c_frac = mass_Gt / total_Gt) %>%
+  dplyr::select(sub_use, material, c_frac)
+stopifnot(setequal(unique(comp_frac$sub_use), names(SUPER_CAT)))
+
+cat("  2016 material mass fraction of each sub-use stock:\n")
+print(comp_frac %>% pivot_wider(names_from = material, values_from = c_frac), n = 10)
 
 
 # Step 4: Müller-type inversion — recover gross inflows from stocks ------------
@@ -310,9 +394,20 @@ cv_sens_table <- shares_cv_all %>%
 
 # Step 7: Apply shares to UNEP flows -------------------------------------------
 
-cat("\nSTEP 7: Apply sub-use inflow shares to UNEP super-category flows\n")
+cat("\nSTEP 7: Apply material-specific sub-use inflow shares to UNEP super-category flows\n")
 
-# Time-varying shares from primary CV (1900–2016)
+# Material-specific inflow shares: total-mass inflow of each sub-use (primary CV)
+# x its 2016 material mass fraction, normalised within super_category x material x year
+shares_primary <- shares_primary %>%
+  dplyr::select(sub_use, super_category, mean_life, year, inflow_Gt) %>%
+  inner_join(comp_frac, by = "sub_use", relationship = "many-to-many") %>%
+  mutate(inflow_mat_Gt = inflow_Gt * c_frac) %>%
+  group_by(super_category, material, year) %>%
+  mutate(denom = sum(inflow_mat_Gt), share_inversion = if_else(denom > 0, inflow_mat_Gt / denom, 0)) %>%
+  ungroup() %>%
+  dplyr::select(sub_use, super_category, material, mean_life, year, share_inversion)
+
+# Time-varying shares (1900–2016)
 # Extend to post-2016 UNEP years via LOCF
 miso_max_year <- max(shares_primary$year)
 unep_max_year <- max(unep_super$year)
@@ -333,40 +428,47 @@ if (length(post_years) > 0) {
   ))
   shares_2016_locf <- shares_primary %>%
     filter(year == miso_max_year) %>%
-    dplyr::select(sub_use, super_category, mean_life, share_inversion)
+    dplyr::select(sub_use, super_category, material, mean_life, share_inversion)
 
   shares_extended <- expand_grid(shares_2016_locf, year = post_years)
-  shares_all_years <- bind_rows(
-    shares_primary %>% dplyr::select(sub_use, super_category, mean_life, year, share_inversion),
-    shares_extended
-  )
+  shares_all_years <- bind_rows(shares_primary, shares_extended)
 } else {
-  shares_all_years <- shares_primary %>% dplyr::select(sub_use, super_category, mean_life, year, share_inversion)
+  shares_all_years <- shares_primary
 }
 
-# Validate shares sum to 1 within super-category × year
+# Validate shares sum to 1 within super-category × material × year
 share_check <- shares_all_years %>%
   filter(year %in% unique(unep_super$year)) %>%
-  group_by(super_category, year) %>%
+  group_by(super_category, material, year) %>%
   summarise(total = sum(share_inversion), .groups = "drop") %>%
   filter(abs(total - 1) > SHARE_TOL)
 if (nrow(share_check) > 0) {
-  cat("[WARNING] Share sums deviate from 1 in", nrow(share_check), "super_category×year cells.\n")
+  cat("[WARNING] Share sums deviate from 1 in", nrow(share_check), "super_category×material×year cells.\n")
   print(head(share_check, 10))
 }
 
 # Normalize to enforce exact mass balance (handles small float errors from max(0,...))
 shares_all_years <- shares_all_years %>%
-  group_by(super_category, year) %>%
+  group_by(super_category, material, year) %>%
   mutate(share_inversion = share_inversion / sum(share_inversion)) %>%
   ungroup()
 
-# Join shares to UNEP flows and multiply
+# Join shares to UNEP flows and multiply; zero-share cells (e.g. metal in roads) dropped
 unep_sub <- unep_super %>%
-  left_join(shares_all_years, by = c("super_category", "year"), relationship = "many-to-many") %>%
+  left_join(shares_all_years, by = c("super_category", "material", "year"), relationship = "many-to-many") %>%
   mutate(flow_Mt = flow_Mt * share_inversion) %>%
-  filter(!is.na(sub_use)) %>%
+  filter(!is.na(sub_use), share_inversion > 0) %>%
   dplyr::select(year, Region, material, super_category, sub_use, mean_life, inflow_share = share_inversion, flow_Mt)
+
+cat("  Inflow shares by material x sub-use (mean 1990–2010):\n")
+print(
+  shares_all_years %>%
+    filter(year >= STABLE_START, year <= STABLE_END) %>%
+    group_by(material, super_category, sub_use) %>%
+    summarise(share = round(mean(share_inversion), 3), .groups = "drop") %>%
+    pivot_wider(names_from = material, values_from = share),
+  n = 10
+)
 
 cat("  UNEP sub-use rows:", nrow(unep_sub), "\n")
 
@@ -402,8 +504,8 @@ unep_sub %>%
 
 cat("\nSTEP 9: Save figures to", FIG_DIR, "\n")
 
-share_plot_data <- shares_cv_all %>%
-  filter(cv == CV_PRIMARY, year >= 1970) %>%
+share_plot_data <- shares_all_years %>%
+  filter(year >= 1970, year <= miso_max_year, share_inversion > 0) %>%
   mutate(
     sub_use_label = factor(SUBENDUSE_LABELS[sub_use], levels = SUBENDUSE_LABELS),
     super_label = recode(
@@ -421,12 +523,14 @@ for (sc in unique(share_plot_data$super_category)) {
   sc_label <- unique(sc_data$super_label)
   sub_uses <- unique(sc_data$sub_use)
 
-  # Label positions: rightmost year, midpoint of stacked area
+  # Label positions: rightmost year, midpoint of stacked area (per material panel)
   label_yr <- max(sc_data$year)
   label_pos <- sc_data %>%
     filter(year == label_yr) %>%
-    arrange(desc(sub_use_label)) %>%
-    mutate(cum = cumsum(share_inversion), mid = cum - share_inversion / 2)
+    group_by(material) %>%
+    arrange(desc(sub_use_label), .by_group = TRUE) %>%
+    mutate(cum = cumsum(share_inversion), mid = cum - share_inversion / 2) %>%
+    ungroup()
 
   ggplot(sc_data, aes(x = year, y = share_inversion, fill = sub_use_label)) +
     geom_area(colour = "black", linewidth = 0.15, alpha = 0.92) +
@@ -434,20 +538,21 @@ for (sc in unique(share_plot_data$super_category)) {
       data        = label_pos,
       aes(x = label_yr, y = mid, label = sub_use_label),
       inherit.aes = FALSE,
-      size = 2.7, fontface = "bold", hjust = 1.05, show.legend = FALSE
+      size = pb_annot_size("largeFont", 8), fontface = "bold", hjust = 1.05, show.legend = FALSE
     ) +
+    facet_wrap(~material, ncol = 2) +
     scale_fill_manual(values = PALETTE_SUBENDUSE[SUBENDUSE_LABELS[sub_uses]], name = NULL) +
     scale_x_continuous(breaks = seq(1970, 2010, by = 10)) +
     scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
     coord_cartesian(expand = FALSE, clip = "off") +
     labs(
       title = paste0("Sub-use inflow shares — ", sc_label),
-      subtitle = sprintf("Müller inversion of Wiedenhofer2024 global stocks  |  CV = %.1f [ASSUMPTION]", CV_PRIMARY),
+      subtitle = sprintf("Müller inversion of Wiedenhofer2024 global stocks x 2016 material composition  |  CV = %.1f", CV_PRIMARY),
       x = NULL,
       y = "Share of super-category inflow"
     ) +
     theme_pb_large() +
-    theme(legend.position = "none")
+    theme(legend.position = "none", panel.spacing = unit(0.8, "lines"))
 
   fname <- file.path(FIG_DIR, paste0("01b-subenduse_shares_", sc, ".png"))
   # fmt: skip

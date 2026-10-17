@@ -470,15 +470,18 @@ dir.create("Figures/SVG/Figure 2 Detail/Region", recursive = TRUE, showWarnings 
 
 bio_range_base <- expand_grid(material_key = BIOMASS_CATS) |>
   mutate(pos_x = case_when(
-    material_key == "Crops" ~ 0, material_key == "Crop Residues" ~ 1, str_detect(material_key, "Grazed") ~ 2, T ~ 0
+    material_key == "Crops" ~ 0, material_key == "Crop Residues" ~ 1, str_detect(material_key, "Grazed") ~ 2,
+    material_key == "Wood" ~ 3, material_key == "Other biomass" ~ 4, T ~ 0
   ))
 fossil_range_base <- expand_grid(material_key = FOSSIL_CATS) |>
   mutate(pos_x = case_when(
-    material_key == "Coal" ~ 0, material_key == "Petroleum" ~ 1, str_detect(material_key, "Natural") ~ 2, T ~ 0
+    material_key == "Coal" ~ 0, material_key == "Petroleum" ~ 1, str_detect(material_key, "Natural") ~ 2,
+    material_key == "Other fossil fuels" ~ 3, T ~ 0
   ))
+# (no Roads range: MISO roads hold no metal, so there is no metal-roads stock)
 metal_range_base <- expand_grid(end_use_label = unique(metal_env$end_use_label)) |>
   mutate(pos_x = case_when(
-    end_use_label == "Roads" ~ 0, str_detect(end_use_label, "Civil") ~ 1, end_use_label == "Machinery" ~ 2,
+    str_detect(end_use_label, "Civil") ~ 1, end_use_label == "Machinery" ~ 2,
     end_use_label == "Residential Bldg" ~ 0, end_use_label == "Non-residential Bldg" ~ 1, end_use_label == "Vehicles" ~ 2,
     end_use_label == "Durables" ~ 0, end_use_label == "Packaging" ~ 1, T ~ 0
   ))

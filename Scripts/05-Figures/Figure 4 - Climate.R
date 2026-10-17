@@ -357,7 +357,7 @@ y_range_b <- range(scatter_df$gdp_cagr, na.rm = TRUE) # Y: GDP growth
 # 1 pp of GDP growth), drawn in the swapped axes; label rotated to its on-screen angle
 fit_b <- lm(mat_cagr ~ gdp_cagr, data = scatter_df)
 fit_line_b <- tibble::tibble(gdp_cagr = y_range_b) |> dplyr::mutate(mat_cagr = coef(fit_b)[[1]] + coef(fit_b)[[2]] * gdp_cagr)
-slope_lab_b <- paste0(signif(coef(fit_b)[[2]], 2), ":1")
+slope_lab_b <- sprintf("%.2f:1", coef(fit_b)[[2]]) # two decimals, e.g. "1.03:1" (signif() printed 1.03 as "1:1")
 y_slope_b <- y_range_b[1] + 0.8 * diff(y_range_b)
 x_slope_b <- coef(fit_b)[[1]] + coef(fit_b)[[2]] * y_slope_b
 angle_slope_b <- atan(1 / coef(fit_b)[[2]] * diff(x_range_b) / diff(y_range_b) * PANEL_B_ASPECT) * 180 / pi
@@ -387,7 +387,7 @@ p4b_main <- ggplot(scatter_df, aes(x = mat_cagr, y = gdp_cagr)) +
   annotate("text", x = x_range_b[1], y = y_range_b[2], label = "a", fontface = "bold", hjust = -0.4, vjust = 1.3, size = pb_annot_size("small", 10)) +
   scale_colour_manual(values = SSP_COLORS, guide = "none") +
   coord_cartesian(xlim = x_range_b, ylim = y_range_b, expand = FALSE, clip = "off") +
-  # Both axes: ticks every 0.5%, labels on whole percents only
+  # X: ticks every 0.5%, labels on whole percents only
   scale_x_continuous(
     breaks = seq(-0.005, 0.035, by = 0.005),
     labels = function(x) {
@@ -395,12 +395,10 @@ p4b_main <- ggplot(scatter_df, aes(x = mat_cagr, y = gdp_cagr)) +
       ifelse(abs(pct - round(pct)) < 1e-6, paste0(round(pct), "%"), "")
     }
   ) +
+  # Y: ticks and labels every 0.5% (1.5%, 2%, 2.5%, 3%)
   scale_y_continuous(
     breaks = function(lims) (ceiling(lims[1] / 0.005 - 1e-9):floor(lims[2] / 0.005 + 1e-9)) * 0.005,
-    labels = function(x) {
-      pct <- round(x * 100, 6)
-      ifelse(abs(pct - round(pct)) < 1e-6, paste0(round(pct), "%"), "")
-    }
+    labels = function(x) paste0(format(round(x * 100, 1), drop0trailing = TRUE, trim = TRUE), "%")
   ) +
   labs(x = paste0("Material consumption annual growth ", FIG_START, "–", FIG_END), y = paste0("GDP annual growth ", FIG_START, "–", FIG_END)) +
   theme_pb_small() +

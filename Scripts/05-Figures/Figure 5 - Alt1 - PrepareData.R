@@ -11,19 +11,29 @@
 ##   ln(M_60/M_25) = sum_g w_g ln(M_g,60 / M_g,25),
 ##   w_g = L(M_g,60, M_g,25) / L(M_60, M_25), L(a,b) = (a - b) / (ln a - ln b);
 ##   flows    (biomass, fossil): M_g = P * (G/P) * (M_g/G)
-##   metals   (Fe, NonFe each):  Ore = P * (G/P) * (S/G) * (In/S) * (Prim/In) * (Ore/Prim)
-##   minerals:                   Prim = P * (G/P) * (S/G) * (In/S) * (Prim/In)
-##   S in-use stock, In inflow, Prim primary (= inflow - secondary), metals in
-##   metal mass; Ore = ore extracted. Fe and NonFe are separate groups, so the
-##   ore terms (Fe, NonFe) are the change in ore grade only (not the Fe/NonFe mix).
+##   metals   (Fe, NonFe each):  Ore = P * (G/P) * (S/G) * (Out/S) * (In/Out) * (Prim/In) * (Ore/Prim)
+##   minerals:                   Prim = P * (G/P) * (S/G) * (Out/S) * (In/Out) * (PrimU/In) * (Prim/PrimU)
+##   S in-use stock, In inflow, Out outflow (end-of-life waste), Prim primary
+##   (= inflow - secondary), metals in metal mass; Ore = ore extracted.
+##   Out/S = lifetime retirement rate; In/Out = stock growth (In/Out = 1 + dS/Out).
+##   Minerals: PrimU = In - (secondary + spilled surplus) = primary if every
+##   sector could absorb all downcycled material, so PrimU/In = downcycling rate
+##   and Prim/PrimU = absorption caps (max secondary share x concrete / granular
+##   shares). Fe and NonFe are separate groups, so the ore terms (Fe, NonFe) are
+##   the change in ore grade only (not the Fe/NonFe mix).
 ##   Each log change times w_g is one term; the terms sum exactly to the total.
 ##   Terms are then rescaled per run by CAGR / log rate, so they sum to the
 ##   run's CAGR (compound annual growth rate) instead of its log growth rate.
+## S25: the same decomposition within each material group (its own total growth),
+##   with intensity split by sub-material (biomass, fossil) or S/G by end use
+##   (metals, minerals).
 ## S22: GDP elasticity per material group: lm(CAGR_g ~ gdp_cagr + other levers,
 ##   real units, ssp_u excluded); slope on gdp_cagr.
 ##
 ## Output (Parameters/Intermediate/):
-##   Figure5_Alt1_Decomposition.csv (run_id, term, pct_yr), FigureS22_GDPElasticity.csv
+##   Figure5_Alt1_Decomposition.csv (run_id, term, pct_yr),
+##   FigureS25_DecompositionByMaterial.csv (run_id, material, term, pct_yr),
+##   FigureS22_GDPElasticity.csv
 ## =============================================================================
 
 source("Scripts/05-Figures/Figure 5 - Sensitivity - PrepareData.R", encoding = "UTF-8")
@@ -49,7 +59,10 @@ dec_raw <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
     primary_consumption_Mt,
     primary_consumption_Mt_pure,
     total_inflow_Mt,
-    in_use_stock_Mt
+    in_use_stock_Mt,
+    waste_Mt_pure,
+    secondary_supply_Mt_pure,
+    secondary_spilled_Mt
   ) |>
   dplyr::collect() |>
   dplyr::mutate(
@@ -67,12 +80,14 @@ dec_raw <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
     Prim = sum(primary_consumption_Mt_pure, na.rm = TRUE), # metals: metal mass
     In = sum(total_inflow_Mt, na.rm = TRUE),
     S = sum(in_use_stock_Mt, na.rm = TRUE),
+    Out = sum(waste_Mt_pure, na.rm = TRUE), # end-of-life outflow (metals: metal mass)
+    Pool = sum(secondary_supply_Mt_pure + secondary_spilled_Mt, na.rm = TRUE), # minerals: downcycled pool before absorption caps
     .groups = "drop"
   ) |>
   dplyr::left_join(world_by_run, by = c("run_id", "year")) |>
   dplyr::mutate(yr = dplyr::if_else(year == 2025L, "a", "b")) |>
   dplyr::select(-year) |>
-  tidyr::pivot_wider(names_from = yr, values_from = c(M, Prim, In, S, world_pop, world_gdp))
+  tidyr::pivot_wider(names_from = yr, values_from = c(M, Prim, In, S, Out, Pool, world_pop, world_gdp))
 
 # Logarithmic mean L(a, b) and LMDI group weights w_g = L(M_g) / L(M_total)
 dec <- dec_raw |>
@@ -87,10 +102,22 @@ dec <- dec_raw |>
     d_gpc = log((world_gdp_b / world_pop_b) / (world_gdp_a / world_pop_a)),
     d_int = log((M_b / world_gdp_b) / (M_a / world_gdp_a)), # flows: M/G
     d_sg = log((S_b / world_gdp_b) / (S_a / world_gdp_a)), # stocks: S/G
-    d_turn = log((In_b / S_b) / (In_a / S_a)), # stocks: inflow / stock (turnover)
+    d_ret = log((Out_b / S_b) / (Out_a / S_a)), # stocks: outflow / stock (lifetime retirement rate)
+    d_sgr = log((In_b / Out_b) / (In_a / Out_a)), # stocks: inflow / outflow (stock growth)
     d_sec = log((Prim_b / In_b) / (Prim_a / In_a)), # stocks: primary share of inflow (1 - secondary share)
-    d_ore = log((M_b / Prim_b) / (M_a / Prim_a)) # Fe, NonFe: ore per t metal (1 / grade)
+    d_ore = log((M_b / Prim_b) / (M_a / Prim_a)), # Fe, NonFe: ore per t metal (1 / grade)
+    # Minerals: d_sec = downcycling rate (uncapped primary PrimU / In) + absorption caps (Prim / PrimU)
+    PrimU_a = In_a - Pool_a,
+    PrimU_b = In_b - Pool_b,
+    cap_ok = grp == "min" & PrimU_a > 0 & PrimU_b > 0,
+    d_drate = dplyr::if_else(cap_ok, log((PrimU_b / In_b) / (PrimU_a / In_a)), d_sec),
+    d_cap = d_sec - d_drate
   )
+# Guard: runs where the uncapped primary would be <= 0 keep the whole d_sec in the downcycling-rate term
+cat(sprintf(
+  "  Minerals runs without a downcycling rate / caps split (uncapped primary <= 0): %d\n",
+  sum(dec$grp == "min" & !dec$cap_ok)
+))
 
 met <- c("fe", "nfe")
 c3 <- dec |>
@@ -102,10 +129,14 @@ c3 <- dec |>
     `Fossil fuels per GDP` = sum((k * d_int)[grp == "fos"]),
     `Metal stock per GDP` = sum((k * d_sg)[grp %in% met]),
     `Mineral stock per GDP` = sum((k * d_sg)[grp == "min"]),
-    `Metal inflow / stock` = sum((k * d_turn)[grp %in% met]),
-    `Mineral inflow / stock` = sum((k * d_turn)[grp == "min"]),
-    `Metal recycling` = sum((k * d_sec)[grp %in% met]),
-    `Mineral downcycling` = sum((k * d_sec)[grp == "min"]),
+    `Metal lifetime retirement rate` = sum((k * d_ret)[grp %in% met]),
+    `Metal stock growth` = sum((k * d_sgr)[grp %in% met]),
+    `Mineral lifetime retirement rate` = sum((k * d_ret)[grp == "min"]),
+    `Mineral stock growth` = sum((k * d_sgr)[grp == "min"]),
+    `Ferrous recycling` = sum((k * d_sec)[grp == "fe"]),
+    `Non-ferrous recycling` = sum((k * d_sec)[grp == "nfe"]),
+    `Mineral downcycling rate` = sum((k * d_drate)[grp == "min"]),
+    `Mineral absorption caps` = sum((k * d_cap)[grp == "min"]),
     `Fe ore grade` = sum((k * d_ore)[grp == "fe"]),
     `Non-Fe ore grade` = sum((k * d_ore)[grp == "nfe"]),
     Total = 100 / T_YRS * log(dplyr::first(Mtot_b) / dplyr::first(Mtot_a)),
@@ -164,6 +195,196 @@ cat(sprintf(
 ))
 
 
+# STEP 1b: S25 -- LMDI growth decomposition within each material group -----------
+# Same identities as STEP 1, but the total is each material group's own primary
+# consumption (biomass, fossil fuels, metal ores = Fe + NonFe ore, minerals):
+#   biomass / fossil: one component per sub-material c, M_c = P (G/P) (M_c/G)
+#   metals / minerals: one component per metal type t (Fe, NonFe; minerals = 1)
+#     with the STEP 1 factors; S/G further split by end use e via LMDI on the
+#     sum S_t = sum_e S_t,e:  dln(S_t/G) = sum_e [L(S_t,e) / L(S_t)] dln(S_t,e/G)
+# Component weights k = L(M_c) / L(M_material) x 100 / T; terms rescaled per run
+# and material by CAGR / log rate, so they sum to that material's CAGR.
+
+cat("STEP 1b: S25 -- growth decomposition within each material group\n")
+
+ENDUSE_OF_KEY <- c(
+  "Residential" = "Buildings", "Non-residential" = "Buildings",
+  "Roads" = "Civil infrastructure", "Civil engineering" = "Civil infrastructure",
+  "Machinery" = "Machinery", "Vehicles" = "Machinery",
+  "Durables" = "Short-lived products", "Packaging" = "Short-lived products"
+)
+
+mat_raw <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
+  dplyr::filter(year %in% c(2025L, FORECAST_END)) |>
+  dplyr::select(
+    run_id, material_group, material_key, year,
+    primary_consumption_Mt, primary_consumption_Mt_pure, total_inflow_Mt, in_use_stock_Mt,
+    waste_Mt_pure, secondary_supply_Mt_pure, secondary_spilled_Mt
+  ) |>
+  dplyr::collect() |>
+  dplyr::mutate(
+    material = dplyr::case_when(
+      material_group == "biomass" ~ "Biomass",
+      material_group == "fossil_fuels" ~ "Fossil fuels",
+      material_group %in% c("metal_fe", "metal_nonfe") ~ "Metal ores",
+      material_group == "nonmetallic_minerals" ~ "Non-metallic minerals"
+    ),
+    end_use = dplyr::if_else(startsWith(material_key, "Power: "), "Power sector", unname(ENDUSE_OF_KEY[material_key]))
+  ) |>
+  dplyr::left_join(world_by_run, by = c("run_id", "year")) |>
+  dplyr::mutate(yr = dplyr::if_else(year == 2025L, "a", "b")) |>
+  dplyr::select(-year)
+
+# Flow components (biomass, fossil): one per sub-material
+flow_c <- mat_raw |>
+  dplyr::filter(material %in% c("Biomass", "Fossil fuels")) |>
+  dplyr::group_by(run_id, material, comp = material_key, yr) |>
+  dplyr::summarise(M = sum(primary_consumption_Mt, na.rm = TRUE), pop = dplyr::first(world_pop), gdp = dplyr::first(world_gdp), .groups = "drop") |>
+  tidyr::pivot_wider(names_from = yr, values_from = c(M, pop, gdp)) |>
+  dplyr::filter(M_a > 0, M_b > 0)
+
+# Stock components (metals, minerals): one per metal type, all end uses pooled
+stock_t <- mat_raw |>
+  dplyr::filter(material %in% c("Metal ores", "Non-metallic minerals")) |>
+  dplyr::group_by(run_id, material, comp = material_group, yr) |>
+  dplyr::summarise(
+    M = sum(primary_consumption_Mt, na.rm = TRUE), # metals: ore
+    Prim = sum(primary_consumption_Mt_pure, na.rm = TRUE),
+    In = sum(total_inflow_Mt, na.rm = TRUE),
+    S = sum(in_use_stock_Mt, na.rm = TRUE),
+    Out = sum(waste_Mt_pure, na.rm = TRUE),
+    Pool = sum(secondary_supply_Mt_pure + secondary_spilled_Mt, na.rm = TRUE),
+    pop = dplyr::first(world_pop),
+    gdp = dplyr::first(world_gdp),
+    .groups = "drop"
+  ) |>
+  tidyr::pivot_wider(names_from = yr, values_from = c(M, Prim, In, S, Out, Pool, pop, gdp))
+
+# Stock by metal type x end use (for the S/G split)
+stock_te <- mat_raw |>
+  dplyr::filter(material %in% c("Metal ores", "Non-metallic minerals")) |>
+  dplyr::group_by(run_id, material, comp = material_group, end_use, yr) |>
+  dplyr::summarise(S = sum(in_use_stock_Mt, na.rm = TRUE), .groups = "drop") |>
+  tidyr::pivot_wider(names_from = yr, values_from = S, names_prefix = "S_") |>
+  dplyr::filter(S_a > 0, S_b > 0)
+
+# Component weights within each material
+mat_comp <- dplyr::bind_rows(
+  flow_c |> dplyr::select(run_id, material, comp, M_a, M_b),
+  stock_t |> dplyr::select(run_id, material, comp, M_a, M_b)
+) |>
+  dplyr::group_by(run_id, material) |>
+  dplyr::mutate(Mtot_a = sum(M_a), Mtot_b = sum(M_b)) |>
+  dplyr::ungroup() |>
+  dplyr::mutate(
+    L_c = dplyr::if_else(abs(M_b - M_a) < 1e-12, M_a, (M_b - M_a) / (log(M_b) - log(M_a))),
+    L_tot = dplyr::if_else(abs(Mtot_b - Mtot_a) < 1e-12, Mtot_a, (Mtot_b - Mtot_a) / (log(Mtot_b) - log(Mtot_a))),
+    k = L_c / L_tot * 100 / T_YRS
+  ) |>
+  dplyr::select(run_id, material, comp, k, Mtot_a, Mtot_b)
+
+flow_terms <- flow_c |>
+  dplyr::inner_join(mat_comp |> dplyr::select(run_id, material, comp, k), by = c("run_id", "material", "comp")) |>
+  dplyr::transmute(
+    run_id, material, comp,
+    Population = k * log(pop_b / pop_a),
+    `GDP per capita` = k * log((gdp_b / pop_b) / (gdp_a / pop_a)),
+    int = k * log((M_b / gdp_b) / (M_a / gdp_a))
+  ) |>
+  tidyr::pivot_longer(c(Population, `GDP per capita`, int), names_to = "term", values_to = "v") |>
+  dplyr::mutate(term = dplyr::if_else(term == "int", paste0("M/G: ", comp), term)) |>
+  dplyr::select(run_id, material, term, v)
+
+stock_terms <- stock_t |>
+  dplyr::inner_join(mat_comp |> dplyr::select(run_id, material, comp, k), by = c("run_id", "material", "comp")) |>
+  dplyr::mutate(
+    PrimU_a = In_a - Pool_a,
+    PrimU_b = In_b - Pool_b,
+    cap_ok = material == "Non-metallic minerals" & PrimU_a > 0 & PrimU_b > 0,
+    d_sec = log((Prim_b / In_b) / (Prim_a / In_a)),
+    d_drate = dplyr::if_else(cap_ok, log((PrimU_b / In_b) / (PrimU_a / In_a)), d_sec)
+  ) |>
+  dplyr::transmute(
+    run_id, material, comp,
+    Population = k * log(pop_b / pop_a),
+    `GDP per capita` = k * log((gdp_b / pop_b) / (gdp_a / pop_a)),
+    `Lifetime retirement rate` = k * log((Out_b / S_b) / (Out_a / S_a)),
+    `Stock growth` = k * log((In_b / Out_b) / (In_a / Out_a)),
+    rec = k * d_drate,
+    `Absorption caps` = k * (d_sec - d_drate),
+    grade = k * log((M_b / Prim_b) / (M_a / Prim_a))
+  ) |>
+  tidyr::pivot_longer(-c(run_id, material, comp), names_to = "term", values_to = "v") |>
+  dplyr::mutate(
+    term = dplyr::case_when(
+      term == "rec" & comp == "metal_fe" ~ "Ferrous recycling",
+      term == "rec" & comp == "metal_nonfe" ~ "Non-ferrous recycling",
+      term == "rec" ~ "Downcycling rate",
+      term == "grade" & comp == "metal_fe" ~ "Ferrous ore grade",
+      term == "grade" & comp == "metal_nonfe" ~ "Non-ferrous ore grade",
+      TRUE ~ term
+    )
+  ) |>
+  # metals have no caps term; minerals have no ore-grade term (both identically 0)
+  dplyr::filter(!(term == "Absorption caps" & material == "Metal ores"), term != "grade") |>
+  dplyr::select(run_id, material, term, v)
+
+sg_terms <- stock_te |>
+  dplyr::inner_join(
+    stock_t |> dplyr::select(run_id, material, comp, St_a = S_a, St_b = S_b, gdp_a, gdp_b),
+    by = c("run_id", "material", "comp")
+  ) |>
+  dplyr::inner_join(mat_comp |> dplyr::select(run_id, material, comp, k), by = c("run_id", "material", "comp")) |>
+  dplyr::mutate(
+    L_e = dplyr::if_else(abs(S_b - S_a) < 1e-12, S_a, (S_b - S_a) / (log(S_b) - log(S_a))),
+    L_t = dplyr::if_else(abs(St_b - St_a) < 1e-12, St_a, (St_b - St_a) / (log(St_b) - log(St_a)))
+  ) |>
+  # Stock part: sum_e L(S_e)/L(S_t) dln(S_e) = dln(S_t) exactly; GDP part allocated with
+  # normalised weights L(S_e) / sum_e L(S_e) (the L(S_e)/L(S_t) weights do not sum to 1)
+  dplyr::group_by(run_id, material, comp) |>
+  dplyr::mutate(L_sum = sum(L_e)) |>
+  dplyr::ungroup() |>
+  dplyr::mutate(
+    v = k * (L_e / L_t * log(S_b / S_a) - L_e / L_sum * log(gdp_b / gdp_a)),
+    term = paste0("S/G: ", end_use)
+  ) |>
+  dplyr::select(run_id, material, term, v)
+
+s25 <- dplyr::bind_rows(flow_terms, stock_terms, sg_terms) |>
+  dplyr::group_by(run_id, material, term) |>
+  dplyr::summarise(pct_yr = sum(v), .groups = "drop") |>
+  dplyr::bind_rows(
+    mat_comp |>
+      dplyr::distinct(run_id, material, Mtot_a, Mtot_b) |>
+      dplyr::transmute(run_id, material, term = "Total", pct_yr = 100 / T_YRS * log(Mtot_b / Mtot_a))
+  )
+
+# Log growth -> CAGR, per run x material (as in STEP 1)
+s25 <- s25 |>
+  dplyr::group_by(run_id, material) |>
+  dplyr::mutate(
+    tot = pct_yr[term == "Total"],
+    pct_yr = pct_yr * dplyr::if_else(abs(tot) < 1e-12, 1, (exp(tot / 100) - 1) / (tot / 100))
+  ) |>
+  dplyr::ungroup() |>
+  dplyr::select(-tot)
+
+cat(sprintf(
+  "  Minerals runs without a downcycling rate / caps split: %d\n",
+  sum(stock_t$material == "Non-metallic minerals" & !(stock_t$In_a - stock_t$Pool_a > 0 & stock_t$In_b - stock_t$Pool_b > 0))
+))
+resid25 <- s25 |>
+  dplyr::group_by(run_id, material) |>
+  dplyr::summarise(r = sum(pct_yr[term != "Total"]) - pct_yr[term == "Total"], .groups = "drop")
+cat(sprintf("  S25 identity check: max |sum of terms - total| = %.2e %%/yr\n", max(abs(resid25$r))))
+print(
+  s25 |>
+    dplyr::group_by(material, term) |>
+    dplyr::summarise(median = round(stats::median(pct_yr), 2), .groups = "drop") |>
+    as.data.frame()
+)
+
+
 # STEP 2: S22 -- GDP elasticity per material group --------------------------------
 
 cat("STEP 2: S22 -- GDP elasticity per material group\n")
@@ -209,8 +430,9 @@ print(s22 |> dplyr::mutate(dplyr::across(c(elasticity, r2), ~ round(.x, 3))) |> 
 # STEP 3: Save -------------------------------------------------------------------
 
 readr::write_csv(c3_long, "Parameters/Intermediate/Figure5_Alt1_Decomposition.csv")
+readr::write_csv(s25, "Parameters/Intermediate/FigureS25_DecompositionByMaterial.csv")
 readr::write_csv(s22, "Parameters/Intermediate/FigureS22_GDPElasticity.csv")
-cat("\n  Saved: Figure5_Alt1_Decomposition.csv, FigureS22_GDPElasticity.csv\n")
+cat("\n  Saved: Figure5_Alt1_Decomposition.csv, FigureS25_DecompositionByMaterial.csv, FigureS22_GDPElasticity.csv\n")
 cat("=== Figure 5 - Alt1 - Prepare Data done ===\n")
 
 # EoF

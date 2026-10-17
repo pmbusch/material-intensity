@@ -69,7 +69,8 @@ scripts <- c(
   "Scripts/05-Figures/Supporting-Figures/S15 - RegionContribution.R",
   "Scripts/05-Figures/Supporting-Figures/S16 - Density.R",
   "Scripts/05-Figures/Supporting-Figures/S18 - RegionalAnalysis.R",
-  "Scripts/05-Figures/Supporting-Figures/S19 - CumulativeExtraction.R"
+  "Scripts/05-Figures/Supporting-Figures/S19 - CumulativeExtraction.R",
+  "Scripts/05-Figures/Supporting-Figures/S27-S28 - RegionalTimeseries.R"
 )
 
 start_from <- if (length(commandArgs(TRUE)) > 0) as.integer(commandArgs(TRUE)[1]) else 1L

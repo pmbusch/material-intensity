@@ -828,6 +828,8 @@ bio_range <- biomass_env |>
       material_key == "Crops" ~ 0,
       material_key == "Crop Residues" ~ 1,
       str_detect(material_key, "Grazed") ~ 2,
+      material_key == "Wood" ~ 3,
+      material_key == "Other biomass" ~ 4,
       T ~ 0
     )
   )
@@ -839,15 +841,16 @@ fossil_range <- fossil_env |>
       material_key == "Coal" ~ 0,
       material_key == "Petroleum" ~ 1,
       str_detect(material_key, "Natural") ~ 2,
+      material_key == "Other fossil fuels" ~ 3,
       T ~ 0
     )
   )
 
+# (no Roads range: MISO roads hold no metal, so there is no metal-roads stock)
 metal_range <- metal_env |>
   filter(year == PROJ_END) |>
   mutate(
     pos_x = case_when(
-      end_use_label == "Roads" ~ 0,
       str_detect(end_use_label, "Civil") ~ 1,
       end_use_label == "Machinery" ~ 2,
       end_use_label == "Residential" ~ 0,
@@ -1096,9 +1099,11 @@ p5 <- ggplot() +
   geom_text(
     data = metal_hist_labels,
     aes(x = year, y = mg, label = aux_label, colour = end_use_label, angle = angle),
-    nudge_y=c(-7.5,1,5.7,3.5,0.9,3,0,-1.5)*0.005,
-    nudge_x = c(-15,3,-30,-30,3,-13,-2,-0.5),
-    hjust = c(1,1,1,0.5,1,0.5,1,1),
+    # 7 labels, alphabetical: Civil eng., Durables, Machinery, Non-residential Bldg,
+    # Packaging, Residential Bldg, Vehicles (no metal Roads)
+    nudge_y=c(-7.5,1,5.7,3.5,0.9,3,-1.5)*0.005,
+    nudge_x = c(-15,3,-30,-30,3,-13,-0.5),
+    hjust = c(1,1,1,0.5,1,0.5,1),
      lineheight = 0.8,
     size = LABEL_SZ, show.legend = FALSE
   ) +
@@ -1110,8 +1115,8 @@ p5 <- ggplot() +
   ) +
   present_line +
   x_sc +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.05)), breaks = seq(0, 0.12, 0.02), labels = function(x) {
-    ifelse(round(x * 100) %% 4 == 0, x, "")
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05)), breaks = seq(0, 0.4, 0.02), labels = function(x) {
+    ifelse(round(x * 100) %% 4 == 0, ifelse(x == 0, "0", sprintf("%.2f", x)), "") # 2 decimals: 0.20 like 0.04
   }) +
   co +
   scale_colour_manual(values = PALETTE_SUBENDUSE, guide = "none") +

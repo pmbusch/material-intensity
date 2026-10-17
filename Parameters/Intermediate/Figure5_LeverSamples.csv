@@ -4493,27 +4493,27 @@ order,param,display_label,run_id,u_value,abs_decouple,selected
 19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),214,0.2885401128714439,FALSE,FALSE
 20,lifetime_mean_machinery,Machinery (+5yr),214,0.8176110760630109,FALSE,FALSE
 21,lifetime_mean_short_lived,Short-lived (+1yr),214,0.4216926873847842,FALSE,FALSE
-1,ssp_u,GDP,215,0.08148860258981586,FALSE,FALSE
-2,intensity_crops_global,Crops,215,0.18667505664587952,FALSE,FALSE
-3,intensity_grazed_biomass_global,Grazed biomass,215,0.3714557955730706,FALSE,FALSE
-4,intensity_wood_global,Wood,215,0.20996204233076424,FALSE,FALSE
-5,intensity_coal_global,Coal,215,0.7055736333357636,FALSE,FALSE
-6,intensity_gas_global,Natural gas,215,0.31704500208771785,FALSE,FALSE
-7,intensity_oil_global,Oil,215,0.3605111934803426,FALSE,FALSE
-8,intensity_buildings_metalOres_global,Buildings,215,0.2304977348642424,FALSE,FALSE
-9,intensity_civil_metalOres_global,Infrastructure,215,0.606357238261262,FALSE,FALSE
-10,intensity_machinery_metalOres_global,Machinery,215,0.5484121414925903,FALSE,FALSE
-11,intensity_sl_products_metalOres_global,Short-lived,215,0.31338010480464434,FALSE,FALSE
-12,intensity_buildings_nonMetallic_global,Buildings,215,0.03760022231889889,FALSE,FALSE
-13,intensity_civil_nonMetallic_global,Infrastructure,215,0.48114648152515294,FALSE,FALSE
-14,recycling_rate_fe,Fe,215,0.01482435688469559,FALSE,FALSE
-15,recycling_rate_nonfe,NonFe,215,0.6480487786009907,FALSE,FALSE
-16,grade_ore_fe,Fe (+25%),215,0.38455859974958,FALSE,FALSE
-17,grade_ore_nonfe,NonFe (+1%),215,0.4439098549280316,FALSE,FALSE
-18,lifetime_mean_buildings,Buildings (+20yr),215,0.38472580069117246,FALSE,FALSE
-19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),215,0.2596327380654402,FALSE,FALSE
-20,lifetime_mean_machinery,Machinery (+5yr),215,0.15644878647406585,FALSE,FALSE
-21,lifetime_mean_short_lived,Short-lived (+1yr),215,0.94728536221548,FALSE,FALSE
+1,ssp_u,GDP,215,0.08148860258981586,FALSE,TRUE
+2,intensity_crops_global,Crops,215,0.18667505664587952,FALSE,TRUE
+3,intensity_grazed_biomass_global,Grazed biomass,215,0.3714557955730706,FALSE,TRUE
+4,intensity_wood_global,Wood,215,0.20996204233076424,FALSE,TRUE
+5,intensity_coal_global,Coal,215,0.7055736333357636,FALSE,TRUE
+6,intensity_gas_global,Natural gas,215,0.31704500208771785,FALSE,TRUE
+7,intensity_oil_global,Oil,215,0.3605111934803426,FALSE,TRUE
+8,intensity_buildings_metalOres_global,Buildings,215,0.2304977348642424,FALSE,TRUE
+9,intensity_civil_metalOres_global,Infrastructure,215,0.606357238261262,FALSE,TRUE
+10,intensity_machinery_metalOres_global,Machinery,215,0.5484121414925903,FALSE,TRUE
+11,intensity_sl_products_metalOres_global,Short-lived,215,0.31338010480464434,FALSE,TRUE
+12,intensity_buildings_nonMetallic_global,Buildings,215,0.03760022231889889,FALSE,TRUE
+13,intensity_civil_nonMetallic_global,Infrastructure,215,0.48114648152515294,FALSE,TRUE
+14,recycling_rate_fe,Fe,215,0.01482435688469559,FALSE,TRUE
+15,recycling_rate_nonfe,NonFe,215,0.6480487786009907,FALSE,TRUE
+16,grade_ore_fe,Fe (+25%),215,0.38455859974958,FALSE,TRUE
+17,grade_ore_nonfe,NonFe (+1%),215,0.4439098549280316,FALSE,TRUE
+18,lifetime_mean_buildings,Buildings (+20yr),215,0.38472580069117246,FALSE,TRUE
+19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),215,0.2596327380654402,FALSE,TRUE
+20,lifetime_mean_machinery,Machinery (+5yr),215,0.15644878647406585,FALSE,TRUE
+21,lifetime_mean_short_lived,Short-lived (+1yr),215,0.94728536221548,FALSE,TRUE
 1,ssp_u,GDP,216,0.11459008398163131,FALSE,FALSE
 2,intensity_crops_global,Crops,216,0.9027511955234222,FALSE,FALSE
 3,intensity_grazed_biomass_global,Grazed biomass,216,0.7653673386366572,FALSE,FALSE
@@ -8882,27 +8882,27 @@ order,param,display_label,run_id,u_value,abs_decouple,selected
 19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),423,0.4923217198422644,FALSE,FALSE
 20,lifetime_mean_machinery,Machinery (+5yr),423,0.34096992104453966,FALSE,FALSE
 21,lifetime_mean_short_lived,Short-lived (+1yr),423,0.8925291088295635,FALSE,FALSE
-1,ssp_u,GDP,424,0.7270196217370685,FALSE,TRUE
-2,intensity_crops_global,Crops,424,0.6339742250675335,FALSE,TRUE
-3,intensity_grazed_biomass_global,Grazed biomass,424,0.6139614281204995,FALSE,TRUE
-4,intensity_wood_global,Wood,424,0.714078105938388,FALSE,TRUE
-5,intensity_coal_global,Coal,424,0.16690436443127693,FALSE,TRUE
-6,intensity_gas_global,Natural gas,424,0.3612052428829483,FALSE,TRUE
-7,intensity_oil_global,Oil,424,0.4071159255786333,FALSE,TRUE
-8,intensity_buildings_metalOres_global,Buildings,424,0.03407948240125551,FALSE,TRUE
-9,intensity_civil_metalOres_global,Infrastructure,424,0.1275975218487438,FALSE,TRUE
-10,intensity_machinery_metalOres_global,Machinery,424,0.4396213321660179,FALSE,TRUE
-11,intensity_sl_products_metalOres_global,Short-lived,424,0.7943654115872923,FALSE,TRUE
-12,intensity_buildings_nonMetallic_global,Buildings,424,0.7754697129619308,FALSE,TRUE
-13,intensity_civil_nonMetallic_global,Infrastructure,424,0.8337784118566196,FALSE,TRUE
-14,recycling_rate_fe,Fe,424,0.6703151171165519,FALSE,TRUE
-15,recycling_rate_nonfe,NonFe,424,0.8837265462777577,FALSE,TRUE
-16,grade_ore_fe,Fe (+25%),424,0.4124232424125075,FALSE,TRUE
-17,grade_ore_nonfe,NonFe (+1%),424,0.7374038183109369,FALSE,TRUE
-18,lifetime_mean_buildings,Buildings (+20yr),424,0.8894083446834702,FALSE,TRUE
-19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),424,0.8225087201027199,FALSE,TRUE
-20,lifetime_mean_machinery,Machinery (+5yr),424,0.6444671973902732,FALSE,TRUE
-21,lifetime_mean_short_lived,Short-lived (+1yr),424,0.07085809646570124,FALSE,TRUE
+1,ssp_u,GDP,424,0.7270196217370685,FALSE,FALSE
+2,intensity_crops_global,Crops,424,0.6339742250675335,FALSE,FALSE
+3,intensity_grazed_biomass_global,Grazed biomass,424,0.6139614281204995,FALSE,FALSE
+4,intensity_wood_global,Wood,424,0.714078105938388,FALSE,FALSE
+5,intensity_coal_global,Coal,424,0.16690436443127693,FALSE,FALSE
+6,intensity_gas_global,Natural gas,424,0.3612052428829483,FALSE,FALSE
+7,intensity_oil_global,Oil,424,0.4071159255786333,FALSE,FALSE
+8,intensity_buildings_metalOres_global,Buildings,424,0.03407948240125551,FALSE,FALSE
+9,intensity_civil_metalOres_global,Infrastructure,424,0.1275975218487438,FALSE,FALSE
+10,intensity_machinery_metalOres_global,Machinery,424,0.4396213321660179,FALSE,FALSE
+11,intensity_sl_products_metalOres_global,Short-lived,424,0.7943654115872923,FALSE,FALSE
+12,intensity_buildings_nonMetallic_global,Buildings,424,0.7754697129619308,FALSE,FALSE
+13,intensity_civil_nonMetallic_global,Infrastructure,424,0.8337784118566196,FALSE,FALSE
+14,recycling_rate_fe,Fe,424,0.6703151171165519,FALSE,FALSE
+15,recycling_rate_nonfe,NonFe,424,0.8837265462777577,FALSE,FALSE
+16,grade_ore_fe,Fe (+25%),424,0.4124232424125075,FALSE,FALSE
+17,grade_ore_nonfe,NonFe (+1%),424,0.7374038183109369,FALSE,FALSE
+18,lifetime_mean_buildings,Buildings (+20yr),424,0.8894083446834702,FALSE,FALSE
+19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),424,0.8225087201027199,FALSE,FALSE
+20,lifetime_mean_machinery,Machinery (+5yr),424,0.6444671973902732,FALSE,FALSE
+21,lifetime_mean_short_lived,Short-lived (+1yr),424,0.07085809646570124,FALSE,FALSE
 1,ssp_u,GDP,425,0.6951051680131349,FALSE,TRUE
 2,intensity_crops_global,Crops,425,0.513660072589526,FALSE,TRUE
 3,intensity_grazed_biomass_global,Grazed biomass,425,0.6298286422265228,FALSE,TRUE
@@ -10877,27 +10877,27 @@ order,param,display_label,run_id,u_value,abs_decouple,selected
 19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),518,0.1485994598227553,FALSE,FALSE
 20,lifetime_mean_machinery,Machinery (+5yr),518,0.6433530060895719,FALSE,FALSE
 21,lifetime_mean_short_lived,Short-lived (+1yr),518,5.169681117404252e-4,FALSE,FALSE
-1,ssp_u,GDP,519,0.7280291406717151,FALSE,TRUE
-2,intensity_crops_global,Crops,519,0.8603488727891818,FALSE,TRUE
-3,intensity_grazed_biomass_global,Grazed biomass,519,0.990124200764578,FALSE,TRUE
-4,intensity_wood_global,Wood,519,0.6925742024020292,FALSE,TRUE
-5,intensity_coal_global,Coal,519,0.5911917177208234,FALSE,TRUE
-6,intensity_gas_global,Natural gas,519,0.821682100577047,FALSE,TRUE
-7,intensity_oil_global,Oil,519,0.23805345500237307,FALSE,TRUE
-8,intensity_buildings_metalOres_global,Buildings,519,0.07562528169341386,FALSE,TRUE
-9,intensity_civil_metalOres_global,Infrastructure,519,0.37671205558045767,FALSE,TRUE
-10,intensity_machinery_metalOres_global,Machinery,519,0.0870714420012664,FALSE,TRUE
-11,intensity_sl_products_metalOres_global,Short-lived,519,0.17667803175305016,FALSE,TRUE
-12,intensity_buildings_nonMetallic_global,Buildings,519,0.535813581639668,FALSE,TRUE
-13,intensity_civil_nonMetallic_global,Infrastructure,519,0.3244047564272769,FALSE,TRUE
-14,recycling_rate_fe,Fe,519,0.6247398913658689,FALSE,TRUE
-15,recycling_rate_nonfe,NonFe,519,0.8617457951733377,FALSE,TRUE
-16,grade_ore_fe,Fe (+25%),519,0.7863720098224003,FALSE,TRUE
-17,grade_ore_nonfe,NonFe (+1%),519,0.35247174224769695,FALSE,TRUE
-18,lifetime_mean_buildings,Buildings (+20yr),519,0.677051548474934,FALSE,TRUE
-19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),519,0.9143346484408248,FALSE,TRUE
-20,lifetime_mean_machinery,Machinery (+5yr),519,0.5780840820320882,FALSE,TRUE
-21,lifetime_mean_short_lived,Short-lived (+1yr),519,0.9318039106503128,FALSE,TRUE
+1,ssp_u,GDP,519,0.7280291406717151,FALSE,FALSE
+2,intensity_crops_global,Crops,519,0.8603488727891818,FALSE,FALSE
+3,intensity_grazed_biomass_global,Grazed biomass,519,0.990124200764578,FALSE,FALSE
+4,intensity_wood_global,Wood,519,0.6925742024020292,FALSE,FALSE
+5,intensity_coal_global,Coal,519,0.5911917177208234,FALSE,FALSE
+6,intensity_gas_global,Natural gas,519,0.821682100577047,FALSE,FALSE
+7,intensity_oil_global,Oil,519,0.23805345500237307,FALSE,FALSE
+8,intensity_buildings_metalOres_global,Buildings,519,0.07562528169341386,FALSE,FALSE
+9,intensity_civil_metalOres_global,Infrastructure,519,0.37671205558045767,FALSE,FALSE
+10,intensity_machinery_metalOres_global,Machinery,519,0.0870714420012664,FALSE,FALSE
+11,intensity_sl_products_metalOres_global,Short-lived,519,0.17667803175305016,FALSE,FALSE
+12,intensity_buildings_nonMetallic_global,Buildings,519,0.535813581639668,FALSE,FALSE
+13,intensity_civil_nonMetallic_global,Infrastructure,519,0.3244047564272769,FALSE,FALSE
+14,recycling_rate_fe,Fe,519,0.6247398913658689,FALSE,FALSE
+15,recycling_rate_nonfe,NonFe,519,0.8617457951733377,FALSE,FALSE
+16,grade_ore_fe,Fe (+25%),519,0.7863720098224003,FALSE,FALSE
+17,grade_ore_nonfe,NonFe (+1%),519,0.35247174224769695,FALSE,FALSE
+18,lifetime_mean_buildings,Buildings (+20yr),519,0.677051548474934,FALSE,FALSE
+19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),519,0.9143346484408248,FALSE,FALSE
+20,lifetime_mean_machinery,Machinery (+5yr),519,0.5780840820320882,FALSE,FALSE
+21,lifetime_mean_short_lived,Short-lived (+1yr),519,0.9318039106503128,FALSE,FALSE
 1,ssp_u,GDP,520,0.4845232770033181,FALSE,FALSE
 2,intensity_crops_global,Crops,520,0.12796676362073048,FALSE,FALSE
 3,intensity_grazed_biomass_global,Grazed biomass,520,0.2974214363798965,FALSE,FALSE
@@ -11087,27 +11087,27 @@ order,param,display_label,run_id,u_value,abs_decouple,selected
 19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),528,0.4639853140232153,FALSE,FALSE
 20,lifetime_mean_machinery,Machinery (+5yr),528,0.04625639323913492,FALSE,FALSE
 21,lifetime_mean_short_lived,Short-lived (+1yr),528,0.2293749533453956,FALSE,FALSE
-1,ssp_u,GDP,529,0.13796258650324308,FALSE,FALSE
-2,intensity_crops_global,Crops,529,0.2134612260046415,FALSE,FALSE
-3,intensity_grazed_biomass_global,Grazed biomass,529,0.11158798110857604,FALSE,FALSE
-4,intensity_wood_global,Wood,529,0.27518305712053553,FALSE,FALSE
-5,intensity_coal_global,Coal,529,0.5436474701254629,FALSE,FALSE
-6,intensity_gas_global,Natural gas,529,0.16358420617156663,FALSE,FALSE
-7,intensity_oil_global,Oil,529,0.5167429480513092,FALSE,FALSE
-8,intensity_buildings_metalOres_global,Buildings,529,0.651001008078456,FALSE,FALSE
-9,intensity_civil_metalOres_global,Infrastructure,529,0.0776857717523817,FALSE,FALSE
-10,intensity_machinery_metalOres_global,Machinery,529,0.2069086423718836,FALSE,FALSE
-11,intensity_sl_products_metalOres_global,Short-lived,529,0.8553577312577981,FALSE,FALSE
-12,intensity_buildings_nonMetallic_global,Buildings,529,0.16419916246435606,FALSE,FALSE
-13,intensity_civil_nonMetallic_global,Infrastructure,529,0.33565850934083574,FALSE,FALSE
-14,recycling_rate_fe,Fe,529,0.9183317049490288,FALSE,FALSE
-15,recycling_rate_nonfe,NonFe,529,0.04955994987394661,FALSE,FALSE
-16,grade_ore_fe,Fe (+25%),529,0.4707260388487484,FALSE,FALSE
-17,grade_ore_nonfe,NonFe (+1%),529,0.8068890934877563,FALSE,FALSE
-18,lifetime_mean_buildings,Buildings (+20yr),529,0.2930113514678087,FALSE,FALSE
-19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),529,0.20617091779387556,FALSE,FALSE
-20,lifetime_mean_machinery,Machinery (+5yr),529,0.8517996932850219,FALSE,FALSE
-21,lifetime_mean_short_lived,Short-lived (+1yr),529,0.15727595012565143,FALSE,FALSE
+1,ssp_u,GDP,529,0.13796258650324308,FALSE,TRUE
+2,intensity_crops_global,Crops,529,0.2134612260046415,FALSE,TRUE
+3,intensity_grazed_biomass_global,Grazed biomass,529,0.11158798110857604,FALSE,TRUE
+4,intensity_wood_global,Wood,529,0.27518305712053553,FALSE,TRUE
+5,intensity_coal_global,Coal,529,0.5436474701254629,FALSE,TRUE
+6,intensity_gas_global,Natural gas,529,0.16358420617156663,FALSE,TRUE
+7,intensity_oil_global,Oil,529,0.5167429480513092,FALSE,TRUE
+8,intensity_buildings_metalOres_global,Buildings,529,0.651001008078456,FALSE,TRUE
+9,intensity_civil_metalOres_global,Infrastructure,529,0.0776857717523817,FALSE,TRUE
+10,intensity_machinery_metalOres_global,Machinery,529,0.2069086423718836,FALSE,TRUE
+11,intensity_sl_products_metalOres_global,Short-lived,529,0.8553577312577981,FALSE,TRUE
+12,intensity_buildings_nonMetallic_global,Buildings,529,0.16419916246435606,FALSE,TRUE
+13,intensity_civil_nonMetallic_global,Infrastructure,529,0.33565850934083574,FALSE,TRUE
+14,recycling_rate_fe,Fe,529,0.9183317049490288,FALSE,TRUE
+15,recycling_rate_nonfe,NonFe,529,0.04955994987394661,FALSE,TRUE
+16,grade_ore_fe,Fe (+25%),529,0.4707260388487484,FALSE,TRUE
+17,grade_ore_nonfe,NonFe (+1%),529,0.8068890934877563,FALSE,TRUE
+18,lifetime_mean_buildings,Buildings (+20yr),529,0.2930113514678087,FALSE,TRUE
+19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),529,0.20617091779387556,FALSE,TRUE
+20,lifetime_mean_machinery,Machinery (+5yr),529,0.8517996932850219,FALSE,TRUE
+21,lifetime_mean_short_lived,Short-lived (+1yr),529,0.15727595012565143,FALSE,TRUE
 1,ssp_u,GDP,530,0.4696184151400812,FALSE,FALSE
 2,intensity_crops_global,Crops,530,0.7396791205224581,FALSE,FALSE
 3,intensity_grazed_biomass_global,Grazed biomass,530,0.1727832915673498,FALSE,FALSE
@@ -11864,27 +11864,27 @@ order,param,display_label,run_id,u_value,abs_decouple,selected
 19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),565,0.9705569701234344,FALSE,FALSE
 20,lifetime_mean_machinery,Machinery (+5yr),565,0.687181451226119,FALSE,FALSE
 21,lifetime_mean_short_lived,Short-lived (+1yr),565,0.1883977992509026,FALSE,FALSE
-1,ssp_u,GDP,566,0.4607879200591706,FALSE,FALSE
-2,intensity_crops_global,Crops,566,0.27851279493514447,FALSE,FALSE
-3,intensity_grazed_biomass_global,Grazed biomass,566,0.3600112097640522,FALSE,FALSE
-4,intensity_wood_global,Wood,566,0.15799731319211424,FALSE,FALSE
-5,intensity_coal_global,Coal,566,0.3805571706222836,FALSE,FALSE
-6,intensity_gas_global,Natural gas,566,0.5140928842292632,FALSE,FALSE
-7,intensity_oil_global,Oil,566,0.4926861846444663,FALSE,FALSE
-8,intensity_buildings_metalOres_global,Buildings,566,0.07621528462925926,FALSE,FALSE
-9,intensity_civil_metalOres_global,Infrastructure,566,0.6634937711320817,FALSE,FALSE
-10,intensity_machinery_metalOres_global,Machinery,566,0.7796581076541915,FALSE,FALSE
-11,intensity_sl_products_metalOres_global,Short-lived,566,0.5104768181636464,FALSE,FALSE
-12,intensity_buildings_nonMetallic_global,Buildings,566,0.17440489432984033,FALSE,FALSE
-13,intensity_civil_nonMetallic_global,Infrastructure,566,0.13798054373031482,FALSE,FALSE
-14,recycling_rate_fe,Fe,566,0.6519693553517573,FALSE,FALSE
-15,recycling_rate_nonfe,NonFe,566,0.14199251311901026,FALSE,FALSE
-16,grade_ore_fe,Fe (+25%),566,0.11136817811522633,FALSE,FALSE
-17,grade_ore_nonfe,NonFe (+1%),566,0.6533745960299857,FALSE,FALSE
-18,lifetime_mean_buildings,Buildings (+20yr),566,0.32682832833076825,FALSE,FALSE
-19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),566,0.06641723601636476,FALSE,FALSE
-20,lifetime_mean_machinery,Machinery (+5yr),566,0.6267300350172446,FALSE,FALSE
-21,lifetime_mean_short_lived,Short-lived (+1yr),566,0.9446010207345245,FALSE,FALSE
+1,ssp_u,GDP,566,0.4607879200591706,FALSE,TRUE
+2,intensity_crops_global,Crops,566,0.27851279493514447,FALSE,TRUE
+3,intensity_grazed_biomass_global,Grazed biomass,566,0.3600112097640522,FALSE,TRUE
+4,intensity_wood_global,Wood,566,0.15799731319211424,FALSE,TRUE
+5,intensity_coal_global,Coal,566,0.3805571706222836,FALSE,TRUE
+6,intensity_gas_global,Natural gas,566,0.5140928842292632,FALSE,TRUE
+7,intensity_oil_global,Oil,566,0.4926861846444663,FALSE,TRUE
+8,intensity_buildings_metalOres_global,Buildings,566,0.07621528462925926,FALSE,TRUE
+9,intensity_civil_metalOres_global,Infrastructure,566,0.6634937711320817,FALSE,TRUE
+10,intensity_machinery_metalOres_global,Machinery,566,0.7796581076541915,FALSE,TRUE
+11,intensity_sl_products_metalOres_global,Short-lived,566,0.5104768181636464,FALSE,TRUE
+12,intensity_buildings_nonMetallic_global,Buildings,566,0.17440489432984033,FALSE,TRUE
+13,intensity_civil_nonMetallic_global,Infrastructure,566,0.13798054373031482,FALSE,TRUE
+14,recycling_rate_fe,Fe,566,0.6519693553517573,FALSE,TRUE
+15,recycling_rate_nonfe,NonFe,566,0.14199251311901026,FALSE,TRUE
+16,grade_ore_fe,Fe (+25%),566,0.11136817811522633,FALSE,TRUE
+17,grade_ore_nonfe,NonFe (+1%),566,0.6533745960299857,FALSE,TRUE
+18,lifetime_mean_buildings,Buildings (+20yr),566,0.32682832833076825,FALSE,TRUE
+19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),566,0.06641723601636476,FALSE,TRUE
+20,lifetime_mean_machinery,Machinery (+5yr),566,0.6267300350172446,FALSE,TRUE
+21,lifetime_mean_short_lived,Short-lived (+1yr),566,0.9446010207345245,FALSE,TRUE
 1,ssp_u,GDP,567,0.9013630210591944,FALSE,TRUE
 2,intensity_crops_global,Crops,567,0.24644248009100556,FALSE,TRUE
 3,intensity_grazed_biomass_global,Grazed biomass,567,0.14477378561184742,FALSE,TRUE
@@ -12683,27 +12683,27 @@ order,param,display_label,run_id,u_value,abs_decouple,selected
 19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),604,0.21112204619054684,FALSE,TRUE
 20,lifetime_mean_machinery,Machinery (+5yr),604,0.43043535614339634,FALSE,TRUE
 21,lifetime_mean_short_lived,Short-lived (+1yr),604,0.854660404895898,FALSE,TRUE
-1,ssp_u,GDP,605,0.00499125389638356,FALSE,TRUE
-2,intensity_crops_global,Crops,605,0.19505190427531488,FALSE,TRUE
-3,intensity_grazed_biomass_global,Grazed biomass,605,0.6489543605570216,FALSE,TRUE
-4,intensity_wood_global,Wood,605,0.7848056479913649,FALSE,TRUE
-5,intensity_coal_global,Coal,605,0.13685341945383697,FALSE,TRUE
-6,intensity_gas_global,Natural gas,605,0.0076562680278439,FALSE,TRUE
-7,intensity_oil_global,Oil,605,0.5686987853499595,FALSE,TRUE
-8,intensity_buildings_metalOres_global,Buildings,605,0.03141261841496452,FALSE,TRUE
-9,intensity_civil_metalOres_global,Infrastructure,605,0.5662749053842854,FALSE,TRUE
-10,intensity_machinery_metalOres_global,Machinery,605,0.4014590746765025,FALSE,TRUE
-11,intensity_sl_products_metalOres_global,Short-lived,605,0.5592192508175503,FALSE,TRUE
-12,intensity_buildings_nonMetallic_global,Buildings,605,0.06118321889336221,FALSE,TRUE
-13,intensity_civil_nonMetallic_global,Infrastructure,605,0.6118341928576119,FALSE,TRUE
-14,recycling_rate_fe,Fe,605,0.7159296827916988,FALSE,TRUE
-15,recycling_rate_nonfe,NonFe,605,0.98343101959466,FALSE,TRUE
-16,grade_ore_fe,Fe (+25%),605,0.53949207749567,FALSE,TRUE
-17,grade_ore_nonfe,NonFe (+1%),605,0.6849368401272222,FALSE,TRUE
-18,lifetime_mean_buildings,Buildings (+20yr),605,0.6609805212318898,FALSE,TRUE
-19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),605,0.6851839145079721,FALSE,TRUE
-20,lifetime_mean_machinery,Machinery (+5yr),605,0.03873674141336232,FALSE,TRUE
-21,lifetime_mean_short_lived,Short-lived (+1yr),605,0.960505723447306,FALSE,TRUE
+1,ssp_u,GDP,605,0.00499125389638356,FALSE,FALSE
+2,intensity_crops_global,Crops,605,0.19505190427531488,FALSE,FALSE
+3,intensity_grazed_biomass_global,Grazed biomass,605,0.6489543605570216,FALSE,FALSE
+4,intensity_wood_global,Wood,605,0.7848056479913649,FALSE,FALSE
+5,intensity_coal_global,Coal,605,0.13685341945383697,FALSE,FALSE
+6,intensity_gas_global,Natural gas,605,0.0076562680278439,FALSE,FALSE
+7,intensity_oil_global,Oil,605,0.5686987853499595,FALSE,FALSE
+8,intensity_buildings_metalOres_global,Buildings,605,0.03141261841496452,FALSE,FALSE
+9,intensity_civil_metalOres_global,Infrastructure,605,0.5662749053842854,FALSE,FALSE
+10,intensity_machinery_metalOres_global,Machinery,605,0.4014590746765025,FALSE,FALSE
+11,intensity_sl_products_metalOres_global,Short-lived,605,0.5592192508175503,FALSE,FALSE
+12,intensity_buildings_nonMetallic_global,Buildings,605,0.06118321889336221,FALSE,FALSE
+13,intensity_civil_nonMetallic_global,Infrastructure,605,0.6118341928576119,FALSE,FALSE
+14,recycling_rate_fe,Fe,605,0.7159296827916988,FALSE,FALSE
+15,recycling_rate_nonfe,NonFe,605,0.98343101959466,FALSE,FALSE
+16,grade_ore_fe,Fe (+25%),605,0.53949207749567,FALSE,FALSE
+17,grade_ore_nonfe,NonFe (+1%),605,0.6849368401272222,FALSE,FALSE
+18,lifetime_mean_buildings,Buildings (+20yr),605,0.6609805212318898,FALSE,FALSE
+19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),605,0.6851839145079721,FALSE,FALSE
+20,lifetime_mean_machinery,Machinery (+5yr),605,0.03873674141336232,FALSE,FALSE
+21,lifetime_mean_short_lived,Short-lived (+1yr),605,0.960505723447306,FALSE,FALSE
 1,ssp_u,GDP,606,0.5603951125522144,FALSE,FALSE
 2,intensity_crops_global,Crops,606,0.9182539218727034,FALSE,FALSE
 3,intensity_grazed_biomass_global,Grazed biomass,606,0.3105327471701894,FALSE,FALSE
@@ -13481,27 +13481,27 @@ order,param,display_label,run_id,u_value,abs_decouple,selected
 19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),642,0.5420642548906617,FALSE,FALSE
 20,lifetime_mean_machinery,Machinery (+5yr),642,0.0887345028789714,FALSE,FALSE
 21,lifetime_mean_short_lived,Short-lived (+1yr),642,0.22729148474754765,FALSE,FALSE
-1,ssp_u,GDP,643,0.5841124364910647,FALSE,TRUE
-2,intensity_crops_global,Crops,643,0.5276699443892576,FALSE,TRUE
-3,intensity_grazed_biomass_global,Grazed biomass,643,0.9530523202198092,FALSE,TRUE
-4,intensity_wood_global,Wood,643,0.9693725172090344,FALSE,TRUE
-5,intensity_coal_global,Coal,643,0.08438375069084578,FALSE,TRUE
-6,intensity_gas_global,Natural gas,643,0.8259902268461883,FALSE,TRUE
-7,intensity_oil_global,Oil,643,0.28504472032398914,FALSE,TRUE
-8,intensity_buildings_metalOres_global,Buildings,643,0.1544889818446245,FALSE,TRUE
-9,intensity_civil_metalOres_global,Infrastructure,643,0.691811543879332,FALSE,TRUE
-10,intensity_machinery_metalOres_global,Machinery,643,0.24135473869438284,FALSE,TRUE
-11,intensity_sl_products_metalOres_global,Short-lived,643,0.847293659182731,FALSE,TRUE
-12,intensity_buildings_nonMetallic_global,Buildings,643,0.3551300169217866,FALSE,TRUE
-13,intensity_civil_nonMetallic_global,Infrastructure,643,0.36508446556911806,FALSE,TRUE
-14,recycling_rate_fe,Fe,643,0.9447156340444928,FALSE,TRUE
-15,recycling_rate_nonfe,NonFe,643,0.9526083178948612,FALSE,TRUE
-16,grade_ore_fe,Fe (+25%),643,0.43982178234495223,FALSE,TRUE
-17,grade_ore_nonfe,NonFe (+1%),643,0.35370989281265064,FALSE,TRUE
-18,lifetime_mean_buildings,Buildings (+20yr),643,0.17053595354175194,FALSE,TRUE
-19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),643,0.4611969840133097,FALSE,TRUE
-20,lifetime_mean_machinery,Machinery (+5yr),643,0.9537222673792858,FALSE,TRUE
-21,lifetime_mean_short_lived,Short-lived (+1yr),643,0.03782191886822693,FALSE,TRUE
+1,ssp_u,GDP,643,0.5841124364910647,FALSE,FALSE
+2,intensity_crops_global,Crops,643,0.5276699443892576,FALSE,FALSE
+3,intensity_grazed_biomass_global,Grazed biomass,643,0.9530523202198092,FALSE,FALSE
+4,intensity_wood_global,Wood,643,0.9693725172090344,FALSE,FALSE
+5,intensity_coal_global,Coal,643,0.08438375069084578,FALSE,FALSE
+6,intensity_gas_global,Natural gas,643,0.8259902268461883,FALSE,FALSE
+7,intensity_oil_global,Oil,643,0.28504472032398914,FALSE,FALSE
+8,intensity_buildings_metalOres_global,Buildings,643,0.1544889818446245,FALSE,FALSE
+9,intensity_civil_metalOres_global,Infrastructure,643,0.691811543879332,FALSE,FALSE
+10,intensity_machinery_metalOres_global,Machinery,643,0.24135473869438284,FALSE,FALSE
+11,intensity_sl_products_metalOres_global,Short-lived,643,0.847293659182731,FALSE,FALSE
+12,intensity_buildings_nonMetallic_global,Buildings,643,0.3551300169217866,FALSE,FALSE
+13,intensity_civil_nonMetallic_global,Infrastructure,643,0.36508446556911806,FALSE,FALSE
+14,recycling_rate_fe,Fe,643,0.9447156340444928,FALSE,FALSE
+15,recycling_rate_nonfe,NonFe,643,0.9526083178948612,FALSE,FALSE
+16,grade_ore_fe,Fe (+25%),643,0.43982178234495223,FALSE,FALSE
+17,grade_ore_nonfe,NonFe (+1%),643,0.35370989281265064,FALSE,FALSE
+18,lifetime_mean_buildings,Buildings (+20yr),643,0.17053595354175194,FALSE,FALSE
+19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),643,0.4611969840133097,FALSE,FALSE
+20,lifetime_mean_machinery,Machinery (+5yr),643,0.9537222673792858,FALSE,FALSE
+21,lifetime_mean_short_lived,Short-lived (+1yr),643,0.03782191886822693,FALSE,FALSE
 1,ssp_u,GDP,644,0.6521360577056184,FALSE,FALSE
 2,intensity_crops_global,Crops,644,0.7972660606077406,FALSE,FALSE
 3,intensity_grazed_biomass_global,Grazed biomass,644,0.5384084830947686,FALSE,FALSE
@@ -16043,27 +16043,27 @@ order,param,display_label,run_id,u_value,abs_decouple,selected
 19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),764,0.5609958873868455,FALSE,FALSE
 20,lifetime_mean_machinery,Machinery (+5yr),764,0.2886099022999406,FALSE,FALSE
 21,lifetime_mean_short_lived,Short-lived (+1yr),764,0.19353897522692567,FALSE,FALSE
-1,ssp_u,GDP,765,0.2819811837717425,FALSE,FALSE
-2,intensity_crops_global,Crops,765,0.2056752667615656,FALSE,FALSE
-3,intensity_grazed_biomass_global,Grazed biomass,765,0.08170095543074421,FALSE,FALSE
-4,intensity_wood_global,Wood,765,0.5264616642955225,FALSE,FALSE
-5,intensity_coal_global,Coal,765,0.4480054159145802,FALSE,FALSE
-6,intensity_gas_global,Natural gas,765,0.5227258834904059,FALSE,FALSE
-7,intensity_oil_global,Oil,765,0.7860186578272842,FALSE,FALSE
-8,intensity_buildings_metalOres_global,Buildings,765,0.1483284368002787,FALSE,FALSE
-9,intensity_civil_metalOres_global,Infrastructure,765,0.24109333382663317,FALSE,FALSE
-10,intensity_machinery_metalOres_global,Machinery,765,0.22726086699101145,FALSE,FALSE
-11,intensity_sl_products_metalOres_global,Short-lived,765,0.9160473349799868,FALSE,FALSE
-12,intensity_buildings_nonMetallic_global,Buildings,765,0.11452713984763248,FALSE,FALSE
-13,intensity_civil_nonMetallic_global,Infrastructure,765,0.4901697978232987,FALSE,FALSE
-14,recycling_rate_fe,Fe,765,0.07601626698579639,FALSE,FALSE
-15,recycling_rate_nonfe,NonFe,765,0.6114583599411417,FALSE,FALSE
-16,grade_ore_fe,Fe (+25%),765,0.5559137926246039,FALSE,FALSE
-17,grade_ore_nonfe,NonFe (+1%),765,0.9620883515113964,FALSE,FALSE
-18,lifetime_mean_buildings,Buildings (+20yr),765,0.0907732348695863,FALSE,FALSE
-19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),765,0.4164943970420863,FALSE,FALSE
-20,lifetime_mean_machinery,Machinery (+5yr),765,0.7998927113437094,FALSE,FALSE
-21,lifetime_mean_short_lived,Short-lived (+1yr),765,0.5739110167622566,FALSE,FALSE
+1,ssp_u,GDP,765,0.2819811837717425,FALSE,TRUE
+2,intensity_crops_global,Crops,765,0.2056752667615656,FALSE,TRUE
+3,intensity_grazed_biomass_global,Grazed biomass,765,0.08170095543074421,FALSE,TRUE
+4,intensity_wood_global,Wood,765,0.5264616642955225,FALSE,TRUE
+5,intensity_coal_global,Coal,765,0.4480054159145802,FALSE,TRUE
+6,intensity_gas_global,Natural gas,765,0.5227258834904059,FALSE,TRUE
+7,intensity_oil_global,Oil,765,0.7860186578272842,FALSE,TRUE
+8,intensity_buildings_metalOres_global,Buildings,765,0.1483284368002787,FALSE,TRUE
+9,intensity_civil_metalOres_global,Infrastructure,765,0.24109333382663317,FALSE,TRUE
+10,intensity_machinery_metalOres_global,Machinery,765,0.22726086699101145,FALSE,TRUE
+11,intensity_sl_products_metalOres_global,Short-lived,765,0.9160473349799868,FALSE,TRUE
+12,intensity_buildings_nonMetallic_global,Buildings,765,0.11452713984763248,FALSE,TRUE
+13,intensity_civil_nonMetallic_global,Infrastructure,765,0.4901697978232987,FALSE,TRUE
+14,recycling_rate_fe,Fe,765,0.07601626698579639,FALSE,TRUE
+15,recycling_rate_nonfe,NonFe,765,0.6114583599411417,FALSE,TRUE
+16,grade_ore_fe,Fe (+25%),765,0.5559137926246039,FALSE,TRUE
+17,grade_ore_nonfe,NonFe (+1%),765,0.9620883515113964,FALSE,TRUE
+18,lifetime_mean_buildings,Buildings (+20yr),765,0.0907732348695863,FALSE,TRUE
+19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),765,0.4164943970420863,FALSE,TRUE
+20,lifetime_mean_machinery,Machinery (+5yr),765,0.7998927113437094,FALSE,TRUE
+21,lifetime_mean_short_lived,Short-lived (+1yr),765,0.5739110167622566,FALSE,TRUE
 1,ssp_u,GDP,766,0.5002379089777823,FALSE,TRUE
 2,intensity_crops_global,Crops,766,0.32081424567848443,FALSE,TRUE
 3,intensity_grazed_biomass_global,Grazed biomass,766,0.26520434517227115,FALSE,TRUE
@@ -16085,27 +16085,27 @@ order,param,display_label,run_id,u_value,abs_decouple,selected
 19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),766,0.5761573552601039,FALSE,TRUE
 20,lifetime_mean_machinery,Machinery (+5yr),766,0.8804553056603763,FALSE,TRUE
 21,lifetime_mean_short_lived,Short-lived (+1yr),766,0.0270151131786406,FALSE,TRUE
-1,ssp_u,GDP,767,0.8570845111613162,FALSE,TRUE
-2,intensity_crops_global,Crops,767,0.2805820062828716,FALSE,TRUE
-3,intensity_grazed_biomass_global,Grazed biomass,767,0.8269538018817548,FALSE,TRUE
-4,intensity_wood_global,Wood,767,0.7727875152821653,FALSE,TRUE
-5,intensity_coal_global,Coal,767,0.7498367830947973,FALSE,TRUE
-6,intensity_gas_global,Natural gas,767,0.8221506133198272,FALSE,TRUE
-7,intensity_oil_global,Oil,767,0.5792162434253841,FALSE,TRUE
-8,intensity_buildings_metalOres_global,Buildings,767,0.5278428544024937,FALSE,TRUE
-9,intensity_civil_metalOres_global,Infrastructure,767,0.0646530763793271,FALSE,TRUE
-10,intensity_machinery_metalOres_global,Machinery,767,0.6529976534228772,FALSE,TRUE
-11,intensity_sl_products_metalOres_global,Short-lived,767,0.6487626654771157,FALSE,TRUE
-12,intensity_buildings_nonMetallic_global,Buildings,767,0.02325529608596116,FALSE,TRUE
-13,intensity_civil_nonMetallic_global,Infrastructure,767,0.5617287521772086,FALSE,TRUE
-14,recycling_rate_fe,Fe,767,0.9128799103752244,FALSE,TRUE
-15,recycling_rate_nonfe,NonFe,767,0.9779640593617224,FALSE,TRUE
-16,grade_ore_fe,Fe (+25%),767,0.28659948702016846,FALSE,TRUE
-17,grade_ore_nonfe,NonFe (+1%),767,0.5239405552428216,FALSE,TRUE
-18,lifetime_mean_buildings,Buildings (+20yr),767,0.03485004371521063,FALSE,TRUE
-19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),767,0.8626773089119233,FALSE,TRUE
-20,lifetime_mean_machinery,Machinery (+5yr),767,0.16145398807059974,FALSE,TRUE
-21,lifetime_mean_short_lived,Short-lived (+1yr),767,0.6631349929277786,FALSE,TRUE
+1,ssp_u,GDP,767,0.8570845111613162,FALSE,FALSE
+2,intensity_crops_global,Crops,767,0.2805820062828716,FALSE,FALSE
+3,intensity_grazed_biomass_global,Grazed biomass,767,0.8269538018817548,FALSE,FALSE
+4,intensity_wood_global,Wood,767,0.7727875152821653,FALSE,FALSE
+5,intensity_coal_global,Coal,767,0.7498367830947973,FALSE,FALSE
+6,intensity_gas_global,Natural gas,767,0.8221506133198272,FALSE,FALSE
+7,intensity_oil_global,Oil,767,0.5792162434253841,FALSE,FALSE
+8,intensity_buildings_metalOres_global,Buildings,767,0.5278428544024937,FALSE,FALSE
+9,intensity_civil_metalOres_global,Infrastructure,767,0.0646530763793271,FALSE,FALSE
+10,intensity_machinery_metalOres_global,Machinery,767,0.6529976534228772,FALSE,FALSE
+11,intensity_sl_products_metalOres_global,Short-lived,767,0.6487626654771157,FALSE,FALSE
+12,intensity_buildings_nonMetallic_global,Buildings,767,0.02325529608596116,FALSE,FALSE
+13,intensity_civil_nonMetallic_global,Infrastructure,767,0.5617287521772086,FALSE,FALSE
+14,recycling_rate_fe,Fe,767,0.9128799103752244,FALSE,FALSE
+15,recycling_rate_nonfe,NonFe,767,0.9779640593617224,FALSE,FALSE
+16,grade_ore_fe,Fe (+25%),767,0.28659948702016846,FALSE,FALSE
+17,grade_ore_nonfe,NonFe (+1%),767,0.5239405552428216,FALSE,FALSE
+18,lifetime_mean_buildings,Buildings (+20yr),767,0.03485004371521063,FALSE,FALSE
+19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),767,0.8626773089119233,FALSE,FALSE
+20,lifetime_mean_machinery,Machinery (+5yr),767,0.16145398807059974,FALSE,FALSE
+21,lifetime_mean_short_lived,Short-lived (+1yr),767,0.6631349929277786,FALSE,FALSE
 1,ssp_u,GDP,768,0.02754360694205388,FALSE,FALSE
 2,intensity_crops_global,Crops,768,0.8221487203238066,FALSE,FALSE
 3,intensity_grazed_biomass_global,Grazed biomass,768,0.7805939390000421,FALSE,FALSE
@@ -19718,27 +19718,27 @@ order,param,display_label,run_id,u_value,abs_decouple,selected
 19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),939,0.7280599963907153,FALSE,FALSE
 20,lifetime_mean_machinery,Machinery (+5yr),939,0.6497890465096571,FALSE,FALSE
 21,lifetime_mean_short_lived,Short-lived (+1yr),939,0.5966979844665621,FALSE,FALSE
-1,ssp_u,GDP,940,0.6927128189345821,FALSE,FALSE
-2,intensity_crops_global,Crops,940,0.6329721339175012,FALSE,FALSE
-3,intensity_grazed_biomass_global,Grazed biomass,940,0.9356109478524888,FALSE,FALSE
-4,intensity_wood_global,Wood,940,0.6771031279878226,FALSE,FALSE
-5,intensity_coal_global,Coal,940,0.29532562440400945,FALSE,FALSE
-6,intensity_gas_global,Natural gas,940,0.13935789911053142,FALSE,FALSE
-7,intensity_oil_global,Oil,940,0.15708589820633642,FALSE,FALSE
-8,intensity_buildings_metalOres_global,Buildings,940,0.5480577881482895,FALSE,FALSE
-9,intensity_civil_metalOres_global,Infrastructure,940,0.6987716348939575,FALSE,FALSE
-10,intensity_machinery_metalOres_global,Machinery,940,0.4863965692766942,FALSE,FALSE
-11,intensity_sl_products_metalOres_global,Short-lived,940,0.7047854680600576,FALSE,FALSE
-12,intensity_buildings_nonMetallic_global,Buildings,940,0.2815420999545604,FALSE,FALSE
-13,intensity_civil_nonMetallic_global,Infrastructure,940,0.6556464111311361,FALSE,FALSE
-14,recycling_rate_fe,Fe,940,0.45666163247684016,FALSE,FALSE
-15,recycling_rate_nonfe,NonFe,940,0.09870599740813486,FALSE,FALSE
-16,grade_ore_fe,Fe (+25%),940,0.6681602658482734,FALSE,FALSE
-17,grade_ore_nonfe,NonFe (+1%),940,0.6286598824264947,FALSE,FALSE
-18,lifetime_mean_buildings,Buildings (+20yr),940,0.4555332739152946,FALSE,FALSE
-19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),940,0.8801887521659956,FALSE,FALSE
-20,lifetime_mean_machinery,Machinery (+5yr),940,0.5985213861211669,FALSE,FALSE
-21,lifetime_mean_short_lived,Short-lived (+1yr),940,0.5111691031972878,FALSE,FALSE
+1,ssp_u,GDP,940,0.6927128189345821,FALSE,TRUE
+2,intensity_crops_global,Crops,940,0.6329721339175012,FALSE,TRUE
+3,intensity_grazed_biomass_global,Grazed biomass,940,0.9356109478524888,FALSE,TRUE
+4,intensity_wood_global,Wood,940,0.6771031279878226,FALSE,TRUE
+5,intensity_coal_global,Coal,940,0.29532562440400945,FALSE,TRUE
+6,intensity_gas_global,Natural gas,940,0.13935789911053142,FALSE,TRUE
+7,intensity_oil_global,Oil,940,0.15708589820633642,FALSE,TRUE
+8,intensity_buildings_metalOres_global,Buildings,940,0.5480577881482895,FALSE,TRUE
+9,intensity_civil_metalOres_global,Infrastructure,940,0.6987716348939575,FALSE,TRUE
+10,intensity_machinery_metalOres_global,Machinery,940,0.4863965692766942,FALSE,TRUE
+11,intensity_sl_products_metalOres_global,Short-lived,940,0.7047854680600576,FALSE,TRUE
+12,intensity_buildings_nonMetallic_global,Buildings,940,0.2815420999545604,FALSE,TRUE
+13,intensity_civil_nonMetallic_global,Infrastructure,940,0.6556464111311361,FALSE,TRUE
+14,recycling_rate_fe,Fe,940,0.45666163247684016,FALSE,TRUE
+15,recycling_rate_nonfe,NonFe,940,0.09870599740813486,FALSE,TRUE
+16,grade_ore_fe,Fe (+25%),940,0.6681602658482734,FALSE,TRUE
+17,grade_ore_nonfe,NonFe (+1%),940,0.6286598824264947,FALSE,TRUE
+18,lifetime_mean_buildings,Buildings (+20yr),940,0.4555332739152946,FALSE,TRUE
+19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),940,0.8801887521659956,FALSE,TRUE
+20,lifetime_mean_machinery,Machinery (+5yr),940,0.5985213861211669,FALSE,TRUE
+21,lifetime_mean_short_lived,Short-lived (+1yr),940,0.5111691031972878,FALSE,TRUE
 1,ssp_u,GDP,941,0.13105048431362956,FALSE,FALSE
 2,intensity_crops_global,Crops,941,0.2764794814598281,FALSE,FALSE
 3,intensity_grazed_biomass_global,Grazed biomass,941,0.9788629524060524,FALSE,FALSE
@@ -20096,27 +20096,27 @@ order,param,display_label,run_id,u_value,abs_decouple,selected
 19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),957,0.7796789315862116,FALSE,FALSE
 20,lifetime_mean_machinery,Machinery (+5yr),957,0.2195563880931586,FALSE,FALSE
 21,lifetime_mean_short_lived,Short-lived (+1yr),957,0.8307082211698871,FALSE,FALSE
-1,ssp_u,GDP,958,0.3839997641388327,FALSE,FALSE
-2,intensity_crops_global,Crops,958,0.471770108708879,FALSE,FALSE
-3,intensity_grazed_biomass_global,Grazed biomass,958,0.12702689098380507,FALSE,FALSE
-4,intensity_wood_global,Wood,958,0.02957948960573412,FALSE,FALSE
-5,intensity_coal_global,Coal,958,0.5658934980977792,FALSE,FALSE
-6,intensity_gas_global,Natural gas,958,0.6284843489469495,FALSE,FALSE
-7,intensity_oil_global,Oil,958,0.28078013303433547,FALSE,FALSE
-8,intensity_buildings_metalOres_global,Buildings,958,0.04838382509839721,FALSE,FALSE
-9,intensity_civil_metalOres_global,Infrastructure,958,0.44484358813613656,FALSE,FALSE
-10,intensity_machinery_metalOres_global,Machinery,958,0.3437110061403364,FALSE,FALSE
-11,intensity_sl_products_metalOres_global,Short-lived,958,0.8081081846230663,FALSE,FALSE
-12,intensity_buildings_nonMetallic_global,Buildings,958,0.43117756304261273,FALSE,FALSE
-13,intensity_civil_nonMetallic_global,Infrastructure,958,0.6173038230529055,FALSE,FALSE
-14,recycling_rate_fe,Fe,958,0.28784269590186884,FALSE,FALSE
-15,recycling_rate_nonfe,NonFe,958,0.4319875025765504,FALSE,FALSE
-16,grade_ore_fe,Fe (+25%),958,0.04035176820028573,FALSE,FALSE
-17,grade_ore_nonfe,NonFe (+1%),958,0.8985189694955479,FALSE,FALSE
-18,lifetime_mean_buildings,Buildings (+20yr),958,0.7404542641553562,FALSE,FALSE
-19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),958,0.5540781179992482,FALSE,FALSE
-20,lifetime_mean_machinery,Machinery (+5yr),958,0.8785267917395104,FALSE,FALSE
-21,lifetime_mean_short_lived,Short-lived (+1yr),958,0.33558800603356215,FALSE,FALSE
+1,ssp_u,GDP,958,0.3839997641388327,FALSE,TRUE
+2,intensity_crops_global,Crops,958,0.471770108708879,FALSE,TRUE
+3,intensity_grazed_biomass_global,Grazed biomass,958,0.12702689098380507,FALSE,TRUE
+4,intensity_wood_global,Wood,958,0.02957948960573412,FALSE,TRUE
+5,intensity_coal_global,Coal,958,0.5658934980977792,FALSE,TRUE
+6,intensity_gas_global,Natural gas,958,0.6284843489469495,FALSE,TRUE
+7,intensity_oil_global,Oil,958,0.28078013303433547,FALSE,TRUE
+8,intensity_buildings_metalOres_global,Buildings,958,0.04838382509839721,FALSE,TRUE
+9,intensity_civil_metalOres_global,Infrastructure,958,0.44484358813613656,FALSE,TRUE
+10,intensity_machinery_metalOres_global,Machinery,958,0.3437110061403364,FALSE,TRUE
+11,intensity_sl_products_metalOres_global,Short-lived,958,0.8081081846230663,FALSE,TRUE
+12,intensity_buildings_nonMetallic_global,Buildings,958,0.43117756304261273,FALSE,TRUE
+13,intensity_civil_nonMetallic_global,Infrastructure,958,0.6173038230529055,FALSE,TRUE
+14,recycling_rate_fe,Fe,958,0.28784269590186884,FALSE,TRUE
+15,recycling_rate_nonfe,NonFe,958,0.4319875025765504,FALSE,TRUE
+16,grade_ore_fe,Fe (+25%),958,0.04035176820028573,FALSE,TRUE
+17,grade_ore_nonfe,NonFe (+1%),958,0.8985189694955479,FALSE,TRUE
+18,lifetime_mean_buildings,Buildings (+20yr),958,0.7404542641553562,FALSE,TRUE
+19,lifetime_mean_civil_infrastructure,Infrastructure (+20yr),958,0.5540781179992482,FALSE,TRUE
+20,lifetime_mean_machinery,Machinery (+5yr),958,0.8785267917395104,FALSE,TRUE
+21,lifetime_mean_short_lived,Short-lived (+1yr),958,0.33558800603356215,FALSE,TRUE
 1,ssp_u,GDP,959,0.968915662773652,FALSE,FALSE
 2,intensity_crops_global,Crops,959,0.8735270455616992,FALSE,FALSE
 3,intensity_grazed_biomass_global,Grazed biomass,959,0.3736389446510002,FALSE,FALSE
