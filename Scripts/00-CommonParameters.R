@@ -25,9 +25,37 @@ FORECAST_END <- 2060L
 # ── Ore grade 2024 baseline (ore -> metal conversion factor g) ─────────────────
 # 2024 "now" values: the historical series ramps linearly from its last observed
 # year (2016) to these, and each MC run then ramps from these to its sampled
-# target (Inputs/MC_Assumptions.xlsx GRADE_ORE_FE/NONFE: min/central/max).
+# target (Inputs/MC_Assumptions.xlsx GRADE_ORE_*: min/central/max).
+# Non-ferrous metals: ~22 Mt mined Cu / 2.98 Gt copper ore; ~70 Mt primary Al /
+# 0.43 Gt bauxite; ~45 Mt other metals (Zn, Pb, Ni, Mn, ...) / 1.6 Gt other ore.
+# They also set the Cu / Al / other split of historical non-ferrous metal
+# (Scripts/02-HistoricalStock/05-UNEP_stock_flow_model.R).
 GRADE_ORE_FE_2024 <- 0.4
-GRADE_ORE_NONFE_2024 <- 0.016
+GRADE_ORE_CU_2024 <- 0.0075
+GRADE_ORE_AL_2024 <- 0.165
+GRADE_ORE_OTHERNONFE_2024 <- 0.03
+
+# ── Metal keys ──────────────────────────────────────────────────────────────────
+# Historical stock model material keys -> Monte Carlo material_group keys.
+# Non-ferrous ore DMC sub-category (07-NonFerrous_Split.R) of each non-Fe metal.
+# Gold ore is a flow (metal_gold), not a stock metal.
+METAL_KEYS <- c(
+  "Metal_Fe" = "metal_fe",
+  "Metal_Cu" = "metal_cu",
+  "Metal_Al" = "metal_al",
+  "Metal_OtherNonFe" = "metal_othernonfe"
+)
+NONFE_METAL_KEYS <- c("Metal_Cu", "Metal_Al", "Metal_OtherNonFe")
+NONFE_ORE_SUB <- c("Metal_Cu" = "Copper", "Metal_Al" = "Bauxite", "Metal_OtherNonFe" = "Other non-ferrous")
+GRADE_ORE_NONFE_2024_M <- c(
+  "Metal_Cu" = GRADE_ORE_CU_2024,
+  "Metal_Al" = GRADE_ORE_AL_2024,
+  "Metal_OtherNonFe" = GRADE_ORE_OTHERNONFE_2024
+)
+METAL_GROUPS_ALL <- c(unname(METAL_KEYS), "metal_gold") # all pooled into "Metal ores"
+# Stock material groups (metals + minerals); a plain vector so Arrow dataset
+# filters can use it (Arrow cannot evaluate unname()/c() calls)
+STOCK_GROUPS <- c(unname(METAL_KEYS), "nonmetallic_minerals")
 
 # ── Regions (Analysis_group, 8 levels) ────────────────────────────────────────
 # Based on Paul Tol's Vibrant palette with geographic-semantic adjustments.
@@ -101,7 +129,7 @@ PALETTE_ENDUSE <- c(
   "Civil infrastructure" = "#7A5230",
   "Machinery" = "#2D6A4F",
   "Short-lived products" = "#7B2D8B",
-  "Power sector" = "#E69F00" # generation + batteries (explicit stock, 02-RunSimulations.R)
+  "Power sector" = "#E69F00" # generation + batteries (explicit stock, 03-RunSimulations.R)
 )
 
 # Sub-end-use palette: 2 tones per main category, keyed by display label.
@@ -120,12 +148,54 @@ PALETTE_SUBENDUSE <- c(
   "Power sector" = "#E69F00" # same as PALETTE_ENDUSE
 )
 
+# ── Metal ores detail (materialflows.net Level 3, Ferrous + Non-ferrous ores) ──
+# Short display names for the Level 3 labels; colours evoke each metal/ore
+# (rust iron, copper, gold, reddish bauxite, chrome green, manganese purple...).
+
+# fmt: skip
+LABEL_METAL_ORES <- c(
+  "Iron ores concentrates and compounds"                             = "Iron",
+  "Copper ores concentrates and compounds"                           = "Copper",
+  "Gold ores concentrates and compounds"                             = "Gold",
+  "Bauxite and other aluminium ores concentrates and compounds"      = "Bauxite",
+  "Zinc ores concentrates and compounds"                             = "Zinc",
+  "Lead ores concentrates and compounds"                             = "Lead",
+  "Nickel ores concentrates and compounds"                           = "Nickel",
+  "Silver ores concentrates and compounds"                           = "Silver",
+  "Manganese ores concentrates and compounds"                        = "Manganese",
+  "Chromium ores concentrates and compounds"                         = "Chromium",
+  "Tin ores concentrates and compounds"                              = "Tin",
+  "Titanium ores concentrates and compounds"                         = "Titanium",
+  "Uranium ores concentrates and compounds"                          = "Uranium",
+  "Platinum group metal ores concentrates and compounds"             = "PGM",
+  "Other metal ores concentrates and compounds nec. including mixed" = "Other metals"
+)
+
+# fmt: skip
+PALETTE_METAL_ORES <- c(
+  "Iron"         = "#8B2E1F",   # rust
+  "Copper"       = "#C26A2E",   # copper
+  "Gold"         = "#C9A227",   # muted gold
+  "Bauxite"      = "#B07A7A",   # reddish bauxite
+  "Zinc"         = "#6F8FAF",   # blue-grey zinc
+  "Lead"         = "#4B5560",   # dark slate
+  "Nickel"       = "#6E9F7A",   # nickel-salt green
+  "Silver"       = "#B8BCC4",   # silver
+  "Manganese"    = "#7B5C99",   # permanganate purple
+  "Chromium"     = "#2F6B4F",   # chrome-oxide green
+  "Tin"          = "#D2CBB2",   # pewter
+  "Titanium"     = "#9DB7C9",   # light steel blue
+  "Uranium"      = "#A5B83C",   # yellowcake olive
+  "PGM"          = "#E3E0D8",   # platinum
+  "Other metals" = "#8E8579"    # warm grey
+)
+
 SSP_COLORS <- c("SSP1" = "#2d7d46", "SSP2" = "#8db84e", "SSP3" = "#e8a628", "SSP4" = "#d4622a", "SSP5" = "#c0392b")
 
 # ── SSPs sampled by the model (MC, deterministic runs, sampling figures) ──────
 # SSP4 EXCLUDED: ScenarioMIP has a single IIASA run for SSP4 (one model, one
 # scenario) -> no valid min-max intensity-ratio range. To re-include it, add
-# "SSP4" back here; its flow bounds then fall back to SSP2's (04_summary_ratio.R
+# "SSP4" back here; its flow bounds then fall back to SSP2's (08-summary_ratio.R
 # Fix 2). Raw ScenarioMIP exploration figures (03-SSP Trajectories) still show SSP4.
 SSP_SAMPLED <- c("SSP1", "SSP2", "SSP3", "SSP5")
 

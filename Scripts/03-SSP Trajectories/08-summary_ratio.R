@@ -1,11 +1,11 @@
 ## =============================================================================
-## 04_summary_ratio.R
+## 08-summary_ratio.R
 ## Summary of the RATIO_BASE_YEAR->END_YEAR ratio (value2060 / value2025) of
 ## every GDP-intensity ("_gdp") metric, per (Variable, Region, SSP), across
 ## every individual run -- literal min/max + 90% CI (5th/95th percentile).
-## Moved out of 03_trajectory_figures.R: same input (metrics_levels_raw.csv),
+## Moved out of 04-trajectory_figures.R: same input (metrics_levels_raw.csv),
 ## same years and same ratio definition (runs with value_base <= 0 dropped),
-## so it stays consistent with the per-panel tables in 03/03b/03c/03d (those
+## so it stays consistent with the per-panel tables in 04-07 (those
 ## tables keep showing the RAW, unfixed ratios).
 ##
 ## Two fixes applied to the summary (raw values kept in Min_raw/Max_raw, every
@@ -24,7 +24,7 @@
 ## = SSP, each a tight cluster (World = thick black bar, then R10 regions as
 ## thin coloured bars). Regions labelled directly in the roundwood SSP3 cluster.
 ##
-## Input:  Parameters/IIASA-Trajectories/metrics_levels_raw.csv, metric_units.csv (from 02)
+## Input:  Parameters/IIASA-Trajectories/metrics_levels_raw.csv, metric_units.csv (from 03)
 ## Outputs:
 ##   Parameters/IIASA-Trajectories/summary_ratio_{END_YEAR}_{RATIO_BASE_YEAR}.csv
 ##   Figures/Inputs/IIASA/Trajectories/GDP/SummaryRatio/summary_ratio_{END_YEAR}_{RATIO_BASE_YEAR}.png (+ SVG mirror)
@@ -302,6 +302,12 @@ fig_name <- paste0("summary_ratio_", END_YEAR, "_", RATIO_BASE_YEAR)
 ggsave("Figures/Supporting-Figures/S09_SSP_IntensityRatio_2060_2025.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 17, height = 23)
 ggsave("Figures/SVG/Supporting-Figures/S09_SSP_IntensityRatio_2060_2025.svg", ggplot2::last_plot(), units = "cm", width = 17, height = 23)
 group_svg_layers("Figures/SVG/Supporting-Figures/S09_SSP_IntensityRatio_2060_2025.svg")
+dir.create("Figures/Supporting-Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+readr::write_csv(
+  fig_data %>% dplyr::select(Variable, var_label, SSP, Region, Min, Max) %>%
+    left_join(fig_marker %>% dplyr::select(Variable = metric, Region = region, SSP = ssp, marker_ratio = rel), by = c("Variable", "Region", "SSP")),
+  "Figures/Supporting-Figures/RawData/S09_SSP_IntensityRatio_2060_2025.csv"
+)
 
 cat("  Saved", "Figures/Supporting-Figures/S09_SSP_IntensityRatio_2060_2025.png", "\n")
 

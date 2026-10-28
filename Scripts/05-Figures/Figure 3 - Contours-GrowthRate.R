@@ -8,7 +8,7 @@
 ## Y axis (every panel, free scale): per-capita consumption annual growth rate,
 ## 2025-2060. Fill (every panel): decoupling status, collapsed to 3 classes --
 ## Peak decoupling is folded into Relative decoupling (both reflect a declining
-## per-capita trend by 2060; see Scripts/04-Simulation/04-Decoupling.R). No
+## per-capita trend by 2060; see Scripts/04-Simulation/05-Decoupling.R). No
 ## legend is drawn for it (panel c's direct labels carry that meaning for all
 ## four panels); panels c/d additionally outline each point by ore grade /
 ## average lifetime, with its own legend inside the panel's lower-left corner.
@@ -30,8 +30,57 @@ cat("=== Figure 3 - Growth Decoupling ===\n\n")
 
 # Load data --------------------------------------------------------------
 
-results <- arrow::read_parquet("Results/MC/mc_results.parquet")
+# Cu, Al and other non-Fe pooled as "metal_nonfe" (ore-equivalent sums). Gold
+# ore (a flow, no lever) is left out of the per-metal panels; the metal-ore
+# totals (z of the "Metal ores" panels) come from mc_decoupling, gold included.
+results <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
+  dplyr::select(run_id, region, material_group, material_key, year, in_use_stock_Mt, primary_consumption_Mt, secondary_supply_Mt, waste_Mt) |>
+  dplyr::filter(material_group != "metal_gold") |>
+  dplyr::mutate(material_group = dplyr::if_else(material_group %in% c("metal_cu", "metal_al", "metal_othernonfe"), "metal_nonfe", material_group)) |>
+  dplyr::collect()
 mc_input_matrix <- readr::read_csv("Parameters/Simulation/mc_input_matrix.csv", show_col_types = FALSE)
+
+# Pooled non-Fe levers (panels j, n and the dots version): 2024 world
+# ore-weighted mean of the Cu, Al and other non-Fe draws -- in [0,1] draw space
+# (grade_ore_nonfe, recycling_rate_nonfe) and in real units (*_nonfe_real,
+# each metal mapped semi-uniformly first, as in 03-RunSimulations.R)
+nonfe_ore_w <- readr::read_csv("Parameters/MaterialFlows/nonfe_split_region.csv", show_col_types = FALSE) |>
+  dplyr::filter(year == 2024L, nonfe_sub != "Gold") |>
+  dplyr::group_by(nonfe_sub) |>
+  dplyr::summarise(ore = sum(DMC_Mt), .groups = "drop") |>
+  dplyr::mutate(w = ore / sum(ore))
+NONFE_W <- c(
+  cu = nonfe_ore_w$w[nonfe_ore_w$nonfe_sub == "Copper"],
+  al = nonfe_ore_w$w[nonfe_ore_w$nonfe_sub == "Bauxite"],
+  othernonfe = nonfe_ore_w$w[nonfe_ore_w$nonfe_sub == "Other non-ferrous"]
+)
+nonfe_levers <- mc_input_matrix |>
+  dplyr::select(run_id, dplyr::all_of(c(paste0("grade_ore_", names(NONFE_W)), paste0("recycling_rate_", names(NONFE_W))))) |>
+  tidyr::pivot_longer(-run_id, names_to = "col", values_to = "u") |>
+  dplyr::left_join(MC_PARAMS, by = "col") |>
+  dplyr::mutate(
+    real = dplyr::if_else(u < 0.5, min + 2 * u * (central - min), central + 2 * (u - 0.5) * (max - central)),
+    lever = sub("_(cu|al|othernonfe)$", "", col),
+    w = unname(NONFE_W[sub("^.*_", "", col)])
+  ) |>
+  dplyr::group_by(run_id, lever) |>
+  dplyr::summarise(u = sum(w * u), real = sum(w * real), .groups = "drop") |>
+  tidyr::pivot_wider(names_from = lever, values_from = c(u, real))
+mc_input_matrix <- mc_input_matrix |>
+  dplyr::left_join(
+    nonfe_levers |>
+      dplyr::transmute(
+        run_id,
+        grade_ore_nonfe = u_grade_ore, recycling_rate_nonfe = u_recycling_rate,
+        grade_nonfe_real = real_grade_ore, recycling_nonfe_real = real_recycling_rate
+      ),
+    by = "run_id"
+  )
+# Pooled 2024 grade (panel j star) and pooled bounds (dots-version star only)
+GRADE_ORE_NONFE_2024 <- sum(NONFE_W * c(GRADE_ORE_CU_2024, GRADE_ORE_AL_2024, GRADE_ORE_OTHERNONFE_2024))
+GRADE_ORE_NONFE_MIN <- sum(NONFE_W * c(GRADE_ORE_CU_MIN, GRADE_ORE_AL_MIN, GRADE_ORE_OTHERNONFE_MIN))
+GRADE_ORE_NONFE_CENTRAL <- sum(NONFE_W * c(GRADE_ORE_CU_CENTRAL, GRADE_ORE_AL_CENTRAL, GRADE_ORE_OTHERNONFE_CENTRAL))
+GRADE_ORE_NONFE_MAX <- sum(NONFE_W * c(GRADE_ORE_CU_MAX, GRADE_ORE_AL_MAX, GRADE_ORE_OTHERNONFE_MAX))
 decoupling <- arrow::read_parquet("Results/MC/mc_decoupling.parquet")
 ssp_drivers <- readr::read_csv("Parameters/IIASA-Trajectories/ssp_drivers.csv", show_col_types = FALSE)
 gdp_region_hist <- readr::read_csv("Parameters/Worldbank-GDP/gdp_region.csv", show_col_types = FALSE)
@@ -100,11 +149,11 @@ growth_decoupling_total <- decoupling |>
 BIOMASS_MC_KEYS <- c("Crops" = "crops", "Grazed biomass and fodder crops" = "grazed_biomass", "Wood" = "wood")
 
 # World GDP per capita at FIG_YEAR, per run -- same reconstruction as
-# Scripts/04-Simulation/04-Decoupling.R STEP 2, restricted to one year.
+# Scripts/04-Simulation/05-Decoupling.R STEP 2, restricted to one year.
 
 gdp_2024_region <- gdp_region_hist |>
   dplyr::filter(year == 2024) |>
-  dplyr::rename(region = Region, gdp_2024 = GDP_2015USD) |>
+  dplyr::rename(region = Region, gdp_2024 = GDP_PPP2017USD) |>
   dplyr::select(region, gdp_2024)
 
 pop_2024_region <- pop_region_hist |>
@@ -112,8 +161,9 @@ pop_2024_region <- pop_region_hist |>
   dplyr::rename(region = Region, pop_2024 = population) |>
   dplyr::select(region, pop_2024)
 
-run_ssp <- results_target |>
-  dplyr::distinct(run_id, ssp_lo, ssp_hi, ssp_share_lo)
+run_ssp <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
+  dplyr::distinct(run_id, ssp_lo, ssp_hi, ssp_share_lo) |>
+  dplyr::collect()
 
 pop_idx_region <- ssp_drivers |>
   dplyr::filter(variable == "Population", year == FIG_YEAR) |>
@@ -241,7 +291,7 @@ ore_grade_df <- mc_input_matrix |>
   dplyr::select(run_id, ore_grade)
 
 # Shape (panel d, Non-metallic minerals): average lifetime, 3 bins ----------
-# Exact replication of Scripts/04-Simulation/02-RunSimulations.R lines 609-621,
+# Exact replication of Scripts/04-Simulation/03-RunSimulations.R lines 609-621,
 # averaged across buildings + civil_infrastructure (the two super-categories
 # feeding non-metallic minerals stock).
 
@@ -569,7 +619,7 @@ DOWNCYC_LAB <- "Downcycling rate (%)"
 gdp_percap_world_hist <- gdp_region_hist |>
   dplyr::filter(year %in% c(2019, 2024)) |>
   dplyr::group_by(year) |>
-  dplyr::summarise(gdp = sum(GDP_2015USD), .groups = "drop") |>
+  dplyr::summarise(gdp = sum(GDP_PPP2017USD), .groups = "drop") |>
   dplyr::left_join(
     pop_region_hist |>
       dplyr::filter(year %in% c(2019, 2024)) |>
@@ -608,12 +658,12 @@ fossil_2024_mj_usd <- dmc_region_hist |>
 # previous version GDP-weighted those rates across regions into a world
 # figure, which fixed the wrong problem (the weighting, not the rates
 # themselves). Parameters/Intermediate/historical_secondary_flows.csv
-# (extended by Scripts/02-HistoricalStock/03c_HistoricalSecondaryFlows.R
+# (extended by Scripts/02-HistoricalStock/07-HistoricalSecondaryFlows.R
 # Step 7 to also export waste_Mt/recovered_Mt) already carries the real
 # mass-based ratio: recovered_Mt = MISO waste x the implied recycling rate
 # (wedge/waste), i.e. genuine recovered-outflow mass, not a literature
 # estimate. CAVEAT: MISO's waste series is held flat 2017-2024 (bridge-year
-# convention) and the reconstruction is flagged by 03c's own diagnostics as
+# convention) and the reconstruction is flagged by 02-HistoricalStock/07's own diagnostics as
 # noisy/small for non-metallic minerals -- some regions may come out near 0%
 # for panel d; that's the honest number given available data, not a bug.
 
@@ -639,7 +689,7 @@ downcycling_world_2024 <- secondary_flows_2024 |>
 # real 2024 world GDP (gdp_region_hist, same source used everywhere else in
 # this figure for a GDP anchor).
 metal_stock_2024_Mt <- stock_2024_total |>
-  dplyr::filter(material %in% c("Metal_Fe", "Metal_NonFe")) |>
+  dplyr::filter(material %in% names(METAL_KEYS)) |>
   dplyr::summarise(stock_Mt = sum(stock_Mt, na.rm = TRUE)) |>
   dplyr::pull(stock_Mt)
 nonmet_stock_2024_Mt <- stock_2024_total |>
@@ -668,13 +718,13 @@ nonmet_int_2024 <- nonmet_stock_2024_Mt * 1e9 / gdp_world_2024
 
 
 # Name kept as gdp_percap_region_hist for minimal diff elsewhere, but x_var is
-# now each region's TOTAL GDP CAGR (GDP_2015USD is already a region total, not
+# now each region's TOTAL GDP CAGR (GDP_PPP2017USD is already a region total, not
 # per-capita) -- matches the contour panels' total-GDP x-axis.
 gdp_percap_region_hist <- gdp_region_hist |>
   dplyr::filter(year %in% c(2019, 2024)) |>
   dplyr::rename(region = Region) |>
-  dplyr::select(region, year, GDP_2015USD) |>
-  tidyr::pivot_wider(names_from = year, values_from = GDP_2015USD, names_prefix = "y") |>
+  dplyr::select(region, year, GDP_PPP2017USD) |>
+  tidyr::pivot_wider(names_from = year, values_from = GDP_PPP2017USD, names_prefix = "y") |>
   dplyr::mutate(x_var = (y2024 / y2019)^(1 / 5) - 1) |>
   dplyr::select(region, x_var)
 
@@ -700,7 +750,7 @@ fossil_region_2024 <- dmc_region_hist |>
   dplyr::left_join(gdp_region_hist |> dplyr::filter(year == 2024) |> dplyr::rename(region = Region), by = "region") |>
   dplyr::mutate(mj = DMC_Mt * 1e9 * ENERGY_DENSITY_MJ_PER_KG[mat_key]) |>
   dplyr::group_by(region) |>
-  dplyr::summarise(mj_total = sum(mj, na.rm = TRUE), gdp = dplyr::first(GDP_2015USD), .groups = "drop") |>
+  dplyr::summarise(mj_total = sum(mj, na.rm = TRUE), gdp = dplyr::first(GDP_PPP2017USD), .groups = "drop") |>
   dplyr::mutate(y_var = mj_total / gdp, panel = "b") |>
   dplyr::select(region, panel, y_var)
 
@@ -786,8 +836,8 @@ metal_mass_by_type <- results_target |>
 # Y (panels c/d, replacing Fig3_dots's secondary-share axis): each run's targeted
 # recycling rate (metals) / downcycling rate (minerals), decoded from the same
 # mc_input_matrix columns and min/central/max values Scripts/04-Simulation/
-# 02-RunSimulations.R uses to build its recycling/downcycling endpoints
-# (RECYCLING_RATE_FE_*, RECYCLING_RATE_NONFE_*, DOWNCYCLING_* -- all loaded via
+# 03-RunSimulations.R uses to build its recycling/downcycling endpoints
+# (RECYCLING_RATE_FE_*, RECYCLING_RATE_CU/AL/OTHERNONFE_* pooled, DOWNCYCLING_* -- all loaded via
 # Scripts/04-Simulation/00-Parameters.R, sourced at the top of this script),
 # with the same semi-uniform mapping (u < 0.5: min..central, else central..max).
 # This is exactly the endpoint rate the simulation applies to every region
@@ -802,11 +852,7 @@ x_metals_recyc <- mc_input_matrix |>
       RECYCLING_RATE_FE_MIN + 2 * recycling_rate_fe * (RECYCLING_RATE_FE_CENTRAL - RECYCLING_RATE_FE_MIN),
       RECYCLING_RATE_FE_CENTRAL + 2 * (recycling_rate_fe - 0.5) * (RECYCLING_RATE_FE_MAX - RECYCLING_RATE_FE_CENTRAL)
     ),
-    recycling_nonfe = dplyr::if_else(
-      recycling_rate_nonfe < 0.5,
-      RECYCLING_RATE_NONFE_MIN + 2 * recycling_rate_nonfe * (RECYCLING_RATE_NONFE_CENTRAL - RECYCLING_RATE_NONFE_MIN),
-      RECYCLING_RATE_NONFE_CENTRAL + 2 * (recycling_rate_nonfe - 0.5) * (RECYCLING_RATE_NONFE_MAX - RECYCLING_RATE_NONFE_CENTRAL)
-    ),
+    recycling_nonfe = recycling_nonfe_real, # pooled Cu / Al / other (see Load data)
     x = (recycling_fe + recycling_nonfe) / 2,
     material = "Metal ores"
   ) |>
@@ -854,7 +900,7 @@ panel_d_contour_df <- x_minerals_downcyc |>
 # instead of pairing with a stacked-area companion, and panel f likewise
 # splits into Buildings / Civil infrastructure (average lifetime). Both need
 # each sub-material's/sub-enduse's OWN total (world, population-inclusive)
-# primary-consumption CAGR -- 04-Decoupling.R pools metal_fe/metal_nonfe into
+# primary-consumption CAGR -- 05-Decoupling.R pools metal_fe/metal_nonfe into
 # "Metal ores" (and doesn't split non-metallic minerals by enduse at all)
 # before computing any CAGR, so there is no pre-existing split series to
 # reuse. Recomputed here directly from `results` (already loaded, full
@@ -980,11 +1026,7 @@ panel_e_fe_contour_df <- mc_input_matrix |>
 panel_e_nonfe_contour_df <- mc_input_matrix |>
   dplyr::transmute(
     run_id,
-    y_var = dplyr::if_else(
-      grade_ore_nonfe < 0.5,
-      GRADE_ORE_NONFE_MIN + 2 * grade_ore_nonfe * (GRADE_ORE_NONFE_CENTRAL - GRADE_ORE_NONFE_MIN),
-      GRADE_ORE_NONFE_CENTRAL + 2 * (grade_ore_nonfe - 0.5) * (GRADE_ORE_NONFE_MAX - GRADE_ORE_NONFE_CENTRAL)
-    )
+    y_var = grade_nonfe_real # pooled Cu / Al / other (see Load data)
   ) |>
   dplyr::inner_join(growth_decoupling_total |> dplyr::filter(material == "Metal ores"), by = "run_id") |>
   dplyr::rename(x_var = gdp_cagr) |>
@@ -1371,6 +1413,7 @@ if (!0 %in% brks_f_civil) {
 
 CONTOUR_LINEWIDTH <- 0.18 # every contour line, every panel, except the 0% line
 CONTOUR_LINEWIDTH_ZERO <- 0.4 # 0% line only -- slightly bolder so the growth/decline boundary stands out
+CONTOUR_LABEL_SIZE <- pb_annot_size("largeFont", 8) # contour labels: >= 12 pt tag / 1.6
 
 # Background fill -- one EXCLUSIVE legend per panel, own observed range AND
 # own custom diverging palette each --------------------------------------
@@ -1458,18 +1501,21 @@ CONTOUR_FILL_GUIDE <- guide_colourbar(
 # it), so panels whose data stays inside +-3% still show strong contrast
 # while the scale still accommodates outliers out to +-6%.
 USE_COMMON_FILL_SCALE <- TRUE
-COMMON_FILL_RANGE <- 0.06 # +-6%, same CAGR-fraction units as every z_var
-COMMON_FILL_BLUE_DARK <- "#08306B" # darker shade of BLUE_SPECTRAL, for -6%
-COMMON_FILL_RED_DARK <- "#67000D" # darker shade of Metal ores' red, for +6%
-brks_legend_common <- scales::extended_breaks(n = 5)(c(-COMMON_FILL_RANGE, COMMON_FILL_RANGE))
-if (!0 %in% brks_legend_common) {
-  brks_legend_common <- sort(c(brks_legend_common, 0))
-}
-lt_common <- legend_ticks(brks_legend_common)
+# UPDATE: asymmetric range = simulated material CAGRs (all runs, 4 material
+# groups) rounded out to whole percents; green (49% tint of #1B7837 over white)
+# at the minimum, white exactly at 0, red (82% tint of #B2182B) at the maximum
+# UPDATE: fixed symmetric -5%/+5% range; ticks every 1%, labels at -4/-2/0/2/4%
+COMMON_FILL_LIMITS <- c(-0.05, 0.05)
+COMMON_FILL_LOW <- grDevices::rgb(t(0.49 * grDevices::col2rgb("#1B7837") + 0.51 * 255), maxColorValue = 255)
+COMMON_FILL_HIGH <- grDevices::rgb(t(0.82 * grDevices::col2rgb("#B2182B") + 0.18 * 255), maxColorValue = 255)
+cat(sprintf("  Common fill range: %+.0f%% to %+.0f%% per year\n", 100 * COMMON_FILL_LIMITS[1], 100 * COMMON_FILL_LIMITS[2]))
+lt_common <- list(breaks = seq(-0.05, 0.05, by = 0.01))
+lt_common$labels <- ifelse(round(lt_common$breaks * 100) %in% c(-4, -2, 0, 2, 4), CONTOUR_PCT_LABEL(lt_common$breaks), "")
 FILL_SCALE_COMMON <- scale_fill_gradientn(
-  colours = c(COMMON_FILL_BLUE_DARK, BLUE_SPECTRAL, "white", unname(PALETTE_MATERIAL_GROUPS["Metal ores"]), COMMON_FILL_RED_DARK),
-  limits = c(-COMMON_FILL_RANGE, COMMON_FILL_RANGE),
-  oob = scales::squish, # clamp values beyond +-6% to the darkest blue/red instead of NA/grey
+  colours = c(COMMON_FILL_LOW, "white", COMMON_FILL_HIGH),
+  values = scales::rescale(c(COMMON_FILL_LIMITS[1], 0, COMMON_FILL_LIMITS[2])),
+  limits = COMMON_FILL_LIMITS,
+  oob = scales::squish, # SI per-metal panels (Fe / non-Fe CAGRs) may fall outside the pooled range
   breaks = lt_common$breaks,
   labels = lt_common$labels,
   name = CONTOUR_FILL_NAME,
@@ -1727,7 +1773,7 @@ p_a2 <- ggplot(panel_a_contour_df, aes(x = x_var, y = y_var)) +
     breaks = brks_a,
     straight = TRUE,
     colour = "black",
-    size = 2.4,
+    size = CONTOUR_LABEL_SIZE,
     fontface = "bold",
     hjust = 0.5,
     show.legend = FALSE
@@ -1792,7 +1838,6 @@ p_b2 <- ggplot(panel_b_contour_df, aes(x = x_var, y = y_var)) +
         paste0("−", sprintf("%.1f%%", abs(level * 100))),
         paste0("+", sprintf("%.1f%%", level * 100))
       )),
-      colour = after_stat(ifelse(level <= 0, "black", "white")),
       linewidth = after_stat(ifelse(level == 0, CONTOUR_LINEWIDTH_ZERO, CONTOUR_LINEWIDTH)),
       # Manual label-position override (per user request) -- the +2.0% line's
       # label moves off-centre to 0.7; every other line stays at the default
@@ -1801,7 +1846,7 @@ p_b2 <- ggplot(panel_b_contour_df, aes(x = x_var, y = y_var)) +
     ),
     breaks = brks_b,
     straight = TRUE,
-    size = 2.4,
+    size = CONTOUR_LABEL_SIZE,
     fontface = "bold",
     show.legend = FALSE
   ) +
@@ -1826,7 +1871,7 @@ p_b2 <- ggplot(panel_b_contour_df, aes(x = x_var, y = y_var)) +
   FILL_SCALE_B +
   scale_x_continuous(labels = scales::percent_format(accuracy = 0.1)) +
   scale_y_continuous(breaks = yt_b$breaks, labels = yt_b$labels) +
-  labs(tag = "b", title = "Fossil fuels", x = X_LAB_CONTOUR, y = "Primary fossil fuel energy intensity (MJ per $)") +
+  labs(tag = "b", title = "Fossil fuels", x = X_LAB_CONTOUR, y = "Primary fossil fuel energy\nintensity (MJ per $)") +
   coord_cartesian(xlim = x_disp_rng_b, ylim = y_disp_rng_b, expand = FALSE) +
   theme_pb_large() +
   theme(
@@ -1849,7 +1894,6 @@ p_c2 <- ggplot(panel_c_contour_df, aes(x = x_var, y = y_var)) +
         paste0("−", sprintf("%.1f%%", abs(level * 100))),
         paste0("+", sprintf("%.1f%%", level * 100))
       )),
-      colour = after_stat(ifelse(level <= 0, "black", "white")),
       linewidth = after_stat(ifelse(level == 0, CONTOUR_LINEWIDTH_ZERO, CONTOUR_LINEWIDTH)),
       # Manual label-position override (per user request) -- the +2.0% line's
       # label moves off-centre to 0.3; every other line stays at the default
@@ -1858,7 +1902,7 @@ p_c2 <- ggplot(panel_c_contour_df, aes(x = x_var, y = y_var)) +
     ),
     breaks = brks_c,
     straight = TRUE,
-    size = 2.4,
+    size = CONTOUR_LABEL_SIZE,
     fontface = "bold",
     show.legend = FALSE
   ) +
@@ -1906,7 +1950,7 @@ p_d2 <- ggplot(panel_d_contour_df, aes(x = x_var, y = y_var)) +
     breaks = brks_d,
     straight = TRUE,
     colour = "black",
-    size = 2.4,
+    size = CONTOUR_LABEL_SIZE,
     fontface = "bold",
     hjust = 0.5,
     show.legend = FALSE
@@ -1950,7 +1994,6 @@ p_e_fe <- ggplot(panel_e_fe_contour_df, aes(x = x_var, y = y_var)) +
         paste0("−", sprintf("%.1f%%", abs(level * 100))),
         paste0("+", sprintf("%.1f%%", level * 100))
       )),
-      colour = after_stat(ifelse(level <= 0, "black", "white")),
       linewidth = after_stat(ifelse(level == 0, CONTOUR_LINEWIDTH_ZERO, CONTOUR_LINEWIDTH)),
       # Manual label-position override (per user request) -- the 0.0% line's
       # label moves off-centre to 0.3; every other line stays at the default
@@ -1959,7 +2002,7 @@ p_e_fe <- ggplot(panel_e_fe_contour_df, aes(x = x_var, y = y_var)) +
     ),
     breaks = brks_e_fe,
     straight = TRUE,
-    size = 2.4,
+    size = CONTOUR_LABEL_SIZE,
     fontface = "bold",
     show.legend = FALSE
   ) +
@@ -2008,7 +2051,7 @@ p_e_nonfe <- ggplot(panel_e_nonfe_contour_df, aes(x = x_var, y = y_var)) +
     breaks = brks_e_nonfe,
     straight = TRUE,
     colour = "black",
-    size = 2.4,
+    size = CONTOUR_LABEL_SIZE,
     fontface = "bold",
     show.legend = FALSE
   ) +
@@ -2051,7 +2094,6 @@ p_f_bldg <- ggplot(panel_f_bldg_contour_df, aes(x = x_var, y = y_var)) +
         paste0("−", sprintf("%.1f%%", abs(level * 100))),
         paste0("+", sprintf("%.1f%%", level * 100))
       )),
-      colour = after_stat(ifelse(level <= 0, "black", "white")),
       linewidth = after_stat(ifelse(level == 0, CONTOUR_LINEWIDTH_ZERO, CONTOUR_LINEWIDTH)),
       # Manual label-position override (per user request) -- the +2.0% line's
       # label moves off-centre to 0.3; every other line stays at the default
@@ -2060,7 +2102,7 @@ p_f_bldg <- ggplot(panel_f_bldg_contour_df, aes(x = x_var, y = y_var)) +
     ),
     breaks = brks_f_bldg,
     straight = TRUE,
-    size = 2.4,
+    size = CONTOUR_LABEL_SIZE,
     fontface = "bold",
     show.legend = FALSE
   ) +
@@ -2101,12 +2143,11 @@ p_f_civil <- ggplot(panel_f_civil_contour_df, aes(x = x_var, y = y_var)) +
         paste0("−", sprintf("%.1f%%", abs(level * 100))),
         paste0("+", sprintf("%.1f%%", level * 100))
       )),
-      colour = after_stat(ifelse(level <= 0, "black", "white")),
       linewidth = after_stat(ifelse(level == 0, CONTOUR_LINEWIDTH_ZERO, CONTOUR_LINEWIDTH))
     ),
     breaks = brks_f_civil,
     straight = TRUE,
-    size = 2.4,
+    size = CONTOUR_LABEL_SIZE,
     fontface = "bold",
     hjust = 0.5,
     show.legend = FALSE
@@ -2298,12 +2339,11 @@ p_metals_int <- ggplot(panel_metals_int_contour_df, aes(x = x_var, y = y_var)) +
         paste0("−", sprintf("%.1f%%", abs(level * 100))),
         paste0("+", sprintf("%.1f%%", level * 100))
       )),
-      colour = after_stat(ifelse(level <= 0, "black", "white")),
       linewidth = after_stat(ifelse(level == 0, CONTOUR_LINEWIDTH_ZERO, CONTOUR_LINEWIDTH))
     ),
     breaks = brks_metals_int,
     straight = TRUE,
-    size = 2.4,
+    size = CONTOUR_LABEL_SIZE,
     fontface = "bold",
     hjust = 0.5,
     show.legend = FALSE
@@ -2321,7 +2361,7 @@ p_metals_int <- ggplot(panel_metals_int_contour_df, aes(x = x_var, y = y_var)) +
   FILL_SCALE_METALS_INT +
   scale_x_continuous(labels = scales::percent_format(accuracy = 0.1)) +
   scale_y_continuous(breaks = yt_metals_int$breaks, labels = yt_metals_int$labels) +
-  labs(tag = "c", title = "Metal ores", x = X_LAB_CONTOUR, y = "Metal stock intensity (kg metal per $ GDP)") + # stock is metal mass, not ore
+  labs(tag = "c", title = "Metal ores", x = X_LAB_CONTOUR, y = "Metal stock intensity\n(kg metal per $ GDP)") + # stock is metal mass, not ore
   coord_cartesian(xlim = x_disp_rng_metals_int, ylim = y_disp_rng_metals_int, expand = FALSE) +
   theme_pb_large() +
   theme(
@@ -2349,7 +2389,7 @@ p_nonmet_int <- ggplot(panel_nonmet_int_contour_df, aes(x = x_var, y = y_var)) +
     breaks = brks_nonmet_int,
     straight = TRUE,
     colour = "black",
-    size = 2.4,
+    size = CONTOUR_LABEL_SIZE,
     fontface = "bold",
     hjust = 0.5,
     show.legend = FALSE
@@ -2549,12 +2589,11 @@ p_metals_lt <- ggplot(panel_metals_lt_contour_df, aes(x = x_var, y = y_var)) +
         paste0("−", sprintf("%.1f%%", abs(level * 100))),
         paste0("+", sprintf("%.1f%%", level * 100))
       )),
-      colour = after_stat(ifelse(level <= 0, "black", "white")),
       linewidth = after_stat(ifelse(level == 0, CONTOUR_LINEWIDTH_ZERO, CONTOUR_LINEWIDTH))
     ),
     breaks = brks_metals_lt,
     straight = TRUE,
-    size = 2.4,
+    size = CONTOUR_LABEL_SIZE,
     fontface = "bold",
     hjust = 0.5,
     show.legend = FALSE
@@ -2600,7 +2639,7 @@ p_nonmet_lt <- ggplot(panel_nonmet_lt_contour_df, aes(x = x_var, y = y_var)) +
     breaks = brks_nonmet_lt,
     straight = TRUE,
     colour = "black",
-    size = 2.4,
+    size = CONTOUR_LABEL_SIZE,
     fontface = "bold",
     hjust = 0.5,
     show.legend = FALSE
@@ -2647,11 +2686,7 @@ recyc_fe_nonfe <- mc_input_matrix |>
       RECYCLING_RATE_FE_MIN + 2 * recycling_rate_fe * (RECYCLING_RATE_FE_CENTRAL - RECYCLING_RATE_FE_MIN),
       RECYCLING_RATE_FE_CENTRAL + 2 * (recycling_rate_fe - 0.5) * (RECYCLING_RATE_FE_MAX - RECYCLING_RATE_FE_CENTRAL)
     ),
-    recycling_nonfe = dplyr::if_else(
-      recycling_rate_nonfe < 0.5,
-      RECYCLING_RATE_NONFE_MIN + 2 * recycling_rate_nonfe * (RECYCLING_RATE_NONFE_CENTRAL - RECYCLING_RATE_NONFE_MIN),
-      RECYCLING_RATE_NONFE_CENTRAL + 2 * (recycling_rate_nonfe - 0.5) * (RECYCLING_RATE_NONFE_MAX - RECYCLING_RATE_NONFE_CENTRAL)
-    )
+    recycling_nonfe = recycling_nonfe_real # pooled Cu / Al / other (see Load data)
   )
 
 stock_int_by_metal <- results |>
@@ -2696,6 +2731,29 @@ row4_specs <- list(
     df = x_minerals_intensity |>
       dplyr::select(run_id, x_var = x) |>
       dplyr::inner_join(x_minerals_downcyc |> dplyr::select(run_id, y_var = x), by = "run_id") |>
+      dplyr::inner_join(growth_decoupling_total |> dplyr::filter(material == "Non-metallic minerals") |> dplyr::select(run_id, z_var = y), by = "run_id")
+  ),
+  # Main-figure panels e/f (same recipe; circularity rate on X):
+  #   e) recycling rate vs metal stock intensity (Y)
+  #   f) downcycling rate vs stock-weighted mineral lifetime (Y)
+  list(
+    tag = "e", title = "Metal ores", title_col = TITLE_COL_METAL, high = unname(PALETTE_MATERIAL_GROUPS["Metal ores"]),
+    x_lab = RECYC_LAB, y_lab = "Metal stock intensity\n(kg metal per $ GDP)",
+    x_fmt = scales::percent_format(accuracy = 1), y_fmt = scales::label_number(accuracy = 0.01),
+    star = tibble::tibble(x_var = recycling_world_2024, y_var = metal_int_2024),
+    df = x_metals_recyc |>
+      dplyr::select(run_id, x_var = x) |>
+      dplyr::inner_join(x_metals_intensity |> dplyr::select(run_id, y_var = x), by = "run_id") |>
+      dplyr::inner_join(growth_decoupling_total |> dplyr::filter(material == "Metal ores") |> dplyr::select(run_id, z_var = y), by = "run_id")
+  ),
+  list(
+    tag = "f", title = "Non-metallic minerals", title_col = TITLE_COL_NONMET, high = NONMET_FILL_HIGH,
+    x_lab = DOWNCYC_LAB, y_lab = "Lifetime (years)",
+    x_fmt = scales::percent_format(accuracy = 1), y_fmt = scales::label_comma(),
+    star = tibble::tibble(x_var = downcycling_world_2024, y_var = nonmet_lt_star),
+    df = x_minerals_downcyc |>
+      dplyr::select(run_id, x_var = x) |>
+      dplyr::inner_join(nonmet_lifetime_weighted |> dplyr::select(run_id, y_var = x), by = "run_id") |>
       dplyr::inner_join(growth_decoupling_total |> dplyr::filter(material == "Non-metallic minerals") |> dplyr::select(run_id, z_var = y), by = "run_id")
   )
 )
@@ -2753,12 +2811,11 @@ for (sp in row4_specs) {
           paste0("−", sprintf("%.1f%%", abs(level * 100))),
           paste0("+", sprintf("%.1f%%", level * 100))
         )),
-        colour = after_stat(ifelse(level <= 0, "black", "white")),
         linewidth = after_stat(ifelse(level == 0, CONTOUR_LINEWIDTH_ZERO, CONTOUR_LINEWIDTH))
       ),
       breaks = brks_r4,
       straight = TRUE,
-      size = 2.4,
+      size = CONTOUR_LABEL_SIZE,
       fontface = "bold",
       hjust = 0.5,
       show.legend = FALSE
@@ -2768,8 +2825,9 @@ for (sp in row4_specs) {
     geom_point(data = star_r4, aes(x = x_var, y = y_var), shape = "★", size = STAR_OUTLINE_SIZE, colour = "black", inherit.aes = FALSE) +
     geom_point(data = star_r4, aes(x = x_var, y = y_var), shape = "★", size = STAR_SIZE, colour = STAR_FILL, inherit.aes = FALSE) +
     fill_scale_r4 +
-    scale_x_continuous(labels = scales::label_number()) + # precision picked from the breaks (non-Fe ~0.04-0.07 needs 3 decimals)
-    scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+    # x: precision picked from the breaks (non-Fe ~0.04-0.07 needs 3 decimals); e/f set their own formats
+    scale_x_continuous(labels = if (is.null(sp$x_fmt)) scales::label_number() else sp$x_fmt) +
+    scale_y_continuous(labels = if (is.null(sp$y_fmt)) scales::percent_format(accuracy = 1) else sp$y_fmt) +
     labs(tag = sp$tag, title = sp$title, x = sp$x_lab, y = sp$y_lab) +
     coord_cartesian(xlim = x_disp_r4, ylim = y_disp_r4, expand = FALSE) +
     theme_pb_large() +
@@ -2833,23 +2891,43 @@ fig_contour <- (fig_row1 / fig_row2 / fig_row3 / fig_row4) &
 ## a-f in reading order: p_a2/p_b2/p_metals_int/p_nonmet_int/p_c2 keep their SI
 ## tags (a-e) unchanged; only p_d2's SI tag "g" becomes "f" here, since e-l
 ## aren't all present in this compact layout.
-p_d2_main <- p_d2 + labs(tag = "f")
-
-fig_main <- (p_a2 + p_b2 + p_metals_int + p_nonmet_int + p_c2 + p_d2_main) +
+## UPDATE: e/f are now recycling rate vs metal stock intensity and downcycling
+## rate vs stock-weighted mineral lifetime (p_row4$e / p_row4$f). All six
+## panels are square; each keeps its OWN legend on the right (a cropped panel
+## stays self-contained), the colourbar stretched to the panel's height
+## (legend.key.height in "null" units fills the space the legend is given).
+fig_main <- (p_a2 + p_b2 + p_metals_int + p_nonmet_int + p_row4$e + p_row4$f) +
   patchwork::plot_layout(ncol = 2, byrow = TRUE) &
+  guides(fill = guide_colourbar(
+    title.position = "right",
+    title.theme = element_text(angle = -90, hjust = 0.5),
+    frame.colour = "black", frame.linewidth = 0.3, ticks.colour = "black", ticks.linewidth = 0.4,
+    theme = theme(legend.key.height = unit(1, "null"), legend.key.width = unit(0.3, "cm"), legend.ticks.length = unit(c(-0.12, 0), "cm"))
+  )) &
   theme(
     legend.position = "right",
-    axis.title = element_text(size = 11),
-    legend.title = element_text(size = 11),
+    aspect.ratio = 1,
+    axis.title = element_text(size = 10),
+    legend.title = element_text(size = 10),
+    legend.margin = margin(t = 0, r = 0, b = 0, l = 5.5, unit = "pt"), # no top/bottom padding: colourbar spans the full panel height
     plot.tag = element_text(size = 12, face = "bold", margin = margin(t = 6, r = 6, b = 6, l = 6, unit = "pt"))
   )
+
+# Alt version without the MC run points: same panels with the point-cloud
+# layer (MC_POINT_LAYER, the only alpha = 0.12 point layer) dropped
+fig_main_nopts <- fig_main
+for (k in seq_along(fig_main_nopts$patches$plots)) {
+  fig_main_nopts$patches$plots[[k]]@layers <- Filter(\(l) !identical(l$aes_params$alpha, 0.12), fig_main_nopts$patches$plots[[k]]@layers)
+}
+fig_main_nopts@layers <- Filter(\(l) !identical(l$aes_params$alpha, 0.12), fig_main_nopts@layers)
 
 # Save ------------------------------------------------------------------
 # SI: all 12 panels (fig_contour above, unchanged) -- width accounts for the
 # added row-title column (each row's relative widths sum to 4.12 instead of 4;
 # scaling total width by that ratio keeps every panel at its original ~8.7cm).
-# Main text: the compact 6-panel fig_main, capped at 18cm width (design
-# pre-prompt max) instead of the SI's 4-column ~34cm.
+# Main text: the compact 6-panel fig_main, capped at 17.4cm width (journal
+# max) instead of the SI's 4-column ~34cm; height trimmed so the square
+# panels fill the page without blank bands.
 
 if (GAM_SMOOTH_K == GAM_SMOOTH_K_DEFAULT) {
   fig3_si_png <- "Figures/Supporting-Figures/S17_GrowthDecoupling_Contours.png"
@@ -2860,15 +2938,68 @@ if (GAM_SMOOTH_K == GAM_SMOOTH_K_DEFAULT) {
   cat("  Saved:", fig3_si_png, ",", fig3_si_svg, "\n")
   fig3_png <- "Figures/Fig3 - Contours-GrowthRate.png"
   fig3_svg <- "Figures/SVG/Fig3 - Contours-GrowthRate.svg"
+  ggsave("Figures/Fig3 - Contours-GrowthRate_noPoints.png", fig_main_nopts, units = "cm", dpi = 600, width = 17.4, height = 18.4)
+  ggsave("Figures/SVG/Fig3 - Contours-GrowthRate_noPoints.svg", fig_main_nopts, units = "cm", width = 17.4, height = 18.4)
+  clean_svg("Figures/SVG/Fig3 - Contours-GrowthRate_noPoints.svg")
+  cat("  Saved: Figures/Fig3 - Contours-GrowthRate_noPoints.png (+ SVG)\n")
 } else {
   # SI smoothness comparison: main figure only, at this K
   fig3_png <- paste0("Figures/Supporting-Figures/S24_Fig3_SmoothK", GAM_SMOOTH_K, ".png")
   fig3_svg <- paste0("Figures/SVG/Supporting-Figures/S24_Fig3_SmoothK", GAM_SMOOTH_K, ".svg")
 }
-ggsave(fig3_png, fig_main, units = "cm", dpi = 600, width = 18, height = 8.7 * 3)
-ggsave(fig3_svg, fig_main, units = "cm", width = 18, height = 8.7 * 3)
+ggsave(fig3_png, fig_main, units = "cm", dpi = 600, width = 17.4, height = 18.4)
+ggsave(fig3_svg, fig_main, units = "cm", width = 17.4, height = 18.4)
 clean_svg(fig3_svg)
 cat("  Saved:", fig3_png, ",", fig3_svg, "\n")
+
+
+# Save figure data, one file per panel ---------------------------------------
+## Each file stacks the panel's MC runs (layer = "mc_runs", the plot's own data)
+## with every other data-frame layer it draws (GAM surface grid, star, ...),
+## tagged by geom class. Main panels -> Figures/RawData/fig3{a..f}.csv; SI
+## panels (S17, all 16) and the smoothness variants (S24, main panels at
+## another K) -> Figures/Supporting-Figures/RawData/.
+
+main_panels <- list(a = p_a2, b = p_b2, c = p_metals_int, d = p_nonmet_int, e = p_row4$e, f = p_row4$f)
+si_panels <- list(
+  p_a2, p_b2, p_metals_int, p_nonmet_int,
+  p_c2, p_metals_lt, p_d2, p_nonmet_lt,
+  p_e_fe, p_e_nonfe, p_f_bldg, p_f_civil,
+  p_row4$m, p_row4$n, p_row4$o, p_row4$p
+)
+names(si_panels) <- vapply(si_panels, function(p) as.character(p$labels$tag), character(1))
+
+if (GAM_SMOOTH_K == GAM_SMOOTH_K_DEFAULT) {
+  dir.create("Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+  dir.create("Figures/Supporting-Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+  panel_sets <- list(
+    list(panels = main_panels, prefix = "Figures/RawData/fig3"),
+    list(panels = si_panels, prefix = "Figures/Supporting-Figures/RawData/S17")
+  )
+} else {
+  dir.create("Figures/Supporting-Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+  panel_sets <- list(
+    list(panels = main_panels, prefix = paste0("Figures/Supporting-Figures/RawData/S24_Fig3_SmoothK", GAM_SMOOTH_K, "_"))
+  )
+}
+
+for (ps in panel_sets) {
+  for (tg in names(ps$panels)) {
+    p <- ps$panels[[tg]]
+    layer_dfs <- list(p$data |> dplyr::mutate(layer = "mc_runs"))
+    for (ly in p$layers) {
+      if (!is.data.frame(ly$data) || nrow(ly$data) == 0) next
+      if (any(vapply(layer_dfs, function(d) identical(dplyr::select(d, -layer), ly$data), logical(1)))) next
+      layer_dfs[[length(layer_dfs) + 1L]] <- ly$data |> dplyr::mutate(layer = class(ly$geom)[1])
+    }
+    # list / matrix columns (internal plot structures, not data) cannot be written to CSV
+    readr::write_csv(
+      dplyr::bind_rows(layer_dfs) |> dplyr::select(dplyr::where(\(x) is.atomic(x) && is.null(dim(x)))),
+      paste0(ps$prefix, tg, ".csv")
+    )
+  }
+  cat("  Saved:", paste0(ps$prefix, "{", paste(names(ps$panels), collapse = ","), "}.csv"), "\n")
+}
 
 cat("=== Figure 3 (contour version) done ===\n")
 

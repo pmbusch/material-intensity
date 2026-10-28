@@ -16,7 +16,7 @@
 ##   Ore grade (Fe, non-Fe) + mean lifetime + Weibull shape + region legend
 ##
 ## Input:  Parameters/Simulation/flow_ratio_bounds.csv, stock_ratio_bounds.csv (01-Sampling.R),
-##         ASSUMPTIONS_FILE (2024 intensities), RECYCLING_FILE, MC_Assumptions.xlsx,
+##         Parameters/Simulation/intensity_2024.csv (2024 intensities), RECYCLING_FILE, MC_Assumptions.xlsx,
 ##         Parameters/IIASA-Trajectories/ssp_drivers.csv
 ## Output: Figures/Simulation/SamplingBounds/sampling_bounds.png (+ SVG mirror)
 ## =============================================================================
@@ -46,37 +46,16 @@ pb_set_geom_defaults("wide")
 
 cat("STEP 1: Load 2024 values and bounds\n")
 
-int_biomass <- readxl::read_excel(ASSUMPTIONS_FILE, sheet = "Biomass") |>
-  dplyr::transmute(
-    region = Region,
-    mat_key = dplyr::recode(
-      Category,
-      "Crops" = "crops",
-      "Grazed biomass and fodder crops" = "grazed_biomass",
-      "Wood" = "wood",
-      .default = NA_character_
-    ),
-    int_2024 = `kg/USD 2024`
-  )
-int_fossil <- readxl::read_excel(ASSUMPTIONS_FILE, sheet = "FossilFuels") |>
-  dplyr::transmute(region = Region, mat_key = fuel, int_2024 = `kg/USD 2024`)
-int_metal <- readxl::read_excel(ASSUMPTIONS_FILE, sheet = "MetalOres", skip = 1) |>
-  dplyr::transmute(region, End_use = end_use, material_group = "metal_ores", int_2024 = `kg/USD 2024`)
-int_nonmet <- readxl::read_excel(ASSUMPTIONS_FILE, sheet = "NonMetallicMinerals", skip = 1) |>
-  dplyr::transmute(region, End_use = end_use, material_group = "nonmetallic_minerals", int_2024 = `kg/USD 2024`)
-
-int_stock <- dplyr::bind_rows(int_metal, int_nonmet) |>
-  dplyr::mutate(
-    mat_key = dplyr::case_when(
-      stringr::str_detect(tolower(End_use), "build") ~ "buildings",
-      stringr::str_detect(tolower(End_use), "civil") ~ "civil",
-      stringr::str_detect(tolower(End_use), "short") ~ "sl_products",
-      stringr::str_detect(tolower(End_use), "machin") ~ "machinery",
-      TRUE ~ NA_character_
-    )
-  ) |>
-  dplyr::filter(!is.na(region), !is.na(mat_key)) |>
-  dplyr::distinct(region, material_group, mat_key, .keep_all = TRUE)
+intensity_2024 <- readr::read_csv("Parameters/Simulation/intensity_2024.csv", show_col_types = FALSE)
+int_biomass <- intensity_2024 |>
+  dplyr::filter(material_group == "biomass", mat_key != "other_biomass") |>
+  dplyr::select(region, mat_key, int_2024)
+int_fossil <- intensity_2024 |>
+  dplyr::filter(material_group == "fossil_fuels", mat_key != "other_fossil") |>
+  dplyr::select(region, mat_key, int_2024)
+int_stock <- intensity_2024 |>
+  dplyr::filter(material_group %in% c("metal_ores", "nonmetallic_minerals")) |>
+  dplyr::select(region, material_group, mat_key, int_2024)
 
 flow_ratio_bounds <- readr::read_csv("Parameters/Simulation/flow_ratio_bounds.csv", show_col_types = FALSE)
 stock_ratio_bounds <- readr::read_csv("Parameters/Simulation/stock_ratio_bounds.csv", show_col_types = FALSE)
@@ -218,7 +197,7 @@ p_pop <- ggplot(driver_data |> dplyr::filter(variable == "Population")) +
 
 p_gdp <- p_pop +
   (driver_data |> dplyr::filter(variable == "GDP|PPP [per capita]")) +
-  labs(x = "Thousand $ per person (PPP)", title = paste0("GDP per capita, ", FORECAST_END, " (range across SSPs)"))
+  labs(x = "Thousand $ per person", title = paste0("GDP per capita, ", FORECAST_END, " (range across SSPs)"))
 
 
 # Step 5: Recovery rates -- one panel, 3 rows ----------------------------------
@@ -233,14 +212,18 @@ downcycling_raw <- readxl::read_excel(RECYCLING_FILE, sheet = "Downcycling") |>
 RATE_VARS <- tibble::tribble(
   ~var_label, ~lo, ~hi, ~central,
   "Recycling rate, Fe", RECYCLING_RATE_FE_MIN, RECYCLING_RATE_FE_MAX, RECYCLING_RATE_FE_CENTRAL,
-  "Recycling rate, non-Fe", RECYCLING_RATE_NONFE_MIN, RECYCLING_RATE_NONFE_MAX, RECYCLING_RATE_NONFE_CENTRAL,
+  "Recycling rate, Cu", RECYCLING_RATE_CU_MIN, RECYCLING_RATE_CU_MAX, RECYCLING_RATE_CU_CENTRAL,
+  "Recycling rate, Al", RECYCLING_RATE_AL_MIN, RECYCLING_RATE_AL_MAX, RECYCLING_RATE_AL_CENTRAL,
+  "Recycling rate, other non-Fe", RECYCLING_RATE_OTHERNONFE_MIN, RECYCLING_RATE_OTHERNONFE_MAX, RECYCLING_RATE_OTHERNONFE_CENTRAL,
   "Downcycling rate, construction minerals", DOWNCYCLING_MIN, DOWNCYCLING_MAX, DOWNCYCLING_CENTRAL
 )
 RATE_LEVELS <- rev(RATE_VARS$var_label)
 
 rate_now <- dplyr::bind_rows(
   recycling_raw |> dplyr::transmute(var_label = "Recycling rate, Fe", region = Region, now = Recycling_rate_Fe),
-  recycling_raw |> dplyr::transmute(var_label = "Recycling rate, non-Fe", region = Region, now = Recycling_rate_NonFe),
+  recycling_raw |> dplyr::transmute(var_label = "Recycling rate, Cu", region = Region, now = `Copper EOL-RR`),
+  recycling_raw |> dplyr::transmute(var_label = "Recycling rate, Al", region = Region, now = `Aluminum EOL-RR`),
+  recycling_raw |> dplyr::transmute(var_label = "Recycling rate, other non-Fe", region = Region, now = `OtherNonFE EOL-RR`),
   downcycling_raw |> dplyr::transmute(var_label = "Downcycling rate, construction minerals", region = Region, now = `Downcycling rate`)
 ) |>
   dplyr::mutate(var_label = factor(var_label, levels = RATE_LEVELS))
@@ -283,7 +266,9 @@ scalar_data <- tibble::tribble(
   "Target years", "Intensity target year", TARGET_YEAR_MIN, TARGET_YEAR_MAX, TARGET_YEAR_CENTRAL,
   "Target years", "Recycling convergence year", RECYC_CONVERGENCE_YR_MIN, RECYC_CONVERGENCE_YR_MAX, RECYC_CONVERGENCE_YR_CENTRAL,
   "Ore grade", "Fe", GRADE_ORE_FE_MIN, GRADE_ORE_FE_MAX, GRADE_ORE_FE_CENTRAL,
-  "Ore grade", "Non-Fe", GRADE_ORE_NONFE_MIN, GRADE_ORE_NONFE_MAX, GRADE_ORE_NONFE_CENTRAL,
+  "Ore grade", "Cu", GRADE_ORE_CU_MIN, GRADE_ORE_CU_MAX, GRADE_ORE_CU_CENTRAL,
+  "Ore grade", "Al", GRADE_ORE_AL_MIN, GRADE_ORE_AL_MAX, GRADE_ORE_AL_CENTRAL,
+  "Ore grade", "Other non-Fe", GRADE_ORE_OTHERNONFE_MIN, GRADE_ORE_OTHERNONFE_MAX, GRADE_ORE_OTHERNONFE_CENTRAL,
   "Secondary room", "Max secondary share, buildings and civil", MAX_SECONDARY_BUILD_CIVIL_MIN, MAX_SECONDARY_BUILD_CIVIL_MAX, MAX_SECONDARY_BUILD_CIVIL_CENTRAL,
   "Secondary room", "Max secondary share, roads", MAX_SECONDARY_ROADS_MIN, MAX_SECONDARY_ROADS_MAX, MAX_SECONDARY_ROADS_CENTRAL,
   "Secondary room", "Concrete share, buildings", SHARE_CONCRETE_BUILDINGS_MIN, SHARE_CONCRETE_BUILDINGS_MAX, SHARE_CONCRETE_BUILDINGS_CENTRAL,
@@ -297,9 +282,9 @@ p_second <- ggplot(scalar_data |> dplyr::filter(panel == "Secondary room", !is.n
   geom_segment(aes(x = lo, xend = hi, y = item, yend = item), colour = "black", linewidth = 0.8) +
   geom_point(aes(x = now, y = item), shape = 21, fill = "white", stroke = 0.4, size = 1.0) +
   X_PCT +
-  scale_y_discrete(labels = scales::label_wrap(22)) +
+  scale_y_discrete(labels = scales::label_wrap(30)) + # wide wrap: two-line labels never sit next to each other
   coord_cartesian(clip = "off") +
-  labs(x = "Share of demand or material (%)", y = NULL, title = "Secondary room, non-metallic minerals") +
+  labs(x = "Share of demand or material (%)", y = NULL, title = "Secondary room,\nnon-metallic minerals") +
   THEME_ROW
 
 # Years: axis cannot start at 0; round the range out to the nearest decade, label every 10 years
@@ -329,9 +314,14 @@ p_ore_fe <- ggplot(scalar_data |> dplyr::filter(panel == "Ore grade", item == "F
   THEME_ROW +
   theme(axis.text.y = element_blank())
 
-p_ore_nonfe <- p_ore_fe +
-  (scalar_data |> dplyr::filter(panel == "Ore grade", item == "Non-Fe")) +
-  labs(title = "Ore grade, non-Fe")
+# Non-Fe grades span ~0.5% (Cu) to ~16% (Al): log axis, one row per metal
+p_ore_nonfe <- ggplot(scalar_data |> dplyr::filter(panel == "Ore grade", item != "Fe") |> droplevels()) +
+  geom_segment(aes(x = lo, xend = hi, y = item, yend = item), colour = "black", linewidth = 0.8) +
+  geom_point(aes(x = now, y = item), shape = 21, fill = "white", stroke = 0.4, size = 1.0) +
+  scale_x_log10(labels = scales::label_percent(accuracy = 0.1)) +
+  coord_cartesian(clip = "off") +
+  labs(x = "% metal content (log scale)", y = NULL, title = "Ore grade, non-Fe") +
+  THEME_ROW
 
 SUB_USE_LABELS <- c(
   "residential" = "Residential",
@@ -401,9 +391,9 @@ p_legend <- ggplot(tibble::tibble(region = factor(c(REGION_ORDER, "All regions")
 
 cat("STEP 7: Assemble and save\n")
 
-row_drivers <- p_pop + p_gdp
-row_rates <- p_recyc + p_second + p_target
-row_life <- wrap_plots(p_ore_fe / p_ore_nonfe, p_life, p_shape, p_legend, nrow = 1, widths = c(1, 1.2, 1, 1))
+row_drivers <- p_pop + p_gdp + p_legend + plot_layout(widths = c(1, 1, 0.6))
+row_rates <- p_recyc + p_second + p_target + plot_layout(widths = c(1, 1.2, 0.8))
+row_life <- wrap_plots((p_ore_fe / p_ore_nonfe) + plot_layout(heights = c(1, 3)), p_life, p_shape, nrow = 1, widths = c(1, 1.2, 1))
 
 wrap_plots(
   row_drivers,
@@ -414,7 +404,7 @@ wrap_plots(
   wrap_elements(full = row_rates),
   wrap_elements(full = row_life),
   ncol = 1,
-  heights = c(0.45, 1, 1, 0.9, 0.45, 1.6, 1.6)
+  heights = c(0.7, 1, 1, 0.9, 0.45, 1.6, 1.6)
 ) +
   plot_annotation(
     caption = paste0(
@@ -430,6 +420,22 @@ wrap_plots(
 ggsave("Figures/Supporting-Figures/S10_SamplingBounds.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 17, height = 29)
 ggsave("Figures/SVG/Supporting-Figures/S10_SamplingBounds.svg", ggplot2::last_plot(), units = "cm", width = 17, height = 29)
 group_svg_layers("Figures/SVG/Supporting-Figures/S10_SamplingBounds.svg")
+
+# Save figure data: every bar (lo-hi) and open circle (now) in one long table
+dir.create("Figures/Supporting-Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+write_csv(
+  dplyr::bind_rows(
+    driver_data |> dplyr::transmute(panel = "SSP drivers", variable, region = as.character(region), lo, hi, now),
+    flow_data |> dplyr::transmute(panel = "Flow intensity (kg/$)", variable = as.character(var_label), region, ssp, lo, hi, now = int_2024),
+    stock_data |> dplyr::transmute(panel = paste("Stock intensity (kg/$),", material_group), variable = as.character(var_label), region = as.character(region), lo, hi, now),
+    RATE_VARS |> dplyr::transmute(panel = "Recovery rates", variable = var_label, region = "All regions", lo, hi, central),
+    rate_now |> dplyr::transmute(panel = "Recovery rates", variable = as.character(var_label), region, now),
+    scalar_data |> dplyr::transmute(panel, variable = as.character(item), region = "All regions", lo, hi, central = now),
+    life_data |> dplyr::transmute(panel = "Mean lifetime (years)", variable = as.character(item), region = "All regions", lo, hi, central = now),
+    life_data |> dplyr::transmute(panel = "Weibull shape k", variable = as.character(item), region = "All regions", lo = k_lo, hi = k_hi, central = k_now)
+  ),
+  "Figures/Supporting-Figures/RawData/S10_SamplingBounds.csv"
+)
 
 cat("  Saved", "Figures/Supporting-Figures/S10_SamplingBounds.png", "\n")
 

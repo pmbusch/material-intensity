@@ -1,5 +1,5 @@
 ## =============================================================================
-## 01_Aggregate_MISO.R
+## 04-Aggregate_MISO.R
 ## Parse and aggregate MISO2 global database to regional totals.
 ## Produces clean stock, inflow, and outflow files by region × material ×
 ## end_use × year, converted from kt to Mt.

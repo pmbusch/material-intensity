@@ -1,9 +1,19 @@
 ## =============================================================================
-## 01c-Aggregate_GDP.R
-## Builds regional GDP aggregates (constant 2015 USD) from World Bank data.
+## 03-Aggregate_GDP.R
+## Builds regional GDP aggregates (PPP, constant 2017 international $) from
+## World Bank data -- same PPP basis as the IIASA SSP GDP|PPP drivers.
 ##
 ## Approach:
-##   Step 1 — Use WB regional aggregate codes as the base (EAS, ECS, LCN, MEA,
+##   Step 1 — Read WB GDP PPP (NY.GDP.MKTP.PP.KD, constant 2021 intl $, from
+##             1990) and GDP MER (NY.GDP.MKTP.KD, constant 2015 USD, from 1960).
+##             Pre-1990 PPP is backcast per WB code (country or regional
+##             aggregate) with the MER series scaled by that code's PPP/MER
+##             ratio in its first PPP year: both are constant-LCU GDP times a
+##             fixed conversion factor, so real growth is identical and the
+##             splice is continuous. Rebased 2021 -> 2017 intl $ with the US
+##             GDP deflator (FRED A191RD3A086NBEA: 2017 = 100, 2021 = 110.186).
+##             MER kept alongside (GDP_MER2015USD) to convert MER-based inputs.
+##   Step 1b — Use WB regional aggregate codes as the base (EAS, ECS, LCN, MEA,
 ##             NAC, SAS, SSF, PSS).
 ##   Step 2 — Apply country-level corrections to align WB regions with our 8
 ##             regions (including Oceania). Country GDP is subtracted from its
@@ -21,15 +31,17 @@
 ##   AUS, NZL + Pacific islands: EAS → Oceania (new region)
 ##
 ## Outputs (Parameters/):
-##   gdp_region.csv   — (Region, year, GDP_2015USD)
-##   gdp_country.csv  — (ISO3, year, GDP_2015USD)  [selected countries]
-##   gdp_world.csv    — (year, GDP_2015USD)
+##   gdp_region.csv   — (Region, year, GDP_PPP2017USD, GDP_MER2015USD)
+##   gdp_country.csv  — (ISO3, year, GDP_PPP2017USD, GDP_MER2015USD)  [selected countries]
+##   gdp_world.csv    — (year, GDP_PPP2017USD, GDP_MER2015USD)
 ## =============================================================================
 
 source('Scripts/00-Libraries.R', encoding = 'UTF-8')
 
-gdp_path <- "Inputs/WorldBank/API_NY.GDP.MKTP.KD_DS2_en_excel_v2_753.xls" # 2015 constant
-# gdp_path <- "Inputs/WorldBank/API_NY.GDP.PCAP.PP.KD_DS2_en_excel_v2_251.xls" # 2021 constant, PPP adjusted (purchasing power parity)
+gdp_ppp_path <- "Inputs/WorldBank/API_NY.GDP.MKTP.PP.KD_DS2_en_excel_v2_2811.xls" # PPP, constant 2021 intl $
+gdp_mer_path <- "Inputs/WorldBank/API_NY.GDP.MKTP.KD_DS2_en_excel_v2_753.xls" # MER, constant 2015 USD
+PPP_2021_TO_2017 <- 100 / 110.186 # US GDP deflator, 2017 = 100 (FRED A191RD3A086NBEA)
+GDP_COLS <- c("GDP_PPP2017USD", "GDP_MER2015USD")
 
 # Pacific island small states (PSS members, from WB composition sheet)
 # fmt: skip
@@ -87,18 +99,54 @@ COUNTRY_ISO3 <- c(
 
 cat("STEP 1: Load World Bank GDP data\n")
 
-gdp_raw <- suppressWarnings(read_excel(gdp_path, sheet = "Data", skip = 3))
-cc_col <- names(gdp_raw)[grepl("country.code|countrycode", names(gdp_raw), ignore.case = TRUE)][1]
-yr_cols <- names(gdp_raw)[grepl("^[0-9]{4}$", names(gdp_raw))]
-cat("GDP year range:", min(yr_cols), "-", max(yr_cols), "\n")
-cat("Total rows in file:", nrow(gdp_raw), "\n")
+gdp_ppp_raw <- suppressWarnings(read_excel(gdp_ppp_path, sheet = "Data", skip = 3))
+gdp_mer_raw <- suppressWarnings(read_excel(gdp_mer_path, sheet = "Data", skip = 3))
+cat("Total rows in files: PPP", nrow(gdp_ppp_raw), "| MER", nrow(gdp_mer_raw), "\n")
 
-gdp_long <- gdp_raw %>%
-  rename(ISO3 = all_of(cc_col)) %>%
-  pivot_longer(cols = all_of(yr_cols), names_to = "year", values_to = "GDP_2015USD") %>%
-  mutate(year = as.integer(year), GDP_2015USD = suppressWarnings(as.numeric(GDP_2015USD))) %>%
+gdp_ppp_long <- gdp_ppp_raw %>%
+  rename(ISO3 = `Country Code`) %>%
+  pivot_longer(cols = matches("^[0-9]{4}$"), names_to = "year", values_to = "ppp") %>%
+  mutate(year = as.integer(year), ppp = suppressWarnings(as.numeric(ppp))) %>%
+  dplyr::select(ISO3, year, ppp)
+
+gdp_mer_long <- gdp_mer_raw %>%
+  rename(ISO3 = `Country Code`) %>%
+  pivot_longer(cols = matches("^[0-9]{4}$"), names_to = "year", values_to = "GDP_MER2015USD") %>%
+  mutate(year = as.integer(year), GDP_MER2015USD = suppressWarnings(as.numeric(GDP_MER2015USD))) %>%
+  dplyr::select(ISO3, year, GDP_MER2015USD)
+
+# PPP backcast before each code's first PPP year: MER x PPP/MER ratio of that
+# first year (identical real growth, continuous at the splice); then rebase
+# 2021 -> 2017 intl $
+splice_ratio <- gdp_ppp_long %>%
+  inner_join(gdp_mer_long, by = c("ISO3", "year")) %>%
+  filter(!is.na(ppp), !is.na(GDP_MER2015USD)) %>%
+  group_by(ISO3) %>%
+  slice_min(year, n = 1) %>%
+  ungroup() %>%
+  transmute(ISO3, splice_year = year, ratio = ppp / GDP_MER2015USD)
+
+gdp_long <- gdp_mer_long %>%
+  full_join(gdp_ppp_long, by = c("ISO3", "year")) %>%
+  left_join(splice_ratio, by = "ISO3") %>%
+  mutate(
+    ppp = if_else(is.na(ppp) & !is.na(splice_year) & year < splice_year, GDP_MER2015USD * ratio, ppp),
+    GDP_PPP2017USD = ppp * PPP_2021_TO_2017
+  ) %>%
   filter(year >= 1970, year <= 2024) %>%
-  dplyr::select(ISO3, year, GDP_2015USD)
+  dplyr::select(ISO3, year, all_of(GDP_COLS))
+
+cat("PPP splice year distribution (WB codes):\n")
+print(table(splice_ratio$splice_year))
+cat("PPP/MER ratio of WB regional aggregates, 1990-1995 (splice uses 1990):\n")
+print(
+  gdp_ppp_long %>%
+    inner_join(gdp_mer_long, by = c("ISO3", "year")) %>%
+    filter(ISO3 %in% c("EAS", "ECS", "LCN", "MEA", "NAC", "SAS", "SSF", "WLD"), year %in% 1990:1995) %>%
+    mutate(ratio = round(ppp / GDP_MER2015USD, 3)) %>%
+    dplyr::select(ISO3, year, ratio) %>%
+    pivot_wider(names_from = year, values_from = ratio)
+)
 
 
 # Step 2: Extract WB regional aggregates and country corrections ──────────────
@@ -132,12 +180,12 @@ cat("\nSTEP 3: Compute per-year correction deltas\n")
 # Amount to subtract from each WB source region, per year
 delta_subtract <- gdp_corr %>%
   group_by(from_wb, year) %>%
-  summarise(delta = sum(GDP_2015USD, na.rm = TRUE), .groups = "drop")
+  summarise(across(all_of(GDP_COLS), ~ sum(.x, na.rm = TRUE), .names = "delta_{.col}"), .groups = "drop")
 
 # Amount to add to each target region, per year
 delta_add <- gdp_corr %>%
   group_by(to_region, year) %>%
-  summarise(delta = sum(GDP_2015USD, na.rm = TRUE), .groups = "drop")
+  summarise(across(all_of(GDP_COLS), ~ sum(.x, na.rm = TRUE), .names = "delta_{.col}"), .groups = "drop")
 
 cat("Correction countries with GDP data:", length(unique(gdp_corr$ISO3)), "\n")
 
@@ -149,37 +197,43 @@ cat("\nSTEP 4: Apply corrections to WB regional aggregates\n")
 # For each WB base region: subtract the countries that move out
 gdp_adjusted_base <- gdp_wb_regions %>%
   left_join(delta_subtract, by = c("wb_code" = "from_wb", "year")) %>%
-  mutate(delta = replace_na(delta, 0), GDP_2015USD = GDP_2015USD - delta) %>%
-  dplyr::select(wb_code, year, GDP_2015USD) %>%
+  mutate(
+    GDP_PPP2017USD = GDP_PPP2017USD - replace_na(delta_GDP_PPP2017USD, 0),
+    GDP_MER2015USD = GDP_MER2015USD - replace_na(delta_GDP_MER2015USD, 0)
+  ) %>%
+  dplyr::select(wb_code, year, all_of(GDP_COLS)) %>%
   mutate(Region = WB_TO_REGION[wb_code])
 
 # Oceania = AUS + NZL + all PSS countries (all moved out of EAS)
 gdp_oceania <- gdp_corr %>%
   filter(to_region == "Oceania") %>%
   group_by(year) %>%
-  summarise(GDP_2015USD = sum(GDP_2015USD, na.rm = TRUE), .groups = "drop") %>%
+  summarise(across(all_of(GDP_COLS), ~ sum(.x, na.rm = TRUE)), .groups = "drop") %>%
   mutate(Region = "Oceania")
 
 # Countries moved INTO existing regions: add their GDP to those regions
 gdp_additions <- delta_add %>%
   filter(to_region != "Oceania") %>% # Oceania is handled above as new region
-  rename(Region = to_region, add_GDP = delta)
+  rename(Region = to_region)
 
 # Combine: base (already subtracted) + additions + Oceania
 gdp_region_base <- gdp_adjusted_base %>%
-  dplyr::select(Region, year, GDP_2015USD) %>%
+  dplyr::select(Region, year, all_of(GDP_COLS)) %>%
   left_join(gdp_additions, by = c("Region", "year")) %>%
-  mutate(add_GDP = replace_na(add_GDP, 0), GDP_2015USD = GDP_2015USD + add_GDP) %>%
-  dplyr::select(Region, year, GDP_2015USD)
+  mutate(
+    GDP_PPP2017USD = GDP_PPP2017USD + replace_na(delta_GDP_PPP2017USD, 0),
+    GDP_MER2015USD = GDP_MER2015USD + replace_na(delta_GDP_MER2015USD, 0)
+  ) %>%
+  dplyr::select(Region, year, all_of(GDP_COLS))
 
 gdp_region <- bind_rows(gdp_region_base, gdp_oceania) %>% arrange(Region, year)
 
 cat("Regions in output:", paste(sort(unique(gdp_region$Region)), collapse = ", "), "\n")
 
 # Sanity check: compare world total against WB World aggregate
-gdp_world_check <- gdp_long %>% filter(ISO3 == "WLD") %>% rename(WLD_GDP = GDP_2015USD)
+gdp_world_check <- gdp_long %>% filter(ISO3 == "WLD") %>% rename(WLD_GDP = GDP_PPP2017USD)
 
-gdp_our_world <- gdp_region %>% group_by(year) %>% summarise(our_GDP = sum(GDP_2015USD, na.rm = TRUE), .groups = "drop")
+gdp_our_world <- gdp_region %>% group_by(year) %>% summarise(our_GDP = sum(GDP_PPP2017USD, na.rm = TRUE), .groups = "drop")
 
 comparison <- gdp_our_world %>%
   left_join(gdp_world_check %>% dplyr::select(year, WLD_GDP), by = "year") %>%
@@ -199,13 +253,13 @@ write_csv(gdp_region, "Parameters/Worldbank-GDP/gdp_region.csv")
 cat("Saved: Parameters/Worldbank-GDP/gdp_region.csv (", nrow(gdp_region), "rows,", length(unique(gdp_region$Region)), "regions )\n")
 
 # ── World aggregate ───────────────────────────────────────────────────────────
-gdp_world <- gdp_region %>% group_by(year) %>% summarise(GDP_2015USD = sum(GDP_2015USD, na.rm = TRUE), .groups = "drop")
+gdp_world <- gdp_region %>% group_by(year) %>% summarise(across(all_of(GDP_COLS), ~ sum(.x, na.rm = TRUE)), .groups = "drop")
 
 write_csv(gdp_world, "Parameters/Worldbank-GDP/gdp_world.csv")
 cat("Saved: Parameters/Worldbank-GDP/gdp_world.csv (", nrow(gdp_world), "rows )\n")
 
 # ── Selected country data ─────────────────────────────────────────────────────
-gdp_country <- gdp_countries %>% filter(ISO3 %in% COUNTRY_ISO3) %>% dplyr::select(ISO3, year, GDP_2015USD)
+gdp_country <- gdp_countries %>% filter(ISO3 %in% COUNTRY_ISO3) %>% dplyr::select(ISO3, year, all_of(GDP_COLS))
 
 missing_ctry <- setdiff(COUNTRY_ISO3, unique(gdp_country$ISO3))
 if (length(missing_ctry) > 0) {

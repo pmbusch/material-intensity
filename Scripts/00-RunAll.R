@@ -14,36 +14,42 @@ scripts <- c(
   "Scripts/01-PrepareData/01-Aggregate_UNEP.R",
   "Scripts/01-PrepareData/02-Aggregate_UN.R",
   "Scripts/01-PrepareData/03-Aggregate_GDP.R",
-  "Scripts/01-PrepareData/05_Aggregate_MISO.R",
-  "Scripts/01-PrepareData/06-Aggregate_EIA_Capacity.R",
+  "Scripts/01-PrepareData/04-Aggregate_MISO.R",
+  "Scripts/01-PrepareData/05-Aggregate_EIA_Capacity.R",
+  # Local data not in git (materialflows.net raw files, S&P deposits); their
+  # outputs are tracked in Parameters/MaterialFlows and Parameters/SP:
+  # "Scripts/01-PrepareData/06-Aggregate_MaterialFlows.R",
+  "Scripts/01-PrepareData/07-NonFerrous_Split.R",
+  # "Scripts/01-PrepareData/08-IronOre_GradeCurve.R",
+  # "Scripts/01-PrepareData/09-NonFerrous_GradeCurve.R",
 
   # Stage 2: historical end-use split, ore grade, stock-flow model (-> Parameters/Intermediate, MISO-Stock)
-  "Scripts/02-HistoricalStock/01_UNEP_enduse_shares.R",
-  "Scripts/02-HistoricalStock/01b_UNEP_enduse_detail.R",
-  "Scripts/02-HistoricalStock/02_OreGrade_Factor_g.R",
-  "Scripts/02-HistoricalStock/02b_MISO_scope_factor.R",
-  "Scripts/02-HistoricalStock/03_UNEP_stock_flow_model.R",
-  "Scripts/02-HistoricalStock/03b_AgePyramid.R",
-  "Scripts/02-HistoricalStock/03c_HistoricalSecondaryFlows.R",
-  "Scripts/02-HistoricalStock/04_stock_intensity_analysis.R",
+  "Scripts/02-HistoricalStock/01-UNEP_enduse_shares.R",
+  "Scripts/02-HistoricalStock/02-UNEP_enduse_detail.R",
+  "Scripts/02-HistoricalStock/03-OreGrade_Factor_g.R",
+  "Scripts/02-HistoricalStock/04-MISO_scope_factor.R",
+  "Scripts/02-HistoricalStock/05-UNEP_stock_flow_model.R",
+  "Scripts/02-HistoricalStock/06-AgePyramid.R",
+  "Scripts/02-HistoricalStock/07-HistoricalSecondaryFlows.R",
+  "Scripts/02-HistoricalStock/08-stock_intensity_analysis.R",
 
   # Stage 3: SSP drivers and ScenarioMIP intensity trajectories (-> Parameters/IIASA-Trajectories)
-  "Scripts/03-SSP Trajectories/00_preprocess_ssp_drivers.R",
-  "Scripts/03-SSP Trajectories/01_load_and_check.R",
-  "Scripts/03-SSP Trajectories/02_compute_metrics.R",
-  "Scripts/03-SSP Trajectories/03_trajectory_figures.R",
-  "Scripts/03-SSP Trajectories/03b_trajectory_by_ssp_region.R",
-  "Scripts/03-SSP Trajectories/03c_primary_energy_figures.R",
-  "Scripts/03-SSP Trajectories/03d_capacity_figures.R",
-  "Scripts/03-SSP Trajectories/04_summary_ratio.R",
-  "Scripts/03-SSP Trajectories/05_climate_figures.R",
+  "Scripts/03-SSP Trajectories/01-preprocess_ssp_drivers.R",
+  "Scripts/03-SSP Trajectories/02-load_and_check.R",
+  "Scripts/03-SSP Trajectories/03-compute_metrics.R",
+  "Scripts/03-SSP Trajectories/04-trajectory_figures.R",
+  "Scripts/03-SSP Trajectories/05-trajectory_by_ssp_region.R",
+  "Scripts/03-SSP Trajectories/06-primary_energy_figures.R",
+  "Scripts/03-SSP Trajectories/07-capacity_figures.R",
+  "Scripts/03-SSP Trajectories/08-summary_ratio.R",
+  "Scripts/03-SSP Trajectories/09-climate_figures.R",
 
   # Stage 4: Monte Carlo simulation (-> Parameters/Simulation, Results/MC)
   "Scripts/04-Simulation/01-Sampling.R",
-  "Scripts/04-Simulation/01b-PowerSector.R",
-  "Scripts/04-Simulation/02-RunSimulations.R",
-  "Scripts/04-Simulation/03-Diagnostics.R",
-  "Scripts/04-Simulation/04-Decoupling.R",
+  "Scripts/04-Simulation/02-PowerSector.R",
+  "Scripts/04-Simulation/03-RunSimulations.R",
+  "Scripts/04-Simulation/04-Diagnostics.R",
+  "Scripts/04-Simulation/05-Decoupling.R",
 
   # Stage 5: main figures and table (-> Figures/)
   "Scripts/05-Figures/Figure 1 - HistoricalTimeseries.R",
@@ -53,7 +59,7 @@ scripts <- c(
   "Scripts/05-Figures/Figure 2 Detail - Region Summary.R",
   "Scripts/05-Figures/Figure 3 - Contours-GrowthRate.R",
   "Scripts/05-Figures/Figure 4 - Climate - PrepareData.R",
-  "Scripts/05-Figures/Figure 5 - Sensitivity - PrepareData.R", # before Figure 4: its panel b reads Figure5_Scatter.csv
+  "Scripts/05-Figures/Figure 5 - Sensitivity - PrepareData.R", # before Figure 4: its panel a reads Figure5_Scatter.csv
   "Scripts/05-Figures/Figure 4 - Climate.R",
   "Scripts/05-Figures/Figure 5 - Sensitivity.R",
   "Scripts/05-Figures/Figure 5 - Alt1 - PrepareData.R",
@@ -70,7 +76,10 @@ scripts <- c(
   "Scripts/05-Figures/Supporting-Figures/S16 - Density.R",
   "Scripts/05-Figures/Supporting-Figures/S18 - RegionalAnalysis.R",
   "Scripts/05-Figures/Supporting-Figures/S19 - CumulativeExtraction.R",
-  "Scripts/05-Figures/Supporting-Figures/S27-S28 - RegionalTimeseries.R"
+  "Scripts/05-Figures/Supporting-Figures/S27-S28 - RegionalTimeseries.R",
+  "Scripts/05-Figures/Supporting-Figures/S29 - CircularityStockGrowth.R",
+  "Scripts/05-Figures/Supporting-Figures/S30 - MetalOreExtraction.R",
+  "Scripts/05-Figures/Supporting-Figures/S31 - MaterialGroupExtraction.R"
 )
 
 start_from <- if (length(commandArgs(TRUE)) > 0) as.integer(commandArgs(TRUE)[1]) else 1L

@@ -1,5 +1,5 @@
 ## =============================================================================
-## 02b_MISO_scope_factor.R
+## 04-MISO_scope_factor.R
 ## Empirical MISO/UNEP scope-correction factor A for metal inflows.
 ##
 ## UNEP DMC counts ore extracted + traded raw materials. Regional stock is
@@ -12,7 +12,7 @@
 ## computed 1970-2016 (MISO coverage), 5-yr rolling mean, clipped to
 ## [A_CLIP_MIN, A_CLIP_MAX], held at 2016 value for 2017-2024.
 ## A jointly captures recycling and embodied trade; NOT decomposed (documented
-## assumption). Applied downstream (script 03) to Metal_Fe and Metal_NonFe
+## assumption). Applied downstream (script 05) to all metals (Fe, Cu, Al, other non-Fe)
 ## only; non-metallic minerals need no correction (negligible recycling /
 ## embodied trade; DSM already fits MISO stocks).
 ##
@@ -22,8 +22,8 @@
 ##   embodied-export surplus.
 ##
 ## Input:
-##   Parameters/Intermediate/UNEP_flows_subenduse.csv   -- from script 01b
-##   Parameters/UNEP-Materials/materials_region_DMC.csv                -- fe_share
+##   Parameters/Intermediate/UNEP_flows_subenduse.csv   -- from script 02
+##   Parameters/MaterialFlows/materials_region_DMC_exGold.csv                -- fe_share
 ##   Parameters/MISO-Stock/metal_grade_ore.csv                -- ore -> metal (g)
 ##   Parameters/MISO-Stock/MISO_flows_regional.csv            -- MISO inflows
 ##
@@ -44,10 +44,10 @@ A_EXTEND_TO <- 2024L
 cat("=== Scope factor A: MISO/UNEP metal inflow ratio ===\n\n")
 
 # -- Step 1: UNEP metal inflows in METAL MASS at super_category level ---------
-# (duplicates script 03 Step 1 Fe/NonFe split + g conversion; keep in sync)
+# (duplicates script 05 Step 1 Fe/NonFe split + g conversion; keep in sync)
 
 unep_sub <- read.csv("Parameters/Intermediate/UNEP_flows_subenduse.csv")
-unep_raw <- read_csv("Parameters/UNEP-Materials/materials_region_DMC.csv", show_col_types = FALSE)
+unep_raw <- read_csv("Parameters/MaterialFlows/materials_region_DMC_exGold.csv", show_col_types = FALSE)
 
 fe_share_rt <- unep_raw %>%
   filter(material_category %in% c("Ferrous ores", "Non-ferrous ores")) %>%
@@ -69,7 +69,7 @@ grade_wide <- grade_raw %>%
   pivot_wider(names_from = group, values_from = g) %>%
   rename(g_Fe = Ferrous, g_NonFe = `Non-ferrous`)
 
-# LOCF extension of g to cover 1970..MISO_LAST_YEAR (same logic as script 03)
+# LOCF extension of g to cover 1970..MISO_LAST_YEAR (same logic as script 05)
 yr_min <- 1970L
 yr_max <- MISO_LAST_YEAR
 grade_early <- grade_wide %>% filter(year == min(year)) %>% dplyr::select(-year)
@@ -140,7 +140,7 @@ A_smooth <- A_raw %>%
 # hold at MISO_LAST_YEAR value for the bridge years (A plus its two raw
 # inflow components, so downstream scripts can rebuild the MISO-scope wedge
 # -- MISO_inflow - UNEP_inflow -- without re-deriving the Fe/NonFe + grade
-# conversion from scratch; see Script 03c)
+# conversion from scratch; see script 07)
 A_hold <- A_smooth %>%
   filter(year == MISO_LAST_YEAR) %>%
   dplyr::select(Region, super_category, A_clipped, unep_inflow_Mt, miso_inflow_Mt) %>%

@@ -1,5 +1,5 @@
 ## =============================================================================
-## 06-Aggregate_EIA_Capacity.R
+## 05-Aggregate_EIA_Capacity.R
 ## EIA International installed electricity capacity by country (1980-2024),
 ## aggregated to the 8 model regions.
 ##

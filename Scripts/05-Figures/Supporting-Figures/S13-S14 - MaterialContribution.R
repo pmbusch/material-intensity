@@ -23,7 +23,9 @@ cat("=== Material Contribution ===\n\n")
 # Load
 # =============================================================================
 
-results <- arrow::read_parquet("Results/MC/mc_results.parquet")
+results <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
+  dplyr::select(run_id, material_group, material_key, year, primary_consumption_Mt) |>
+  dplyr::collect()
 cat("  Rows:", format(nrow(results), big.mark = ","), "\n")
 
 # =============================================================================
@@ -106,7 +108,7 @@ run_2050 <- results |>
     cat_4 = case_when(
       material_group == "biomass" ~ "Biomass",
       material_group == "fossil_fuels" ~ "Fossil fuels",
-      material_group %in% c("metal_fe", "metal_nonfe") ~ "Metal ores",
+      material_group %in% METAL_GROUPS_ALL ~ "Metal ores",
       material_group == "nonmetallic_minerals" ~ "Non-metallic minerals",
       TRUE ~ material_group
     ),
@@ -120,16 +122,16 @@ run_2050 <- results |>
       material_group == "biomass" & str_detect(material_key, "Grazed") ~ "Grazed biomass",
       material_group == "biomass" & material_key == "other_biomass" ~ "Other biomass",
       material_group %in%
-        c("metal_fe", "metal_nonfe") &
+        METAL_GROUPS_ALL &
         material_key %in% c("Residential", "Non-residential") ~ "Metals – Buildings",
       material_group %in%
-        c("metal_fe", "metal_nonfe") &
+        METAL_GROUPS_ALL &
         material_key %in% c("Roads", "Civil engineering") ~ "Metals – Civil infra",
       material_group %in%
-        c("metal_fe", "metal_nonfe") &
+        METAL_GROUPS_ALL &
         material_key %in% c("Machinery", "Vehicles") ~ "Metals – Machinery",
       material_group %in%
-        c("metal_fe", "metal_nonfe") &
+        METAL_GROUPS_ALL &
         material_key %in% c("Durables", "Packaging") ~ "Metals – Short-lived",
       material_group == "nonmetallic_minerals" &
         material_key %in% c("Residential", "Non-residential") ~ "Minerals – Buildings",
@@ -139,10 +141,10 @@ run_2050 <- results |>
       material_group == "nonmetallic_minerals" &
         material_key %in% c("Durables", "Packaging") ~ "Minerals – Short-lived",
       # Power-sector end uses (generation + batteries) as their own category
-      material_group %in% c("metal_fe", "metal_nonfe") & startsWith(material_key, "Power: ") ~ "Metals – Power sector",
+      material_group %in% METAL_GROUPS_ALL & startsWith(material_key, "Power: ") ~ "Metals – Power sector",
       material_group == "nonmetallic_minerals" & startsWith(material_key, "Power: ") ~ "Minerals – Power sector",
       material_group == "nonmetallic_minerals" ~ paste0("Minerals – ", material_key),
-      material_group %in% c("metal_fe", "metal_nonfe") ~ paste0("Metals – ", material_key),
+      material_group %in% METAL_GROUPS_ALL ~ paste0("Metals – ", material_key),
       TRUE ~ material_key
     )
   )
@@ -295,6 +297,8 @@ ggplot(binned_2050_d, aes(x = x_mid, y = share_pct, fill = cat_label)) +
 ggsave("Figures/Supporting-Figures/S13_MaterialContribution_2050.png",ggplot2::last_plot(),units = "cm",dpi = 600,width = 8.7 * 2.3,height = 8.7)
 ggsave("Figures/SVG/Supporting-Figures/S13_MaterialContribution_2050.svg",ggplot2::last_plot(),units = "cm",width = 8.7 * 2.3,height = 8.7)
 clean_svg("Figures/SVG/Supporting-Figures/S13_MaterialContribution_2050.svg")
+dir.create("Figures/Supporting-Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+write_csv(binned_2050_d, "Figures/Supporting-Figures/RawData/S13_MaterialContribution_2050.csv")
 
 # =============================================================================
 # BASE AGGREGATION — cumulative 2025–2060
@@ -310,7 +314,7 @@ run_cumul <- results |>
     cat_4 = case_when(
       material_group == "biomass" ~ "Biomass",
       material_group == "fossil_fuels" ~ "Fossil fuels",
-      material_group %in% c("metal_fe", "metal_nonfe") ~ "Metal ores",
+      material_group %in% METAL_GROUPS_ALL ~ "Metal ores",
       material_group == "nonmetallic_minerals" ~ "Non-metallic minerals",
       TRUE ~ material_group
     ),
@@ -324,16 +328,16 @@ run_cumul <- results |>
       material_group == "biomass" & str_detect(material_key, "Grazed") ~ "Grazed biomass",
       material_group == "biomass" & material_key == "other_biomass" ~ "Other biomass",
       material_group %in%
-        c("metal_fe", "metal_nonfe") &
+        METAL_GROUPS_ALL &
         material_key %in% c("Residential", "Non-residential") ~ "Metals – Buildings",
       material_group %in%
-        c("metal_fe", "metal_nonfe") &
+        METAL_GROUPS_ALL &
         material_key %in% c("Roads", "Civil engineering") ~ "Metals – Civil infra",
       material_group %in%
-        c("metal_fe", "metal_nonfe") &
+        METAL_GROUPS_ALL &
         material_key %in% c("Machinery", "Vehicles") ~ "Metals – Machinery",
       material_group %in%
-        c("metal_fe", "metal_nonfe") &
+        METAL_GROUPS_ALL &
         material_key %in% c("Durables", "Packaging") ~ "Metals – Short-lived",
       material_group == "nonmetallic_minerals" &
         material_key %in% c("Residential", "Non-residential") ~ "Minerals – Buildings",
@@ -343,10 +347,10 @@ run_cumul <- results |>
       material_group == "nonmetallic_minerals" &
         material_key %in% c("Durables", "Packaging") ~ "Minerals – Short-lived",
       # Power-sector end uses (generation + batteries) as their own category
-      material_group %in% c("metal_fe", "metal_nonfe") & startsWith(material_key, "Power: ") ~ "Metals – Power sector",
+      material_group %in% METAL_GROUPS_ALL & startsWith(material_key, "Power: ") ~ "Metals – Power sector",
       material_group == "nonmetallic_minerals" & startsWith(material_key, "Power: ") ~ "Minerals – Power sector",
       material_group == "nonmetallic_minerals" ~ paste0("Minerals – ", material_key),
-      material_group %in% c("metal_fe", "metal_nonfe") ~ paste0("Metals – ", material_key),
+      material_group %in% METAL_GROUPS_ALL ~ paste0("Metals – ", material_key),
       TRUE ~ material_key
     )
   )
@@ -496,6 +500,7 @@ ggplot(binned_cumul_d, aes(x = x_mid, y = share_pct, fill = cat_label)) +
 ggsave("Figures/Supporting-Figures/S14_MaterialContribution_Cumulative.png",ggplot2::last_plot(),units = "cm",dpi = 600,width = 8.7 * 2.3,height = 8.7)
 ggsave("Figures/SVG/Supporting-Figures/S14_MaterialContribution_Cumulative.svg",ggplot2::last_plot(),units = "cm",width = 8.7 * 2.3,height = 8.7)
 clean_svg("Figures/SVG/Supporting-Figures/S14_MaterialContribution_Cumulative.svg")
+write_csv(binned_cumul_d, "Figures/Supporting-Figures/RawData/S14_MaterialContribution_Cumulative.csv")
 
 cat("\n=== Material Contribution done ===\n\n")
 
@@ -507,7 +512,7 @@ cat("\n=== Material Contribution done ===\n\n")
 cat("=== Material Mix Shift ===\n\n")
 
 results_mat <- results |>
-  mutate(material_group = ifelse(material_group %in% c("metal_fe", "metal_nonfe"), "metal_ores", material_group))
+  mutate(material_group = ifelse(material_group %in% METAL_GROUPS_ALL, "metal_ores", material_group))
 
 mat_levels <- c("biomass", "fossil_fuels", "metal_ores", "nonmetallic_minerals")
 mat_labels <- c("Biomass", "Fossil fuels", "Metal ores", "Non-metallic minerals")

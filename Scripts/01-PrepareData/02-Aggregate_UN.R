@@ -1,5 +1,5 @@
 ## =============================================================================
-## 01b-Aggregate_UN.R
+## 02-Aggregate_UN.R
 ## Aggregates UN WPP population data to world regions using the UN_Agg sheet
 ## in Inputs/Dict_Countries.xlsx.
 ##

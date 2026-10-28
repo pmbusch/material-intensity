@@ -9,11 +9,14 @@
 
 source('Scripts/00-Libraries.R', encoding = 'UTF-8')
 
-# Materials (DMC) — already aggregated to Region by 01a-Aggregate_UNEP.R
+# Materials (DMC) — already aggregated to Region by 01-Aggregate_UNEP.R
 # Columns: Region, year, material_category, DMC_Mt
 df <- read_csv("Parameters/UNEP-Materials/materials_region_DMC.csv", show_col_types = FALSE)
 df <- df |> filter(abs(DMC_Mt) > 0.1)
 cat("Rows:", nrow(df), "\n")
+
+TXT_AB <- pb_annot_size("small", 7.2) # in-area labels, panels a & b (>= tag size / 1.6)
+TXT_GROUP_B <- pb_annot_size("largeFont", 8) # material-group labels right of panel b
 
 ## Colour palettes — defined in 00-CommonParameters.R -------------------------
 # PALETTE_REGIONS          : 8 regions
@@ -117,11 +120,30 @@ mat_totals_1a <- global_mat %>%
 global_mat <- global_mat %>%
   mutate(material_category_plot = factor(material_category_plot, levels = mat_totals_1a$material_category_plot))
 
-labels_1a <- global_mat %>%
-  filter(year == 1995) %>%
-  arrange(desc(material_category_plot)) %>%
+# Each label sits at its own year (staggered so thin neighbouring bands don't
+# stack their labels), rotated to the band's local slope: band mid-line slope
+# over +-3 yr, scaled by the square panel's x/y ranges (54 yr / y max)
+LABEL_YEAR_1B <- c(
+  "Ferrous ores" = 1993, "Non-ferrous ores" = 1979, "Natural Gas" = 2005, "Petroleum" = 1994,
+  "Coal" = 2013, "Wood" = 1977, "Crop Residues" = 1989, "Grazed biomass" = 1999, "Crops" = 2008,
+  "Industrial minerals" = 2009, "Construction minerals" = 1988
+)
+stack_1a <- global_mat %>%
+  arrange(year, desc(material_category_plot)) %>%
+  group_by(year) %>%
   mutate(top = cumsum(DMC_Gt), bot = lag(top, default = 0), mid_y = (top + bot) / 2) %>%
-  mutate(material_category_label = if_else(DMC_Gt > 0.5, material_category_plot, NA_character_))
+  ungroup()
+y_max_1b <- max(stack_1a$top)
+labels_1a <- stack_1a %>%
+  mutate(label_year = coalesce(unname(LABEL_YEAR_1B[as.character(material_category_plot)]), 1995)) %>%
+  group_by(material_category_plot) %>%
+  mutate(slope = (mid_y[year == first(label_year) + 3] - mid_y[year == first(label_year) - 3]) / 6) %>%
+  ungroup() %>%
+  filter(year == label_year) %>%
+  mutate(
+    angle = atan(slope * (2024 - 1970) / y_max_1b) * 180 / pi,
+    material_category_label = if_else(DMC_Gt > 0.5, material_category_plot, NA_character_)
+  )
 
 group_boundaries <- global_mat %>%
   arrange(year, desc(material_category_plot)) %>%
@@ -151,59 +173,54 @@ p_material <- ggplot(global_mat, aes(x = year, y = DMC_Gt, fill = material_categ
         !material_category_plot %in%
           c("Coal", "Crops", "Industrial minerals", "Construction minerals", "Ferrous ores", "Other - Fossil fuels")
       ),
-    aes(x = year, y = mid_y, label = material_category_label),
+    aes(x = year, y = mid_y, label = material_category_label, angle = angle),
     colour = "black",
-    angle = 30,
     hjust = 0.5,
-    size = 2.0,
+    size = TXT_AB,
     inherit.aes = FALSE
   ) +
   geom_text(
     data = labels_1a |>
       filter(material_category_plot %in% c("Coal", "Crops")),
-    aes(x = year, y = mid_y, label = material_category_label),
+    aes(x = year, y = mid_y, label = material_category_label, angle = angle),
     colour = "white",
-    angle = 30,
     hjust = 0.5,
-    size = 2.0,
+    size = TXT_AB,
     inherit.aes = FALSE
   ) +
   geom_text(
     data = labels_1a |> filter(material_category_plot == "Construction minerals"),
-    aes(x = year, y = mid_y, label = material_category_label),
+    aes(x = year, y = mid_y, label = material_category_label, angle = angle),
     colour = "white",
     angle = 0,
     hjust = 0.5,
-    size = 2.0,
+    size = TXT_AB,
     inherit.aes = FALSE
   ) +
   geom_text(
     data = labels_1a |> filter(material_category_plot == "Industrial minerals"),
-    aes(x = year, y = mid_y, label = material_category_label),
+    aes(x = year, y = mid_y, label = material_category_label, angle = angle),
     colour = PALETTE_MATERIALS["Industrial minerals"],
-    angle = 30,
     hjust = 0.5,
-    size = 2.0,
+    size = TXT_AB,
     nudge_y = -4,
     inherit.aes = FALSE
   ) +
   geom_text(
     data = labels_1a |> filter(material_category_plot == "Ferrous ores"),
-    aes(x = year, y = mid_y, label = material_category_label),
+    aes(x = year, y = mid_y, label = material_category_label, angle = angle),
     colour = PALETTE_MATERIALS["Ferrous ores"],
-    angle = 30,
     hjust = 0.5,
-    size = 2.0,
+    size = TXT_AB,
     nudge_y = 4,
     inherit.aes = FALSE
   ) +
   geom_text(
     data = labels_1a |> filter(material_category_plot == "Other - Fossil fuels"),
-    aes(x = year, y = mid_y, label = material_category_label),
+    aes(x = year, y = mid_y, label = material_category_label, angle = angle),
     colour = PALETTE_MATERIALS["Other - Fossil fuels"],
-    angle = 30,
     hjust = 0.5,
-    size = 2.0,
+    size = TXT_AB,
     inherit.aes = FALSE
   ) +
   annotate(
@@ -214,7 +231,7 @@ p_material <- ggplot(global_mat, aes(x = year, y = DMC_Gt, fill = material_categ
     colour = PALETTE_MATERIALS["Other - Fossil fuels"],
     angle = 30,
     hjust = 0.5,
-    size = 2.0
+    size = TXT_AB
   ) +
   geom_line(
     data = group_boundaries,
@@ -227,7 +244,7 @@ p_material <- ggplot(global_mat, aes(x = year, y = DMC_Gt, fill = material_categ
   data = group_labels,
   aes(x = 2025, y = mid_y, label = material_group_label,color=material_group),
   inherit.aes = FALSE, lineheight = 0.8,
-  fontface = "bold", size = 2.2,
+  fontface = "bold", size = TXT_GROUP_B,
   angle = 90, hjust = 0.5,
   clip = "off",vjust=0.9
 ) +
@@ -245,7 +262,8 @@ p_material <- ggplot(global_mat, aes(x = year, y = DMC_Gt, fill = material_categ
     plot.title = element_text(hjust = 0.5),
     axis.title.x = element_text(margin = margin(t = 1)),
     axis.text.x = element_text(margin = margin(t = 1)),
-    plot.margin = margin(t = 5, r = 15, b = 0, l = 5, unit = "pt")
+    aspect.ratio = 1,
+    plot.margin = margin(t = 2, r = 22, b = 0, l = 2, unit = "pt") # r: material-group labels
   )
 p_material
 
@@ -268,11 +286,31 @@ grp_totals_1b <- global_grp %>%
 
 global_grp <- global_grp %>% mutate(analysis_group = factor(analysis_group, levels = grp_totals_1b$analysis_group))
 
-labels_1b <- global_grp %>%
-  filter(year == 1995) %>%
-  arrange(desc(analysis_group)) %>%
+# Staggered label years + local-slope angles, as in panel b (Oceania and Middle
+# East & North Africa sit just above the stack, nudged up)
+LABEL_YEAR_1A <- c(
+  "Middle East & North Africa" = 1983, "Oceania" = 2003, "Sub-Saharan Africa" = 1995,
+  "South Asia" = 2010, "Latin America" = 1985, "North America" = 1994, "Europe & Russia" = 1990
+)
+stack_1b <- global_grp %>%
+  arrange(year, desc(analysis_group)) %>%
+  group_by(year) %>%
   mutate(top = cumsum(DMC_Gt), bot = lag(top, default = 0), mid_y = (top + bot) / 2) %>%
-  mutate(label = if_else(DMC_Gt > 0.5, analysis_group, NA_character_))
+  ungroup()
+y_max_1a <- max(stack_1b$top)
+labels_1b <- stack_1b %>%
+  mutate(label_year = coalesce(unname(LABEL_YEAR_1A[as.character(analysis_group)]), 1995)) %>%
+  group_by(analysis_group) %>%
+  mutate(slope = (mid_y[year == first(label_year) + 3] - mid_y[year == first(label_year) - 3]) / 6) %>%
+  ungroup() %>%
+  filter(year == label_year) %>%
+  mutate(
+    angle = atan(slope * (2024 - 1970) / y_max_1a) * 180 / pi,
+    label = if_else(DMC_Gt > 0.5, analysis_group, NA_character_),
+    # Middle East & North Africa: horizontal, in the white space above the stack (+ nudge_y)
+    angle = if_else(analysis_group == "Middle East & North Africa", 0, angle),
+    mid_y = if_else(analysis_group == "Middle East & North Africa", 51, mid_y)
+  )
 
 # Thicker black boundary between each region (regions have no further sub-grouping,
 # so every region gets the separator treatment analogous to the material-group
@@ -295,44 +333,40 @@ p_region <- ggplot(global_grp, aes(x = year, y = DMC_Gt, fill = analysis_group))
   ) +
   geom_text(
     data = labels_1b |> filter(!analysis_group %in% c("Oceania", "North America", "East Asia", "Middle East & North Africa")),
-    aes(x = year, y = mid_y, label = label),
+    aes(x = year, y = mid_y, label = label, angle = angle),
     colour = "black",
-    angle = 30,
-    size = 2.0,
+    size = TXT_AB,
     inherit.aes = FALSE
   ) +
   geom_text(
     data = labels_1b |> filter(analysis_group == "East Asia"),
-    aes(x = year, y = mid_y, label = label),
+    aes(x = year, y = mid_y, label = label, angle = angle),
     colour = "black",
     angle = 0,
-    size = 2.0,
+    size = TXT_AB,
     inherit.aes = FALSE
   ) +
   geom_text(
     data = labels_1b |> filter(analysis_group == "North America"),
-    aes(x = year, y = mid_y, label = label),
+    aes(x = year, y = mid_y, label = label, angle = angle),
     colour = "white",
-    angle = 30,
-    size = 2.0,
+    size = TXT_AB,
     inherit.aes = FALSE
   ) +
   geom_text(
     data = labels_1b |> filter(analysis_group == "Oceania"),
-    aes(x = year, y = mid_y, label = label),
+    aes(x = year, y = mid_y, label = label, angle = angle),
     colour = PALETTE_REGIONS["Oceania"],
-    angle = 30,
-    size = 2.0,
-    nudge_y = 4,
+    size = TXT_AB,
+    nudge_y = 3.5,
     inherit.aes = FALSE
   ) +
   geom_text(
     data = labels_1b |> filter(analysis_group == "Middle East & North Africa"),
-    aes(x = year, y = mid_y, label = label),
+    aes(x = year, y = mid_y, label = label, angle = angle),
     colour = PALETTE_REGIONS["Middle East & North Africa"],
-    angle = 30,
-    size = 2.0,
-    nudge_y = 4,
+    size = TXT_AB,
+    nudge_y = 3.5,
     inherit.aes = FALSE
   ) +
   # fmt: skip
@@ -349,7 +383,8 @@ p_region <- ggplot(global_grp, aes(x = year, y = DMC_Gt, fill = analysis_group))
     plot.title = element_text(hjust = 0.5),
     axis.title.x = element_text(margin = margin(t = 1)),
     axis.text.x = element_text(margin = margin(t = 1)),
-    plot.margin = margin(t = 5, r = 10, b = 0, l = 5, unit = "pt")
+    aspect.ratio = 1,
+    plot.margin = margin(t = 2, r = 4, b = 0, l = 2, unit = "pt")
   )
 p_region
 
@@ -426,8 +461,8 @@ region_all <- df %>%
   summarise(DMC_kg = sum(DMC_Mt * 1e9, na.rm = TRUE), .groups = "drop") %>%
   left_join(df_gdp, by = c("Analysis_group" = "Region", "year")) %>%
   left_join(df_pop, by = c("Analysis_group" = "Region", "year")) %>%
-  filter(!is.na(GDP_2015USD), !is.na(population)) %>%
-  mutate(GDP = GDP_2015USD, pop = population, mat_gdp = DMC_kg / GDP_2015USD, gdp_pc = GDP_2015USD / population) %>%
+  filter(!is.na(GDP_PPP2017USD), !is.na(population)) %>%
+  mutate(GDP = GDP_PPP2017USD, pop = population, mat_gdp = DMC_kg / GDP_PPP2017USD, gdp_pc = GDP_PPP2017USD / population) %>%
   filter(year >= 1970, year <= HIST_END, !is.na(mat_gdp), !is.na(gdp_pc)) %>%
   arrange(Analysis_group, year)
 
@@ -453,20 +488,20 @@ NONMET_CATS <- c(
   "Non-metallic minerals - industrial or agricultural dominant"
 )
 
-# 3 region groups (Europe/N.America/Oceania, East+South Asia, rest) — colour in
+# 2 region groups (Europe/N.America/Oceania vs rest of the world) — colour in
 # panel d is carried by material (see below), region group is carried by linewidth.
 REGION_GROUP3 <- c(
   "Europe & Russia" = "Advanced Economies",
   "North America" = "Advanced Economies",
   "Oceania" = "Advanced Economies",
-  "East Asia" = "Asia",
-  "South Asia" = "Asia",
+  "East Asia" = "Rest of World",
+  "South Asia" = "Rest of World",
   "Latin America" = "Rest of World",
   "Sub-Saharan Africa" = "Rest of World",
   "Middle East & North Africa" = "Rest of World"
 )
-REGION_GROUP3_LEVELS <- c("Advanced Economies", "Asia", "Rest of World")
-REGION_GROUP3_LINEWIDTHS <- c("Advanced Economies" = 1.0, "Asia" = 0.6, "Rest of World" = 0.3)
+REGION_GROUP3_LEVELS <- c("Advanced Economies", "Rest of World")
+REGION_GROUP3_LINEWIDTHS <- c("Advanced Economies" = 1.1, "Rest of World" = 0.4)
 
 group_econ3 <- region_econ %>%
   mutate(region_group3 = REGION_GROUP3[Analysis_group]) %>%
@@ -500,8 +535,8 @@ world_4mat_hist <- smooth_lowess(world_4mat_hist, group_cols = c("region_group3"
 ## Shared axis bounds for panels c & d -----------------------------------------
 # Panel c/d windows and the shared Y range are fixed per the project's figure
 # design (rather than data-driven), so the two panels line up exactly.
-x_lim_c <- c(0, 6)
-x_lim_d <- c(0, 1.8)
+x_lim_c <- c(0, 2.5)
+x_lim_d <- c(0, 1)
 TXT_CD <- pb_annot_size("largeFont", 8) # in-plot text, panels c & d
 LOGTICK_LW <- 0.4 # y-axis log tick marks, panels c & d
 LOGTICK_COL <- "grey20"
@@ -510,7 +545,7 @@ y_lim_cd <- c(600, 1e5)
 # Iso-lines computed across the FULL displayed panel (not just the tight data
 # range) so the dashed hyperbolas span edge-to-edge instead of stopping short.
 iso_c <- make_isolines(
-  iso_levels_t = c(0.5, 1, 2, 5, 10, 20, 30, 40),
+  iso_levels_t = c(1, 5, 10, 20, 30, 40),
   x_min = x_lim_c[1],
   x_max = x_lim_c[2],
   y_min = y_lim_cd[1],
@@ -519,8 +554,9 @@ iso_c <- make_isolines(
 
 iso_d <- make_isolines(
   # Drop levels that clutter panel d without adding readable separation
+  # signif(): NICE_LEVELS_T holds e.g. 3 * 0.1 = 0.30000000000000004, which setdiff() would not match
   iso_levels_t = setdiff(
-    pick_iso_levels(world_4mat_hist$mat_gdp * world_4mat_hist$gdp_pc, n_max = 12),
+    signif(pick_iso_levels(world_4mat_hist$mat_gdp * world_4mat_hist$gdp_pc, n_max = 12), 6),
     c(0.2, 0.3, 0.4, 3, 4)
   ),
   x_min = x_lim_d[1],
@@ -537,7 +573,7 @@ pFig1c <- ggplot(region_all, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_grou
     linetype = "dashed",
     linewidth = 0.22,
     size = TXT_CD,
-    hjust = 0.82,
+    hjust = 0.93, # right end: clear of the region labels
     inherit.aes = FALSE
   ) +
   geom_path(
@@ -566,39 +602,35 @@ pFig1c <- ggplot(region_all, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_grou
     data = filter(region_all, year %in% seq(1970, 2020, by = 10)),
     aes(alpha = year), shape = 16, size = 1.4
   ) +
+  # Region and world labels repelled together, so they also avoid each other
   geom_text_repel(
-    data = filter(region_all, year == HIST_END),
-    aes(label = Analysis_group),
+    data = bind_rows(
+      filter(region_all, year == HIST_END) |> mutate(label = Analysis_group, face = "plain"),
+      filter(world_all, year == HIST_END) |> mutate(Analysis_group = "World avg", label = "World avg, 2024", face = "bold")
+    ),
+    aes(label = label, fontface = face),
     size = TXT_CD,
     show.legend = FALSE,
     max.overlaps = Inf,
     seed = 42,
+    box.padding = 0.35,
+    xlim = c(NA, 1.85), # keep labels left of the iso-line labels
+    force = 3,
     segment.size = 0.25,
     segment.colour = "grey60",
     min.segment.length = 0.2
   ) +
-  geom_text_repel(
-    data = filter(world_all, year == HIST_END),
-    aes(x = mat_gdp, y = gdp_pc, label = "World avg"),
-    colour = "black",
-    fontface = "bold",
-    size = TXT_CD,
-    show.legend = FALSE,
-    inherit.aes = FALSE,
-    segment.size = 0.25,
-    segment.colour = "grey40"
-  ) +
   geom_text(
-    data = filter(world_all, year %in% c(1970, HIST_END)),
-    aes(label = year, vjust = c(1.5, 0), hjust = c(-0.2, 1.5)),
+    data = filter(world_all, year == 1970),
+    aes(label = year), vjust = 1.5, hjust = -0.2,
     fontface = "bold", colour = "black", size = TXT_CD, show.legend = FALSE
   ) +
   # fmt: skip
   annotate("text",x = Inf, y = Inf,label = "c",hjust = 1.5, vjust = 1.2,fontface = "bold",size = 14 * 5 / 14 * 0.8,colour = "black") +
-  scale_colour_manual(values = PALETTE_REGIONS, name = NULL) +
+  scale_colour_manual(values = c(PALETTE_REGIONS, "World avg" = "black"), name = NULL) +
   scale_alpha_continuous(range = c(0.4, 1), guide = "none") +
-  # ticks every 0.5, labels on whole numbers only
-  scale_x_continuous(breaks = seq(0, 6, 0.5), labels = function(x) ifelse(abs(x - round(x)) < 1e-9, sprintf("%g", x), "")) +
+  # ticks every 0.25, labels every 0.5
+  scale_x_continuous(breaks = seq(0, 2.5, 0.25), labels = function(x) ifelse(abs(x / 0.5 - round(x / 0.5)) < 1e-9, sprintf("%g", x), "")) +
   scale_y_log10(labels = label_dollar(accuracy = 1)) +
   annotation_logticks(sides = "l", linewidth = LOGTICK_LW, colour = LOGTICK_COL) +
   coord_cartesian(clip = "off", expand = FALSE, xlim = x_lim_c, ylim = y_lim_cd) +
@@ -606,7 +638,8 @@ pFig1c <- ggplot(region_all, aes(x = mat_gdp, y = gdp_pc, colour = Analysis_grou
   labs(title = " ", x = "Material Intensity (kg/$)", y = "GDP per Capita  ($/p)") +
   theme(
     legend.position = "none",
-    plot.margin = margin(t = -8, r = 10, b = 5, l = 5, unit = "pt") # t < 0: closer to panels a/b
+    aspect.ratio = 1,
+    plot.margin = margin(t = -12, r = 4, b = 2, l = 2, unit = "pt") # t < 0: closer to panels a/b
   )
 pFig1c
 
@@ -615,8 +648,8 @@ pFig1c
 
 # Year labels anchored on the Non-metallic minerals
 # (solid, least cluttered)
-lbl_anchor_1970 <- filter(world_4mat_hist, year == 1970, mat4 == "Non-metallic minerals", region_group3 == "Asia")
-lbl_anchor_end <- filter(world_4mat_hist, year == HIST_END, mat4 == "Non-metallic minerals", region_group3 == "Asia")
+lbl_anchor_1970 <- filter(world_4mat_hist, year == 1970, mat4 == "Non-metallic minerals", region_group3 == "Rest of World")
+lbl_anchor_end <- filter(world_4mat_hist, year == HIST_END, mat4 == "Non-metallic minerals", region_group3 == "Rest of World")
 
 pFig1d <- ggplot() +
   geom_textline(
@@ -661,18 +694,18 @@ pFig1d <- ggplot() +
     aes(x = mat_gdp, y = gdp_pc, colour = mat4, label = year),
     vjust = 0, hjust = 1.5, fontface = "bold", size = TXT_CD, show.legend = FALSE
   ) +
-  annotate("text", x = 0.2, y = 50e3, label = "Advanced Economies", fontface = "bold", size = TXT_CD) +
-  annotate("text", x = 0.2, y = 10e3, label = "Asia", size = TXT_CD) +
-  annotate("text", x = 0.4, y = 3e3, label = "Rest of World", size = TXT_CD) +
+  # Region groups labelled directly beside their (thick / thin) line bundles
+  annotate("text", x = 0.40, y = 20e3, label = "Advanced economies", hjust = 0, fontface = "bold", size = TXT_CD) +
+  annotate("text", x = 0.16, y = 2.2e3, label = "Rest of world", hjust = 0, size = TXT_CD) +
   # fmt: skip
   annotate("text",x = Inf, y = Inf,label = "d",hjust = 1.5, vjust = 1.2,fontface = "bold",size = 14 * 5 / 14 * 0.8,colour = "black") +
   scale_colour_manual(values = PALETTE_MATERIAL_GROUPS, name = NULL, guide = "none") +
   scale_linewidth_manual(values = REGION_GROUP3_LINEWIDTHS, name = NULL) +
   scale_alpha_continuous(range = c(0.4, 1), guide = "none") +
-  # ticks every 0.2, labels every 0.4 (one decimal)
+  # ticks every 0.1, labels every 0.2 (one decimal)
   scale_x_continuous(
-    breaks = seq(0, 1.8, 0.2),
-    labels = function(x) ifelse(abs(x / 0.4 - round(x / 0.4)) < 1e-9, sprintf("%g", round(x, 1)), "")
+    breaks = seq(0, 1, 0.1),
+    labels = function(x) ifelse(abs(x / 0.2 - round(x / 0.2)) < 1e-9, sprintf("%g", round(x, 1)), "")
   ) +
   scale_y_log10(labels = label_dollar(accuracy = 1)) +
   annotation_logticks(sides = "l", linewidth = LOGTICK_LW, colour = LOGTICK_COL) +
@@ -685,20 +718,25 @@ pFig1d <- ggplot() +
     legend.text = element_text(size = 6),
     legend.key.size = unit(0.5, "lines"),
     legend.background = element_rect(fill = alpha("white", 0.75), colour = NA),
-    plot.margin = margin(t = -8, r = 10, b = 5, l = 5, unit = "pt") # t < 0: closer to panels a/b
+    aspect.ratio = 1,
+    plot.margin = margin(t = -12, r = 4, b = 2, l = 2, unit = "pt") # t < 0: closer to panels a/b
   )
 pFig1d
 
 
 # Merge: final 2x2 figure (a=regions, b=material, c=regions contour, d=material contour)
 
-library(cowplot)
-# align="hv" kept for clean column alignment. Panels c/d get a blank title below
-# (matching a/b's plot.title row) so cowplot doesn't pad them to compensate for
-# a mismatched gtable structure, which otherwise widens the row gap.
-fig1 <- plot_grid(p_region, p_material, pFig1c, pFig1d, ncol = 2, nrow = 2, align = "hv")
-ggsave("Figures/Fig1 - Historical Timeseries.png", fig1, units = 'cm', dpi = 600, width = 17.4, height = 17.4)
-ggsave("Figures/SVG/Fig1 - Historical Timeseries.svg", fig1, units = 'cm', width = 17.4, height = 17.4)
+# patchwork aligns the four (square) boxes exactly; free(type = "label") lets
+# a/b's y-axis titles sit next to their own short tick labels instead of being
+# pushed out to the width of c/d's "$100,000" labels.
+fig1 <- patchwork::wrap_plots(
+  patchwork::free(p_region, type = "label", side = "l"),
+  patchwork::free(p_material, type = "label", side = "l"),
+  pFig1c, pFig1d,
+  ncol = 2
+)
+ggsave("Figures/Fig1 - Historical Timeseries.png", fig1, units = 'cm', dpi = 600, width = 17.4, height = 16.4)
+ggsave("Figures/SVG/Fig1 - Historical Timeseries.svg", fig1, units = 'cm', width = 17.4, height = 16.4)
 group_svg_layers("Figures/SVG/Fig1 - Historical Timeseries.svg")
 
 

@@ -1,5 +1,5 @@
 ## =============================================================================
-## 03_trajectory_figures.R
+## 04-trajectory_figures.R
 ## Time series trajectory figures for the 10 focus ScenarioMIP variables
 ## (Coal/Gas/Oil extraction, Steel, Aluminum, Cement, Residential/Commercial
 ## floor space, Crop production, Roundwood), World only, x 3 versions each
@@ -47,23 +47,23 @@
 ## "Scenario" = the ScenarioMIP forcing family (policy narrative), distinct
 ## from the SSP socioeconomic narrative.
 ## GDP-intensity units: MJ/USD (fossil extraction), kg/USD (steel, aluminum,
-## cement, crops), m2/USD (floor space) -- see 02_compute_metrics.R.
-## See also 03b_trajectory_by_ssp_region.R: same intensity figure with the
+## cement, crops), m2/USD (floor space) -- see 03-compute_metrics.R.
+## See also 05-trajectory_by_ssp_region.R: same intensity figure with the
 ## panel/colour roles swapped (panels = SSP, colour = region).
 ##
-## Input:  Parameters/IIASA-Trajectories/metrics_levels_raw.csv (from 02_compute_metrics.R)
+## Input:  Parameters/IIASA-Trajectories/metrics_levels_raw.csv (from 03-compute_metrics.R)
 ## Outputs:
 ##   Parameters/IIASA-Trajectories/trajectories/{metric}_{region}.csv -- tidy data behind each figure
 ##   Figures/Inputs/IIASA/Trajectories/{Total,GDP,PerCapita}/{NN}_{var}.png       -- World-only
 ##   Figures/Inputs/IIASA/Trajectories/{GDP,PerCapita}/ByRegion/{NN}_{var}.png    -- by-region grid
-##   (summary_ratio_*.csv is now produced by 04_summary_ratio.R)
+##   (summary_ratio_*.csv is now produced by 08-summary_ratio.R)
 ##   Figures/Inputs/IIASA/SVG/Trajectories/... (same tree, SVG)
 ## =============================================================================
 
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
 library(patchwork)
 
-BASE_YEAR <- 2020L # matches 01_load_and_check.R / 02_compute_metrics.R -- data/plot x-axis start
+BASE_YEAR <- 2020L # matches 02-load_and_check.R / 03-compute_metrics.R -- data/plot x-axis start
 RATIO_BASE_YEAR <- 2025L # reference year for all ratio/index calcs (2020 excluded: an anomalous year)
 OUT_DIR <- "Parameters/IIASA-Trajectories"
 TRAJ_PARAM_DIR <- file.path(OUT_DIR, "trajectories")
@@ -373,7 +373,7 @@ for (met in unique(page_manifest$metric)) {
 }
 
 
-# Summary ratio CSV moved to 04_summary_ratio.R (same inputs/ratio definition,
+# Summary ratio CSV moved to 08-summary_ratio.R (same inputs/ratio definition,
 # plus the >10 World-substitution and SSP4<-SSP2 bound fixes).
 
 cat("\nDone ->", FIG_DIR, "\n")

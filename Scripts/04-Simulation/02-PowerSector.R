@@ -1,5 +1,5 @@
 ## =============================================================================
-## 01b-PowerSector.R
+## 02-PowerSector.R
 ## Fixed (non-sampled) inputs for the explicit power-sector stock: generation
 ## capacity + stationary batteries, linked to each run's fossil draws.
 ##
@@ -9,16 +9,16 @@
 ##
 ## Capacity path per scenario x model region x tech (annual, 2025-FORECAST_END):
 ##   factor_gw(t) such that target GW(t) = factor_gw(t) x pop index x GDP/cap index
-##   intensity I(t) = GDP-weighted mean over R10 of GW/GDP|MER (weights = r10_weights)
+##   intensity I(t) = GDP-weighted mean over R10 of GW/GDP|PPP (weights = r10_weights)
 ##   ratio form: factor = cap_2025 x I(t) / I(2025)   (cap_2025 > 0, I(2025) > 0 and
 ##               cap_2025 / scenario's own 2025 GW within [1/POWER_CALIB_MAX, POWER_CALIB_MAX])
-##   level form: factor = I(t) x scenario 2025 GDP|MER of the region (otherwise: zero or tiny base)
+##   level form: factor = I(t) x scenario 2025 GDP|PPP of the region (otherwise: zero or tiny base)
 ##   cap_2025 = median over the scenario set of R10 2025 GW, split to model
 ##   regions by each R10's GDP share (missing technology = 0)
 ##
 ## Fossil index per scenario x region = sum over coal/gas/oil of 2024 energy share
 ## x scenario 2060/2025 extraction/GDP ratio (R10 -> region GDP-weighted; R10 cells
-## that 04_summary_ratio.R replaced by World use the scenario's World ratio).
+## that 08-summary_ratio.R replaced by World use the scenario's World ratio).
 ## World index = regional indices weighted by 2024 regional fossil energy.
 ##
 ## Outputs (Parameters/Simulation/):
@@ -48,7 +48,7 @@ cat("Step 1: scenario set and capacity coverage\n")
 
 metrics_raw <- readr::read_csv("Parameters/IIASA-Trajectories/metrics_levels_raw.csv", show_col_types = FALSE)
 
-# Per scenario x region x fuel: 2060/2025 extraction-per-GDP ratio (base > 0, as in 04_summary_ratio.R)
+# Per scenario x region x fuel: 2060/2025 extraction-per-GDP ratio (base > 0, as in 08-summary_ratio.R)
 fossil_scen_ratio <- metrics_raw |>
   dplyr::filter(metric %in% FOSSIL_VARS, year %in% c(CAPACITY_ANCHOR_YEAR, FORECAST_END)) |>
   dplyr::select(model, family, ssp, marker, region, metric, year, value) |>
@@ -95,7 +95,7 @@ cap_r10_5yr <- ssp_long |>
   tidyr::complete(tidyr::nesting(scen_id, ssp), r10, tech, year, fill = list(gw = 0))
 
 gdp_r10_5yr <- ssp_long |>
-  dplyr::filter(variable == "GDP|MER", region != "World", year >= CAPACITY_ANCHOR_YEAR, year <= FORECAST_END) |>
+  dplyr::filter(variable == "GDP|PPP", region != "World", year >= CAPACITY_ANCHOR_YEAR, year <= FORECAST_END) |>
   dplyr::inner_join(scen_set |> dplyr::select(model, family, ssp, scen_id), by = c("model", "family", "ssp")) |>
   dplyr::transmute(scen_id, r10 = region, year, gdp = value)
 
@@ -383,7 +383,7 @@ anchor_units <- dplyr::bind_rows(
     dplyr::mutate(unit_key = "battery")
 )
 
-MATERIAL_LABEL <- c("metal_fe" = "Metal_Fe", "metal_nonfe" = "Metal_NonFe", "nonmetallic_minerals" = "Non-metallic minerals")
+MATERIAL_LABEL <- c(setNames(names(METAL_KEYS), METAL_KEYS), "nonmetallic_minerals" = "Non-metallic minerals")
 power_stock_2025 <- anchor_units |>
   dplyr::inner_join(power_mi, by = "unit_key", relationship = "many-to-many") |>
   dplyr::group_by(region, material_group) |>

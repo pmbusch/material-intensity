@@ -11,7 +11,9 @@ source("Scripts/04-Simulation/00-Parameters.R", encoding = "UTF-8")
 cat("=== Flow Time Series ===\n\n")
 
 cat("Loading MC results...\n")
-results <- arrow::read_parquet("Results/MC/mc_results.parquet")
+results <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
+  dplyr::select(run_id, year, total_inflow_Mt, in_use_stock_Mt, primary_consumption_Mt, secondary_supply_Mt) |>
+  dplyr::collect()
 
 cat("  Rows:", format(nrow(results), big.mark = ","), "\n")
 
@@ -90,6 +92,8 @@ ggplot(ts_env, aes(x = year)) +
 ggsave("Figures/Supporting-Figures/S11_FlowTimeSeries.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7 * 2)
 ggsave("Figures/SVG/Supporting-Figures/S11_FlowTimeSeries.svg", ggplot2::last_plot(), units = "cm", width = 8.7 * 2, height = 8.7 * 2)
 clean_svg("Figures/SVG/Supporting-Figures/S11_FlowTimeSeries.svg")
+dir.create("Figures/Supporting-Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+write_csv(ts_env, "Figures/Supporting-Figures/RawData/S11_FlowTimeSeries.csv")
 cat("  Saved: Figures/Supporting-Figures/S11_FlowTimeSeries.png\n")
 cat("=== Done ===\n")
 

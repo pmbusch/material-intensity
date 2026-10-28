@@ -1,5 +1,5 @@
 ## =============================================================================
-## 01a-Aggregate_UNEP.R
+## 01-Aggregate_UNEP.R
 ## Aggregates UNEP material flow data to world regions using the UNEP_Agg sheet
 ## in Inputs/Dict_Countries.xlsx. Countries with Region == "NA" are dropped.
 ##

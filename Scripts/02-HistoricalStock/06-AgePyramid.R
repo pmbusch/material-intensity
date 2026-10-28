@@ -1,8 +1,8 @@
-# 03b_AgePyramid.R
+# 06-AgePyramid.R
 # Age stock pyramid plots
 
 # LOAD DATA ----------
-# From 03_UNEP_stock_flow_model.R
+# From 05-UNEP_stock_flow_model.R
 
 source('Scripts/00-Libraries.R', encoding = 'UTF-8')
 source("Scripts/00-CommonParameters.R", encoding = "UTF-8")
@@ -13,7 +13,7 @@ age_profile_list <- read_csv("Parameters/MISO-Stock/stock_2024_age_profile.csv")
 
 # -- Plot 1: 2024 age distribution by end-use and material --------------------
 
-gap <- 7 # in Gt, adjust to taste
+gap <- 12 # in Gt, room for the age labels between both sides
 
 region_order <- age_profile_list %>%
   filter(material == "Non-metallic minerals") %>%
@@ -22,7 +22,7 @@ region_order <- age_profile_list %>%
   arrange(desc(total)) %>%
   pull(Region)
 
-pyramid_data <- age_profile_list %>%
+pyramid_data <-age_profile_list %>%
   mutate(Region = factor(Region, levels = region_order)) |>
   filter(
     material %in% "Non-metallic minerals",
@@ -31,12 +31,11 @@ pyramid_data <- age_profile_list %>%
   mutate(end_use = if_else(sub_use %in% c("residential", "non_residential"), "Buildings", "Civil infrastructure")) %>%
   mutate(
     cohort_bin = cut(
-      cohort_year,
-      breaks = c(-Inf, seq(1970, 2025, by = 5)),
-      labels = c("55+", paste0(2024 - seq(1974, 2024, by = 5), "-", 2024 - seq(1970, 2020, by = 5))),
-      right = TRUE
+      2024 - cohort_year,
+      breaks = c(seq(0, 55, by = 5), 65, 80, 100, Inf),
+      labels = c(paste0(seq(0, 50, by = 5), "-", seq(4, 54, by = 5)), "55-64", "65-79", "80-99", "100+"),
+      right = FALSE
     ),
-    cohort_bin = fct_rev(cohort_bin),
   ) |>
   group_by(end_use, cohort_bin, Region) %>%
   summarise(stock_Gt = sum(surviving_stock_Mt, na.rm = TRUE) / 1e3, .groups = "drop") %>%
@@ -62,14 +61,23 @@ age_ticks_df <- pyramid_data %>% distinct(cohort_bin)
 
 total_stock <- pyramid_data |> group_by(end_use) |> reframe(stock_Gt = sum(stock_Gt)) |> ungroup()
 
+# Marginal age-profile lines: share of each region's stock by cohort, drawn outward from ±120 Gt
+dens_base <- 120 # Gt, axis position of the line baseline
+dens_width <- 40 # Gt, width given to the largest share
 age_dist <- pyramid_data |>
   dplyr::select(Region, end_use, cohort_bin, stock_Gt) |>
   group_by(Region, end_use) |>
-  mutate(age_share = stock_Gt / sum(stock_Gt) * 200 + sign(stock_Gt) * 100) |> # scale and shift for plot reasons
-  ungroup() |>
-  mutate(age_share = age_share * if_else(end_use == "Buildings", -1, 1)) |>
+  mutate(age_share = stock_Gt / sum(stock_Gt)) |>
+  # Light smoothing: smoothing spline through the bin shares, clamped at 0
+  reframe(
+    cohort_pos = seq(min(as.numeric(cohort_bin)), max(as.numeric(cohort_bin)), length.out = 100),
+    share_s = pmax(stats::predict(stats::smooth.spline(as.numeric(cohort_bin), age_share, spar = 0.4), cohort_pos)$y, 0)
+  ) |>
+  mutate(age_x = (gap + dens_base + share_s / max(share_s) * dens_width) * if_else(end_use == "Buildings", -1, 1)) |>
   mutate(key = paste0(Region, end_use)) |>
-  arrange(cohort_bin)
+  arrange(cohort_pos)
+
+x_lim <- max(x_lim, max(abs(age_dist$age_x)) * 1.02)
 
 
 p_pyramid <- pyramid_data %>%
@@ -92,7 +100,12 @@ p_pyramid <- pyramid_data %>%
     size = 3,
     colour = "grey20"
   ) +
-  # geom_path(data = age_dist, aes(y = cohort_bin, x = age_share, col = Region, group = key)) +
+  geom_path(
+    data = age_dist,
+    aes(y = cohort_pos, x = age_x, col = Region, group = key),
+    linewidth = 0.4,
+    show.legend = FALSE
+  ) +
   # fmt: skip
   annotate("text", x = -(x_lim / 2), y = Inf, label = paste0("Buildings\n",round(filter(total_stock,end_use=="Buildings")$stock_Gt)," Gt"),          hjust = 0.5, vjust = -0.5, fontface = "bold", size = 3, colour = "grey20") +
   # fmt: skip
@@ -115,7 +128,7 @@ p_pyramid <- pyramid_data %>%
   annotate("segment", x = -gap, xend = -x_lim, y = -Inf, yend = -Inf, color = "black", linewidth = 0.4) +
   theme_pb_large() +
   theme(
-    legend.position = c(0.2, 0.8),
+    legend.position = c(0.33, 0.8), # clear of the marginal age-profile lines
     legend.key.size = unit(0.4, "cm"),
     legend.text = element_text(size = 7),
     panel.border = element_blank(),
@@ -136,6 +149,8 @@ ggsave("Figures/Supporting-Figures/S07_AgeProfile_2024.png", ggplot2::last_plot(
 # fmt: skip
 ggsave("Figures/SVG/Supporting-Figures/S07_AgeProfile_2024.svg", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
 clean_svg("Figures/SVG/Supporting-Figures/S07_AgeProfile_2024.svg")
+dir.create("Figures/Supporting-Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+readr::write_csv(pyramid_data, "Figures/Supporting-Figures/RawData/S07_AgeProfile_2024.csv")
 
 # -- Plot 2: 2024 age distribution faceted by region (Buildings vs Civil infrastructure) --------------------------------
 
@@ -157,12 +172,11 @@ pyramid_data_facet_bldg <- age_profile_list %>%
   mutate(end_use = if_else(sub_use %in% c("residential", "non_residential"), "Buildings", "Civil infrastructure")) %>%
   mutate(
     cohort_bin = cut(
-      cohort_year,
-      breaks = c(-Inf, seq(1970, 2025, by = 5)),
-      labels = c("55+", paste0(2024 - seq(1974, 2024, by = 5), "-", 2024 - seq(1970, 2020, by = 5))),
-      right = TRUE
+      2024 - cohort_year,
+      breaks = c(seq(0, 55, by = 5), 65, 80, 100, Inf),
+      labels = c(paste0(seq(0, 50, by = 5), "-", seq(4, 54, by = 5)), "55-64", "65-79", "80-99", "100+"),
+      right = FALSE
     ),
-    cohort_bin = fct_rev(cohort_bin),
   ) |>
   group_by(Region, end_use, cohort_bin) %>%
   summarise(stock_Gt = sum(surviving_stock_Mt, na.rm = TRUE) / 1e3, .groups = "drop") %>%
@@ -207,7 +221,7 @@ p_pyramid_facet_bldg <- pyramid_data_facet_bldg %>%
   ) +
   scale_x_continuous(labels = function(x) abs(round(x, 1)), n.breaks = 5) +
   scale_y_discrete() +
-  scale_fill_manual(values = c("Machinery" = "#59A14F", "Short Lived Products" = "#E15759"), name = NULL) +
+  scale_fill_manual(values = PALETTE_ENDUSE[c("Buildings", "Civil infrastructure")], name = NULL) +
   facet_wrap(~Region, ncol = 4, scales = "free_x") +
   coord_cartesian(expand = FALSE, clip = "off") +
   labs(x = "2024 Non-metallic minerals Stock (Gt)", y = NULL) +
@@ -229,10 +243,14 @@ p_pyramid_facet_bldg <- pyramid_data_facet_bldg %>%
 
 p_pyramid_facet_bldg
 
+# Exploratory figure (not a supporting figure)
+dir.create("Figures/Stocks", showWarnings = FALSE, recursive = TRUE)
+ggsave("Figures/Stocks/AgePyramid_2024_Region.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7*1.5)
+
 
 # -- Plot 3: 2024 age distribution faceted by region (Machinery vs Short Lived Products) -------------------------
 
-gap <- 0.15 # in Gt — smaller than the buildings/civil version since stocks are smaller; tune
+gap <- 0.3 # in Gt — smaller than the buildings/civil version since stocks are smaller; room for the age labels
 
 region_order_msl <- age_profile_list %>%
   filter(super_category %in% c("machinery", "short_lived")) %>%
@@ -247,12 +265,11 @@ pyramid_data_msl <- age_profile_list %>%
   mutate(end_use = dplyr::recode(super_category, machinery = "Machinery", short_lived = "Short Lived Products")) %>%
   mutate(
     cohort_bin = cut(
-      cohort_year,
-      breaks = c(-Inf, seq(1970, 2025, by = 5)),
-      labels = c("55+", paste0(2024 - seq(1974, 2024, by = 5), "-", 2024 - seq(1970, 2020, by = 5))),
-      right = TRUE
+      2024 - cohort_year,
+      breaks = c(seq(0, 55, by = 5), 65, 80, 100, Inf),
+      labels = c(paste0(seq(0, 50, by = 5), "-", seq(4, 54, by = 5)), "55-64", "65-79", "80-99", "100+"),
+      right = FALSE
     ),
-    cohort_bin = fct_rev(cohort_bin),
   ) |>
   group_by(end_use, cohort_bin, Region) %>%
   summarise(stock_Gt = sum(surviving_stock_Mt, na.rm = TRUE) / 1e3, .groups = "drop") %>%
@@ -277,6 +294,24 @@ x_lim_msl <- pyramid_data_msl %>%
 age_ticks_df_msl <- pyramid_data_msl %>% distinct(cohort_bin)
 
 total_stock_msl <- pyramid_data_msl |> group_by(end_use) |> reframe(stock_Gt = sum(stock_Gt)) |> ungroup()
+
+# Marginal age-profile lines (same design as S07; baseline scaled to this figure's Gt range)
+dens_base_msl <- 2.6 # Gt, axis position of the line baseline
+dens_width_msl <- 0.9 # Gt, width given to the largest share
+age_dist_msl <- pyramid_data_msl |>
+  dplyr::select(Region, end_use, cohort_bin, stock_Gt) |>
+  group_by(Region, end_use) |>
+  mutate(age_share = stock_Gt / sum(stock_Gt)) |>
+  # Light smoothing: smoothing spline through the bin shares, clamped at 0
+  reframe(
+    cohort_pos = seq(min(as.numeric(cohort_bin)), max(as.numeric(cohort_bin)), length.out = 100),
+    share_s = pmax(stats::predict(stats::smooth.spline(as.numeric(cohort_bin), age_share, spar = 0.4), cohort_pos)$y, 0)
+  ) |>
+  mutate(age_x = (gap + dens_base_msl + share_s / max(share_s) * dens_width_msl) * if_else(end_use == "Machinery", -1, 1)) |>
+  mutate(key = paste0(Region, end_use)) |>
+  arrange(cohort_pos)
+
+x_lim_msl <- max(x_lim_msl, max(abs(age_dist_msl$age_x)) * 1.02)
 
 # auto-pick symmetric break step
 .brk_step_m <- dplyr::case_when(
@@ -309,6 +344,12 @@ p_pyramid_msl <- pyramid_data_msl %>%
     size = 3,
     colour = "grey20"
   ) +
+  geom_path(
+    data = age_dist_msl,
+    aes(y = cohort_pos, x = age_x, col = Region, group = key),
+    linewidth = 0.4,
+    show.legend = FALSE
+  ) +
   # fmt: skip
   annotate("text", x = -(x_lim_msl / 2), y = Inf, label = paste0("Machinery\n",round(filter(total_stock_msl,end_use=="Machinery")$stock_Gt)," Gt"),                       hjust = 0.5, vjust = -0.5, fontface = "bold", size = 3, colour = "grey20") +
   # fmt: skip
@@ -331,7 +372,7 @@ p_pyramid_msl <- pyramid_data_msl %>%
   annotate("segment", x = -gap, xend = -x_lim_msl, y = -Inf, yend = -Inf, color = "black", linewidth = 0.4) +
   theme_pb_large() +
   theme(
-    legend.position = c(0.2, 0.8),
+    legend.position = c(0.33, 0.8), # clear of the marginal age-profile lines
     legend.key.size = unit(0.4, "cm"),
     legend.text = element_text(size = 7),
     panel.border = element_blank(),
@@ -352,3 +393,4 @@ ggsave("Figures/Supporting-Figures/S08_AgeProfile_2024_MSL.png", ggplot2::last_p
 # fmt: skip
 ggsave("Figures/SVG/Supporting-Figures/S08_AgeProfile_2024_MSL.svg", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
 clean_svg("Figures/SVG/Supporting-Figures/S08_AgeProfile_2024_MSL.svg")
+readr::write_csv(pyramid_data_msl, "Figures/Supporting-Figures/RawData/S08_AgeProfile_2024_MSL.csv")

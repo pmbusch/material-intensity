@@ -20,8 +20,11 @@ library(arrow)
 
 cat("=== Density Plots ===\n\n")
 
-results <- arrow::read_parquet("Results/MC/mc_results.parquet") |>
-  mutate(material_group = ifelse(material_group %in% c("metal_fe", "metal_nonfe"), "metal_ores", material_group))
+results <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
+  filter(year == TARGET_YEAR) |> # only year used below (res_target, dmc_target)
+  dplyr::select(run_id, region, material_group, year, in_use_stock_Mt, primary_consumption_Mt, secondary_supply_Mt) |>
+  mutate(material_group = ifelse(material_group %in% METAL_GROUPS_ALL, "metal_ores", material_group)) |>
+  collect()
 
 cat("  Target year:", TARGET_YEAR, "\n")
 
@@ -210,6 +213,9 @@ ggplot(region_target, aes(x = Gt, y = region, fill = region)) +
 ggsave("Figures/Supporting-Figures/S16_DensityByRegion.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7 * 1.5)
 ggsave("Figures/SVG/Supporting-Figures/S16_DensityByRegion.svg", ggplot2::last_plot(), units = "cm", width = 8.7 * 2, height = 8.7 * 1.5)
 clean_svg("Figures/SVG/Supporting-Figures/S16_DensityByRegion.svg")
+dir.create("Figures/Supporting-Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+write_csv(region_target, "Figures/Supporting-Figures/RawData/S16_DensityByRegion_runs.csv")
+write_csv(present_regional, "Figures/Supporting-Figures/RawData/S16_DensityByRegion_2024.csv")
 cat("    Saved: Figures/Supporting-Figures/S16_DensityByRegion.png\n")
 
 # =============================================================================
@@ -341,7 +347,9 @@ param_labels <- c(
   intensity_machinery_metalOres_global    = "Metal ores – Machinery intensity",
   intensity_sl_products_metalOres_global  = "Metal ores – Short-lived products intensity",
   recycling_rate_fe                       = "Recycling rate endpoint – Fe",
-  recycling_rate_nonfe                    = "Recycling rate endpoint – NonFe",
+  recycling_rate_cu                       = "Recycling rate endpoint – Cu",
+  recycling_rate_al                       = "Recycling rate endpoint – Al",
+  recycling_rate_othernonfe               = "Recycling rate endpoint – other non-Fe",
   recyc_convergence_yr                    = "Recycling convergence year",
   downcycling                             = "Downcycling rate endpoint – Construction minerals",
   max_secondary_build_civil               = "Max secondary share – Buildings and civil engineering",
@@ -351,7 +359,9 @@ param_labels <- c(
   share_agg_concrete                      = "Aggregate share of concrete",
   share_granular_road                     = "Granular share – Roads",
   grade_ore_fe                            = "Ore grade – Fe",
-  grade_ore_nonfe                         = "Ore grade – NonFe",
+  grade_ore_cu                            = "Ore grade – Cu",
+  grade_ore_al                            = "Ore grade – Al",
+  grade_ore_othernonfe                    = "Ore grade – other non-Fe",
   lifetime_mean_buildings                 = "Lifetime mean – Buildings",
   lifetime_mean_civil_infrastructure      = "Lifetime mean – Civil infra",
   lifetime_mean_machinery                 = "Lifetime mean – Machinery",

@@ -17,7 +17,6 @@ TARGET_YEAR <- 2050L # intensity convergence: log-linear BASE_YEAR→TARGET_YEAR
 SNAPSHOT_YEARS <- seq(2030L, FORECAST_END, by = 10L)
 
 # -- Input file paths ----------------------------------------------------------
-ASSUMPTIONS_FILE <- "Inputs/MatIntensity_Assumptions.xlsx"
 RECYCLING_FILE <- "Inputs/Recycling_Assumptions.xlsx"
 
 # -- End-use labels ------------------------------------------------------------
@@ -28,16 +27,16 @@ ENDUSE_LABELS <- c(
   "short_lived" = "Short-lived products"
 )
 
-# -- Lifetime parameters (deterministic anchor; also used by 02b) --------------
+# -- Lifetime parameters (central values) --------------------------------------------
 lifetime_params <- read_excel("Inputs/MC_Assumptions.xlsx", sheet = "Lifetimes") |>
   dplyr::select(sub_use, super_category, mean_life, weibull_k)
 
 # -- MC run control ------------------------------------------------------------
-N_RUNS <- 1000L
+N_RUNS <- 10000L
 # N_RUNS <- 200L # DEBUG
 GLOBAL_SEED <- 12062026L
 # Max relative departure of any SSP's share of runs (by ssp_label) from an
-# equal split before 02-RunSimulations.R warns (0.5 = +/-50%)
+# equal split before 03-RunSimulations.R warns (0.5 = +/-50%)
 SSP_SHARE_TOL <- 0.5
 
 # -- MC: global scalar parameters (min, central, max) ---------------------------
@@ -47,7 +46,9 @@ SSP_SHARE_TOL <- 0.5
 MC_PARAM_NAMES <- c(
   "RECYC_CONVERGENCE_YR",
   "RECYCLING_RATE_FE",
-  "RECYCLING_RATE_NONFE",
+  "RECYCLING_RATE_CU",
+  "RECYCLING_RATE_AL",
+  "RECYCLING_RATE_OTHERNONFE",
   "DOWNCYCLING",
   "MAX_SECONDARY_BUILD_CIVIL",
   "MAX_SECONDARY_ROADS",
@@ -56,13 +57,24 @@ MC_PARAM_NAMES <- c(
   "SHARE_AGG_CONCRETE",
   "SHARE_GRANULAR_ROAD",
   "GRADE_ORE_FE",
-  "GRADE_ORE_NONFE",
+  "GRADE_ORE_CU",
+  "GRADE_ORE_AL",
+  "GRADE_ORE_OTHERNONFE",
   "TARGET_YEAR"
 )
 MC_PARAMS <- read_excel("Inputs/MC_Assumptions.xlsx", sheet = "Parameters") |>
   dplyr::filter(parameter_name %in% MC_PARAM_NAMES) |>
   dplyr::transmute(parameter_name, col = tolower(parameter_name), min, central = central_value, max)
-stopifnot(setequal(MC_PARAMS$parameter_name, MC_PARAM_NAMES))
+if (!setequal(MC_PARAMS$parameter_name, MC_PARAM_NAMES)) {
+  stop(
+    "MC_Assumptions.xlsx (sheet Parameters) is missing rows: ",
+    paste(setdiff(MC_PARAM_NAMES, MC_PARAMS$parameter_name), collapse = ", ")
+  )
+}
+
+# Metal material groups and their sampled-parameter suffix (recycling rate,
+# ore grade). Gold (metal_gold) is a flow and has neither.
+METAL_PARAM_SUFFIX <- c(metal_fe = "fe", metal_cu = "cu", metal_al = "al", metal_othernonfe = "othernonfe")
 for (i in seq_len(nrow(MC_PARAMS))) {
   assign(paste0(MC_PARAMS$parameter_name[i], "_MIN"), MC_PARAMS$min[i])
   assign(paste0(MC_PARAMS$parameter_name[i], "_CENTRAL"), MC_PARAMS$central[i])
@@ -75,7 +87,7 @@ for (i in seq_len(nrow(MC_PARAMS))) {
 # weight on model growth = (year - 2024) / (N + 1) -> 0.25, 0.5, 0.75, then 1.
 STOCK_GROWTH_BLEND_YRS <- 3L
 
-# Stock-intensity ramp (02/02b STEP 5): starts at the slope that continues the
+# Stock-intensity ramp (03-RunSimulations.R STEP 5): starts at the slope that continues the
 # 2024 historical stock growth (historical stock log-growth minus the run's
 # 2025 GDP log-growth, per region x material x sub_use) instead of a flat start;
 # still reaches the sampled endpoint at target_year with zero slope (cubic
@@ -88,7 +100,7 @@ LIFETIME_SAMPLE_PARAMS <- read_excel("Inputs/MC_Assumptions.xlsx", sheet = "Life
 # -- Power sector (explicit generation + storage stock) ------------------------
 # Fixed coefficients only: nothing here is sampled, so the LHS design and the
 # sensitivity parameter list are unchanged. Capacity follows the run's own
-# fossil draws (01b-PowerSector.R builds the inputs, 02-RunSimulations.R runs it).
+# fossil draws (02-PowerSector.R builds the inputs, 03-RunSimulations.R runs it).
 WANG_FILE <- "Inputs/Wang2023_material_intensity_technology.xlsx"
 WANG_SHEET <- "Master - all intensity values"
 BATTERY_FILE <- "Inputs/Battery_intensity.xlsx"
@@ -147,8 +159,8 @@ BATTERY_CHEMISTRIES <- c("LFP", "NMC 811") # simple average, kg/kWh
 # Material -> model material group (metals in metal mass; ore via sampled grades)
 WANG_MATERIAL_GROUP <- c(
   "Steel" = "metal_fe",
-  "Al" = "metal_nonfe",
-  "Cu" = "metal_nonfe",
+  "Al" = "metal_al",
+  "Cu" = "metal_cu",
   "Si" = "nonmetallic_minerals", # ore is quartz
   "Glass" = "nonmetallic_minerals",
   "Cement" = "nonmetallic_minerals",
@@ -158,12 +170,12 @@ AGGREGATE_PER_CEMENT <- 7 # t aggregates per t cement (Kane 2026; no water)
 BATTERY_MATERIAL_GROUP <- c(
   "Steel" = "metal_fe",
   "Stainless steel" = "metal_fe",
-  "Aluminum" = "metal_nonfe",
-  "Cobalt" = "metal_nonfe",
-  "Copper" = "metal_nonfe",
-  "Lithium" = "metal_nonfe",
-  "Manganese" = "metal_nonfe",
-  "Nickel" = "metal_nonfe",
+  "Aluminum" = "metal_al",
+  "Cobalt" = "metal_othernonfe",
+  "Copper" = "metal_cu",
+  "Lithium" = "metal_othernonfe",
+  "Manganese" = "metal_othernonfe",
+  "Nickel" = "metal_othernonfe",
   "Graphite" = "nonmetallic_minerals"
 )
 
@@ -172,7 +184,7 @@ POWER_CARVEOUT_SUB_USE <- "civil_engineering"
 # Ratio form (anchor x scenario GW/GDP ratio) = scenario path x calibration
 # factor (anchor / scenario's own 2025 GW). Tiny scenario bases blow this up
 # (e.g. 0.07 GW anchor / 3e-7 GW base), so outside [1/X, X] the scenario's own
-# level is used instead -- same threshold (5) as 04_summary_ratio.R's tiny-base fix.
+# level is used instead -- same threshold (5) as 08-summary_ratio.R's tiny-base fix.
 POWER_CALIB_MAX <- 5
 # Report (not drop) 2025->2030 world capacity jumps above this ratio
 POWER_JUMP_REPORT <- 1.5

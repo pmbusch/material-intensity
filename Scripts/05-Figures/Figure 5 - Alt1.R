@@ -1,12 +1,13 @@
 ## =============================================================================
-## Figure 5 - Alt1.R  -> Figures/Fig5 - Sensitivity.png (MAIN Figure 5)
+## Figure 5 - Alt1.R  -> Figures/Fig6 - Sensitivity.png (MAIN Figure 6, "alt2" layout)
 ##                       + Figures/Supporting-Figures/S22_GDPElasticity.png
-## Main Figure 5 (v2 layout): a = variable importance (population and GDP per
-## capita as drivers), b = drivers of material growth with range + IQR box,
-## c = 2060 per-capita use by GDP growth (<2% / >2%) and favourable /
-## unfavourable levers. v1 layout saved as Fig5 - Sensitivity_v1.png.
+## Main Figure 6: a = variable importance, b = drivers of growth for all
+## materials, c-f = drivers within each material group (S25 panels).
+## Earlier layouts kept as alternatives: Fig6 - Sensitivity_v2.png (b = drivers
+## with range + IQR box, c = 2060 use by GDP growth and favourable / unfavourable
+## levers) and Fig6 - Sensitivity_v1.png.
 ## Panel a comes from "Figure 5 - Sensitivity.R" (sourced first; saves the
-## alternative as Fig5 - Sensitivity_alt1.png, panel c = lever effects).
+## alternative as Fig6 - Sensitivity_alt1.png, panel c = lever effects).
 ##
 ## Panel c, one row per term, each row split in two halves:
 ##   top    bar = the term's median contribution, stacked as a cascade (each bar
@@ -448,10 +449,10 @@ fig_alt1 <- patchwork::wrap_elements(full = p_a) / (p_c_ver$v1 | p_d) +
   patchwork::plot_layout(heights = c(0.75, 1.6)) +
   patchwork::plot_annotation(tag_levels = "a") &
   theme(plot.tag = element_text(face = "bold"))
-ggsave("Figures/Fig5 - Sensitivity_v1.png", fig_alt1, units = "cm", dpi = 600, width = 18, height = 18)
-ggsave("Figures/SVG/Fig5 - Sensitivity_v1.svg", fig_alt1, units = "cm", width = 18, height = 18)
-group_svg_layers("Figures/SVG/Fig5 - Sensitivity_v1.svg") # cleans text-length attrs + groups into Grid/Data/Labels Inkscape layers
-cat("  Saved: Figures/Fig5 - Sensitivity_v1.png, Figures/SVG/Fig5 - Sensitivity_v1.svg\n")
+ggsave("Figures/Fig6 - Sensitivity_v1.png", fig_alt1, units = "cm", dpi = 600, width = 18, height = 18)
+ggsave("Figures/SVG/Fig6 - Sensitivity_v1.svg", fig_alt1, units = "cm", width = 18, height = 18)
+group_svg_layers("Figures/SVG/Fig6 - Sensitivity_v1.svg") # cleans text-length attrs + groups into Grid/Data/Labels Inkscape layers
+cat("  Saved: Figures/Fig6 - Sensitivity_v1.png, Figures/SVG/Fig6 - Sensitivity_v1.svg\n")
 
 # Main Figure 5 (v2): panel b = range + IQR box, panel c = densities by GDP growth.
 # Tags: "a" drawn inside panel a's box (top-left, in the space p_a reserves for it);
@@ -462,10 +463,10 @@ fig5_v2 <- patchwork::wrap_elements(full = p_a_tagged) / (p_c_ver$v2 + p_d_v2 + 
   patchwork::plot_layout(heights = c(0.75, 1.6)) +
   patchwork::plot_annotation(tag_levels = list(c("", "b", ""))) &
   theme(plot.tag = element_text(face = "bold"))
-ggsave("Figures/Fig5 - Sensitivity.png", fig5_v2, units = "cm", dpi = 600, width = 18, height = 18)
-ggsave("Figures/SVG/Fig5 - Sensitivity.svg", fig5_v2, units = "cm", width = 18, height = 18)
-group_svg_layers("Figures/SVG/Fig5 - Sensitivity.svg")
-cat("  Saved: Figures/Fig5 - Sensitivity.png, Figures/SVG/Fig5 - Sensitivity.svg\n")
+ggsave("Figures/Fig6 - Sensitivity_v2.png", fig5_v2, units = "cm", dpi = 600, width = 18, height = 18)
+ggsave("Figures/SVG/Fig6 - Sensitivity_v2.svg", fig5_v2, units = "cm", width = 18, height = 18)
+group_svg_layers("Figures/SVG/Fig6 - Sensitivity_v2.svg")
+cat("  Saved: Figures/Fig6 - Sensitivity_v2.png, Figures/SVG/Fig6 - Sensitivity_v2.svg\n")
 
 
 # SI S25 -- drivers of growth within each material group ---------------------------
@@ -478,21 +479,39 @@ cat("  Saved: Figures/Fig5 - Sensitivity.png, Figures/SVG/Fig5 - Sensitivity.svg
 s25 <- read_csv("Parameters/Intermediate/FigureS25_DecompositionByMaterial.csv", show_col_types = FALSE)
 S25_TAIL <- c(
   "Lifetime retirement rate", "Stock growth",
-  "Ferrous recycling", "Non-ferrous recycling", "Downcycling rate", "Absorption caps",
-  "Ferrous ore grade", "Non-ferrous ore grade"
+  "Ferrous recycling", "Cu recycling", "Al recycling", "Other non-Fe recycling", "Downcycling rate",
+  "Absorption cap, buildings", "Absorption cap, civil", "Absorption cap, power sector",
+  "Ferrous ore grade", "Cu ore grade", "Al ore grade", "Other non-Fe ore grade"
 )
+# Intensity rows in display order (power sector last among the end uses)
+S25_INT_ORDER <- c(
+  "M/G: Crops", "M/G: Crop Residues", "M/G: Grazed biomass and fodder crops", "M/G: Wood", "M/G: Other biomass",
+  "M/G: Coal", "M/G: Petroleum", "M/G: Natural Gas", "M/G: Other fossil fuels",
+  "S/G: Buildings", "S/G: Civil infrastructure", "S/G: Machinery", "S/G: Short-lived products", "S/G: Power sector"
+)
+# Bars show the MEAN contribution across runs: per run the terms sum exactly to
+# the total, so the means do too (medians do not) and each cascade ends on the
+# Total bar. The box's black line marks the median.
+X_LIM_S25 <- c(-2, 5) # shared x window (%/yr), every cascade panel
 s25_parts <- list()
-x_all_s25 <- 0
 for (m in MAT_LEVELS) {
-  dm <- s25 |> dplyr::filter(material == m)
+  # Minerals: machinery and short-lived products rows dropped (~0 contribution);
+  # metal ores: gold row dropped (~0 contribution)
+  dm <- s25 |> dplyr::filter(material == m, !(material == "Non-metallic minerals" & grepl("machinery|short-lived", term, ignore.case = TRUE)), !grepl("Gold", term))
+  dropped_m <- s25 |> dplyr::filter(material == m, term != "Total") |> dplyr::anti_join(dm, by = c("run_id", "term"))
+  cat(sprintf(
+    "  S25 %s: mean of dropped rows = %+.4f %%/yr (gap between the cascade end and Total)\n", m,
+    sum(dropped_m$pct_yr) / dplyr::n_distinct(dm$run_id)
+  ))
   terms_m <- unique(dm$term)
-  ord_m <- c("Population", "GDP per capita", sort(grep("^(M|S)/G: ", terms_m, value = TRUE)), intersect(S25_TAIL, terms_m))
+  int_m <- grep("^(M|S)/G: ", terms_m, value = TRUE)
+  ord_m <- c("Population", "GDP per capita", intersect(S25_INT_ORDER, int_m), sort(setdiff(int_m, S25_INT_ORDER)), intersect(S25_TAIL, terms_m))
   grp_m <- stats::setNames(
     dplyr::case_when(
       ord_m %in% c("Population", "GDP per capita") ~ "drivers",
       grepl("^(M|S)/G: ", ord_m) ~ "intensity",
       ord_m %in% c("Lifetime retirement rate", "Stock growth") ~ "turnover",
-      grepl("recycling|Downcycling|caps", ord_m) ~ "recovery",
+      grepl("recycling|Downcycling|cap", ord_m) ~ "recovery",
       TRUE ~ "grade"
     ),
     ord_m
@@ -523,39 +542,36 @@ for (m in MAT_LEVELS) {
   sep_y_m <- c(sep_y_m, cursor)
   row_y_m["Total"] <- cursor - 0.75
 
+  # `med` holds the MEAN contribution (see note above the loop)
   casc_m <- dm |>
     dplyr::filter(term != "Total") |>
     dplyr::group_by(term) |>
-    dplyr::summarise(med = stats::median(pct_yr), .groups = "drop") |>
+    dplyr::summarise(med = mean(pct_yr), .groups = "drop") |>
     dplyr::mutate(term = factor(term, levels = ord_m)) |>
     dplyr::arrange(term) |>
     dplyr::mutate(end = cumsum(med), start = dplyr::lag(end, default = 0), term = as.character(term), sign = dplyr::if_else(med >= 0, "adds", "reduces"))
   casc_m <- dplyr::bind_rows(
     casc_m,
-    tibble::tibble(term = "Total", med = stats::median(dm$pct_yr[dm$term == "Total"])) |> dplyr::mutate(start = 0, end = med, sign = "total")
+    tibble::tibble(term = "Total", med = mean(dm$pct_yr[dm$term == "Total"])) |> dplyr::mutate(start = 0, end = med, sign = "total")
   ) |>
     dplyr::mutate(y = row_y_m[term], next_y = dplyr::lead(y))
+  # Whiskers clamped to the shared X_LIM_S25 window (fossil fuels' total reaches ~-3%/yr)
   rng_m <- dm |>
     dplyr::group_by(term) |>
-    dplyr::summarise(mn = min(pct_yr), q25 = stats::quantile(pct_yr, 0.25), q75 = stats::quantile(pct_yr, 0.75), mx = max(pct_yr), .groups = "drop") |>
+    dplyr::summarise(mn = min(pct_yr), q25 = stats::quantile(pct_yr, 0.25), md = stats::median(pct_yr), q75 = stats::quantile(pct_yr, 0.75), mx = max(pct_yr), .groups = "drop") |>
     dplyr::inner_join(casc_m |> dplyr::select(term, start, end, y), by = "term") |>
-    dplyr::mutate(dplyr::across(c(mn, q25, q75, mx), \(v) start + v), y_mid = y - HALF / 2)
+    dplyr::mutate(dplyr::across(c(mn, q25, md, q75, mx), \(v) start + v), mn = pmax(mn, X_LIM_S25[1]), mx = pmin(mx, X_LIM_S25[2]), y_mid = y - HALF / 2)
   lab_m <- dplyr::bind_rows(
     tibble::tibble(
       y = row_y_m,
-      label = dplyr::if_else(names(row_y_m) == "Total", "Total growth", sub(" and fodder crops", "", sub("^(M|S)/G: ", "", names(row_y_m)))),
-      col = dplyr::if_else(names(row_y_m) %in% c("Population", "GDP per capita", "Total"), "grey15", unname(PALETTE_MATERIAL_GROUPS[m])),
+      label = dplyr::if_else(names(row_y_m) == "Total", "Total growth", sub("cap, power sector", "cap, power", sub(" and fodder crops", "", sub("^(M|S)/G: ", "", names(row_y_m))))),
+      col = "grey15",
       face = dplyr::if_else(names(row_y_m) == "Total", "bold", "plain")
     ),
-    tibble::tibble(
-      y = header_y_m, label = header_m[names(header_y_m)],
-      col = dplyr::if_else(names(header_y_m) == "drivers", "grey15", unname(PALETTE_MATERIAL_GROUPS[m])), face = "bold"
-    )
+    tibble::tibble(y = header_y_m, label = header_m[names(header_y_m)], col = "grey15", face = "bold")
   )
   s25_parts[[m]] <- list(casc = casc_m, rng = rng_m, lab = lab_m, sep = sep_y_m, row_y = row_y_m, last = ord_m[length(ord_m)])
-  x_all_s25 <- c(x_all_s25, rng_m$mn, rng_m$mx, casc_m$start, casc_m$end)
 }
-X_LIM_S25 <- range(x_all_s25) + c(-0.03, 0.12) * diff(range(x_all_s25))
 
 p_s25 <- list()
 for (m in MAT_LEVELS) {
@@ -568,11 +584,11 @@ for (m in MAT_LEVELS) {
       data = pp$casc |> dplyr::filter(!term %in% c(pp$last, "Total")),
       aes(x = end, xend = end, y = y, yend = next_y + HALF), colour = "grey60", linewidth = 0.25, linetype = "dashed"
     ) +
-    # bottom half: min-max line + 25-75% box, median line (= bar end)
+    # bottom half: min-max line + 25-75% box, median line
     geom_segment(data = pp$rng, aes(x = mn, xend = mx, y = y_mid, yend = y_mid), colour = "grey45", linewidth = 0.3) +
     geom_rect(data = pp$rng, aes(xmin = q25, xmax = q75, ymin = y_mid - HALF * 0.25, ymax = y_mid + HALF * 0.25), fill = "grey75", colour = "grey35", linewidth = 0.15) +
-    geom_segment(data = pp$rng, aes(x = end, xend = end, y = y_mid - HALF * 0.25, yend = y_mid + HALF * 0.25), colour = "black", linewidth = 0.4) +
-    # top half: median contribution bar
+    geom_segment(data = pp$rng, aes(x = md, xend = md, y = y_mid - HALF * 0.25, yend = y_mid + HALF * 0.25), colour = "black", linewidth = 0.4) +
+    # top half: mean contribution bar
     geom_rect(data = pp$casc, aes(xmin = pmin(start, end), xmax = pmax(start, end), ymin = y + 0.02, ymax = y + HALF, fill = sign), colour = "black", linewidth = 0.15) +
     geom_segment(data = pp$casc, aes(x = end, xend = end, y = y + 0.02, yend = y + HALF), colour = "black", linewidth = 0.4) +
     geom_text(data = pp$casc, aes(x = pmax(start, end), y = y + HALF / 2, label = sprintf("%+.2f%%", med), colour = sign), hjust = -0.2, size = pb_annot_size("largeFont", 8), fontface = "bold") +
@@ -583,7 +599,8 @@ for (m in MAT_LEVELS) {
     scale_fill_manual(values = SIGN_COLS, guide = "none") +
     scale_colour_manual(values = SIGN_COLS, guide = "none") +
     scale_y_continuous(breaks = NULL) +
-    scale_x_continuous(labels = function(x) sprintf("%+.0f%%", x)) +
+    # ticks every 1 %/yr, labels every 2
+    scale_x_continuous(breaks = seq(-2, 5), labels = function(x) ifelse(x %% 2 == 0, sprintf("%+.0f%%", x), "")) +
     coord_cartesian(xlim = X_LIM_S25, ylim = c(pp$row_y[["Total"]] - HALF - 0.1, 0.1), expand = FALSE, clip = "off") +
     labs(title = m, x = "Contribution to growth, 2025-2060 (%/yr)", y = NULL) +
     theme_pb_large() +
@@ -593,7 +610,7 @@ for (m in MAT_LEVELS) {
       plot.title = element_text(colour = unname(PALETTE_MATERIAL_GROUPS[m])),
       plot.margin = margin(t = 4, r = 8, b = 4, l = 95, unit = "pt"), # l: room for the row labels
       plot.tag.location = "panel",
-      plot.tag.position = c(0.95, 0.975)
+      plot.tag.position = c(0.96, 0.94) # inset from the top-right corner, clear of the border
     )
 }
 fig_s25 <- patchwork::wrap_plots(p_s25, ncol = 2) +
@@ -604,6 +621,171 @@ ggsave("Figures/Supporting-Figures/S25_Fig5_DriversByMaterial.png", fig_s25, uni
 ggsave("Figures/SVG/Supporting-Figures/S25_Fig5_DriversByMaterial.svg", fig_s25, units = "cm", width = 8.7 * 2, height = 8.7 * 2.6)
 group_svg_layers("Figures/SVG/Supporting-Figures/S25_Fig5_DriversByMaterial.svg")
 cat("  Saved: Figures/Supporting-Figures/S25_Fig5_DriversByMaterial.png\n")
+dir.create("Figures/Supporting-Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+readr::write_csv(
+  s25 |>
+    dplyr::group_by(material, term) |>
+    dplyr::summarise(
+      median_pct_yr = stats::median(pct_yr), min_pct_yr = min(pct_yr), p25_pct_yr = stats::quantile(pct_yr, 0.25),
+      p75_pct_yr = stats::quantile(pct_yr, 0.75), max_pct_yr = max(pct_yr), .groups = "drop"
+    ),
+  "Figures/Supporting-Figures/RawData/S25_DriversByMaterial.csv"
+)
+
+
+# Figure 5 alt2 -- panel a + drivers by material group + S25 material panels ---------
+# Layout: a (full width) on top; bottom left column = b (7 rows: population, GDP per
+# capita, one row per material group = sum of that group's terms in the main
+# decomposition, total) above c (S25 metal ores); right column = d-f (S25 biomass,
+# fossil fuels, non-metallic minerals). All bottom panels share X_LIM_S25.
+
+# Panel b terms: material rows aggregate every term of that group, per run
+F5B_ORDER <- c("Population", "GDP per capita", "Biomass", "Fossil fuels", "Metal ores", "Non-metallic minerals")
+dec_b <- dec |>
+  dplyr::filter(term != "Total") |>
+  dplyr::mutate(term = dplyr::if_else(term %in% c("Population", "GDP per capita"), term, unname(TERM_GROUP[term]))) |>
+  dplyr::group_by(run_id, term) |>
+  dplyr::summarise(pct_yr = sum(pct_yr), .groups = "drop") |>
+  dplyr::bind_rows(dec |> dplyr::filter(term == "Total") |> dplyr::select(run_id, term, pct_yr))
+
+# Rows: drivers header + 2 rows, materials header + 4 rows, total (S25 layout rules)
+grp_b <- stats::setNames(dplyr::if_else(F5B_ORDER %in% c("Population", "GDP per capita"), "drivers", "materials"), F5B_ORDER)
+header_b <- c("drivers" = "2025 → 2060", "materials" = "Intensity and circularity")
+cursor <- 0
+row_y_b <- c()
+header_y_b <- c()
+sep_y_b <- c()
+for (i in seq_along(F5B_ORDER)) {
+  g <- grp_b[[F5B_ORDER[i]]]
+  if (i == 1 || g != grp_b[[F5B_ORDER[i - 1]]]) {
+    if (i > 1) sep_y_b <- c(sep_y_b, cursor)
+    header_y_b[g] <- cursor - HEADER_GAP / 2
+    cursor <- cursor - HEADER_GAP
+  }
+  row_y_b[F5B_ORDER[i]] <- cursor - 0.5
+  cursor <- cursor - 1
+}
+sep_y_b <- c(sep_y_b, cursor)
+row_y_b["Total"] <- cursor - 0.75
+
+# `med` holds the MEAN contribution, so the cascade ends on Total (as in S25)
+casc_b <- dec_b |>
+  dplyr::filter(term != "Total") |>
+  dplyr::group_by(term) |>
+  dplyr::summarise(med = mean(pct_yr), .groups = "drop") |>
+  dplyr::mutate(term = factor(term, levels = F5B_ORDER)) |>
+  dplyr::arrange(term) |>
+  dplyr::mutate(end = cumsum(med), start = dplyr::lag(end, default = 0), term = as.character(term), sign = dplyr::if_else(med >= 0, "adds", "reduces"))
+casc_b <- dplyr::bind_rows(
+  casc_b,
+  tibble::tibble(term = "Total", med = mean(dec_b$pct_yr[dec_b$term == "Total"])) |> dplyr::mutate(start = 0, end = med, sign = "total")
+) |>
+  dplyr::mutate(y = row_y_b[term], next_y = dplyr::lead(y))
+rng_b <- dec_b |>
+  dplyr::group_by(term) |>
+  dplyr::summarise(mn = min(pct_yr), q25 = stats::quantile(pct_yr, 0.25), md = stats::median(pct_yr), q75 = stats::quantile(pct_yr, 0.75), mx = max(pct_yr), .groups = "drop") |>
+  dplyr::inner_join(casc_b |> dplyr::select(term, start, end, y), by = "term") |>
+  dplyr::mutate(dplyr::across(c(mn, q25, md, q75, mx), \(v) start + v), mn = pmax(mn, X_LIM_S25[1]), mx = pmin(mx, X_LIM_S25[2]), y_mid = y - HALF / 2)
+lab_b <- dplyr::bind_rows(
+  tibble::tibble(
+    y = row_y_b,
+    label = dplyr::if_else(names(row_y_b) == "Total", "Total growth", names(row_y_b)),
+    col = dplyr::if_else(names(row_y_b) %in% c("Population", "GDP per capita", "Total"), "grey15", unname(PALETTE_MATERIAL_GROUPS[names(row_y_b)])),
+    face = dplyr::if_else(names(row_y_b) == "Total", "bold", "plain")
+  ),
+  tibble::tibble(y = header_y_b, label = header_b[names(header_y_b)], col = "grey15", face = "bold")
+)
+
+p_b_alt2 <- ggplot() +
+  geom_vline(xintercept = 0, linewidth = 0.35, colour = "grey20") +
+  geom_hline(yintercept = row_y_b, colour = "grey85", linewidth = 0.2) +
+  geom_hline(yintercept = sep_y_b, colour = "black", linewidth = 0.3) +
+  geom_segment(
+    data = casc_b |> dplyr::filter(!term %in% c(F5B_ORDER[length(F5B_ORDER)], "Total")),
+    aes(x = end, xend = end, y = y, yend = next_y + HALF), colour = "grey60", linewidth = 0.25, linetype = "dashed"
+  ) +
+  # bottom half: min-max line + 25-75% box, median line (= bar end)
+  geom_segment(data = rng_b, aes(x = mn, xend = mx, y = y_mid, yend = y_mid), colour = "grey45", linewidth = 0.3) +
+  geom_rect(data = rng_b, aes(xmin = q25, xmax = q75, ymin = y_mid - HALF * 0.25, ymax = y_mid + HALF * 0.25), fill = "grey75", colour = "grey35", linewidth = 0.15) +
+  geom_segment(data = rng_b, aes(x = md, xend = md, y = y_mid - HALF * 0.25, yend = y_mid + HALF * 0.25), colour = "black", linewidth = 0.4) +
+  # top half: mean contribution bar
+  geom_rect(data = casc_b, aes(xmin = pmin(start, end), xmax = pmax(start, end), ymin = y + 0.02, ymax = y + HALF, fill = sign), colour = "black", linewidth = 0.15) +
+  geom_segment(data = casc_b, aes(x = end, xend = end, y = y + 0.02, yend = y + HALF), colour = "black", linewidth = 0.4) +
+  geom_text(data = casc_b, aes(x = pmax(start, end), y = y + HALF / 2, label = sprintf("%+.2f%%", med), colour = sign), hjust = -0.2, size = pb_annot_size("largeFont", 8), fontface = "bold") +
+  geom_text(
+    data = lab_b, aes(x = X_LIM_S25[1] - 0.015 * diff(X_LIM_S25), y = y, label = label),
+    colour = lab_b$col, fontface = lab_b$face, size = pb_annot_size("largeFont", 8), hjust = 1
+  ) +
+  scale_fill_manual(values = SIGN_COLS, guide = "none") +
+  scale_colour_manual(values = SIGN_COLS, guide = "none") +
+  scale_y_continuous(breaks = NULL) +
+  scale_x_continuous(breaks = seq(-2, 5), labels = function(x) ifelse(x %% 2 == 0, sprintf("%+.0f%%", x), "")) +
+  coord_cartesian(xlim = X_LIM_S25, ylim = c(row_y_b[["Total"]] - HALF - 0.1, 0.1), expand = FALSE, clip = "off") +
+  labs(title = "All materials", x = NULL, y = NULL) +
+  theme_pb_large() +
+  theme(
+    axis.ticks.y = element_blank(),
+    panel.grid = element_blank(),
+    plot.margin = margin(t = 4, r = 8, b = 4, l = 95, unit = "pt"),
+    plot.tag.location = "panel",
+    plot.tag.position = c(0.96, 0.94)
+  )
+
+# Flat design grid: panel height = |y of its Total row| + title / tick overhead
+# (4 units; 6 for the bottom panel keeping the x-axis title), so rows are evenly
+# spaced in the right column; the metal panel fills the rest of the left column
+h_b <- round(abs(row_y_b[["Total"]]) + 4)
+h_d <- round(abs(s25_parts[["Biomass"]]$row_y[["Total"]]) + 4)
+h_e <- round(abs(s25_parts[["Fossil fuels"]]$row_y[["Total"]]) + 4)
+h_f <- round(abs(s25_parts[["Non-metallic minerals"]]$row_y[["Total"]]) + 6)
+h_c <- h_d + h_e + h_f - h_b
+h_a <- round(0.38 * (h_b + h_c)) # taller panel a: room for its in-gap labels
+design_alt2 <- paste(
+  c(
+    rep("AA", h_a),
+    paste0(c(rep("B", h_b), rep("C", h_c)), c(rep("D", h_d), rep("E", h_e), rep("F", h_f)))
+  ),
+  collapse = "\n"
+)
+fig5_alt2 <- patchwork::wrap_plots(
+  patchwork::wrap_elements(full = p_a_tagged),
+  p_b_alt2,
+  p_s25[["Metal ores"]],
+  p_s25[["Biomass"]] + labs(x = NULL),
+  p_s25[["Fossil fuels"]] + labs(x = NULL),
+  p_s25[["Non-metallic minerals"]],
+  design = design_alt2
+) +
+  patchwork::plot_annotation(tag_levels = list(c("", "b", "c", "d", "e", "f"))) &
+  theme(plot.tag = element_text(face = "bold"))
+ggsave("Figures/Fig6 - Sensitivity.png", fig5_alt2, units = "cm", dpi = 600, width = 18, height = 22)
+ggsave("Figures/SVG/Fig6 - Sensitivity.svg", fig5_alt2, units = "cm", width = 18, height = 22)
+group_svg_layers("Figures/SVG/Fig6 - Sensitivity.svg")
+cat("  Saved: Figures/Fig6 - Sensitivity.png, Figures/SVG/Fig6 - Sensitivity.svg\n")
+
+# Save figure data (main Figure 6): a = importance shares; b = all-materials
+# cascade; c-f = per-material cascades (c metal ores, d biomass, e fossil fuels,
+# f non-metallic minerals). Cascade files: mean contribution (bar), cascade
+# start/end, and the run distribution (min, p25, median, p75, max), shifted to
+# the bar's start as drawn
+dir.create("Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+readr::write_csv(plot_df_a, "Figures/RawData/fig6a.csv")
+readr::write_csv(
+  casc_b |>
+    dplyr::select(term, mean_pct_yr = med, cascade_start = start, cascade_end = end) |>
+    dplyr::left_join(rng_b |> dplyr::select(term, min = mn, p25 = q25, median = md, p75 = q75, max = mx), by = "term"),
+  "Figures/RawData/fig6b.csv"
+)
+FIG6_MAT_TAG <- c("Metal ores" = "c", "Biomass" = "d", "Fossil fuels" = "e", "Non-metallic minerals" = "f")
+for (m in names(FIG6_MAT_TAG)) {
+  readr::write_csv(
+    s25_parts[[m]]$casc |>
+      dplyr::select(term, mean_pct_yr = med, cascade_start = start, cascade_end = end) |>
+      dplyr::left_join(s25_parts[[m]]$rng |> dplyr::select(term, min = mn, p25 = q25, median = md, p75 = q75, max = mx), by = "term"),
+    paste0("Figures/RawData/fig6", FIG6_MAT_TAG[[m]], ".csv")
+  )
+}
+cat("  Saved: Figures/RawData/fig6{a..f}.csv\n")
 
 
 # SI S26 -- Figure 5 with panel b's distributions as jittered runs (alpha 0.3) ------
@@ -618,6 +800,7 @@ ggsave("Figures/Supporting-Figures/S26_Fig5_Jitter.png", fig_s26, units = "cm", 
 ggsave("Figures/SVG/Supporting-Figures/S26_Fig5_Jitter.svg", fig_s26, units = "cm", width = 18, height = 18)
 group_svg_layers("Figures/SVG/Supporting-Figures/S26_Fig5_Jitter.svg")
 cat("  Saved: Figures/Supporting-Figures/S26_Fig5_Jitter.png\n")
+readr::write_csv(dec, "Figures/Supporting-Figures/RawData/S26_RunContributions.csv") # panels a, c as in fig5a / fig5c-f
 
 
 # SI S22 -- GDP elasticity per material group ---------------------------------------
@@ -639,6 +822,7 @@ ggplot(s22 |> dplyr::mutate(group = factor(group, levels = rev(S22_ORDER))), aes
 ggsave("Figures/Supporting-Figures/S22_GDPElasticity.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7, height = 8.7)
 ggsave("Figures/SVG/Supporting-Figures/S22_GDPElasticity.svg", ggplot2::last_plot(), units = "cm", width = 8.7, height = 8.7)
 cat("  Saved: Figures/Supporting-Figures/S22_GDPElasticity.png\n")
+readr::write_csv(s22, "Figures/Supporting-Figures/RawData/S22_GDPElasticity.csv")
 
 cat("=== Figure 5 - Alt1 done ===\n")
 

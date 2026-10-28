@@ -52,7 +52,7 @@ flows_enduse_hist <- read_csv("Parameters/Intermediate/UNEP_flows_enduse.csv", s
 stock_enduse_hist <- read_csv("Parameters/Intermediate/stock_trajectory_1970_2024.csv", show_col_types = FALSE) |>
   rename(region = Region)
 
-gdp_2024_region <- gdp_region_hist |> filter(year == HIST_END) |> transmute(region, gdp_2024 = GDP_2015USD)
+gdp_2024_region <- gdp_region_hist |> filter(year == HIST_END) |> transmute(region, gdp_2024 = GDP_PPP2017USD)
 
 # Region display order for the stacked-bar figure: ascending GDP/cap, so the
 # highest-GDP/cap region ends up at the top (last ggplot discrete-scale level
@@ -78,8 +78,8 @@ biomass_hist <- dmc_hist |>
   group_by(region, material_category) |>
   summarise(DMC_Mt = sum(DMC_Mt, na.rm = TRUE), .groups = "drop") |>
   left_join(gdp_region_hist |> filter(year == HIST_END), by = "region") |>
-  filter(!is.na(GDP_2015USD)) |>
-  mutate(mg = DMC_Mt * 1e9 / GDP_2015USD)
+  filter(!is.na(GDP_PPP2017USD)) |>
+  mutate(mg = DMC_Mt * 1e9 / GDP_PPP2017USD)
 
 fossil_hist <- dmc_hist |>
   filter(
@@ -98,8 +98,8 @@ fossil_hist <- dmc_hist |>
   group_by(region, material_category) |>
   summarise(DMC_Mt = sum(DMC_Mt, na.rm = TRUE), .groups = "drop") |>
   left_join(gdp_region_hist |> filter(year == HIST_END), by = "region") |>
-  filter(!is.na(GDP_2015USD)) |>
-  mutate(mg = DMC_Mt * 1e9 / GDP_2015USD)
+  filter(!is.na(GDP_PPP2017USD)) |>
+  mutate(mg = DMC_Mt * 1e9 / GDP_PPP2017USD)
 
 
 # ── SECTION D: Metal ores / Non-metallic minerals, M/G and S/G, by end-use --

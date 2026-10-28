@@ -1,5 +1,5 @@
 ## =============================================================================
-## 01_load_and_check.R
+## 02-load_and_check.R
 ## Loads the IIASA ScenarioMIP CMIP7 IAMC-format extract (R10 regions + World),
 ## parses scenario names into policy family / SSP / marker flag, checks for
 ## marker-vs-non-marker duplication, reports coverage, quantifies what
@@ -12,6 +12,7 @@
 ##   Inputs/IIASA_SSP/2026-MIP-CMIP7/food_iamc_data-bcbf31b9-....csv     (R10 + World: food intake/waste, roundwood)
 ##   Inputs/IIASA_SSP/2026-MIP-CMIP7/energy_iamc_data-6b18b585-....csv   (R10 + World: primary energy by source)
 ##   Inputs/IIASA_SSP/2026-MIP-CMIP7/capacity_iamc_data-04a640c5-....csv (R10 + World: electricity capacity)
+##   Inputs/IIASA_SSP/2026-MIP-CMIP7/gdp_iamc_data-fe817389-....csv        (R10 + World: GDP|PPP, billion USD_2010)
 ##   The energy extract repeats 6 Primary Energy variables already in the
 ##   R10/World files (identical values) -- exact duplicate rows are dropped.
 ##
@@ -36,13 +37,14 @@ WORLD_FILE <- "Inputs/IIASA_SSP/2026-MIP-CMIP7/iamc_data-fbea2f95-b9d4-430e-a6ab
 FOOD_FILE <- "Inputs/IIASA_SSP/2026-MIP-CMIP7/food_iamc_data-bcbf31b9-c943-4cdd-b9f0-f5513b9c4b6b.csv"
 ENERGY_FILE <- "Inputs/IIASA_SSP/2026-MIP-CMIP7/energy_iamc_data-6b18b585-989f-46ab-ae08-25a0e51a3139.csv"
 CAPACITY_FILE <- "Inputs/IIASA_SSP/2026-MIP-CMIP7/capacity_iamc_data-04a640c5-84c4-46e1-bf89-eb7a27ec1f39.csv"
+GDP_FILE <- "Inputs/IIASA_SSP/2026-MIP-CMIP7/gdp_iamc_data-fe817389-c722-43e3-ba6e-f4bbb9fb17ab.csv" # GDP|PPP: the project GDP basis
 
 OUT_DIR <- "Parameters/IIASA-Trajectories"
 
 log_lines <- c() # collect assumption / drop notes as we go, dumped to assumptions_log.txt at the end
 
 
-# Step 1: Load R10 + World + food/energy/capacity IAMC files and stack them ───
+# Step 1: Load R10 + World + food/energy/capacity/GDP IAMC files and stack them ───
 
 cat("STEP 1: Load R10 + World + food/energy/capacity IAMC files\n")
 
@@ -51,6 +53,7 @@ world_raw <- read_csv(WORLD_FILE, col_types = cols(.default = "c"))
 food_raw <- read_csv(FOOD_FILE, col_types = cols(.default = "c"))
 energy_raw <- read_csv(ENERGY_FILE, col_types = cols(.default = "c"))
 capacity_raw <- read_csv(CAPACITY_FILE, col_types = cols(.default = "c"))
+gdp_raw <- read_csv(GDP_FILE, col_types = cols(.default = "c"))
 
 cat("  Region file:", nrow(region_raw), "rows |  World file:", nrow(world_raw), "rows\n")
 cat("  Food file:", nrow(food_raw), "rows |  Energy file:", nrow(energy_raw), "rows |  Capacity file:", nrow(capacity_raw), "rows\n")
@@ -60,8 +63,9 @@ stopifnot(identical(yr_cols, names(world_raw)[grepl("^[0-9]{4}$", names(world_ra
 stopifnot(identical(yr_cols, names(food_raw)[grepl("^[0-9]{4}$", names(food_raw))]))
 stopifnot(identical(yr_cols, names(energy_raw)[grepl("^[0-9]{4}$", names(energy_raw))]))
 stopifnot(identical(yr_cols, names(capacity_raw)[grepl("^[0-9]{4}$", names(capacity_raw))]))
+stopifnot(identical(yr_cols, names(gdp_raw)[grepl("^[0-9]{4}$", names(gdp_raw))]))
 
-raw_wide <- bind_rows(region_raw, world_raw, food_raw, energy_raw, capacity_raw)
+raw_wide <- bind_rows(region_raw, world_raw, food_raw, energy_raw, capacity_raw, gdp_raw)
 n_stacked <- nrow(raw_wide)
 
 # The energy extract repeats Primary Energy|{Biomass,Coal,Fossil,Gas,Oil,Other}
@@ -217,7 +221,7 @@ log_lines <- c(
 
 cat("\nSTEP 7: GDP/Population consistency across models and across families\n")
 
-driver_long <- raw_long %>% filter(variable %in% c("GDP|MER", "Population"), region == "World")
+driver_long <- raw_long %>% filter(variable %in% c("GDP|PPP", "Population"), region == "World")
 
 # (a) Across models, holding (family, SSP) fixed -- tests whether the SSP driver is harmonized/exogenous
 across_models <- driver_long %>%

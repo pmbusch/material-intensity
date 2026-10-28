@@ -5,20 +5,19 @@ All R code, organised by pipeline stage. `00-RunAll.R` runs every stage in order
 | Folder | Stage | Documentation |
 |---|---|---|
 | `00-*.R`, `00b-Theme.R`, `00-Functions/` | 0. Shared setup: libraries, theme, palettes, constants, DSM functions | this file |
-| `01-PrepareData/` | 1. Aggregate raw data (materials, population, GDP, stocks, power capacity) to the 8 model regions | [01-PrepareData/README.md](01-PrepareData/README.md) |
+| `01-PrepareData/` | 1. Aggregate raw data (materials, population, GDP, stocks, power capacity, materialflows.net detail) to the 8 model regions; non-ferrous ore split; ore grade curves | [01-PrepareData/README.md](01-PrepareData/README.md) |
 | `02-HistoricalStock/` | 2. Historical end-use split, ore grade, stock-flow model 1970-2024, secondary flows | [02-HistoricalStock/README.md](02-HistoricalStock/README.md) |
 | `03-SSP Trajectories/` | 3. SSP population/GDP drivers and ScenarioMIP intensity ratios | [03-SSP Trajectories/README.md](<03-SSP Trajectories/README.md>) |
 | `04-Simulation/` | 4. Monte Carlo sampling, power sector, simulation, diagnostics, decoupling | [04-Simulation/README.md](04-Simulation/README.md) |
 | `05-Figures/` | 5. Main figures, Table 1, supporting figures | [05-Figures/README.md](05-Figures/README.md) |
-| `98-Exploratory/`, `99-Deprecated/`, `05-Figures/Deprecated/` | Not part of the pipeline (not tracked in git) | none |
 
 ## Conventions shared by all scripts
 
 - Every script starts with `source("Scripts/00-Libraries.R")`, which also loads the theme, the common parameters and every file in `00-Functions/`.
 - **Regions**: 8 model regions (East Asia, Europe & Russia, North America, Latin America, Sub-Saharan Africa, Middle East & North Africa, South Asia, Oceania). Country-to-region maps are sheets of `Inputs/Dict_Countries.xlsx`, one per data source.
-- **Material groups**: biomass and fossil fuels are flow materials (Kaya identity, no stock). Metal ores (split into ferrous `Metal_Fe` and non-ferrous `Metal_NonFe`) and non-metallic minerals are stock materials (dynamic stock model).
+- **Material groups**: biomass and fossil fuels are flow materials (Kaya identity, no stock). Metal ores (ferrous `Metal_Fe`; non-ferrous `Metal_Cu`, `Metal_Al`, `Metal_OtherNonFe`) and non-metallic minerals are stock materials (dynamic stock model). Gold ore is a flow (fixed 2024 intensity per GDP) inside metal ores.
 - **End uses**: 4 super-categories (buildings, civil infrastructure, machinery, short-lived products) split into 8 sub-uses (residential, non-residential, roads, civil engineering, machinery & equipment, vehicles, durables, packaging). The simulation adds 4 power-sector end uses.
-- **Units**: mass in Mt unless stated; GDP in constant 2015 USD (World Bank) or 2015 USD PPP (SSP drivers).
+- **Units**: mass in Mt unless stated; GDP in PPP, constant 2017 intl $ (World Bank, backcast before 1990 with MER growth); SSP drivers (GDP|PPP) are used as growth indices only.
 - **Years**: history 1970-2024, base year 2024, projection 2025 to `FORECAST_END` (2060).
 
 ## Stage 0: shared setup
@@ -27,8 +26,8 @@ All R code, organised by pipeline stage. `00-RunAll.R` runs every stage in order
 
 Runs the whole analysis.
 
-1. Holds the ordered list of 50 scripts (stages 1 to 6; stage 6 = supporting figures).
-2. Reads an optional start index from the command line (`Rscript Scripts/00-RunAll.R 22` resumes at script 22).
+1. Holds the ordered list of 54 scripts (stages 1 to 6; stage 6 = supporting figures). Three stage-1 scripts that need local data not in git (`06-Aggregate_MaterialFlows.R`, `08-IronOre_GradeCurve.R`, `09-NonFerrous_GradeCurve.R`) are listed but commented out; their outputs are tracked in `Parameters/`.
+2. Reads an optional start index from the command line (`Rscript Scripts/00-RunAll.R 22` resumes at script 22 of the list).
 3. Runs each script with `system2(Rscript, ...)`, prints the elapsed time, and stops at the first non-zero exit code with the command to resume.
 
 - **Inputs**: none (calls the other scripts).
@@ -48,7 +47,8 @@ Runs the whole analysis.
 Constants used across stages. No calculations.
 
 - `FORECAST_END = 2060`: projection horizon for the simulation and all figures.
-- `GRADE_ORE_FE_2024 = 0.4`, `GRADE_ORE_NONFE_2024 = 0.016`: 2024 ore-to-metal factors. The historical series ramps to these, and each Monte Carlo run starts from them.
+- 2024 ore-to-metal grades: `GRADE_ORE_FE_2024 = 0.4`, `GRADE_ORE_CU_2024 = 0.0075`, `GRADE_ORE_AL_2024 = 0.165`, `GRADE_ORE_OTHERNONFE_2024 = 0.03`. The historical series ramps to these, and each Monte Carlo run starts from them. The non-Fe grades also set the Cu / Al / other split of historical non-ferrous metal.
+- Metal keys: `METAL_KEYS` (historical material → Monte Carlo `material_group`: `metal_fe`, `metal_cu`, `metal_al`, `metal_othernonfe`), `NONFE_METAL_KEYS`, `NONFE_ORE_SUB` (ore sub-category of each non-Fe metal), `GRADE_ORE_NONFE_2024_M`, `METAL_GROUPS_ALL` (adds `metal_gold`; all pooled into "Metal ores").
 - Colour palettes: `PALETTE_REGIONS`, `PALETTE_MATERIALS` (22 UNEP categories), `PALETTE_MATERIAL_GROUPS`, `PALETTE_ENDUSE`, `PALETTE_SUBENDUSE`, `SSP_COLORS`, `PALETTE_DECOUPLING`.
 - `SSP_SAMPLED = SSP1, SSP2, SSP3, SSP5`. SSP4 is excluded because ScenarioMIP has a single run for it.
 
@@ -65,7 +65,7 @@ ggplot2 theme and text-size rules.
 Dynamic stock model (DSM) functions.
 
 - `weibull_survival()`, `get_survival()`: Weibull survival with the scale set from the mean lifetime, `lambda = mean_life / gamma(1 + 1/k)`.
-- `run_forward_dsm_fast()`: the forward, stock-driven DSM used by the Monte Carlo (`04-Simulation/02-RunSimulations.R`). For one region × material × sub-use:
+- `run_forward_dsm_fast()`: the forward, stock-driven DSM used by the Monte Carlo (`04-Simulation/03-RunSimulations.R`). For one region × material × sub-use:
   1. Re-ages the 2024 cohorts onto the run's sampled lifetime curve with the cumulative exposure model. Each cohort gets the equivalent age `s* = lambda_new (a / lambda_hist)^(k_hist / k_new)`, so the surviving fraction is unchanged at the 2024 to 2025 seam.
   2. Each year: surviving stock from old and new cohorts; waste = decline of each cohort since the previous year.
   3. Production = max(0, target stock − surviving stock). Replacement = min(waste, production); new additions = production − replacement (an accounting split only).
