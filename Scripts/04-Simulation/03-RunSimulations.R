@@ -1,10 +1,12 @@
 ## =============================================================================
-## 02-RunSimulations.R
-## Monte Carlo runner. Reads LHS draws from 01, reads Excel bounds + static
+## 03-RunSimulations.R
+## Monte Carlo runner. Reads LHS draws, 2024 intensities and bounds from 01 + static
 ## data, rebuilds all trajectories upfront, runs N_RUNS simulations in parallel.
 ##
-## Flow model (Kaya):  biomass + fossil fuels
-## Stock model (DSM):  Metal_Fe + Metal_NonFe + nonmetallic_minerals
+## Flow model (Kaya):  biomass + fossil fuels; gold ore (metal_gold, fixed
+##                     2024 intensity per GDP)
+## Stock model (DSM):  metals (metal_fe, metal_cu, metal_al, metal_othernonfe)
+##                     + nonmetallic_minerals
 ##                     8 sub_uses; intensity sampled at super_category level (4),
 ##                     applied proportionally across sub_uses.
 ##
@@ -41,12 +43,12 @@
 ## Target-stock growth blends from the historical 2024 rate into the Kaya rate
 ## over STOCK_GROWTH_BLEND_YRS (00-Parameters.R) to avoid a seam jump in flows.
 ##
-## Power sector (inputs from 01b-PowerSector.R; no new sampled parameters):
+## Power sector (inputs from 02-PowerSector.R; no new sampled parameters):
 ##   the run's coal/gas/oil draws -> fossil index -> bracketing ScenarioMIP runs
 ##   within each of its two SSPs -> blended capacity path (GW) per region x tech;
 ##   batteries = BATTERY_GWH_PER_GW x (PV + wind) GW. One DSM per technology
 ##   (fixed lifetimes), materials = units x fixed t/unit, reported as 4 extra
-##   end uses ("Power: ...") of metal_fe / metal_nonfe / nonmetallic_minerals,
+##   end uses ("Power: ...") of the metal groups and nonmetallic_minerals,
 ##   pooled with the other end uses for recycling / downcycling. The 2025
 ##   power-sector stock is carved out of the civil-engineering base stock.
 ##   Extra outputs (Results/MC/): mc_power_capacity.csv, mc_power_materials.csv,
@@ -105,68 +107,30 @@ cat("  Runs:", N_RUNS, "| Cols:", ncol(mc_input_matrix), "\n")
 
 
 # =============================================================================
-# STEP 2: Read bounds from Excel
+# STEP 2: Read 2024 intensities, recycling anchors and ratio bounds
 # =============================================================================
 cat("\nSTEP 2: Read bounds\n")
 
-BIOMASS_KEYS <- c(
-  "Crops" = "crops",
-  "Grazed biomass and fodder crops" = "grazed_biomass",
-  "Wood" = "wood",
-  "Other biomass" = "other_biomass"
-)
+# Region x material 2024 intensity (kg/$ PPP; 01-Sampling.R Step 0)
+intensity_2024 <- readr::read_csv("Parameters/Simulation/intensity_2024.csv", show_col_types = FALSE)
+biomass_bounds <- intensity_2024 |> filter(material_group == "biomass") |> dplyr::select(region, mat_key, int_2024)
+fossil_bounds <- intensity_2024 |> filter(material_group == "fossil_fuels") |> dplyr::select(region, mat_key, int_2024)
+metal_bounds <- intensity_2024 |> filter(material_group == "metal_ores") |> dplyr::select(region, mat_key, int_2024)
+nonmet_bounds <- intensity_2024 |> filter(material_group == "nonmetallic_minerals") |> dplyr::select(region, mat_key, int_2024)
 
-# Reads region x material 2024 intensity from an Excel sheet, auto-detecting
-# the region column, the key column, and the "2024" baseline column.
-read_intensity_sheet <- function(file, sheet, skip_rows = 0) {
-  raw <- readxl::read_excel(file, sheet = sheet, skip = skip_rows, col_types = "text")
-  base_col <- names(raw)[stringr::str_detect(names(raw), "2024")][1]
-  char_cols <- names(raw)[purrr::map_lgl(raw, is.character)]
-  region_col <- char_cols[stringr::str_detect(tolower(char_cols), "region")][1]
-  key_col <- setdiff(char_cols, region_col)[1]
-  raw |>
-    dplyr::select(region = all_of(region_col), material_key = all_of(key_col), int_2024 = all_of(base_col)) |>
-    mutate(int_2024 = as.numeric(int_2024)) |>
-    filter(!is.na(region), !is.na(material_key), !is.na(int_2024))
-}
-
-# Maps the four free-text end-use rows to the canonical super_category key.
-classify_super <- function(x) {
-  dplyr::case_when(
-    str_detect(tolower(x), "build") ~ "buildings",
-    str_detect(tolower(x), "civil") ~ "civil",
-    str_detect(tolower(x), "short") ~ "sl_products",
-    str_detect(tolower(x), "machin") ~ "machinery",
-    TRUE ~ NA_character_
-  )
-}
-
-biomass_bounds <- read_intensity_sheet(ASSUMPTIONS_FILE, "Biomass") |>
-  filter(material_key %in% names(BIOMASS_KEYS)) |>
-  mutate(mat_key = BIOMASS_KEYS[material_key]) |>
-  distinct(region, mat_key, .keep_all = TRUE) |>
-  dplyr::select(region, mat_key, int_2024)
-
-fossil_bounds <- read_intensity_sheet(ASSUMPTIONS_FILE, "FossilFuels") |>
-  mutate(mat_key = ifelse(material_key == "Other fossil fuels", "other_fossil", material_key)) |>
-  distinct(region, mat_key, .keep_all = TRUE) |>
-  dplyr::select(region, mat_key, int_2024)
-
-metal_bounds <- read_intensity_sheet(ASSUMPTIONS_FILE, "MetalOres", skip_rows = 1) |>
-  mutate(mat_key = classify_super(material_key)) |>
-  filter(!is.na(mat_key)) |>
-  dplyr::select(region, mat_key, int_2024)
-
-nonmet_bounds <- read_intensity_sheet(ASSUMPTIONS_FILE, "NonMetallicMinerals", skip_rows = 1) |>
-  mutate(mat_key = classify_super(material_key)) |>
-  filter(!is.na(mat_key)) |>
-  dplyr::select(region, mat_key, int_2024)
-
-# Recycling rates (collection/EOL fraction) -- separate Fe and NonFe
+# Recycling rates (collection/EOL fraction) per stock metal: Fe and other non-Fe
+# Fe from Recycling_rate_Fe; Cu, Al and other non-Fe from their EOL-RR columns
 recycling_raw <- readxl::read_excel(RECYCLING_FILE, sheet = "Recycling_EOL") |>
   dplyr::filter(!stringr::str_detect(Region, "—"))
-recycling_now_fe <- recycling_raw |> dplyr::select(region = Region, rate_now = Recycling_rate_Fe)
-recycling_now_nonfe <- recycling_raw |> dplyr::select(region = Region, rate_now = Recycling_rate_NonFe)
+if (!"OtherNonFE EOL-RR" %in% names(recycling_raw)) {
+  stop("Recycling_Assumptions.xlsx (sheet Recycling_EOL) is missing column OtherNonFE EOL-RR")
+}
+recycling_now_metal <- list(
+  metal_fe = recycling_raw |> dplyr::select(region = Region, rate_now = Recycling_rate_Fe),
+  metal_cu = recycling_raw |> dplyr::select(region = Region, rate_now = `Copper EOL-RR`),
+  metal_al = recycling_raw |> dplyr::select(region = Region, rate_now = `Aluminum EOL-RR`),
+  metal_othernonfe = recycling_raw |> dplyr::select(region = Region, rate_now = `OtherNonFE EOL-RR`)
+)
 
 # Downcycling (non-metallic minerals): one 2024 anchor per region, shared by the
 # four giving/receiving sectors (residential, non-residential, civil engineering, roads)
@@ -201,7 +165,7 @@ gdp_percap_idx <- ssp_drivers |>
 
 gdp_base_vals <- readr::read_csv("Parameters/Worldbank-GDP/gdp_region.csv", show_col_types = FALSE) |>
   filter(year == 2024L) |>
-  dplyr::select(region = Region, GDP_2015USD)
+  dplyr::select(region = Region, GDP_PPP2017USD)
 
 # NOTE: gdp_full is consumed only to derive regions_vec / ssp_labels below.
 # Kept minimal; drop entirely if those vectors are sourced elsewhere.
@@ -209,7 +173,7 @@ gdp_full <- ssp_drivers |>
   filter(variable == "GDP|PPP", year >= 2024L, year <= FORECAST_END) |>
   dplyr::select(scenario, region, year, gdp_index = index) |>
   left_join(gdp_base_vals, by = "region") |>
-  mutate(gdp_billion_usd = GDP_2015USD * gdp_index / 1e9)
+  mutate(gdp_billion_usd = GDP_PPP2017USD * gdp_index / 1e9)
 
 unep_dmc <- readr::read_csv("Parameters/UNEP-Materials/materials_region_DMC.csv", show_col_types = FALSE)
 
@@ -240,11 +204,17 @@ m_2024_fossil <- unep_dmc |>
   mutate(mat_key = names(FOSSIL_LABEL)[match(material_category, FOSSIL_LABEL)]) |>
   dplyr::select(region = Region, mat_key, M_2024_Mt = DMC_Mt)
 
+# Gold ore: a flow with fixed 2024 world intensity per world GDP, regional 2024
+# shares held (no stock, recycling or grade); 2024 gold ore DMC from the non-Fe split (01-PrepareData/07)
+m_2024_gold <- readr::read_csv("Parameters/MaterialFlows/nonfe_split_region.csv", show_col_types = FALSE) |>
+  filter(nonfe_sub == "Gold", year == anchor_year) |>
+  dplyr::select(region = Region, M_2024_Mt = DMC_Mt)
+
 # 2024 stock baseline -> nested lookup [material][region][sub_use] = stock_Mt
 stock_2024_raw <- readr::read_csv("Parameters/MISO-Stock/stock_2024_total.csv", show_col_types = FALSE) |>
   rename(region = Region)
 
-# Power-sector carve-out (01b-PowerSector.R): the 2025 generation + storage stock
+# Power-sector carve-out (02-PowerSector.R): the 2025 generation + storage stock
 # is removed from the civil-engineering base stock before the stock-per-GDP rule;
 # its age profile is scaled by the same factor below (the DSM starts from cohorts)
 power_carveout <- readr::read_csv("Parameters/Simulation/power_carveout_2025.csv", show_col_types = FALSE)
@@ -281,8 +251,9 @@ stock_growth_hist_sub <- stock_growth_hist |>
 # Weight on model (Kaya) stock growth per YEARS_DSM: linear over STOCK_GROWTH_BLEND_YRS
 w_growth_model <- pmin(1, (YEARS_DSM - 2024L) / (STOCK_GROWTH_BLEND_YRS + 1L))
 
-# Age profiles: annualize 5-year cohort bins by spreading each bin evenly over
-# its preceding `gap` years -> removes the staircase artifact in survival curves.
+# Age profiles: cohorts are annual; any cohort following a gap (and the first,
+# 1900 cohort, which holds all pre-1900 stock) is spread evenly over its
+# preceding `gap` years -> no staircase artifact in survival curves.
 age_profile_raw <- readr::read_csv("Parameters/MISO-Stock/stock_2024_age_profile.csv", show_col_types = FALSE) |>
   rename(region = Region) |>
   group_by(material, region, sub_use, cohort_year) |>
@@ -336,8 +307,8 @@ build_age_lookup <- function(material_label) {
   }
   out
 }
-age_lookup_fe <- build_age_lookup("Metal_Fe")
-age_lookup_nonfe <- build_age_lookup("Metal_NonFe")
+# Metals: one lookup per material_group (metal_fe, metal_cu, metal_al, metal_othernonfe)
+age_lookup_metal <- lapply(setNames(names(METAL_KEYS), METAL_KEYS), build_age_lookup)
 age_lookup_nonmet <- build_age_lookup("Non-metallic minerals")
 
 # Dense [region x year] matrices per SSP -> avoids repeated joins in the hot loop.
@@ -416,9 +387,9 @@ world_anchor <- tibble::tibble(region = regions_vec) |>
       dplyr::select(region = Region, pop_2024 = population),
     by = "region"
   )
-stopifnot(!anyNA(world_anchor$GDP_2015USD), !anyNA(world_anchor$pop_2024))
+stopifnot(!anyNA(world_anchor$GDP_PPP2017USD), !anyNA(world_anchor$pop_2024))
 pop0_vec <- setNames(world_anchor$pop_2024, world_anchor$region)
-gdppc0_vec <- setNames(world_anchor$GDP_2015USD / world_anchor$pop_2024, world_anchor$region)
+gdppc0_vec <- setNames(world_anchor$GDP_PPP2017USD / world_anchor$pop_2024, world_anchor$region)
 gdppc0_world <- sum(pop0_vec * gdppc0_vec) / sum(pop0_vec)
 SSP_GROWTH_YRS <- FORECAST_END - 2024L
 END_COL <- as.character(FORECAST_END)
@@ -792,8 +763,8 @@ param_draws <- mc_input_matrix |>
 # -- Recycling endpoints + trajectories (convergence with smoothstep ramp) -----
 recyc_conv_yr <- param_draws |> transmute(run_id, recyc_convergence_yr = as.integer(round(recyc_convergence_yr)))
 
-# Endpoint rate = the run's sampled global value (recycling_rate_fe,
-# recycling_rate_nonfe, downcycling), same for all regions (SSP-independent).
+# Endpoint rate = the run's sampled global value (recycling_rate_fe / _cu / _al /
+# _othernonfe, downcycling), same for all regions (SSP-independent).
 # Each region ramps from its own 2024 rate to that endpoint by
 # recyc_convergence_yr, holds after (no clipping, no GDP-weighted anchor).
 #
@@ -828,10 +799,12 @@ make_recycling_traj <- function(recycling_now, G_col) {
     dplyr::select(run_id, region, year, recycling_rate)
 }
 
-recycling_traj_fe <- make_recycling_traj(recycling_now_fe, "recycling_rate_fe")
-recycling_traj_nonfe <- make_recycling_traj(recycling_now_nonfe, "recycling_rate_nonfe")
-recycling_by_run_fe <- split(recycling_traj_fe, recycling_traj_fe$run_id)
-recycling_by_run_nonfe <- split(recycling_traj_nonfe, recycling_traj_nonfe$run_id)
+# One trajectory per stock metal -> list[metal_group][run_id]
+recycling_by_run_metal <- lapply(names(recycling_now_metal), function(mg) {
+  traj <- make_recycling_traj(recycling_now_metal[[mg]], paste0("recycling_rate_", METAL_PARAM_SUFFIX[[mg]]))
+  split(traj, traj$run_id)
+}) |>
+  setNames(names(recycling_now_metal))
 
 # -- Downcycling trajectory (same ramp; one shared endpoint for all 4 sectors) --
 downcycling_traj <- make_recycling_traj(downcycling_now, "downcycling") |>
@@ -855,13 +828,17 @@ lifetime_dr <- mc_input_matrix |>
 lifetime_by_run <- split(lifetime_dr, lifetime_dr$run_id)
 
 # -- Ore grade (metal -> ore conversion for primary AND avoided-ore secondary) -
-# grade_ore_fe/nonfe here is the per-run sampled TARGET (endpoint); each run
-# ramps linearly from the 2024 baseline (GRADE_ORE_*_NOW) to this target, over
-# the same convergence year drawn for intensity (target_year_vec, built below).
-GRADE_ORE_FE_NOW <- GRADE_ORE_FE_2024 # Scripts/00-CommonParameters.R
-GRADE_ORE_NONFE_NOW <- GRADE_ORE_NONFE_2024
+# grade_ore_<metal> here is the per-run sampled TARGET (endpoint); each run
+# ramps from the 2024 baseline (GRADE_ORE_*_NOW) to this target, over the same
+# convergence year drawn for intensity (target_year_vec, built below).
+GRADE_ORE_NOW <- c(
+  metal_fe = GRADE_ORE_FE_2024, # Scripts/00-CommonParameters.R
+  metal_cu = GRADE_ORE_CU_2024,
+  metal_al = GRADE_ORE_AL_2024,
+  metal_othernonfe = GRADE_ORE_OTHERNONFE_2024
+)
 
-grade_params <- param_draws |> dplyr::select(run_id, grade_ore_fe, grade_ore_nonfe)
+grade_params <- param_draws |> dplyr::select(run_id, all_of(paste0("grade_ore_", METAL_PARAM_SUFFIX)))
 grade_by_run <- split(grade_params, grade_params$run_id)
 
 # -- Secondary room parameters (non-metallic minerals) ---------------------------
@@ -888,8 +865,6 @@ cat("  Trajectories rebuilt.\n")
 run_one <- function(i) {
   ie_i <- intensity_by_run[[i]]
   lp_i <- lifetime_by_run[[i]]
-  rec_fe_i <- recycling_by_run_fe[[i]]
-  rec_nonfe_i <- recycling_by_run_nonfe[[i]]
   dow_i <- downcycling_by_run[[i]]
   sc_i <- scalar_by_run[[i]]
   gr_i <- grade_by_run[[i]]
@@ -915,11 +890,11 @@ run_one <- function(i) {
 
   # Ore grade: same smoothstep-eased ramp from the 2024 baseline to the
   # sampled target, using the same convergence year (alpha) as intensity.
-  grade_ore_fe_traj <- setNames(GRADE_ORE_FE_NOW + (gr_i$grade_ore_fe - GRADE_ORE_FE_NOW) * alpha, as.character(yr_vec))
-  grade_ore_nonfe_traj <- setNames(
-    GRADE_ORE_NONFE_NOW + (gr_i$grade_ore_nonfe - GRADE_ORE_NONFE_NOW) * alpha,
-    as.character(yr_vec)
-  )
+  grade_traj_metal <- lapply(names(GRADE_ORE_NOW), function(mg) {
+    target <- gr_i[[paste0("grade_ore_", METAL_PARAM_SUFFIX[[mg]])]]
+    setNames(GRADE_ORE_NOW[[mg]] + (target - GRADE_ORE_NOW[[mg]]) * alpha, as.character(yr_vec))
+  }) |>
+    setNames(names(GRADE_ORE_NOW))
 
   # -- Power sector: capacity (GW) and storage (GWh) DSM per technology --------
   # Target units = bracket/SSP-weighted scenario capacity factor x pop index x
@@ -1084,7 +1059,19 @@ run_one <- function(i) {
     out_list[[length(out_list) + 1L]] <- emit_flow(rg, "fossil_fuels", FOSSIL_LABEL[fos$mat_key[j]], M_Mt)
   }
 
-  # -- DSM for one metal material (Fe or NonFe) --------------------------------
+  # -- Gold ore (flow, fixed 2024 WORLD intensity per world GDP) -----------------
+  # Gold ore DMC is mostly mine extraction for a global market: each region keeps
+  # its 2024 share of world gold ore, scaled by the WORLD GDP index (2024 = 1),
+  # so faster-growing mining regions do not raise world gold ore per GDP
+  world_gdp_idx_i <- colSums(pop0_vec * gdppc0_vec * pop_i[regions_vec, , drop = FALSE] * gdppc_i[regions_vec, , drop = FALSE]) /
+    sum(pop0_vec * gdppc0_vec)
+  for (j in seq_len(nrow(m_2024_gold))) {
+    rg <- m_2024_gold$region[j]
+    M_Mt <- m_2024_gold$M_2024_Mt[j] * world_gdp_idx_i
+    out_list[[length(out_list) + 1L]] <- emit_flow(rg, "metal_gold", "Gold", M_Mt)
+  }
+
+  # -- DSM for one stock metal (Fe, Cu, Al or other non-Fe) ---------------------
   # Recycling only, no quality loss. Secondary cannot exceed demand; unabsorbed
   # scrap is recorded as spill (not silently dropped). Primary >= 0 by construction.
   # Reported base *_Mt columns are ore-equivalent (metal / grade);
@@ -1154,7 +1141,7 @@ run_one <- function(i) {
       }
     }
     # Power-sector end uses (built above) join the same end-of-life pool
-    pw_g <- pw_i[pw_i$material_group == if (mat_label == "Metal_Fe") "metal_fe" else "metal_nonfe", ]
+    pw_g <- pw_i[pw_i$material_group == METAL_KEYS[[mat_label]], ]
     if (nrow(pw_g) > 0) {
       sr_rows[[length(sr_rows) + 1L]] <- pw_g[, c(
         "region",
@@ -1192,7 +1179,7 @@ run_one <- function(i) {
     data.frame(
       run_id = i,
       region = sr$region,
-      material_group = if (mat_label == "Metal_Fe") "metal_fe" else "metal_nonfe",
+      material_group = METAL_KEYS[[mat_label]],
       material_key = SUB_USE_LABELS[sr$sub_use],
       year = sr$year,
       total_inflow_Mt = sr$replacement_Mt + sr$new_additions_Mt,
@@ -1214,13 +1201,14 @@ run_one <- function(i) {
     )
   }
 
-  fe_out <- run_dsm_metal("Metal_Fe", age_lookup_fe, rec_fe_i, grade_ore_fe_traj)
-  nonfe_out <- run_dsm_metal("Metal_NonFe", age_lookup_nonfe, rec_nonfe_i, grade_ore_nonfe_traj)
-  if (!is.null(fe_out)) {
-    out_list[[length(out_list) + 1L]] <- fe_out
-  }
-  if (!is.null(nonfe_out)) {
-    out_list[[length(out_list) + 1L]] <- nonfe_out
+  # All metals share each end use's stock-intensity draw; each has its own
+  # 2024 stock and cohorts, recycling path and grade path
+  for (mat_label in names(METAL_KEYS)) {
+    mg <- METAL_KEYS[[mat_label]]
+    metal_out <- run_dsm_metal(mat_label, age_lookup_metal[[mg]], recycling_by_run_metal[[mg]][[i]], grade_traj_metal[[mg]])
+    if (!is.null(metal_out)) {
+      out_list[[length(out_list) + 1L]] <- metal_out
+    }
   }
 
   # -- Non-metallic minerals: DSM + downcycling cascade (8 sub_uses) -----------
@@ -1390,27 +1378,90 @@ if (.Platform$OS.type == "windows") {
 }
 cat("  Workers:", future::nbrOfWorkers(), "\n")
 
+POWER_LABELS <- POWER_LIFE_CLASSES$label
+
+# Runs are processed in chunks of CHUNK_SIZE so the full result table (~3.7 GB
+# per 1,000 runs in memory) is never held at once: each chunk is appended to
+# mc_results.parquet / mc_power_capacity.csv, and only the small per-run
+# summaries needed by the STEP 7/7b checks are kept.
+CHUNK_SIZE <- 1000L
+run_chunks <- split(seq_len(N_RUNS), ceiling(seq_len(N_RUNS) / CHUNK_SIZE))
+unlink("Results/MC/mc_power_capacity.csv")
+pq_sink <- arrow::FileOutputStream$create("Results/MC/mc_results.parquet")
+pq_writer <- NULL
+n_rows_written <- 0
+spill_runs <- list()
+power_materials <- list()
+power_capacity_2025 <- list()
+power_stock_share <- list()
+n_neg_stock <- 0
+n_neg_cap <- 0
+
 t0 <- proc.time()
-results_list <- furrr::future_map(seq_len(N_RUNS), run_one, .options = furrr_options(seed = TRUE), .progress = TRUE)
+for (k in seq_along(run_chunks)) {
+  cat(sprintf("  Chunk %d/%d (runs %d-%d)  %s\n", k, length(run_chunks), min(run_chunks[[k]]), max(run_chunks[[k]]), format(Sys.time(), "%H:%M:%S")))
+  results_list <- furrr::future_map(run_chunks[[k]], run_one, .options = furrr_options(seed = TRUE), .progress = TRUE)
+  results <- bind_rows(lapply(results_list, `[[`, "main"))
+  power_capacity <- bind_rows(lapply(results_list, `[[`, "cap"))
+  rm(results_list)
+
+  # Append chunk to the parquet file (schema fixed by the first chunk)
+  tbl <- arrow::arrow_table(results)
+  if (is.null(pq_writer)) {
+    pq_schema <- tbl$schema
+    pq_writer <- arrow::ParquetFileWriter$create(pq_schema, pq_sink, properties = arrow::ParquetWriterProperties$create(names(pq_schema)))
+  }
+  pq_writer$WriteTable(tbl$cast(pq_schema), chunk_size = 1024^2)
+  n_rows_written <- n_rows_written + nrow(results)
+  rm(tbl)
+  readr::write_csv(power_capacity, "Results/MC/mc_power_capacity.csv", append = k > 1)
+
+  # Per-chunk pieces for STEP 7 / 7b
+  spill_runs[[k]] <- results |> dplyr::distinct(run_id, run_total_spill_Mt)
+  # Stocks / inflows / waste in metal mass for metals; primary / secondary ore-equivalent
+  power_materials[[k]] <- results |>
+    filter(material_key %in% POWER_LABELS) |>
+    group_by(run_id, region, material_group, year) |>
+    summarise(
+      in_use_stock_Mt = sum(in_use_stock_Mt),
+      total_inflow_Mt = sum(total_inflow_Mt),
+      waste_Mt_pure = sum(waste_Mt_pure),
+      primary_consumption_Mt = sum(primary_consumption_Mt),
+      secondary_supply_Mt = sum(secondary_supply_Mt),
+      .groups = "drop"
+    )
+  power_capacity_2025[[k]] <- power_capacity |> filter(year == DSM_START)
+  power_stock_share[[k]] <- results |>
+    filter(
+      year %in% c(DSM_START, FORECAST_END),
+      material_group %in% STOCK_GROUPS
+    ) |>
+    group_by(run_id, year, material_group) |>
+    summarise(share = sum(in_use_stock_Mt[material_key %in% POWER_LABELS]) / sum(in_use_stock_Mt, na.rm = TRUE), .groups = "drop")
+  n_neg_stock <- n_neg_stock + sum(results$in_use_stock_Mt < -1e-9, na.rm = TRUE)
+  n_neg_cap <- n_neg_cap + sum(power_capacity$stock_units < -1e-9)
+  rm(results, power_capacity)
+  gc()
+}
+pq_writer$Close()
+pq_sink$close()
 elapsed <- (proc.time() - t0)["elapsed"]
 cat(sprintf("  Done in %.0f s (%.3f s/run)\n", elapsed, elapsed / N_RUNS))
 
-results <- bind_rows(lapply(results_list, `[[`, "main"))
-power_capacity <- bind_rows(lapply(results_list, `[[`, "cap"))
-rm(results_list)
+power_materials <- bind_rows(power_materials)
+power_capacity_2025 <- bind_rows(power_capacity_2025)
+power_stock_share <- bind_rows(power_stock_share)
 
 
 # =============================================================================
 # STEP 7: Save
 # =============================================================================
 cat("\nSTEP 7: Save\n")
-arrow::write_parquet(results, "Results/MC/mc_results.parquet")
-cat("  Saved:", nrow(results), "rows to Results/MC/mc_results.parquet\n")
+cat("  Saved:", n_rows_written, "rows to Results/MC/mc_results.parquet\n")
 
 # Quick spill audit -> if non-trivial, recycling/downcycling params are
 # saturating demand and their sensitivity contribution is suspect.
-spill_summary <- results |>
-  dplyr::distinct(run_id, run_total_spill_Mt) |>
+spill_summary <- bind_rows(spill_runs) |>
   dplyr::summarise(
     runs_with_spill = sum(run_total_spill_Mt > 1e-6),
     median_spill_Mt = median(run_total_spill_Mt),
@@ -1430,22 +1481,6 @@ cat(sprintf(
 # =============================================================================
 cat("\nSTEP 7b: Power-sector outputs and checks\n")
 
-POWER_LABELS <- POWER_LIFE_CLASSES$label
-
-# Stocks / inflows / waste in metal mass for metals; primary / secondary ore-equivalent
-power_materials <- results |>
-  filter(material_key %in% POWER_LABELS) |>
-  group_by(run_id, region, material_group, year) |>
-  summarise(
-    in_use_stock_Mt = sum(in_use_stock_Mt),
-    total_inflow_Mt = sum(total_inflow_Mt),
-    waste_Mt_pure = sum(waste_Mt_pure),
-    primary_consumption_Mt = sum(primary_consumption_Mt),
-    secondary_supply_Mt = sum(secondary_supply_Mt),
-    .groups = "drop"
-  )
-
-readr::write_csv(power_capacity, "Results/MC/mc_power_capacity.csv")
 readr::write_csv(power_materials, "Results/MC/mc_power_materials.csv")
 readr::write_csv(run_power_link, "Results/MC/mc_power_run_link.csv")
 readr::write_csv(run_power_bracket, "Results/MC/mc_power_run_brackets.csv")
@@ -1456,8 +1491,7 @@ cat("\n  [Check 1] 2025 world capacity (GW; battery GWh): input file vs model\n"
 print(
   readr::read_csv("Parameters/Simulation/power_capacity_check_2025.csv", show_col_types = FALSE) |>
     full_join(
-      power_capacity |>
-        filter(year == DSM_START) |>
+      power_capacity_2025 |>
         group_by(run_id, tech) |>
         summarise(units = sum(stock_units), .groups = "drop") |>
         group_by(tech) |>
@@ -1471,13 +1505,7 @@ print(
 # Check 2: power-sector share of total in-use stock, by material group
 cat("\n  [Check 2] Power-sector share of world in-use stock (p05 / median / p95 across runs)\n")
 print(
-  results |>
-    filter(
-      year %in% c(DSM_START, FORECAST_END),
-      material_group %in% c("metal_fe", "metal_nonfe", "nonmetallic_minerals")
-    ) |>
-    group_by(run_id, year, material_group) |>
-    summarise(share = sum(in_use_stock_Mt[material_key %in% POWER_LABELS]) / sum(in_use_stock_Mt), .groups = "drop") |>
+  power_stock_share |>
     group_by(year, material_group) |>
     summarise(
       p05 = scales::percent(quantile(share, 0.05), 0.1),
@@ -1528,9 +1556,7 @@ cat(
   "\n"
 )
 
-# Check 4: no negative stocks
-n_neg_stock <- sum(results$in_use_stock_Mt < -1e-9, na.rm = TRUE)
-n_neg_cap <- sum(power_capacity$stock_units < -1e-9)
+# Check 4: no negative stocks (counted per chunk in STEP 6)
 cat("\n  [Check 4] Negative in-use stock rows:", n_neg_stock, "| negative capacity rows:", n_neg_cap, "\n")
 if (n_neg_stock + n_neg_cap > 0) {
   warning("Negative stocks found -- see Check 4")
@@ -1545,14 +1571,14 @@ if (n_neg_stock + n_neg_cap > 0) {
 # history -> projection, historical primary = DSM inflow - secondary, with the
 # same end-of-life allocation as the projection (allocate_eol, per region x
 # material x year): recovery rate = each region's 2024 anchor (Recycling_EOL
-# Fe/NonFe, Downcycling for the 4 mineral sectors), held constant; mineral room
+# per metal, Downcycling for the 4 mineral sectors), held constant; mineral room
 # from the central parameter values. Metals converted to ore-equivalent with
 # the historical grade (same basis as primary_consumption_Mt).
 cat("\nSTEP 8: Historical flows on the model basis\n")
 
 hist_rates <- dplyr::bind_rows(
-  recycling_now_fe |> dplyr::mutate(material = "Metal_Fe"),
-  recycling_now_nonfe |> dplyr::mutate(material = "Metal_NonFe"),
+  dplyr::bind_rows(recycling_now_metal, .id = "material_group") |>
+    dplyr::mutate(material = names(METAL_KEYS)[match(material_group, METAL_KEYS)]),
   downcycling_now |> dplyr::mutate(material = "Non-metallic minerals")
 ) |>
   dplyr::select(region, material, rate_now)
@@ -1568,7 +1594,7 @@ hist_flows <- readr::read_csv("Parameters/Intermediate/flow_trajectory_subenduse
     outflow_Mt = tidyr::replace_na(outflow_Mt, 0),
     demand = pmax(0, inflow_Mt),
     waste = pmax(0, outflow_Mt),
-    is_metal = material %in% c("Metal_Fe", "Metal_NonFe"),
+    is_metal = material %in% names(METAL_KEYS),
     is_eol_sector = sub_use %in% c("residential", "non_residential", "civil_engineering", "roads"),
     rate = ifelse(is_metal | is_eol_sector, tidyr::replace_na(rate_now, 0), 0),
     room = demand *

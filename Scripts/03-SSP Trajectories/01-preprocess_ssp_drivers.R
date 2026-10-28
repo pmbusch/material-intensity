@@ -1,5 +1,5 @@
 ## =============================================================================
-## 01_preprocess_ssp_drivers.R
+## 01-preprocess_ssp_drivers.R
 ## Produces a clean annual GDP and population dataframe by region and SSP
 ## scenario, reusable by all material forecast modules.
 ##
@@ -15,7 +15,7 @@
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
 
 DRIVER_VARIABLES <- c("Population", "GDP|PPP [per capita]", "GDP|PPP")
-UNIT_VARIABLES <- c("million", "billion USD_2015/yr", "USD_2015/yr") # GDP comes with different base years
+UNIT_VARIABLES <- c("million", "billion USD_2017/yr", "USD_2017/yr") # GDP|PPP (OECD ENV-Growth) comes in 2010/2015/2017 $; 2017 matches World Bank GDP_PPP2017USD
 BASE_YEAR <- 2024L
 
 

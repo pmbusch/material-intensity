@@ -60,9 +60,11 @@ present_line_labeled <- list(
 # Load data --------
 
 hist_dmc <- read_csv("Parameters/UNEP-Materials/materials_region_DMC.csv", show_col_types = FALSE)
-mc_results <- arrow::read_parquet("Results/MC/mc_results.parquet")
+mc_results <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
+  dplyr::select(run_id, material_group, year, primary_consumption_Mt, waste_Mt) |>
+  dplyr::collect()
 mc_input_matrix <- read_csv("Parameters/Simulation/mc_input_matrix.csv", show_col_types = FALSE)
-mc_decoupling <- arrow::read_parquet("Results/MC/mc_decoupling.parquet") # produced by Scripts/04-Simulation/04-Decoupling.R
+mc_decoupling <- arrow::read_parquet("Results/MC/mc_decoupling.parquet") # produced by Scripts/04-Simulation/05-Decoupling.R
 stock_2024 <- read_csv("Parameters/MISO-Stock/stock_2024_total.csv", show_col_types = FALSE)
 stock_hist <- read_csv("Parameters/Intermediate/stock_trajectory_1970_2024.csv", show_col_types = FALSE)
 gdp_region_hist <- read_csv("Parameters/Worldbank-GDP/gdp_region.csv", show_col_types = FALSE)
@@ -91,7 +93,7 @@ hist_4mat <- hist_dmc |>
 proj_4mat <- mc_results |>
   dplyr::mutate(
     material_group = dplyr::case_when(
-      material_group %in% c("metal_fe", "metal_nonfe") ~ "Metal ores",
+      material_group %in% METAL_GROUPS_ALL ~ "Metal ores",
       material_group == "biomass" ~ "Biomass",
       material_group == "fossil_fuels" ~ "Fossil fuels",
       material_group == "nonmetallic_minerals" ~ "Non-metallic minerals"
@@ -156,7 +158,7 @@ proj_4mat <- proj_4mat |>
 
 
 # Rescale MC input draws to physical units --------
-# value = bound_min + u*(bound_max-bound_min), same formula 02-RunSimulations.R
+# value = bound_min + u*(bound_max-bound_min), same formula 03-RunSimulations.R
 # and Figure 4 - PrepareData.R use to turn [0,1] LHS draws into real units.
 
 # World kg/$ bounds (2024-GDP-weighted regional endpoint bounds, flows averaged
@@ -212,15 +214,23 @@ mineral_stock_weights <- stock_2024 |>
 w_bldg <- mineral_stock_weights$stock_Mt[mineral_stock_weights$super_category == "buildings"]
 w_civil <- mineral_stock_weights$stock_Mt[mineral_stock_weights$super_category == "civil_infrastructure"]
 
-# 2024 stock weights (Fe vs NonFe), used to combine the Fe/NonFe recycling
-# rate draws into a single mass-weighted metal recycling index.
-fe_nonfe_weights <- stock_2024 |>
-  dplyr::filter(material %in% c("Metal_Fe", "Metal_NonFe")) |>
+# 2024 stock weights per metal (Fe, Cu, Al, other non-Fe), used to combine the
+# metal recycling rate draws into a single mass-weighted metal recycling index.
+metal_stock_weights <- stock_2024 |>
+  dplyr::filter(material %in% names(METAL_KEYS)) |>
   dplyr::group_by(material) |>
-  dplyr::summarise(stock_Mt = sum(stock_Mt), .groups = "drop")
+  dplyr::summarise(w = sum(stock_Mt), .groups = "drop") |>
+  dplyr::mutate(col = paste0("recycling_rate_", METAL_PARAM_SUFFIX[METAL_KEYS[material]]))
 
-w_fe <- fe_nonfe_weights$stock_Mt[fe_nonfe_weights$material == "Metal_Fe"]
-w_nonfe <- fe_nonfe_weights$stock_Mt[fe_nonfe_weights$material == "Metal_NonFe"]
+# Recycling endpoints: semi-uniform around the central value (as 03-RunSimulations.R)
+recycling_index_run <- mc_input_matrix |>
+  dplyr::select(run_id, all_of(metal_stock_weights$col)) |>
+  tidyr::pivot_longer(-run_id, names_to = "col", values_to = "u") |>
+  dplyr::left_join(MC_PARAMS, by = "col") |>
+  dplyr::left_join(metal_stock_weights, by = "col") |>
+  dplyr::mutate(rate = dplyr::if_else(u < 0.5, min + 2 * u * (central - min), central + 2 * (u - 0.5) * (max - central))) |>
+  dplyr::group_by(run_id) |>
+  dplyr::summarise(recycling_index = sum(w * rate) / sum(w), .groups = "drop")
 
 # GDP per-capita growth rate per run, 2025-2060 window (matches the figure's
 # projection horizon); world quantity, same value across material groups.
@@ -236,20 +246,6 @@ run_vars <- mc_input_matrix |>
     coal_intensity = coal_min + intensity_coal_global * (coal_max - coal_min),
     gas_intensity = gas_min + intensity_gas_global * (gas_max - gas_min),
     oil_intensity = oil_min + intensity_oil_global * (oil_max - oil_min),
-    # Recycling endpoints: semi-uniform around the central value (as 02-RunSimulations.R)
-    recycling_index = (w_fe *
-      dplyr::if_else(
-        recycling_rate_fe < 0.5,
-        RECYCLING_RATE_FE_MIN + 2 * recycling_rate_fe * (RECYCLING_RATE_FE_CENTRAL - RECYCLING_RATE_FE_MIN),
-        RECYCLING_RATE_FE_CENTRAL + 2 * (recycling_rate_fe - 0.5) * (RECYCLING_RATE_FE_MAX - RECYCLING_RATE_FE_CENTRAL)
-      ) +
-      w_nonfe *
-        dplyr::if_else(
-          recycling_rate_nonfe < 0.5,
-          RECYCLING_RATE_NONFE_MIN + 2 * recycling_rate_nonfe * (RECYCLING_RATE_NONFE_CENTRAL - RECYCLING_RATE_NONFE_MIN),
-          RECYCLING_RATE_NONFE_CENTRAL + 2 * (recycling_rate_nonfe - 0.5) * (RECYCLING_RATE_NONFE_MAX - RECYCLING_RATE_NONFE_CENTRAL)
-        )) /
-      (w_fe + w_nonfe),
     intensity_bldg_metal = bldg_metal_min + intensity_buildings_metalOres_global * (bldg_metal_max - bldg_metal_min),
     intensity_civil_metal = civil_metal_min + intensity_civil_metalOres_global * (civil_metal_max - civil_metal_min),
     intensity_machinery_metal = machinery_metal_min +
@@ -271,7 +267,8 @@ run_vars <- mc_input_matrix |>
     stock_intensity_minerals = intensity_bldg_nonmet + intensity_civil_nonmet,
     lifetime_minerals = (w_bldg * lifetime_bldg + w_civil * lifetime_civil) / (w_bldg + w_civil)
   ) |>
-  dplyr::left_join(gdp_growth, by = "run_id")
+  dplyr::left_join(gdp_growth, by = "run_id") |>
+  dplyr::left_join(recycling_index_run, by = "run_id")
 
 SIZE_RANGE <- range(run_vars$gdp_pc_cagr, na.rm = TRUE)
 
@@ -292,7 +289,7 @@ SIZE_RANGE <- range(run_vars$gdp_pc_cagr, na.rm = TRUE)
 gdp_world_hist <- gdp_region_hist |>
   dplyr::filter(year %in% 2019:2024) |>
   dplyr::group_by(year) |>
-  dplyr::summarise(gdp = sum(GDP_2015USD, na.rm = TRUE), .groups = "drop")
+  dplyr::summarise(gdp = sum(GDP_PPP2017USD, na.rm = TRUE), .groups = "drop")
 
 biomass_hist_intensity <- hist_dmc |>
   dplyr::filter(year %in% 2019:2024, material_category %in% c("Crops", "Grazed biomass and fodder crops")) |>
@@ -529,7 +526,7 @@ p_biomass_sc <- ggplot(scatter_biomass, aes(x = crop_intensity, y = grazed_inten
     labels = scales::percent_format(accuracy = 0.1),
     guide = "none"
   ) +
-  labs(title = "Biomass", tag = "b", x = "Crop intensity (kg/USD)", y = "Grazed biomass intensity (kg/USD)") +
+  labs(title = "Biomass", tag = "b", x = "Crop intensity (kg/$)", y = "Grazed biomass intensity (kg/$)") +
   theme_pb_large() +
   theme(plot.title = element_text(colour = unname(PALETTE_MATERIAL_GROUPS[["Biomass"]]), hjust = 0.5))
 
@@ -562,7 +559,7 @@ p_fossil_sc <- ggplot(scatter_fossil, aes(x = oil_ng_intensity, y = coal_intensi
     labels = scales::percent_format(accuracy = 0.1)
   ) +
   guides(size = guide_legend(position = "inside")) +
-  labs(title = "Fossil fuels", tag = "d", x = "Oil + natural gas intensity (kg/USD)", y = "Coal intensity (kg/USD)") +
+  labs(title = "Fossil fuels", tag = "d", x = "Oil + natural gas intensity (kg/$)", y = "Coal intensity (kg/$)") +
   theme_pb_large() +
   theme(
     plot.title = element_text(colour = unname(PALETTE_MATERIAL_GROUPS[["Fossil fuels"]]), hjust = 0.5),
@@ -592,8 +589,8 @@ p_metal_sc <- ggplot(scatter_metal, aes(x = stock_intensity_metal, y = recycling
   labs(
     title = "Metal ores",
     tag = "f",
-    x = "Metal ore stock intensity (kg/USD)",
-    y = "Recycling index - Fe & NonFe (%)"
+    x = "Metal ore stock intensity (kg/$)",
+    y = "Recycling index - metals (%)"
   ) +
   theme_pb_large() +
   theme(plot.title = element_text(colour = unname(PALETTE_MATERIAL_GROUPS[["Metal ores"]]), hjust = 0.5))
@@ -626,7 +623,7 @@ p_mineral_sc <- ggplot(scatter_mineral, aes(x = stock_intensity_minerals, y = li
   labs(
     title = "Non-metallic minerals",
     tag = "h",
-    x = "Non-metallic minerals stock intensity (kg/USD)",
+    x = "Non-metallic minerals stock intensity (kg/$)",
     y = "Average product lifetime (years)"
   ) +
   theme_pb_large() +
@@ -655,5 +652,19 @@ fig5 <- patchwork::wrap_plots(
 ggsave("Figures/Supporting-Figures/S12_TimeSeriesProjection.png", fig5, units = "cm", dpi = 600, width = 18, height = 8.7 * 4)
 ggsave("Figures/SVG/Supporting-Figures/S12_TimeSeriesProjection.svg", fig5, units = "cm", width = 18, height = 8.7 * 4)
 group_svg_layers("Figures/SVG/Supporting-Figures/S12_TimeSeriesProjection.svg")
+
+# Save figure data: left column = runs + history per material group; right column = run inputs
+dir.create("Figures/Supporting-Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+readr::write_csv(
+  dplyr::bind_rows(
+    hist_4mat |> dplyr::mutate(series = "historical"),
+    proj_4mat |> dplyr::mutate(series = "projection", path_class = as.character(path_class))
+  ),
+  "Figures/Supporting-Figures/RawData/S12_left_PrimaryConsumption.csv"
+)
+readr::write_csv(
+  dplyr::bind_rows(scatter_biomass, scatter_fossil, scatter_metal, scatter_mineral) |> dplyr::mutate(path_class = as.character(path_class)),
+  "Figures/Supporting-Figures/RawData/S12_right_RunInputs.csv"
+)
 
 # EoF

@@ -1,5 +1,5 @@
 ## =============================================================================
-## 03_diagnostics.R
+## 04-Diagnostics.R
 ## Post-processing diagnostics for Monte Carlo results.
 ##
 ## Run AFTER mc_runner.R. Reads:
@@ -24,8 +24,10 @@ cat("=== MC Diagnostics ===\n\n")
 # =============================================================================
 
 cat("Loading MC results...\n")
-results <- arrow::read_parquet("Results/MC/mc_results.parquet") |>
-  mutate(material_group = ifelse(material_group %in% c("metal_fe", "metal_nonfe"), "metal_ores", material_group))
+results <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
+  dplyr::select(run_id, material_group, material_key, year, primary_consumption_Mt) |>
+  mutate(material_group = ifelse(material_group %in% METAL_GROUPS_ALL, "metal_ores", material_group)) |>
+  collect()
 input_matrix <- read_csv("Parameters/Simulation/mc_input_matrix.csv", show_col_types = FALSE)
 dmc_hist <- read_csv("Parameters/UNEP-Materials/materials_region_DMC.csv", show_col_types = FALSE)
 
@@ -327,7 +329,8 @@ cat("  Saved: Results/MC/mc_srrc.csv\n\n")
 # =============================================================================
 # FORECAST_END is past every run's recovery convergence year (RECYC_CONVERGENCE_YR_MAX),
 # so the EOL recovery achieved there must equal the drawn endpoint rate exactly:
-#   metals:   1 - sum(not_recovered) / sum(waste) over all end uses   = recycling_rate_fe / _nonfe
+#   metals:   1 - sum(not_recovered) / sum(waste) over all end uses   = recycling_rate_fe / _cu / _al / _othernonfe
+#   (gold is a flow without recycling and is left out)
 #   minerals: same over the giving sectors (buildings, roads, civil eng., power) = downcycling
 # Tests (all region x year x material unless stated):
 #   T1 mass balance        waste = not_recovered + secondary + spilled (ore-equivalent for metals)
@@ -343,14 +346,14 @@ stopifnot(RECYC_CONVERGENCE_YR_MAX < FORECAST_END)
 GIVING_SECTORS <- c("Residential", "Non-residential", "Roads", "Civil engineering", POWER_LIFE_CLASSES$label)
 
 rec <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
-  filter(material_group %in% c("metal_fe", "metal_nonfe", "nonmetallic_minerals")) |>
+  filter(material_group %in% STOCK_GROUPS) |>
   dplyr::select(
     run_id, region, material_group, material_key, year, total_inflow_Mt, primary_consumption_Mt,
     secondary_supply_Mt, secondary_supply_Mt_pure, secondary_spilled_Mt, not_recovered_Mt, waste_Mt, waste_Mt_pure
   ) |>
   collect()
 
-# Drawn endpoint values in real units (same semi-uniform mapping as 02-RunSimulations.R)
+# Drawn endpoint values in real units (same semi-uniform mapping as 03-RunSimulations.R)
 drawn <- input_matrix |>
   dplyr::select(run_id, all_of(MC_PARAMS$col)) |>
   pivot_longer(-run_id, names_to = "col", values_to = "u") |>
@@ -359,8 +362,11 @@ drawn <- input_matrix |>
   dplyr::select(run_id, col, value) |>
   pivot_wider(names_from = col, values_from = value)
 drawn_rate <- bind_rows(
-  drawn |> transmute(run_id, material_group = "metal_fe", rate_drawn = recycling_rate_fe),
-  drawn |> transmute(run_id, material_group = "metal_nonfe", rate_drawn = recycling_rate_nonfe),
+  drawn |>
+    dplyr::select(run_id, all_of(paste0("recycling_rate_", METAL_PARAM_SUFFIX))) |>
+    pivot_longer(-run_id, names_to = "col", values_to = "rate_drawn") |>
+    mutate(material_group = names(METAL_PARAM_SUFFIX)[match(sub("recycling_rate_", "", col), METAL_PARAM_SUFFIX)]) |>
+    dplyr::select(run_id, material_group, rate_drawn),
   drawn |> transmute(run_id, material_group = "nonmetallic_minerals", rate_drawn = downcycling)
 )
 
@@ -441,7 +447,11 @@ t5_plot <- t2 |>
   pivot_longer(c(rate_achieved, secondary_share), names_to = "metric", values_to = "y") |>
   mutate(
     metric = recode(metric, rate_achieved = "EOL recovery achieved", secondary_share = "Secondary share of inflow"),
-    material_group = recode(material_group, metal_fe = "Fe metals (recycling)", metal_nonfe = "Non-Fe metals (recycling)", nonmetallic_minerals = "Minerals (downcycling)")
+    material_group = recode(
+      material_group,
+      metal_fe = "Fe (recycling)", metal_cu = "Cu (recycling)", metal_al = "Al (recycling)",
+      metal_othernonfe = "Other non-Fe (recycling)", nonmetallic_minerals = "Minerals (downcycling)"
+    )
   )
 
 pb_set_geom_defaults("wide")

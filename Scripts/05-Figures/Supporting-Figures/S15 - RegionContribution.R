@@ -25,7 +25,9 @@ cat("=== Region Contribution ===\n\n")
 # Load
 # =============================================================================
 
-results <- arrow::read_parquet("Results/MC/mc_results.parquet")
+results <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
+  dplyr::select(run_id, region, year, primary_consumption_Mt) |>
+  dplyr::collect()
 cat("  Rows:", format(nrow(results), big.mark = ","), "\n")
 
 # =============================================================================
@@ -259,6 +261,8 @@ ggplot(share_stack, aes(x = year, fill = region, colour = region)) +
 ggsave("Figures/Supporting-Figures/S15_RegionMixShares.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7)
 ggsave("Figures/SVG/Supporting-Figures/S15_RegionMixShares.svg", ggplot2::last_plot(), units = "cm", width = 8.7 * 2, height = 8.7)
 clean_svg("Figures/SVG/Supporting-Figures/S15_RegionMixShares.svg")
+dir.create("Figures/Supporting-Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+write_csv(share_stack, "Figures/Supporting-Figures/RawData/S15_RegionMixShares.csv")
 cat("  Saved: Figures/Supporting-Figures/S15_RegionMixShares.png\n")
 
 # =============================================================================

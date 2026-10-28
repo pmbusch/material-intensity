@@ -7,6 +7,7 @@
 ## matrix and the bounds tables.
 ##
 ## Outputs:
+##   Parameters/Simulation/intensity_2024.csv      (region, material_group, mat_key, int_2024; kg/$ PPP)
 ##   Parameters/Simulation/mc_input_matrix.csv
 ##     columns: run_id, ssp_u, <one column per sampled parameter, all in [0,1]>
 ##   Parameters/Simulation/flow_ratio_bounds.csv   (region, material_group, mat_key, ssp, ratio_min, ratio_max)
@@ -15,20 +16,86 @@
 ##   Parameters/Simulation/intensity_world_bounds.csv (param, bound_min, bound_max, int_2024; world kg/$,
 ##     2024-GDP-weighted -- display only, for figures that express a draw u in kg/$)
 ##
-## 02-RunSimulations.R reads this matrix + the bounds tables + the Excel 2024
-## values to reconstruct trajectories on the fly. Each [0,1] draw is shared by
+## 03-RunSimulations.R reads this matrix + the bounds tables + intensity_2024.csv
+## to reconstruct trajectories on the fly. Each [0,1] draw is shared by
 ## all regions and mapped into each region's own [ratio_min, ratio_max].
 ## =============================================================================
 
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
 source("Scripts/04-Simulation/00-Parameters.R", encoding = "UTF-8")
 
+# Step 0: 2024 intensities (kg per $ GDP, PPP) per region x material -------------
+# Flows: UNEP DMC / GDP, minor UNEP categories grouped into "other_biomass" /
+# "other_fossil" as in 03-RunSimulations.R (Crop Residues follow crops there);
+# stocks: MISO 2024 in-use stock (metals: metal mass) / GDP, by end-use group.
+# Starting level of every intensity trajectory (the simulation uses ratios to it).
+
+cat("Step 0: 2024 intensities from UNEP DMC, MISO stock and World Bank GDP\n")
+
+FLOW_KEY_2024 <- c(
+  "Crops" = "crops",
+  "Grazed biomass and fodder crops" = "grazed_biomass",
+  "Wood" = "wood",
+  "Coal" = "coal",
+  "Natural Gas" = "gas",
+  "Petroleum" = "oil"
+)
+STOCK_KEY_2024 <- c("buildings" = "buildings", "civil_infrastructure" = "civil", "machinery" = "machinery", "short_lived" = "sl_products")
+
+gdp_2024 <- readr::read_csv("Parameters/Worldbank-GDP/gdp_region.csv", show_col_types = FALSE) |>
+  dplyr::filter(year == BASE_YEAR) |>
+  dplyr::select(region = Region, gdp = GDP_PPP2017USD)
+
+mass_2024_flow <- readr::read_csv("Parameters/UNEP-Materials/materials_region_DMC.csv", show_col_types = FALSE) |>
+  dplyr::filter(year == BASE_YEAR) |>
+  dplyr::left_join(
+    readxl::read_excel("Inputs/Dict_Materials.xlsx", sheet = "Categories") |>
+      dplyr::distinct(material_category = Material_22, Material_group),
+    by = "material_category"
+  ) |>
+  dplyr::filter(Material_group %in% c("Biomass", "Fossil fuels"), material_category != "Crop Residues") |>
+  dplyr::mutate(
+    material_group = dplyr::if_else(Material_group == "Biomass", "biomass", "fossil_fuels"),
+    mat_key = dplyr::coalesce(
+      unname(FLOW_KEY_2024[material_category]),
+      dplyr::if_else(material_group == "biomass", "other_biomass", "other_fossil")
+    )
+  ) |>
+  dplyr::group_by(region = Region, material_group, mat_key) |>
+  dplyr::summarise(mass_Mt = sum(DMC_Mt, na.rm = TRUE), .groups = "drop")
+
+mass_2024_stock <- readr::read_csv("Parameters/MISO-Stock/stock_2024_total.csv", show_col_types = FALSE) |>
+  dplyr::distinct() |>
+  dplyr::mutate(
+    material_group = dplyr::if_else(stringr::str_starts(material, "Metal"), "metal_ores", "nonmetallic_minerals"),
+    mat_key = unname(STOCK_KEY_2024[super_category])
+  ) |>
+  dplyr::group_by(region = Region, material_group, mat_key) |>
+  dplyr::summarise(mass_Mt = sum(stock_Mt, na.rm = TRUE), .groups = "drop")
+
+# Mt x 1e9 kg/Mt / $ = kg/$
+intensity_2024 <- dplyr::bind_rows(mass_2024_flow, mass_2024_stock) |>
+  dplyr::inner_join(gdp_2024, by = "region") |>
+  dplyr::transmute(region, material_group, mat_key, int_2024 = mass_Mt * 1e9 / gdp)
+stopifnot(!anyNA(intensity_2024$mat_key), !anyNA(intensity_2024$int_2024))
+stopifnot(nrow(dplyr::count(intensity_2024, region)) == nrow(gdp_2024))
+
+cat("  2024 intensities (kg/$), region x material:\n")
+print(
+  intensity_2024 |>
+    dplyr::mutate(int_2024 = signif(int_2024, 3)) |>
+    tidyr::pivot_wider(names_from = region, values_from = int_2024) |>
+    as.data.frame()
+)
+write_csv(intensity_2024, "Parameters/Simulation/intensity_2024.csv")
+
+
 # Step 1: Flow-intensity ratio bounds (ScenarioMIP R10 -> model regions) ----------
 
 cat("Step 1: flow-intensity ratio bounds from ScenarioMIP summary\n")
 
 # ScenarioMIP /GDP variable -> model flow material key (other_biomass,
-# other_fossil stay fixed at 2024; Crop Residues follows crops in 02)
+# other_fossil stay fixed at 2024; Crop Residues follows crops in 03-RunSimulations.R)
 FLOW_VAR_MAP <- c(
   "coal_extraction_gdp" = "coal",
   "oil_extraction_gdp" = "oil",
@@ -52,13 +119,14 @@ ratio_r10 <- readr::read_csv("Parameters/IIASA-Trajectories/summary_ratio_2060_2
   dplyr::transmute(mat_key = unname(FLOW_VAR_MAP[Variable]), r10 = Region, ssp = SSP, ratio_min = Min, ratio_max = Max)
 
 # Keep only sampled SSPs (SSP_SAMPLED, 00-CommonParameters.R; SSP4 excluded).
-# If SSP4 is re-added, its rows already carry SSP2 bounds (04_summary_ratio.R Fix 2).
+# If SSP4 is re-added, its rows already carry SSP2 bounds (08-summary_ratio.R Fix 2).
 ratio_r10 <- ratio_r10 |> dplyr::filter(ssp %in% SSP_SAMPLED)
 
-# Country 2024 GDP (World Bank, constant 2015 USD -- same source as gdp_region.csv);
+# Country 2024 GDP (World Bank PPP, constant 2021 intl $ -- same source as gdp_region.csv;
+# weights are shares, so the 2017-$ rebase is not needed);
 # latest available year <= 2024 when 2024 is missing
 gdp_wb <- suppressWarnings(readxl::read_excel(
-  "Inputs/WorldBank/API_NY.GDP.MKTP.KD_DS2_en_excel_v2_753.xls",
+  "Inputs/WorldBank/API_NY.GDP.MKTP.PP.KD_DS2_en_excel_v2_2811.xls",
   sheet = "Data",
   skip = 3
 ))
@@ -98,7 +166,7 @@ r10_weights <- country_r10 |>
   dplyr::group_by(region) |>
   dplyr::mutate(weight = gdp / sum(gdp)) |>
   dplyr::ungroup() |>
-  dplyr::select(region, r10, weight, gdp) # gdp kept: 01b splits R10 absolute capacity by GDP share
+  dplyr::select(region, r10, weight, gdp) # gdp kept: 02-PowerSector.R splits R10 absolute capacity by GDP share
 
 cat("\n  R10 -> model region weight matrix (rows sum to 1):\n")
 print(
@@ -155,38 +223,15 @@ stock_ratio_bounds <- readxl::read_excel("Inputs/MC_Assumptions.xlsx", sheet = "
 
 gdp_w_2024 <- readr::read_csv("Parameters/Worldbank-GDP/gdp_region.csv", show_col_types = FALSE) |>
   dplyr::filter(year == 2024L) |>
-  dplyr::transmute(region = Region, w = GDP_2015USD / sum(GDP_2015USD))
+  dplyr::transmute(region = Region, w = GDP_PPP2017USD / sum(GDP_PPP2017USD))
 
-int_2024_flow <- dplyr::bind_rows(
-  readxl::read_excel(ASSUMPTIONS_FILE, sheet = "Biomass") |>
-    dplyr::transmute(
-      region = Region,
-      mat_key = dplyr::recode(Category, "Crops" = "crops", "Grazed biomass and fodder crops" = "grazed_biomass", "Wood" = "wood", .default = NA_character_),
-      int_2024 = `kg/USD 2024`
-    ),
-  readxl::read_excel(ASSUMPTIONS_FILE, sheet = "FossilFuels") |>
-    dplyr::transmute(region = Region, mat_key = fuel, int_2024 = `kg/USD 2024`)
-) |>
-  dplyr::filter(!is.na(region), !is.na(mat_key)) |>
-  dplyr::distinct(region, mat_key, .keep_all = TRUE)
+int_2024_flow <- intensity_2024 |>
+  dplyr::filter(material_group %in% c("biomass", "fossil_fuels")) |>
+  dplyr::select(region, mat_key, int_2024)
 
-int_2024_stock <- dplyr::bind_rows(
-  readxl::read_excel(ASSUMPTIONS_FILE, sheet = "MetalOres", skip = 1) |>
-    dplyr::transmute(region, End_use = end_use, material_group = "metal_ores", int_2024 = `kg/USD 2024`),
-  readxl::read_excel(ASSUMPTIONS_FILE, sheet = "NonMetallicMinerals", skip = 1) |>
-    dplyr::transmute(region, End_use = end_use, material_group = "nonmetallic_minerals", int_2024 = `kg/USD 2024`)
-) |>
-  dplyr::mutate(
-    mat_key = dplyr::case_when(
-      stringr::str_detect(tolower(End_use), "build") ~ "buildings",
-      stringr::str_detect(tolower(End_use), "civil") ~ "civil",
-      stringr::str_detect(tolower(End_use), "short") ~ "sl_products",
-      stringr::str_detect(tolower(End_use), "machin") ~ "machinery",
-      TRUE ~ NA_character_
-    )
-  ) |>
-  dplyr::filter(!is.na(region), !is.na(mat_key)) |>
-  dplyr::distinct(region, material_group, mat_key, .keep_all = TRUE)
+int_2024_stock <- intensity_2024 |>
+  dplyr::filter(material_group %in% c("metal_ores", "nonmetallic_minerals")) |>
+  dplyr::select(region, material_group, mat_key, int_2024)
 
 intensity_world_bounds <- dplyr::bind_rows(
   flow_ratio_bounds |>
@@ -253,7 +298,7 @@ cat("\nStep 3: build LHS column names\n")
 lifetime_super_cats <- sort(unique(LIFETIME_SAMPLE_PARAMS$super_category))
 
 lhs_col_names <- c(
-  # Continuous SSP position (single draw): 02-RunSimulations.R maps it onto the
+  # Continuous SSP position (single draw): 03-RunSimulations.R maps it onto the
   # SSP_SAMPLED SSPs ranked by world GDP/capita growth and blends the two bracketing SSPs
   # for population, GDP per capita AND flow-intensity bounds -- no discrete label.
   "ssp_u",
@@ -263,7 +308,7 @@ lhs_col_names <- c(
   paste0("intensity_", stock_combos, "_global"),
   # Global scalars (Parameters sheet, lowercase names): recovery endpoints and
   # convergence year, secondary room shares, ore grades, intensity target year.
-  # Mapped semi-uniformly around the central value downstream (02/02b).
+  # Mapped semi-uniformly around the central value downstream (03-RunSimulations.R).
   MC_PARAMS$col,
   # Lifetime params (mean and k per super_category; applied proportionally to sub_uses)
   paste0("lifetime_mean_", lifetime_super_cats),

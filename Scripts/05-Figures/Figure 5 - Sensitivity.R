@@ -1,5 +1,5 @@
 ## =============================================================================
-## Figure 5 - Sensitivity.R  -> Figures/Fig5 - Sensitivity_alt1.png (alternative;
+## Figure 5 - Sensitivity.R  -> Figures/Fig6 - Sensitivity_alt1.png (alternative;
 ##                              main Fig5 = "Figure 5 - Alt1.R")
 ## 4-panel figure (target 18x18 cm), all data cached by
 ## "Figure 5 - Sensitivity - PrepareData.R" -- this script only loads CSVs and plots.
@@ -148,7 +148,7 @@ seg_pos_a <- stack_pos_a |>
 # half-width 0.425, so the ">2%" bar's own top edge is at 4.425) -- both
 # alternating rows must clear that, or a label lands ON the bar instead of
 # in the reserved white space above it.
-BAR_WIDTH_A <- 0.7 # bar thickness; the white gaps between bars also hold legend labels
+BAR_WIDTH_A <- 0.55 # bar thickness; the white gaps between bars also hold legend labels
 
 # Label slots: two rows above the top bar, then the white gaps between bars.
 # Each slot is paired with an adjacent bar; a label placed there is centred on
@@ -608,11 +608,11 @@ fig <- (p_a | p_b) /
   theme(plot.tag = element_text(face = "bold"))
 
 # Alternative version (main Fig5 = "Figure 5 - Alt1.R", panel c = drivers of growth)
-ggsave("Figures/Fig5 - Sensitivity_alt1.png", fig, units = "cm", dpi = 600, width = 18, height = 18)
-ggsave("Figures/SVG/Fig5 - Sensitivity_alt1.svg", fig, units = "cm", width = 18, height = 18)
-group_svg_layers("Figures/SVG/Fig5 - Sensitivity_alt1.svg") # cleans text-length attrs + groups into Grid/Data/Labels Inkscape layers
+ggsave("Figures/Fig6 - Sensitivity_alt1.png", fig, units = "cm", dpi = 600, width = 18, height = 18)
+ggsave("Figures/SVG/Fig6 - Sensitivity_alt1.svg", fig, units = "cm", width = 18, height = 18)
+group_svg_layers("Figures/SVG/Fig6 - Sensitivity_alt1.svg") # cleans text-length attrs + groups into Grid/Data/Labels Inkscape layers
 
-cat("  Saved: Figures/Fig5 - Sensitivity_alt1.png, Figures/SVG/Fig5 - Sensitivity_alt1.svg\n\n")
+cat("  Saved: Figures/Fig6 - Sensitivity_alt1.png, Figures/SVG/Fig6 - Sensitivity_alt1.svg\n\n")
 cat("=== Figure 4 v2 done ===\n")
 
 # EoF

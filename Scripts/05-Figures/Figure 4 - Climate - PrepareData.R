@@ -48,7 +48,7 @@ FLOW_VAR_MAP <- c(
 
 # Load data ---------------------------------------------------------------
 
-# SSP label of each run (closest world GDP/cap growth, 02-RunSimulations.R STEP 4;
+# SSP label of each run (closest world GDP/cap growth, 03-RunSimulations.R STEP 4;
 # same SSP pair and share drive the run's fossil-fuel bounds)
 run_dom <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
   dplyr::filter(year == RATIO_BASE_YEAR) |>

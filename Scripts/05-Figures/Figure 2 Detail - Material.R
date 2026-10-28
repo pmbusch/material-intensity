@@ -62,17 +62,20 @@ dmc_hist <- read_csv("Parameters/UNEP-Materials/materials_region_DMC.csv", show_
 stock_subenduse_hist <- read_csv("Parameters/Intermediate/stock_trajectory_subenduse.csv", show_col_types = FALSE) |>
   rename(region = Region)
 
-results <- arrow::read_parquet("Results/MC/mc_results.parquet") |>
+results <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
+  dplyr::select(run_id, region, material_group, material_key, year, in_use_stock_Mt, primary_consumption_Mt) |>
+  filter(material_group != "metal_gold") |> # gold ore (a flow) is not shown in Figure 2
   mutate(
-    material_group = ifelse(material_group %in% c("metal_fe", "metal_nonfe"), "metal_ores", material_group),
+    material_group = ifelse(material_group %in% unname(METAL_KEYS), "metal_ores", material_group),
     # Power-sector end uses folded into civil engineering, the 2024 stock they were carved out of
     material_key = ifelse(startsWith(material_key, "Power: "), "Civil engineering", material_key)
-  )
+  ) |>
+  collect()
 
 ssp_drivers <- read_csv("Parameters/IIASA-Trajectories/ssp_drivers.csv", show_col_types = FALSE)
-gdp_2024_region <- gdp_region_hist |> filter(year == HIST_END) |> transmute(region, gdp_2024 = GDP_2015USD)
+gdp_2024_region <- gdp_region_hist |> filter(year == HIST_END) |> transmute(region, gdp_2024 = GDP_PPP2017USD)
 
-run_ssp <- results |> distinct(run_id, ssp_lo, ssp_hi, ssp_share_lo)
+run_ssp <- arrow::open_dataset("Results/MC/mc_results.parquet") |> distinct(run_id, ssp_lo, ssp_hi, ssp_share_lo) |> collect()
 
 pop_idx_region <- ssp_drivers |>
   filter(variable == "Population", year >= HIST_END, year <= PROJ_END) |>
@@ -114,8 +117,8 @@ biomass_hist <- dmc_hist |>
   group_by(region, year, material_category) |>
   summarise(DMC_Mt = sum(DMC_Mt, na.rm = TRUE), .groups = "drop") |>
   left_join(gdp_region_hist, by = c("region", "year")) |>
-  filter(!is.na(GDP_2015USD), year <= HIST_END) |>
-  transmute(region, material_key = material_category, year, mg = DMC_Mt * 1e9 / GDP_2015USD)
+  filter(!is.na(GDP_PPP2017USD), year <= HIST_END) |>
+  transmute(region, material_key = material_category, year, mg = DMC_Mt * 1e9 / GDP_PPP2017USD)
 
 biomass_proj <- results |>
   filter(material_group == "biomass", material_key %in% BIOMASS_CATS, year > HIST_END) |>
@@ -150,8 +153,8 @@ fossil_hist <- dmc_hist |>
   group_by(region, year, material_category) |>
   summarise(DMC_Mt = sum(DMC_Mt, na.rm = TRUE), .groups = "drop") |>
   left_join(gdp_region_hist, by = c("region", "year")) |>
-  filter(!is.na(GDP_2015USD), year <= HIST_END) |>
-  transmute(region, material_key = material_category, year, mg = DMC_Mt * 1e9 / GDP_2015USD)
+  filter(!is.na(GDP_PPP2017USD), year <= HIST_END) |>
+  transmute(region, material_key = material_category, year, mg = DMC_Mt * 1e9 / GDP_PPP2017USD)
 
 fossil_proj <- results |>
   filter(material_group == "fossil_fuels", material_key %in% FOSSIL_CATS, year > HIST_END) |>
@@ -173,13 +176,13 @@ fossil_proj <- fossil_proj |>
 cat("D: Metal ores\n")
 
 metal_hist <- stock_subenduse_hist |>
-  filter(material %in% c("Metal_Fe", "Metal_NonFe")) |>
+  filter(material %in% names(METAL_KEYS)) |>
   mutate(end_use_label = SUB_USE_LABELS[sub_use]) |>
   group_by(region, year, end_use_label) |>
   summarise(stock_Mt = sum(stock_Mt, na.rm = TRUE), .groups = "drop") |>
   left_join(gdp_region_hist, by = c("region", "year")) |>
-  filter(!is.na(GDP_2015USD), year <= HIST_END) |>
-  transmute(region, end_use_label, year, mg = stock_Mt * 1e9 / GDP_2015USD)
+  filter(!is.na(GDP_PPP2017USD), year <= HIST_END) |>
+  transmute(region, end_use_label, year, mg = stock_Mt * 1e9 / GDP_PPP2017USD)
 
 metal_proj <- results |>
   filter(material_group == "metal_ores", year > HIST_END) |>
@@ -210,8 +213,8 @@ nonmet_hist <- stock_subenduse_hist |>
   group_by(region, year, end_use_label) |>
   summarise(stock_Mt = sum(stock_Mt, na.rm = TRUE), .groups = "drop") |>
   left_join(gdp_region_hist, by = c("region", "year")) |>
-  filter(!is.na(GDP_2015USD), year <= HIST_END) |>
-  transmute(region, end_use_label, year, mg = stock_Mt * 1e9 / GDP_2015USD)
+  filter(!is.na(GDP_PPP2017USD), year <= HIST_END) |>
+  transmute(region, end_use_label, year, mg = stock_Mt * 1e9 / GDP_PPP2017USD)
 
 nonmet_proj <- results |>
   filter(material_group == "nonmetallic_minerals", year > HIST_END) |>

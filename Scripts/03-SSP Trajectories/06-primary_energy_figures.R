@@ -1,34 +1,34 @@
 ## =============================================================================
-## 03d_capacity_figures.R
-## Electricity capacity intensity (/GDP, W/USD) trajectory figures, one per
-## generation source, using the same panel design as
-## 03_trajectory_figures.R (runs coloured by SSP, marker emphasis, dashed
+## 06-primary_energy_figures.R
+## Primary energy intensity (/GDP, MJ/USD) trajectory figures, one per
+## primary energy source, using the same panel design as
+## 04-trajectory_figures.R (runs coloured by SSP, marker emphasis, dashed
 ## RATIO_BASE_YEAR reference + index secondary axis, end-of-horizon min-max
-## bar per SSP, two ratio tables below) and 03b_trajectory_by_ssp_region.R
+## bar per SSP, two ratio tables below) and 05-trajectory_by_ssp_region.R
 ## (panels = SSP, colour = region). GDP-intensity only.
 ##
 ## Per source:
-##   World figure                 -> Capacity/{NN}_{var}.png
-##   By-region grid (R10 + World) -> Capacity/ByRegion/{NN}_{var}.png
-##   By-SSP grid (colour=region)  -> Capacity/BySSP/{NN}_{var}.png
+##   World figure                 -> PrimaryEnergy/{NN}_{var}.png
+##   By-region grid (R10 + World) -> PrimaryEnergy/ByRegion/{NN}_{var}.png
+##   By-SSP grid (colour=region)  -> PrimaryEnergy/BySSP/{NN}_{var}.png
 ## Plus one large figure with every source's World panel:
-##                                -> Capacity/00_all_sources.png
-## The Fossil aggregate is placed last (4 models report it); Hydrogen and
-## Other are reported by only 2-3 models. There is no total-capacity variable.
+##                                -> PrimaryEnergy/00_all_sources.png
+## Aggregates (Fossil, Non-Biomass Renewables) are placed last; Ocean is
+## reported by a single model.
 ##
-## Input:  Parameters/IIASA-Trajectories/metrics_levels_raw.csv (from 02_compute_metrics.R)
+## Input:  Parameters/IIASA-Trajectories/metrics_levels_raw.csv (from 03-compute_metrics.R)
 ## Outputs:
-##   Figures/Inputs/IIASA/Trajectories/GDP/Capacity/... (+ Figures/SVG mirror)
+##   Figures/Inputs/IIASA/Trajectories/GDP/PrimaryEnergy/... (+ Figures/SVG mirror)
 ## =============================================================================
 
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
 library(patchwork)
 
-BASE_YEAR <- 2020L # matches 01_load_and_check.R / 02_compute_metrics.R -- data/plot x-axis start
+BASE_YEAR <- 2020L # matches 02-load_and_check.R / 03-compute_metrics.R -- data/plot x-axis start
 RATIO_BASE_YEAR <- 2025L # reference year for all ratio/index calcs (2020 excluded: an anomalous year)
 OUT_DIR <- "Parameters/IIASA-Trajectories"
-FIG_DIR <- "Figures/Inputs/IIASA/Trajectories/GDP/Capacity"
-FIG_DIR_SVG <- "Figures/Inputs/IIASA/SVG/Trajectories/GDP/Capacity"
+FIG_DIR <- "Figures/Inputs/IIASA/Trajectories/GDP/PrimaryEnergy"
+FIG_DIR_SVG <- "Figures/Inputs/IIASA/SVG/Trajectories/GDP/PrimaryEnergy"
 
 for (dd in c(FIG_DIR, FIG_DIR_SVG)) {
   dir.create(file.path(dd, "ByRegion"), showWarnings = FALSE, recursive = TRUE)
@@ -44,31 +44,29 @@ metrics_levels_raw <- read_csv(file.path(OUT_DIR, "metrics_levels_raw.csv"), sho
 metric_units <- read_csv(file.path(OUT_DIR, "metric_units.csv"), show_col_types = FALSE)
 
 
-# Step 2: Capacity sources (semantic order: fossil, nuclear, renewables, ----
-# hydrogen/other, then the fossil aggregate) ------------------------------------
+# Step 2: Primary energy sources (semantic order: total, fossil, nuclear, ----
+# renewables, other, then aggregates) ---------------------------------------------
 
 SOURCE_VARS <- tibble::tribble(
   ~idx, ~var, ~var_label,
-  1L, "cap_coal", "Coal",
-  2L, "cap_oil", "Oil",
-  3L, "cap_gas", "Gas",
-  4L, "cap_nuclear", "Nuclear",
-  5L, "cap_biomass", "Biomass",
-  6L, "cap_hydro", "Hydro",
-  7L, "cap_geothermal", "Geothermal",
-  8L, "cap_solar_pv", "Solar PV",
-  9L, "cap_solar_csp", "Solar CSP",
-  10L, "cap_wind_onshore", "Wind Onshore",
-  11L, "cap_wind_offshore", "Wind Offshore",
-  12L, "cap_hydrogen", "Hydrogen",
-  13L, "cap_other", "Other",
-  14L, "cap_fossil", "Fossil (aggregate)"
+  1L, "pe", "Total Primary Energy",
+  2L, "pe_coal", "Coal",
+  3L, "pe_oil", "Oil",
+  4L, "pe_gas", "Gas",
+  5L, "pe_nuclear", "Nuclear",
+  6L, "pe_biomass", "Biomass",
+  7L, "pe_hydro", "Hydro",
+  8L, "pe_geothermal", "Geothermal",
+  9L, "pe_ocean", "Ocean (1 model)",
+  10L, "pe_other", "Other",
+  11L, "pe_fossil", "Fossil (aggregate)",
+  12L, "pe_nonbio_renew", "Non-Biomass Renewables (aggregate)"
 )
 
 metric_pages <- SOURCE_VARS %>%
   mutate(
     metric = paste0(var, "_gdp"),
-    metric_label = paste0("Electricity Capacity: ", var_label, " (/GDP)"),
+    metric_label = paste0("Primary Energy: ", var_label, " (/GDP)"),
     filename = sprintf("%02d_%s", idx, var)
   ) %>%
   left_join(metric_units, by = "metric") %>%
@@ -122,7 +120,7 @@ TABLE_CAPTION <- paste0(
 )
 
 
-# Step 3: World + by-region panels per source (03_trajectory_figures.R design) --
+# Step 3: World + by-region panels per source (04-trajectory_figures.R design) --
 
 cat("\nSTEP 3: World + by-region panels\n")
 
@@ -206,7 +204,7 @@ for (i in seq_len(nrow(metric_pages))) {
       theme(plot.margin = margin(t = 4, r = 4, b = 4, l = 4))
 
     # RATIO_BASE_YEAR->END_YEAR ratio per run: "All Runs" literal extremes,
-    # SSP/Model/Scenario one-way marginal spread (see 03_trajectory_figures.R)
+    # SSP/Model/Scenario one-way marginal spread (see 04-trajectory_figures.R)
     base_runs <- d %>% filter(year == RATIO_BASE_YEAR) %>% dplyr::select(model, family, ssp, value_base = value)
     rel_runs <- d %>%
       filter(year == END_YEAR) %>%
@@ -316,7 +314,7 @@ GRID_NCOL <- 4L
 n_rows <- ceiling(length(ordered_mets) / GRID_NCOL)
 p_all <- patchwork::wrap_plots(world_panels[ordered_mets], ncol = GRID_NCOL) +
   patchwork::plot_annotation(
-    title = "Electricity Capacity Intensity (/GDP) by Source — World",
+    title = "Primary Energy Intensity (/GDP) by Source — World",
     caption = TABLE_CAPTION,
     theme = theme(
       plot.title = element_text(size = 9, face = "bold", hjust = 0.5),
@@ -330,7 +328,7 @@ group_svg_layers(file.path(FIG_DIR_SVG, "00_all_sources.svg"))
 cat("  [OK] all-sources figure:", length(ordered_mets), "panels\n")
 
 
-# Step 5: By-SSP grid per source (03b_trajectory_by_ssp_region.R design) ------
+# Step 5: By-SSP grid per source (05-trajectory_by_ssp_region.R design) ------
 
 cat("\nSTEP 5: SSP-panelled, region-coloured figures\n")
 
@@ -355,7 +353,7 @@ for (i in seq_len(nrow(metric_pages))) {
       next
     }
 
-    # Emphasis / point fallback keyed on REGION (see 03b)
+    # Emphasis / point fallback keyed on REGION (see 05)
     n_runs_region <- d %>% distinct(model, family, region) %>% count(region, name = "n_runs")
     d <- d %>%
       left_join(n_runs_region, by = "region") %>%

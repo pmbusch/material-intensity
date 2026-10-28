@@ -39,8 +39,9 @@ cat("=== Figure 4 - Regional Analysis ===\n\n")
 
 # STEP 1: Load data ------------------------------------------------------------
 
-results <- arrow::read_parquet("Results/MC/mc_results.parquet") |>
-  dplyr::filter(year %in% c(FIG_YEAR_BASE, FIG_YEAR))
+results <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
+  dplyr::filter(year %in% c(FIG_YEAR_BASE, FIG_YEAR)) |>
+  dplyr::collect()
 gdp_region_hist <- readr::read_csv("Parameters/Worldbank-GDP/gdp_region.csv", show_col_types = FALSE)
 pop_region_hist <- readr::read_csv("Parameters/UN-Population/population_region_historical.csv", show_col_types = FALSE)
 ssp_drivers <- readr::read_csv("Parameters/IIASA-Trajectories/ssp_drivers.csv", show_col_types = FALSE)
@@ -53,7 +54,7 @@ cat("  Runs:", dplyr::n_distinct(results$run_id), "| Regions:", dplyr::n_distinc
 
 gdp_2024_region <- gdp_region_hist |>
   dplyr::filter(year == 2024) |>
-  dplyr::rename(region = Region, gdp_2024 = GDP_2015USD) |>
+  dplyr::rename(region = Region, gdp_2024 = GDP_PPP2017USD) |>
   dplyr::select(region, gdp_2024)
 
 pop_2024_region <- pop_region_hist |>
@@ -123,7 +124,7 @@ material_long <- dplyr::bind_rows(
     dplyr::filter(material_group == "fossil_fuels") |>
     dplyr::transmute(run_id, region, year, panel = "Fossil fuels", primary_Mt = primary_consumption_Mt),
   results |>
-    dplyr::filter(material_group %in% c("metal_fe", "metal_nonfe")) |>
+    dplyr::filter(material_group %in% METAL_GROUPS_ALL) |>
     dplyr::transmute(run_id, region, year, panel = "Metal ores", primary_Mt = primary_consumption_Mt),
   results |>
     dplyr::filter(material_group == "nonmetallic_minerals") |>
@@ -196,7 +197,7 @@ cat("  Panel rows -- region_total_stats:", nrow(region_total_stats), "\n\n")
 
 X_LAB <- c(
   "P" = "Population (million people)",
-  "G/P" = "GDP per capita ('000 USD)",
+  "G/P" = "GDP per capita ('000 $)",
   "Biomass" = "Primary biomass consumption (Mt)",
   "Fossil fuels" = "Primary fossil fuel consumption (Mt)",
   "Metal ores" = "Primary metal ore consumption (Mt)",
@@ -323,8 +324,9 @@ ggsave("Figures/Supporting-Figures/S18_RegionalAnalysis.png", fig, units = "cm",
 ggsave("Figures/SVG/Supporting-Figures/S18_RegionalAnalysis.svg", fig, units = "cm", width = 17.4, height = 13)
 clean_svg("Figures/SVG/Supporting-Figures/S18_RegionalAnalysis.svg")
 
-readr::write_csv(region_total_stats, "Figures/RawData/S18_region_totals.csv")
-readr::write_csv(region_point, "Figures/RawData/S18_region_point.csv")
+dir.create("Figures/Supporting-Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+readr::write_csv(region_total_stats, "Figures/Supporting-Figures/RawData/S18_region_totals.csv")
+readr::write_csv(region_point, "Figures/Supporting-Figures/RawData/S18_region_point.csv")
 
 cat("  Saved: Figures/Supporting-Figures/S18_RegionalAnalysis.png, Figures/SVG/Supporting-Figures/S18_RegionalAnalysis.svg\n")
 cat("=== Figure 4 - Regional Analysis done ===\n")

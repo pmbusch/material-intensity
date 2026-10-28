@@ -4,6 +4,8 @@
 ##   S27: one panel per region, DMC stacked by material group (free y per region:
 ##        compares composition and trend, not level). Same material-group mapping,
 ##        colours and stacked-area style as Figure 1b.
+##   S27b: S27 extended to FORECAST_END: MC median line + 95% band of total consumption
+##        (Results/MC/mc_results.parquet); stacked area for historical years only.
 ##   S28: 10-year moving-average growth of DMC, (DMC_t / DMC_t-10)^(1/10) - 1,
 ##        (a) by region + world, (b) by material group (world).
 ## Reads Parameters/UNEP-Materials/materials_region_DMC.csv; saves to
@@ -63,7 +65,7 @@ region_levels <- read_csv("Parameters/Worldbank-GDP/gdp_region.csv", show_col_ty
     read_csv("Parameters/UN-Population/population_region_historical.csv", show_col_types = FALSE) |> filter(year == 2024),
     by = c("Region", "year")
   ) |>
-  arrange(desc(GDP_2015USD / population)) |>
+  arrange(desc(GDP_PPP2017USD / population)) |>
   pull(Region)
 
 region_mat <- df |>
@@ -120,7 +122,61 @@ ggplot(region_mat, aes(x = year, y = DMC_Gt, fill = material_group)) +
 ggsave("Figures/Supporting-Figures/S27_RegionalTimeseries.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7 * 1.4)
 ggsave("Figures/SVG/Supporting-Figures/S27_RegionalTimeseries.svg", ggplot2::last_plot(), units = "cm", width = 8.7 * 2, height = 8.7 * 1.4)
 clean_svg("Figures/SVG/Supporting-Figures/S27_RegionalTimeseries.svg")
+dir.create("Figures/Supporting-Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+write_csv(region_mat, "Figures/Supporting-Figures/RawData/S27_RegionalTimeseries.csv")
 cat("  Saved: Figures/Supporting-Figures/S27_RegionalTimeseries.png\n")
+
+
+# S27b: S27 extended to FORECAST_END with MC projections ---------------------------
+# Historical (1970-2024) as the S27 stacked area; projections (2025-FORECAST_END) as
+# one median line + 95% interval band of total consumption (all four groups), across MC runs.
+
+proj_region_mat <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
+  dplyr::filter(year > 2024L, year <= FORECAST_END) |>
+  dplyr::select(run_id, region, material_group, year, primary_consumption_Mt) |>
+  dplyr::collect() |>
+  filter(material_group %in% c(METAL_GROUPS_ALL, "biomass", "fossil_fuels", "nonmetallic_minerals"), region %in% region_levels) |>
+  group_by(Region = region, run_id, year) |>
+  summarise(DMC_Gt = sum(primary_consumption_Mt, na.rm = TRUE) / 1e3, .groups = "drop") |>
+  group_by(Region, year) |>
+  summarise(
+    med = stats::median(DMC_Gt),
+    lo = stats::quantile(DMC_Gt, 0.025),
+    hi = stats::quantile(DMC_Gt, 0.975),
+    .groups = "drop"
+  ) |>
+  mutate(Region = factor(Region, levels = region_levels))
+
+# Direct labels: same corner as S27, rescaled to the panel's new top (projection bands)
+y_top_s27b <- max(c(y_top_s27, proj_region_mat$hi[proj_region_mat$Region == LABEL_REGION]))
+labels_s27b <- labels_s27 |>
+  mutate(mid_y = y_top_s27b * (0.95 - 0.1 * (seq_along(MAT_GROUP_LEVELS) - 1)))
+
+ggplot() +
+  geom_area(data = region_mat, aes(x = year, y = DMC_Gt, fill = material_group), colour = "black", linewidth = 0.05, alpha = 0.9) +
+  geom_line(data = boundary_s27, aes(x = year, y = top, group = material_group), colour = "black", linewidth = 0.3) +
+  geom_ribbon(data = proj_region_mat, aes(x = year, ymin = lo, ymax = hi), fill = "grey50", alpha = 0.3) +
+  geom_line(data = proj_region_mat, aes(x = year, y = med), colour = "black", linewidth = 0.5) +
+  geom_vline(xintercept = 2024, colour = "grey45", linewidth = 0.3, linetype = "dotted") +
+  geom_text(
+    data = labels_s27b, aes(x = year, y = mid_y, label = sub("Non-metallic ", "Non-metallic\n", material_group), colour = material_group),
+    hjust = 0, vjust = 1, lineheight = 0.85, fontface = "bold", size = pb_annot_size("largeFont", 8)
+  ) +
+  facet_wrap(~Region, ncol = 4, scales = "free_y", labeller = label_wrap_gen(width = 18)) +
+  scale_fill_manual(values = PALETTE_MATERIAL_GROUPS, guide = "none") +
+  scale_colour_manual(values = PALETTE_MATERIAL_GROUPS, guide = "none") +
+  scale_x_continuous(breaks = seq(1970, FORECAST_END, 30), expand = c(0, 0)) +
+  scale_y_continuous(labels = scales::label_comma(), expand = expansion(mult = c(0, 0.05)), limits = c(0, NA)) +
+  coord_cartesian(clip = "off") +
+  labs(title = "Material consumption by region and material group (Gt)", x = NULL, y = NULL) +
+  theme_pb_large() +
+  theme(panel.spacing = unit(0.8, "lines"), strip.text = element_text(face = "bold"))
+
+ggsave("Figures/Supporting-Figures/S27b_RegionalTimeseries_Projection.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7 * 1.4)
+ggsave("Figures/SVG/Supporting-Figures/S27b_RegionalTimeseries_Projection.svg", ggplot2::last_plot(), units = "cm", width = 8.7 * 2, height = 8.7 * 1.4)
+clean_svg("Figures/SVG/Supporting-Figures/S27b_RegionalTimeseries_Projection.svg")
+write_csv(proj_region_mat, "Figures/Supporting-Figures/RawData/S27b_RegionalTimeseries_Projection.csv")
+cat("  Saved: Figures/Supporting-Figures/S27b_RegionalTimeseries_Projection.png\n")
 
 
 # S28: 10-year moving-average growth of DMC --------------------------------------
@@ -204,6 +260,8 @@ fig_s28 <- patchwork::wrap_plots(p_s28a, p_s28b, ncol = 1) + # two rows: a (regi
 ggsave("Figures/Supporting-Figures/S28_DMC_Growth_MA10.png", fig_s28, units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7 * 1.8)
 ggsave("Figures/SVG/Supporting-Figures/S28_DMC_Growth_MA10.svg", fig_s28, units = "cm", width = 8.7 * 2, height = 8.7 * 1.8)
 clean_svg("Figures/SVG/Supporting-Figures/S28_DMC_Growth_MA10.svg")
+write_csv(growth_region, "Figures/Supporting-Figures/RawData/S28a_DMC_Growth_Region.csv")
+write_csv(growth_mat, "Figures/Supporting-Figures/RawData/S28b_DMC_Growth_Material.csv")
 cat("  Saved: Figures/Supporting-Figures/S28_DMC_Growth_MA10.png\n")
 
 # EoF

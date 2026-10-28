@@ -67,7 +67,10 @@ region_labels <- region_meta |>
 # Direct material group labels inside East Asia bars
 east_asia_labels <- df_rect |>
   filter(Region == "East Asia") |>
-  mutate(x_label = (x_min + x_max) / 2, y_label = (y_min + y_max) / 2)
+  mutate(
+    x_label = (x_min + x_max) / 2, y_label = (y_min + y_max) / 2,
+    Material_group = dplyr::recode(as.character(Material_group), "Non-metallic minerals" = "Non-metallic\nminerals")
+  )
 
 # ── Panel a: per capita ───────────────────────────────────────────────────────
 p_pop <- ggplot(df_rect) +
@@ -97,10 +100,10 @@ p_pop <- ggplot(df_rect) +
     expand = expansion(mult = c(0, 0.01))
   ) +
   scale_y_continuous(
-    name = NULL,
+    name = "2024 material consumption per capita (t/person)",
     expand = expansion(mult = c(0, 0.45))
   ) +
-  labs(title = "2024 material consumption per capita (t/person)") +
+  labs(title = "Population") +
   coord_cartesian(clip = "off") +
   theme_pb_wide() +
   theme(plot.margin = margin(t = 4, r = 22, b = 4, l = 4))
@@ -110,20 +113,20 @@ p_pop <- ggplot(df_rect) +
 
 gdp <- read_csv("Parameters/Worldbank-GDP/gdp_region.csv", show_col_types = FALSE) |>
   filter(year == YEAR) |>
-  select(Region, GDP_2015USD)
+  select(Region, GDP_PPP2017USD)
 
 # Region totals → sort by material intensity (DMC / GDP), x = cumulative GDP
 region_meta_gdp <- dmc_grp |>
   group_by(Region) |>
   summarise(DMC_Mt_total = sum(DMC_Mt), .groups = "drop") |>
   left_join(gdp, by = "Region") |>
-  mutate(dmc_gdp = DMC_Mt_total * 1e9 / GDP_2015USD) |> # tonnes per $1,000 GDP
+  mutate(dmc_gdp = DMC_Mt_total * 1e9 / GDP_PPP2017USD) |> # tonnes per $1,000 GDP
   arrange(desc(dmc_gdp)) |>
-  mutate(gdp_T = GDP_2015USD / 1e12, x_max = cumsum(gdp_T), x_min = lag(x_max, default = 0))
+  mutate(gdp_T = GDP_PPP2017USD / 1e12, x_max = cumsum(gdp_T), x_min = lag(x_max, default = 0))
 
 df_rect_gdp <- dmc_grp |>
-  left_join(region_meta_gdp |> select(Region, GDP_2015USD, x_min, x_max), by = "Region") |>
-  mutate(dmc_gdp = DMC_Mt * 1e9 / GDP_2015USD, Material_group = factor(Material_group, levels = STACK_ORDER)) |>
+  left_join(region_meta_gdp |> select(Region, GDP_PPP2017USD, x_min, x_max), by = "Region") |>
+  mutate(dmc_gdp = DMC_Mt * 1e9 / GDP_PPP2017USD, Material_group = factor(Material_group, levels = STACK_ORDER)) |>
   arrange(Region, Material_group) |>
   group_by(Region) |>
   mutate(y_max = cumsum(dmc_gdp), y_min = lag(y_max, default = 0)) |>
@@ -142,7 +145,10 @@ region_labels_gdp <- region_meta_gdp |>
 
 east_asia_labels_gdp <- df_rect_gdp |>
   filter(Region == "East Asia") |>
-  mutate(x_label = (x_min + x_max) / 2, y_label = (y_min + y_max) / 2)
+  mutate(
+    x_label = (x_min + x_max) / 2, y_label = (y_min + y_max) / 2,
+    Material_group = dplyr::recode(as.character(Material_group), "Non-metallic minerals" = "Non-metallic\nminerals")
+  )
 
 p_gdp <- ggplot(df_rect_gdp) +
   geom_rect(
@@ -164,15 +170,15 @@ p_gdp <- ggplot(df_rect_gdp) +
   scale_fill_manual(values = PALETTE_MATERIAL_GROUPS, breaks = STACK_ORDER, guide = "none") +
   scale_colour_manual(values = PALETTE_MATERIAL_GROUPS, guide = "none") +
   scale_x_continuous(
-    name = "GDP (trillion $ 2015)",
+    name = "GDP (trillion $)",
     labels = scales::label_number(),
     expand = expansion(mult = c(0, 0.01))
   ) +
   scale_y_continuous(
-    name = NULL,
+    name = "2024 material consumption per $1,000 GDP (t)",
     expand = expansion(mult = c(0, 0.45))
   ) +
-  labs(title = "2024 material consumption per $1,000 GDP (t)") +
+  labs(title = "GDP") +
   coord_cartesian(clip = "off") +
   theme_pb_wide() +
   theme(plot.margin = margin(t = 4, r = 22, b = 4, l = 4))
@@ -185,3 +191,8 @@ p_pop + p_gdp + patchwork::plot_annotation(tag_levels = "a") &
 ggsave("Figures/Supporting-Figures/S01_CumulativeIntensityCurve.png", ggplot2::last_plot(), width = 17, height = 8.7, units = "cm", dpi = 600)
 ggsave("Figures/SVG/Supporting-Figures/S01_CumulativeIntensityCurve.svg", ggplot2::last_plot(), width = 17, height = 8.7, units = "cm")
 clean_svg("Figures/SVG/Supporting-Figures/S01_CumulativeIntensityCurve.svg")
+
+# Save figure data, one file per panel
+dir.create("Figures/Supporting-Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+write_csv(df_rect, "Figures/Supporting-Figures/RawData/S01a_PerCapita.csv")
+write_csv(df_rect_gdp, "Figures/Supporting-Figures/RawData/S01b_PerGDP.csv")

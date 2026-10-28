@@ -1,13 +1,13 @@
 ## =============================================================================
-## 03b_trajectory_by_ssp_region.R
-## v2 companion to 03_trajectory_figures.R's by-region grid: same intensity
+## 05-trajectory_by_ssp_region.R
+## v2 companion to 04-trajectory_figures.R's by-region grid: same intensity
 ## (/GDP) figure, but with the two roles swapped -- panels = SSP (5, arranged
 ## as a 3x2 grid), and within each panel every (model, family, region) run is
 ## plotted as its own line coloured by REGION (World + IIASA R10), with
 ## end-of-horizon range bars/direct labels also coloured by region. One
 ## figure per focus variable (10 /GDP + 3 food per-capita = 13 total).
 ##
-## Design is otherwise identical to 03_trajectory_figures.R: dashed
+## Design is otherwise identical to 04-trajectory_figures.R: dashed
 ## RATIO_BASE_YEAR (2025, not 2020 -- see BASE_YEAR/RATIO_BASE_YEAR note
 ## there) line = secondary-axis reference; y-axis starts at 0 with zero
 ## expansion; table stacked below the plot at the same width; a region's
@@ -17,7 +17,7 @@
 ## every run) / Model / Scenario family / Region (there is no SSP row here
 ## -- SSP is the facet, fixed within a panel).
 ##
-## Input:  Parameters/IIASA-Trajectories/metrics_levels_raw.csv (from 02_compute_metrics.R)
+## Input:  Parameters/IIASA-Trajectories/metrics_levels_raw.csv (from 03-compute_metrics.R)
 ## Outputs:
 ##   Figures/Inputs/IIASA/Trajectories/GDP/BySSP/{NN}_{var}.png (+ SVG mirror)
 ##   Figures/Inputs/IIASA/Trajectories/PerCapita/BySSP/{NN}_food_*.png (+ SVG mirror)
@@ -26,7 +26,7 @@
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
 library(patchwork)
 
-BASE_YEAR <- 2020L # matches 01_load_and_check.R / 02_compute_metrics.R -- data/plot x-axis start
+BASE_YEAR <- 2020L # matches 02-load_and_check.R / 03-compute_metrics.R -- data/plot x-axis start
 RATIO_BASE_YEAR <- 2025L # reference year for all ratio/index calcs (2020 excluded: an anomalous year)
 OUT_DIR <- "Parameters/IIASA-Trajectories"
 
@@ -133,7 +133,7 @@ for (i in seq_len(nrow(metric_pages))) {
       next
     }
 
-    # Emphasis / point-fallback logic mirrors 03_trajectory_figures.R, keyed
+    # Emphasis / point-fallback logic mirrors 04-trajectory_figures.R, keyed
     # on REGION instead of SSP: the only run reporting a given region on this
     # panel is drawn at marker weight so it isn't lost.
     n_runs_region <- d %>% distinct(model, family, region) %>% count(region, name = "n_runs")
@@ -199,7 +199,7 @@ for (i in seq_len(nrow(metric_pages))) {
     # min/max across every run (matches the visible line extremes); Model /
     # Scenario family / Region = one-way MARGINAL spread (average out the
     # other two dimensions first). SSP is fixed within this panel, so unlike
-    # 03_trajectory_figures.R's table it is not one of the rows here.
+    # 04-trajectory_figures.R's table it is not one of the rows here.
     base_runs <- d %>% filter(year == RATIO_BASE_YEAR) %>% dplyr::select(model, family, region, value_base = value)
     rel_runs <- d %>%
       filter(year == END_YEAR) %>%

@@ -2,7 +2,7 @@
 
 Main-text figures, Table 1 and supporting figures. Figure scripts only read results; they do not change the model.
 
-Each figure is saved as PNG in `Figures/` and as SVG in `Figures/SVG/` (cleaned with `clean_svg()` or `group_svg_layers()`). Where noted, the data behind a figure is written to `Figures/RawData/`. Expensive steps are cached in `Parameters/Intermediate/Figure*_*.csv` by the `PrepareData` scripts.
+Each figure is saved as PNG in `Figures/` and as SVG in `Figures/SVG/` (cleaned with `clean_svg()` or `group_svg_layers()`). The data behind each main figure (1-5) is written to `Figures/RawData/fig<n><panel>.csv`, and the data behind each supporting figure to `Figures/Supporting-Figures/RawData/`. Expensive steps are cached in `Parameters/Intermediate/Figure*_*.csv` by the `PrepareData` scripts.
 
 Run order matters (see `00-RunAll.R`):
 
@@ -15,6 +15,10 @@ Run order matters (see `00-RunAll.R`):
 - **Per-run world population and GDP**: `results` only stores each run's SSP blend (`ssp_lo`, `ssp_hi`, `ssp_share_lo`). Scripts rebuild regional population = pop_2024 × blended population index, and GDP = GDP_2024 × population index × GDP-per-capita index, then sum to the world. Used by Figures 2, 3, 5 and S18.
 - **Splice at 2024**: projected envelopes start from the observed 2024 value, so history and projection meet.
 - **Intensity**: M/G = consumption per GDP (kg/$); S/G = in-use stock per GDP (kg/$).
+- **Metals**:
+  - Consumption of metal ores = Fe + Cu + Al + other non-Fe + gold ore (a flow). Non-ferrous ores = Cu + Al + other non-Fe (+ gold where totals must match UNEP).
+  - Figure 2 leaves gold out, since it shows stock-based quantities.
+  - Per-metal levers (ore grade, recycling rate of Cu, Al and other non-Fe) are listed separately in lever lists. Where one non-ferrous lever is needed, it is the 2024-ore-weighted mean of the three metals.
 
 ## Main figures and table
 
@@ -77,7 +81,8 @@ Growth of material consumption as a function of GDP growth and one material-spec
    - Point outlines: ore grade (metals) and lifetime (minerals).
 2. **Contour version** (main output):
    - Each panel plots X = total GDP CAGR 2025-2060 against a lever on Y. Colour and contours = total primary-consumption CAGR of that material, interpolated with a smooth surface (`mgcv::gam(z ~ te(x, y, k = 8))`) on a 100 × 100 grid. Predictions are clipped to the observed range.
-   - Y levers: biomass kg/person; fossil MJ/$; metal and mineral S/G; recycling and downcycling rates; ore grades (Fe, NonFe); building and civil lifetimes; recovery rate vs stock intensity.
+   - Y levers: biomass kg/person; fossil MJ/$; metal and mineral S/G; recycling and downcycling rates; ore grades (Fe; non-Fe); building and civil lifetimes; recovery rate vs stock intensity.
+   - The non-Fe ore grade and recycling levers are the 2024-ore-weighted mean of the Cu, Al and other non-Fe draws, and the non-Fe z is Cu + Al + other primary ore (gold has no lever and is left out of these panels). Metal-ore totals come from `mc_decoupling`, gold included.
    - A star marks today's situation: 2019-2024 world GDP CAGR and 2024 values. The 2024 recycling/downcycling rates = recovered / waste from `historical_secondary_flows.csv`.
    - An optional command-line `k` (smoothness) saves only the main figure as `S24_Fig3_SmoothK<k>.png`.
 3. **Main figure**: 6 panels (4 intensity panels, metal recycling, mineral downcycling). **S17**: all 16 panels in 4 rows.
@@ -97,7 +102,7 @@ Gives each run a 2060 warming by matching its flow-intensity draws to ScenarioMI
 - **Inputs**: `Results/MC/mc_results.parquet`; `Parameters/Simulation/mc_input_matrix.csv`; `Parameters/IIASA-Trajectories/summary_ratio_2060_2025.csv`, `metrics_levels_raw.csv`; climate CSV.
 - **Outputs**: `Parameters/Intermediate/Figure4_RunScenarioMap.csv` (run_id, ssp, t_med, t_p33, t_p67, nearest model/family/dist, t_nearest).
 
-### `Figure 4 - Climate.R` → `Fig4 - Climate.png` (+ S23, S24)
+### `Figure 4 - Climate.R` → `Fig5 - Climate.png` (+ S23, S24)
 
 1. Cumulative 2025-2060 primary consumption per run and material group. Reference lines: the 2025 level held constant, and growing 2%/yr.
 2. **(a)** Material vs GDP growth per run (from `Figure5_Scatter.csv`), with density margins by SSP.
@@ -112,14 +117,14 @@ Gives each run a 2060 warming by matching its flow-intensity draws to ScenarioMI
 Shared growth outcome per run: total material CAGR and total GDP CAGR, 2025-2060 (`mc_decoupling`, `window_2025_2060`, Total). Absolute decoupling = material CAGR < 0.
 
 1. **STEP 2**: growth table per run, with SSP label, fossil index and 2060 warming, growth bin (<0%, 0-1%, 1-2%, >2%), and a "selected" flag for runs more than 1 residual standard error below the line `lm(mat_cagr ~ gdp_cagr)`.
-2. **STEPS 3-5**: converts each u draw to real units (`intensity_world_bounds.csv` and the Excel ranges); labels and families for each lever.
+2. **STEPS 3-5**: converts each u draw to real units (`intensity_world_bounds.csv` and the Excel ranges); labels and families for each lever. Adds pooled non-Fe grade and recycling columns (2024-ore-weighted mean of Cu, Al, other) for the material-level panels; the regression and SHAP use the six per-metal levers.
 3. **STEP 6, importance**:
    - LightGBM model of material CAGR on all levers, with `ssp_u` replaced by achieved population and GDP-per-capita growth.
    - 80/20 split; a larger model is fit if held-out R² < 0.8.
    - Mean |SHAP| per growth bin, normalised to 100%. Shows population, GDP per capita, the top 8 other levers, and "Other".
 4. **STEP 7, lever effects**: `lm(mat_cagr ~ all levers, real units)`; effect = coefficient × a fixed real-unit change per lever (e.g. +1%/yr GDP, +0.1 kg/$, +20 yr lifetime), with a 95% interval.
 5. **STEP 8**: raw u draws per lever, and mean u among decoupling runs and among selected runs.
-6. **STEP 8b**: 2060 world consumption per capita by material. Runs are split into Low and High groups by a 2060 metric (biomass t/cap, fossil MJ/$, metal and mineral S/G; metals and minerals also by recovery rate). Reference lines show 0% and +2.5%/yr growth from 2025.
+6. **STEP 8b**: 2060 world consumption per capita by material. Runs are split into Low and High groups by a 2060 metric (biomass t/cap, fossil MJ/$, metal and mineral S/G; metals and minerals also by recovery rate; metals: mean of the Fe rate and the pooled non-Fe rate). Reference lines show 0% and +2.5%/yr growth from 2025.
 
 - **Inputs**: `Parameters/Simulation/mc_input_matrix.csv`, `intensity_world_bounds.csv`; `Results/MC/mc_decoupling.parquet`, `mc_ssp_assignment.csv`, `mc_power_run_link.csv`, `mc_results.parquet`; `Parameters/IIASA-Trajectories/ssp_drivers.csv`; GDP and population 2024; `Inputs/*_Assumptions.xlsx`.
 - **Outputs** (`Parameters/Intermediate/`): `Figure5_GrowthImportance.csv`, `Figure5_Scatter.csv`, `Figure5_LeverEffects.csv`, `Figure5_LeverSamples.csv`, `Figure5_LeverDiamonds.csv`, `Figure5_Densities.csv`, `Figure5_DensityLines.csv`.
@@ -139,7 +144,8 @@ Sources `Figure 5 - Sensitivity - PrepareData.R`, then:
 
 1. **Additive (LMDI) decomposition of total growth per run**, ln(M_2060 / M_2025):
    - **Flows**: M = P × G/P × M/G.
-   - **Metals** (Fe, NonFe): Ore = P × G/P × S/G × Out/S × In/Out × Prim/In × Ore/Prim.
+   - **Metals** (Fe, Cu, Al, other non-Fe, each its own group): Ore = P × G/P × S/G × Out/S × In/Out × Prim/In × Ore/Prim. The non-ferrous recycling and ore-grade terms sum Cu, Al and other.
+   - **Gold ore** (flow): M = P × G/P × M/G. Its M/G change (regional mix only) is counted in "Metal stock per GDP"; S25 shows it as "M/G: Gold".
    - **Minerals**: Prim = P × G/P × S/G × Out/S × In/Out × PrimU/In × Prim/PrimU. Here PrimU = inflow − (secondary + surplus), so PrimU/In reflects the downcycling rate and Prim/PrimU the absorption caps.
    - Out/S is the retirement rate (lifetime) and In/Out the stock growth.
    - Terms are weighted by logarithmic means, then rescaled so they sum to the run's CAGR (%/yr).
@@ -164,15 +170,15 @@ Also saves `Fig5 - Sensitivity_v1.png` (densities instead of boxes), S25 (decomp
 
 ### `Table 1 - Results.R` → `Table1_Results.html`
 
-Stock, flow and outflow (Gt or Gt/yr) for 2024 and 2060, by material group and detail (biomass and fossil sub-materials; Fe and NonFe metals; mineral end uses, with the power sector counted under civil infrastructure).
+Stock, flow and outflow (Gt or Gt/yr) for 2024 and 2060, by material group and detail (biomass and fossil sub-materials; ferrous and non-ferrous ores, non-ferrous = Cu + Al + other + gold; mineral end uses, with the power sector counted under civil infrastructure).
 
-- **2024**: stock from `stock_2024_total.csv`; biomass and fossil flows from UNEP DMC; metal and mineral flow and outflow from `hist_flows_model_basis.csv`.
+- **2024**: stock from `stock_2024_total.csv`; biomass and fossil flows from UNEP DMC; metal and mineral flow and outflow from `hist_flows_model_basis.csv`; gold ore flow = 2024 gold DMC (`nonfe_split_region.csv`).
 - **2060**: Monte Carlo median with a 95% interval (2.5-97.5 percentile).
 - Flow = primary + secondary (ore equivalent for metals); outflow = waste.
 
 Rendered with `gt`.
 
-- **Inputs**: `Results/MC/mc_results.parquet`, `hist_flows_model_basis.csv`; `Parameters/MISO-Stock/stock_2024_total.csv`; `Parameters/UNEP-Materials/materials_region_DMC.csv`; `Inputs/Dict_Materials.xlsx`.
+- **Inputs**: `Results/MC/mc_results.parquet`, `hist_flows_model_basis.csv`; `Parameters/MISO-Stock/stock_2024_total.csv`; `Parameters/UNEP-Materials/materials_region_DMC.csv`; `Parameters/MaterialFlows/nonfe_split_region.csv`; `Inputs/Dict_Materials.xlsx`.
 - **Outputs**: `Figures/Table1_Results.html`.
 
 ## Supporting figures (`Supporting-Figures/`)
@@ -182,14 +188,17 @@ Outputs go to `Figures/Supporting-Figures/` (+ SVG). S03-S09, S17 and S20-S26 ar
 | Script | Figure | What it computes | Main inputs |
 |---|---|---|---|
 | `S01-S02 - CumulativeIntensityCurve.R` | S01 | 2024 step curves. Regions sorted by DMC per capita (x = cumulative population) and by DMC per GDP (x = cumulative GDP), each region stacked by material group. | UNEP DMC, population, GDP, `Dict_Materials.xlsx` |
-| `S10 - SamplingBounds.R` | S10 | Range of every sampled variable in absolute units (2024 value × ratio bounds): population, GDP per capita, flow intensities by SSP × region, stock intensities, recovery rates, room shares, target years, ore grades, lifetimes. Open circle = 2024 value. | `flow_ratio_bounds.csv`, `stock_ratio_bounds.csv`, `ssp_drivers.csv`, `*_Assumptions.xlsx` |
+| `S10 - SamplingBounds.R` | S10 | Range of every sampled variable in absolute units (2024 value × ratio bounds): population, GDP per capita, flow intensities by SSP × region, stock intensities, recovery rates, room shares, target years, ore grades (Fe; Cu, Al, other non-Fe on a log axis), recycling rates per metal, lifetimes. Open circle = 2024 value. | `flow_ratio_bounds.csv`, `stock_ratio_bounds.csv`, `ssp_drivers.csv`, `*_Assumptions.xlsx` |
 | `S11 - FlowTimeSeries.R` | S11 | Envelopes (P5-P95, P25-P75, min-max, median) of global total inflow, primary, secondary and in-use stock. | `mc_results.parquet` |
-| `S12 - TimeSeriesProjection.R` | S12 | Per material group: runs of primary consumption 1990-2060, joined to 2024 history, with 3-year smoothing for display. Highlights absolute decoupling (total CAGR < 0) and high growth (top 10% in 2060). Right: scatter of the two main input levers of that group. | `mc_results.parquet`, `mc_input_matrix.csv`, `mc_decoupling.parquet`, `intensity_world_bounds.csv`, UNEP DMC, stocks, `historical_secondary_flows.csv` |
+| `S12 - TimeSeriesProjection.R` | S12 | Per material group: runs of primary consumption 1990-2060, joined to 2024 history, with 3-year smoothing for display. Highlights absolute decoupling (total CAGR < 0) and high growth (top 10% in 2060). Right: scatter of the two main input levers of that group (metals: recycling index = 2024-stock-weighted mean of the Fe, Cu, Al and other non-Fe rates). | `mc_results.parquet`, `mc_input_matrix.csv`, `mc_decoupling.parquet`, `intensity_world_bounds.csv`, UNEP DMC, stocks, `historical_secondary_flows.csv` |
 | `S13-S14 - MaterialContribution.R` | S13, S14 | Material composition vs total consumption level, in 2050 (S13) and cumulative 2025-2060 (S14). Also material mix over time (`Figures/Simulation/05_*`). | `mc_results.parquet` |
 | `S15 - RegionContribution.R` | S15 | Same as S13-S14 by region; S15 = regional shares over time. | `mc_results.parquet` |
 | `S16 - Density.R` | S16 | Distributions of 2050 primary consumption and stock by region (violins) with 2024 reference points. Also global and per-material densities and a multi-page PDF of conditional densities per parameter (`Figures/Simulation/07_*`). | `mc_results.parquet`, `mc_input_matrix.csv`, UNEP DMC, `stock_2024_total.csv` |
 | `S18 - RegionalAnalysis.R` | S18 | Population, GDP per capita and primary consumption per material group in 2060 by region: median bars, 5-95% intervals, and the 2025 median as a point. | `mc_results.parquet`, GDP, population, `ssp_drivers.csv` |
 | `S19 - CumulativeExtraction.R` | S19 | Biomass annual consumption with land-equivalent axis (assumed yields); cumulative fossil fuels vs proved reserves (oil equivalent); cumulative metals and minerals vs 1990-2025 world extraction. Median + 5-95%. | `mc_results.parquet`, `materials_world_DE.csv` |
 | `S27-S28 - RegionalTimeseries.R` | S27, S28 | S27: historical DMC by region, stacked by material group. S28: 10-year average DMC growth, `(DMC_t / DMC_t−10)^(1/10) − 1`, by region and by material. | UNEP DMC, GDP, population |
+| `S29 - CircularityStockGrowth.R` | S29 | 2060, per run (global; metals on pure-metal mass; gold excluded): X = recovered share of waste, (secondary + spilled) / waste; Y = secondary share of supply. Dashed diagonal = no stock growth. Binned median lines (+ P25-P75 for all runs) by stock-weighted lifetime terciles, SSP label, stock-intensity terciles, and end use ("own loop": pool rate × own waste / own supply). | `mc_results.parquet`, `mc_input_matrix.csv`, `MC_Assumptions.xlsx` (lifetimes) |
+| `S30 - MetalOreExtraction.R` | S30 | Ferrous and non-ferrous ore extraction (DE) by Level 3 ore, world and regions (shared y axis), stacked areas sorted by latest-year extraction, end bar with shares (segments ≥ 2%). | `DE_detail_region.csv` |
+| `S31 - MaterialGroupExtraction.R` | S31 | Same for biomass, fossil fuels and non-metallic minerals (world). Region versions saved as exploratory figures in `Figures/MaterialFlows/`. | `DE_detail_region.csv` |
 
-Raw data: S18 → `Figures/RawData/S18_region_{totals,point}.csv`; S19 → `Figures/RawData/S19{a,b,c,d}_*.csv`.
+Raw data: every supporting figure writes the data it plots to `Figures/Supporting-Figures/RawData/S<nn>*.csv` (main figures: `Figures/RawData/fig<n><panel>.csv`).

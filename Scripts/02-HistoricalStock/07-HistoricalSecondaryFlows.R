@@ -1,32 +1,32 @@
 ## =============================================================================
-## 03c_HistoricalSecondaryFlows.R
+## 07-HistoricalSecondaryFlows.R
 ## Historical secondary (recycled) material flow reconstruction, 1970-2024,
 ## for Metal ores and Non-metallic minerals.
 ##
 ## No historical secondary-flow time series exists anywhere upstream -- only a
 ## single 2024 anchor for metals (Parameters/Intermediate/nonprimary_share_2024.csv,
-## from Script 03 Step 5b). This script builds a full 1970-2024 series for both
+## from script 05 step 5b). This script builds a full 1970-2024 series for both
 ## metal ores and non-metallic minerals using:
 ##   implied recycling rate(Region, super_category, year)
 ##     = clamp( [MISO_inflow - UNEP_inflow] / MISO_waste , 0, 1 )
 ##   secondary_Mt = MISO_waste x implied recycling rate
-## i.e. the MISO/UNEP inflow scope-factor wedge (Script 02b's A, where
+## i.e. the MISO/UNEP inflow scope-factor wedge (script 04's A, where
 ## MISO_inflow = UNEP_inflow x A) is treated as an empirical estimate of
 ## non-primary supply, then re-expressed as a RATE relative to real historical
 ## waste (MISO's own end-of-life outflow series) so the reconstructed secondary
 ## flow can never exceed the waste actually available that year.
 ##
 ## Non-metallic minerals have no scope factor A computed anywhere upstream
-## (Script 02b explicitly skips them, noting the scope gap is "negligible" for
+## (script 04 explicitly skips them, noting the scope gap is "negligible" for
 ## stock calibration); this script computes an analogous A_nonmet inline. That
 ## prior "negligible" finding means the non-metallic secondary series here may
 ## come out small/noisy -- printed diagnostics flag this rather than assume it.
 ##
 ## Input:
-##   Parameters/Intermediate/miso_unep_scope_factor_A.csv   -- metal A (Script 02b)
-##   Parameters/Intermediate/UNEP_flows_subenduse.csv       -- Script 01b
-##   Parameters/Intermediate/nonprimary_share_2024.csv      -- Script 03 (cross-check anchor)
-##   Parameters/UNEP-Materials/materials_region_DMC.csv                    -- raw UNEP DMC (primary)
+##   Parameters/Intermediate/miso_unep_scope_factor_A.csv   -- metal A (script 04)
+##   Parameters/Intermediate/UNEP_flows_subenduse.csv       -- script 02
+##   Parameters/Intermediate/nonprimary_share_2024.csv      -- script 05 (cross-check anchor)
+##   Parameters/MaterialFlows/materials_region_DMC_exGold.csv                    -- raw UNEP DMC (primary)
 ##   Parameters/MISO-Stock/MISO_flows_regional.csv                -- MISO inflows (non-metallic A)
 ##   Parameters/MISO-Stock/MISO_outflows_regional.csv             -- MISO waste/EoL flows
 ##   Parameters/MISO-Stock/metal_grade_ore.csv                    -- ore -> metal grade g
@@ -44,7 +44,7 @@
 
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
 
-# -- Constants (mirrors Script 02b's bridge-year convention) ------------------
+# -- Constants (mirrors script 04's bridge-year convention) ------------------
 HIST_START <- 1970L
 HIST_END <- 2024L
 MISO_LAST_YEAR <- 2016L
@@ -61,7 +61,7 @@ NONMET_CATS <- c(
 cat("=== Historical secondary flow reconstruction (metal ores + non-metallic minerals) ===\n\n")
 
 
-# Step 1: Metal scope factor (Script 02b output) ------------------------------
+# Step 1: Metal scope factor (script 04 output) ------------------------------
 
 cat("STEP 1: Load metal A factor + raw inflow components\n")
 
@@ -103,7 +103,7 @@ nonmet_A_raw <- unep_nonmet_super %>%
   arrange(Region, super_category, year)
 
 # Centered rolling mean via data.table::frollmean (already a project
-# dependency) -- avoids re-declaring Script 02b's roll_mean_partial(). Edge
+# dependency) -- avoids re-declaring script 04's roll_mean_partial(). Edge
 # years without a full window fall back to the unsmoothed A.
 nonmet_A_smooth <- nonmet_A_raw %>%
   group_by(Region, super_category) %>%
@@ -114,7 +114,7 @@ nonmet_A_smooth <- nonmet_A_raw %>%
   ) %>%
   ungroup()
 
-# hold at MISO_LAST_YEAR value for the bridge years 2017-2024, same convention as Script 02b
+# hold at MISO_LAST_YEAR value for the bridge years 2017-2024, same convention as script 04
 nonmet_A_hold <- nonmet_A_smooth %>%
   filter(year == MISO_LAST_YEAR) %>%
   dplyr::select(Region, super_category, A_clipped, unep_inflow_Mt, miso_inflow_Mt) %>%
@@ -142,7 +142,7 @@ scope_combined <- bind_rows(
   mutate(nonprimary_inflow_Mt = unep_inflow_Mt * (A - 1))
 
 # Diagnostic: A < 1 (net-exporting Region x super_category x year -- e.g.
-# East Asia for metals, per Script 02b's docstring) makes this wedge negative.
+# East Asia for metals, per script 04's docstring) makes this wedge negative.
 # Physically, recycling can't be negative -- flagged here, not silently
 # clamped away in Step 5, so it's visible before deciding how to handle it.
 n_negative <- scope_combined %>% filter(nonprimary_inflow_Mt < 0) %>% nrow()
@@ -164,7 +164,7 @@ if (n_negative > 0) {
 
 # Step 4: Real historical waste (EoL) flows, MISO -----------------------------
 # MISO_outflows_regional.csv covers 1900-2016; hold flat 2017-2024 (bridge
-# years), matching Script 02b/03's existing bridge-year convention -- no
+# years), matching script 04/05's existing bridge-year convention -- no
 # growth signal exists for waste beyond MISO's own coverage.
 
 cat("\nSTEP 4: Historical waste flows (MISO outflows)\n")
@@ -205,14 +205,14 @@ cat("  Region x super_category x year groups where rate was clamped:", n_clamped
 
 
 # Step 6: Convert metal secondary flow to ore-equivalent Mt -------------------
-# secondary_Mt_carrier for metal_ores is metal mass (Script 02b's UNEP inflow
-# is post Fe/NonFe-split + grade conversion); divide by the same year's
+# secondary_Mt_carrier for metal_ores is metal mass (script 04's UNEP inflow
+# is post metal split + grade conversion); divide by the same year's
 # blended ore grade to express it on the same ore-equivalent basis as
 # primary_Mt (raw DMC ore) and as mc_results.parquet's secondary_supply_Mt.
 
 cat("\nSTEP 6: Convert metal secondary flow to ore-equivalent Mt\n")
 
-unep_raw <- read_csv("Parameters/UNEP-Materials/materials_region_DMC.csv", show_col_types = FALSE)
+unep_raw <- read_csv("Parameters/MaterialFlows/materials_region_DMC_exGold.csv", show_col_types = FALSE)
 
 fe_share_rt <- unep_raw %>%
   filter(material_category %in% METAL_CATS) %>%
@@ -313,7 +313,7 @@ cat("  Saved: Parameters/Intermediate/historical_secondary_flows.csv (", nrow(hi
 cat("\nSTEP 10: Sanity checks\n")
 
 # (1) Cross-check global 2024 metal non-primary inflow against the existing
-#     single-year anchor (Script 03's nonprimary_share_2024.csv), both in
+#     single-year anchor (script 05's nonprimary_share_2024.csv), both in
 #     metal-mass terms (pre ore-conversion) so no grade transform is needed.
 anchor_2024 <- read_csv("Parameters/Intermediate/nonprimary_share_2024.csv", show_col_types = FALSE) %>%
   summarise(anchor_nonprimary_Mt = sum(inflow_Mt - primary_metal_Mt, na.rm = TRUE))
@@ -323,12 +323,12 @@ recon_2024_metalmass <- secondary_super %>%
   summarise(recon_nonprimary_Mt = sum(secondary_Mt_carrier, na.rm = TRUE))
 
 cat(sprintf(
-  "[CHECK 1] Global 2024 metal non-primary inflow (Mt, metal mass): anchor (Script 03) %.0f | reconstructed (this script) %.0f\n",
+  "[CHECK 1] Global 2024 metal non-primary inflow (Mt, metal mass): anchor (script 05) %.0f | reconstructed (this script) %.0f\n",
   anchor_2024$anchor_nonprimary_Mt,
   recon_2024_metalmass$recon_nonprimary_Mt
 ))
 
-# (2) Non-metallic minerals secondary share magnitude (Script 02b's docstring
+# (2) Non-metallic minerals secondary share magnitude (script 04's docstring
 #     called this scope gap "negligible" for stock calibration purposes)
 nonmet_share_2024 <- historical_secondary_flows %>%
   filter(material_group == "nonmetallic_minerals", year == 2024) %>%

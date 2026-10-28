@@ -1,7 +1,7 @@
 ## =============================================================================
 ## Scripts/Functions/dsm_functions.R
 ## Shared survival functions and forward Dynamic Stock Model (DSM) for
-## material-intensity forecast scripts (04c, 04d, ...).
+## material-intensity forecast (04-Simulation/03-RunSimulations.R).
 ##
 ## Functions exported:
 ##   weibull_survival(age, mean_life, k)
@@ -220,7 +220,7 @@ run_forward_dsm <- function(
 #   mean_life, k        Weibull params for the SAMPLED (new) distribution
 #   mean_life_hist, k_hist  Weibull params for the HISTORICAL distribution
 #                           (central values from Lifetimes sheet used in
-#                            03_UNEP_stock_flow_model.R to build the age profile)
+#                            05-UNEP_stock_flow_model.R to build the age profile)
 #   start_year          base year (default 2024)
 #   end_year            last year (default FORECAST_END, Scripts/00-CommonParameters.R)
 #
@@ -342,7 +342,7 @@ run_forward_dsm_fast <- function(
 
 # -- End-of-life allocation (shared by metals and non-metallic minerals) -------
 #
-# One row = one end-use in one region-year (metals: Fe and NonFe called
+# One row = one end-use in one region-year (metals: each stock metal called
 # separately). All pooling is within `group` (region x year [x material]); no
 # trade between groups. 1 t of secondary replaces 1 t of primary.
 #

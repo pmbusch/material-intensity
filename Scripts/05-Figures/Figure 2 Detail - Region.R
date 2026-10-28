@@ -143,29 +143,33 @@ hist_flows_model <- read_csv("Results/MC/hist_flows_model_basis.csv", show_col_t
 
 cat("B: Loading MC results\n")
 
-results <- arrow::read_parquet("Results/MC/mc_results.parquet") |>
+results <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
+  dplyr::select(run_id, region, material_group, material_key, year, in_use_stock_Mt, primary_consumption_Mt) |>
+  filter(material_group != "metal_gold") |> # gold ore (a flow) is not shown in Figure 2
   mutate(
-    material_group = ifelse(material_group %in% c("metal_fe", "metal_nonfe"), "metal_ores", material_group),
+    material_group = ifelse(material_group %in% unname(METAL_KEYS), "metal_ores", material_group),
     # Power-sector end uses folded into civil engineering, the 2024 stock they were carved out of
     material_key = ifelse(startsWith(material_key, "Power: "), "Civil engineering", material_key)
-  )
+  ) |>
+  collect()
 cat("  Runs:", n_distinct(results$run_id), "| Years:", paste(range(results$year), collapse = "-"), "\n")
 
-run_ssp <- results |>
-  distinct(run_id, ssp_lo, ssp_hi, ssp_share_lo)
+run_ssp <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
+  distinct(run_id, ssp_lo, ssp_hi, ssp_share_lo) |>
+  collect()
 
 
 # ── SECTION C: 2024 regional GDP/population baselines ------------------------
 
 cat("C: Regional 2024 baselines\n")
 
-gdp_2024_region <- gdp_region_hist |> filter(year == HIST_END) |> transmute(region, gdp_2024 = GDP_2015USD)
+gdp_2024_region <- gdp_region_hist |> filter(year == HIST_END) |> transmute(region, gdp_2024 = GDP_PPP2017USD)
 pop_2024_region <- pop_region_hist |> filter(year == HIST_END) |> transmute(region, pop_2024 = population)
 
 
 # ── SECTION C2: Per-run, per-region GDP & population from the continuous blend
 # Each run blends two bracketing SSPs independently for population and for
-# GDP-per-capita (see 02-RunSimulations.R STEP 3/4), already at region level;
+# GDP-per-capita (see 03-RunSimulations.R STEP 3/4), already at region level;
 # unlike Figure 2 these are kept per-region rather than summed to a world total.
 
 cat("C2: Per-run regional GDP/population from continuous SSP blend\n")
@@ -221,8 +225,8 @@ biomass_hist <- dmc_hist |>
   group_by(region, year, material_category) |>
   summarise(DMC_Mt = sum(DMC_Mt, na.rm = TRUE), .groups = "drop") |>
   left_join(gdp_region_hist, by = c("region", "year")) |>
-  filter(!is.na(GDP_2015USD), year <= HIST_END) |>
-  mutate(mg = DMC_Mt * 1e9 / GDP_2015USD)
+  filter(!is.na(GDP_PPP2017USD), year <= HIST_END) |>
+  mutate(mg = DMC_Mt * 1e9 / GDP_PPP2017USD)
 
 fossil_hist <- dmc_hist |>
   filter(
@@ -240,17 +244,17 @@ fossil_hist <- dmc_hist |>
   group_by(region, year, material_category) |>
   summarise(DMC_Mt = sum(DMC_Mt, na.rm = TRUE), .groups = "drop") |>
   left_join(gdp_region_hist, by = c("region", "year")) |>
-  filter(!is.na(GDP_2015USD), year <= HIST_END) |>
-  mutate(mg = DMC_Mt * 1e9 / GDP_2015USD)
+  filter(!is.na(GDP_PPP2017USD), year <= HIST_END) |>
+  mutate(mg = DMC_Mt * 1e9 / GDP_PPP2017USD)
 
 metal_hist_eu <- stock_subenduse_hist |>
-  filter(material %in% c("Metal_Fe", "Metal_NonFe")) |>
+  filter(material %in% names(METAL_KEYS)) |>
   mutate(end_use_label = SUB_USE_LABELS[sub_use]) |>
   group_by(region, year, end_use_label) |>
   summarise(stock_Mt = sum(stock_Mt, na.rm = TRUE), .groups = "drop") |>
   left_join(gdp_region_hist, by = c("region", "year")) |>
-  filter(!is.na(GDP_2015USD), year <= HIST_END) |>
-  mutate(mg = stock_Mt * 1e9 / GDP_2015USD)
+  filter(!is.na(GDP_PPP2017USD), year <= HIST_END) |>
+  mutate(mg = stock_Mt * 1e9 / GDP_PPP2017USD)
 
 nonmet_hist_eu <- stock_subenduse_hist |>
   filter(material == "Non-metallic minerals") |>
@@ -258,8 +262,8 @@ nonmet_hist_eu <- stock_subenduse_hist |>
   group_by(region, year, end_use_label) |>
   summarise(stock_Mt = sum(stock_Mt, na.rm = TRUE), .groups = "drop") |>
   left_join(gdp_region_hist, by = c("region", "year")) |>
-  filter(!is.na(GDP_2015USD), year <= HIST_END) |>
-  mutate(mg = stock_Mt * 1e9 / GDP_2015USD)
+  filter(!is.na(GDP_PPP2017USD), year <= HIST_END) |>
+  mutate(mg = stock_Mt * 1e9 / GDP_PPP2017USD)
 
 
 # ── SECTION E: MC projection envelopes (P5 / P50 / P95), per region ---------
@@ -337,7 +341,7 @@ dmc_total_hist <- dmc_hist |>
   group_by(region, year, mat_group) |>
   summarise(DMC_Gt = sum(DMC_Mt, na.rm = TRUE) / 1e3, .groups = "drop") |>
   # Metals/minerals: historical primary on the model basis (DSM inflow - secondary,
-  # 02-RunSimulations.R STEP 8) instead of UNEP DMC, so history meets the projection
+  # 03-RunSimulations.R STEP 8) instead of UNEP DMC, so history meets the projection
   filter(mat_group %in% c("Biomass", "Fossil fuels")) |>
   bind_rows(
     hist_flows_model |>
@@ -407,9 +411,9 @@ gdpcap_env <- gdpcap_env |>
     gdp_region_hist |>
       left_join(pop_region_hist, by = c("region", "year")) |>
       filter(year == HIST_END) |>
-      transmute(region, year, p_min = GDP_2015USD / population / 1e3, p25 = GDP_2015USD / population / 1e3,
-                p50 = GDP_2015USD / population / 1e3, p75 = GDP_2015USD / population / 1e3,
-                p_max = GDP_2015USD / population / 1e3)
+      transmute(region, year, p_min = GDP_PPP2017USD / population / 1e3, p25 = GDP_PPP2017USD / population / 1e3,
+                p50 = GDP_PPP2017USD / population / 1e3, p75 = GDP_PPP2017USD / population / 1e3,
+                p_max = GDP_PPP2017USD / population / 1e3)
   )
 
 biomass_env <- biomass_env |>
@@ -508,7 +512,7 @@ for (rg in REGIONS) {
   gdp_cap_hist_r <- gdp_region_hist |>
     left_join(pop_region_hist, by = c("region", "year")) |>
     filter(region == rg, year <= HIST_END) |>
-    mutate(v = GDP_2015USD / population / 1e3)
+    mutate(v = GDP_PPP2017USD / population / 1e3)
   biomass_hist_r <- biomass_hist |> filter(region == rg)
   fossil_hist_r <- fossil_hist |> filter(region == rg)
   metal_hist_eu_r <- metal_hist_eu |> filter(region == rg)

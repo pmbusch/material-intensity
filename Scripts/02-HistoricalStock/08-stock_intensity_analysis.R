@@ -1,9 +1,9 @@
 ## =============================================================================
-## 04_stock_intensity_analysis.R
+## 08-stock_intensity_analysis.R
 ## Material stock intensity: in-use stock per unit of GDP.
-##   stock_intensity = Σ stock (kg) / GDP (constant 2015 USD)
+##   stock_intensity = Σ stock (kg) / GDP (PPP, constant 2017 intl $)
 ##
-## The DSM stock model (Script 02b) tracks two material groups:
+## The DSM stock model (script 05) tracks two material groups:
 ##   Metal ores  |  Non-metallic minerals
 ## and four end-uses:
 ##   buildings  |  civil_infrastructure  |  machinery  |  short_lived
@@ -13,8 +13,8 @@
 ##   material_detail = end_use   (finest available dimension)
 ##
 ## Inputs:
-##   Parameters/Intermediate/stock_trajectory_1970_2024.csv  -- from Script 02b
-##   Parameters/Worldbank-GDP/gdp_region.csv  -- Region x year x GDP_2015USD
+##   Parameters/Intermediate/stock_trajectory_1970_2024.csv  -- from script 05
+##   Parameters/Worldbank-GDP/gdp_region.csv  -- Region x year x GDP_PPP2017USD
 ##
 ## Outputs:
 ##   Figures/Stocks/stock_intensity_global_region.png
@@ -51,7 +51,7 @@ cat("  Regions:  ", paste(sort(unique(stock_traj$Region)), collapse = ", "), "\n
 cat("\nSTEP 2: Load GDP and add material hierarchy\n")
 
 gdp <- read_csv("Parameters/Worldbank-GDP/gdp_region.csv", show_col_types = FALSE)
-cat("  GDP units: constant 2015 USD (GDP_2015USD)\n")
+cat("  GDP units: PPP, constant 2017 intl $ (GDP_PPP2017USD)\n")
 cat("  GDP rows:", nrow(gdp), "| years:", min(gdp$year), "-", max(gdp$year), "\n")
 
 # The material column in the stock trajectory is already at the material-group
@@ -63,9 +63,9 @@ stock_traj <- stock_traj %>% mutate(material_group = material, material_detail =
 # GDP join check
 stock_gdp <- stock_traj %>% left_join(gdp, by = c("Region", "year"))
 
-n_missing_gdp <- stock_gdp %>% filter(is.na(GDP_2015USD)) %>% nrow()
+n_missing_gdp <- stock_gdp %>% filter(is.na(GDP_PPP2017USD)) %>% nrow()
 if (n_missing_gdp > 0) {
-  missing_combos <- stock_gdp %>% filter(is.na(GDP_2015USD)) %>% distinct(Region, year) %>% arrange(Region, year)
+  missing_combos <- stock_gdp %>% filter(is.na(GDP_PPP2017USD)) %>% distinct(Region, year) %>% arrange(Region, year)
   warning(paste(n_missing_gdp, "stock rows have no GDP match"))
   cat("  [WARN] Missing GDP for", nrow(missing_combos), "Region x year combos:\n")
   print(missing_combos, n = 20)
@@ -74,26 +74,26 @@ if (n_missing_gdp > 0) {
 
 # Step 3: Compute stock intensity datasets ------------------------------------
 
-cat("\nSTEP 3: Compute stock intensity (kg / constant 2015 USD)\n")
+cat("\nSTEP 3: Compute stock intensity (kg / $ GDP, PPP 2017)\n")
 
 # World GDP by year — used as denominator for global intensity
-world_gdp <- gdp %>% group_by(year) %>% summarise(GDP_2015USD = sum(GDP_2015USD, na.rm = TRUE), .groups = "drop")
+world_gdp <- gdp %>% group_by(year) %>% summarise(GDP_PPP2017USD = sum(GDP_PPP2017USD, na.rm = TRUE), .groups = "drop")
 
 # Helper: given a stock summary with columns Region + grouping_vars + year + stock_Mt,
 # return per-region and world intensity rows.
 build_intensity <- function(stock_summary, gdp_df, world_gdp_df, grouping_vars = character(0)) {
   reg <- stock_summary %>%
     left_join(gdp_df, by = c("Region", "year")) %>%
-    filter(!is.na(GDP_2015USD)) %>%
-    mutate(stock_intensity = stock_Mt * 1e9 / GDP_2015USD) # to kg per USD
+    filter(!is.na(GDP_PPP2017USD)) %>%
+    mutate(stock_intensity = stock_Mt * 1e9 / GDP_PPP2017USD) # to kg per USD
 
   group_keys <- c(grouping_vars, "year")
   wld <- stock_summary %>%
     group_by(across(all_of(group_keys))) %>%
     summarise(stock_Mt = sum(stock_Mt, na.rm = TRUE), .groups = "drop") %>%
     left_join(world_gdp_df, by = "year") %>%
-    filter(!is.na(GDP_2015USD)) %>%
-    mutate(stock_intensity = stock_Mt * 1e9 / GDP_2015USD, Region = "World")
+    filter(!is.na(GDP_PPP2017USD)) %>%
+    mutate(stock_intensity = stock_Mt * 1e9 / GDP_PPP2017USD, Region = "World")
 
   bind_rows(reg, wld)
 }
@@ -103,9 +103,9 @@ stock_A <- stock_traj %>% group_by(Region, year) %>% summarise(stock_Mt = sum(st
 
 intensity_A <- build_intensity(stock_A, gdp, world_gdp)
 
-# Sanity check: global stock intensity in 2016 ~ 10 kg per USD
+# Sanity check: global stock intensity in 2016 ~ 10 kg per $ (PPP)
 sanity_val <- intensity_A %>% filter(Region == "World", year == 2016) %>% pull(stock_intensity)
-cat("  Sanity check — global stock intensity 2016:", round(sanity_val, 4), "kg / constant 2015 USD\n")
+cat("  Sanity check — global stock intensity 2016:", round(sanity_val, 4), "kg / $ GDP, PPP 2017\n")
 if (length(sanity_val) == 0 || sanity_val > 500 || sanity_val < 0.001) {
   warning(paste(
     "Global 2016 stock intensity =",
@@ -170,7 +170,7 @@ p_A <- ggplot() +
   scale_colour_manual(values = PALETTE_REGIONS, na.value = "#999999") +
   scale_x_continuous(breaks = seq(1970, 2024, 10)) +
   coord_cartesian(expand = FALSE, clip = "off") +
-  labs(x = "Year", y = "Material stock intensity (kg / constant 2015 USD)") +
+  labs(x = "Year", y = "Material stock intensity (kg / $ GDP)") +
   theme_pb_large() +
   theme(legend.position = "none")
 p_A
@@ -214,7 +214,7 @@ p_B <- ggplot() +
   scale_colour_manual(values = PALETTE_REGIONS, na.value = "#999999") +
   scale_x_continuous(breaks = seq(1970, 2024, 10)) +
   coord_cartesian(expand = FALSE, clip = "off") +
-  labs(x = "Year", y = "Material stock intensity (kg / constant 2015 USD)") +
+  labs(x = "Year", y = "Material stock intensity (kg / $ GDP)") +
   theme_pb_large() +
   theme(legend.position = "none")
 p_B
@@ -257,7 +257,7 @@ p_C <- ggplot() +
   scale_colour_manual(values = PALETTE_REGIONS, na.value = "#999999") +
   scale_x_continuous(breaks = seq(1970, 2024, 10)) +
   coord_cartesian(expand = FALSE, clip = "off") +
-  labs(x = "Year", y = "Material stock intensity (kg / constant 2015 USD)") +
+  labs(x = "Year", y = "Material stock intensity (kg / $ GDP)") +
   theme_pb_large() +
   theme(legend.position = "none")
 p_C
@@ -291,7 +291,7 @@ p_D <- ggplot() +
   scale_colour_manual(values = PALETTE_REGIONS, na.value = "#999999") +
   scale_x_continuous(breaks = seq(1970, 2024, 20)) +
   coord_cartesian(expand = FALSE, clip = "off") +
-  labs(x = "Year", y = "Material stock intensity (kg / constant 2015 USD)") +
+  labs(x = "Year", y = "Material stock intensity (kg / $ GDP)") +
   theme_pb_large() +
   theme(legend.position = "none")
 p_D
@@ -333,7 +333,7 @@ for (yr in c(1970, 2000, 2024)) {
   if (length(val) == 0) {
     cat(sprintf("  Global stock intensity %d: NA (year not in data)\n", yr))
   } else {
-    cat(sprintf("  Global stock intensity %d: %.4f kg / constant 2015 USD\n", yr, val))
+    cat(sprintf("  Global stock intensity %d: %.4f kg / $ GDP, PPP 2017\n", yr, val))
   }
 }
 
@@ -349,7 +349,9 @@ cat("  Rows:", nrow(stock_sub), "| Materials:", paste(sort(unique(stock_sub$mate
 
 MATERIAL_LABELS <- c(
   "Metal_Fe" = "Iron & Steel (Fe)",
-  "Metal_NonFe" = "Non-ferrous Metals",
+  "Metal_Cu" = "Non-ferrous Metals", # Cu, Al and other non-Fe pooled
+  "Metal_Al" = "Non-ferrous Metals",
+  "Metal_OtherNonFe" = "Non-ferrous Metals",
   "Non-metallic minerals" = "Non-metallic Minerals"
 )
 SUPER_CAT_LABELS <- c(
@@ -385,15 +387,15 @@ stock_E_reg <- stock_sub %>%
   group_by(Region, material_label, super_cat_label, year) %>%
   summarise(stock_Mt = sum(stock_Mt, na.rm = TRUE), .groups = "drop") %>%
   left_join(gdp, by = c("Region", "year")) %>%
-  filter(!is.na(GDP_2015USD)) %>%
-  mutate(stock_intensity = stock_Mt * 1e9 / GDP_2015USD)
+  filter(!is.na(GDP_PPP2017USD)) %>%
+  mutate(stock_intensity = stock_Mt * 1e9 / GDP_PPP2017USD)
 
 stock_E_wld <- stock_sub %>%
   group_by(material_label, super_cat_label, year) %>%
   summarise(stock_Mt = sum(stock_Mt, na.rm = TRUE), .groups = "drop") %>%
   left_join(world_gdp, by = "year") %>%
-  filter(!is.na(GDP_2015USD)) %>%
-  mutate(stock_intensity = stock_Mt * 1e9 / GDP_2015USD, Region = "World")
+  filter(!is.na(GDP_PPP2017USD)) %>%
+  mutate(stock_intensity = stock_Mt * 1e9 / GDP_PPP2017USD, Region = "World")
 
 mat_order_E <- c("Iron & Steel (Fe)", "Non-ferrous Metals", "Non-metallic Minerals")
 sc_order_E <- c("Buildings", "Civil Infra.", "Machinery", "Short-lived")
@@ -420,7 +422,7 @@ p_E <- ggplot() +
   scale_colour_manual(values = PALETTE_REGIONS, na.value = "#999999") +
   scale_x_continuous(breaks = seq(1970, 2024, 20)) +
   coord_cartesian(expand = FALSE, clip = "off") +
-  labs(x = "Year", y = "Stock intensity (kg / constant 2015 USD)", colour = NULL) +
+  labs(x = "Year", y = "Stock intensity (kg / $ GDP)", colour = NULL) +
   theme_pb_large() +
   theme(legend.position = "none", strip.text = element_text(size = 6))
 p_E
@@ -438,15 +440,15 @@ stock_F_reg <- stock_sub %>%
   group_by(Region, material_label, sub_use_label, year) %>%
   summarise(stock_Mt = sum(stock_Mt, na.rm = TRUE), .groups = "drop") %>%
   left_join(gdp, by = c("Region", "year")) %>%
-  filter(!is.na(GDP_2015USD)) %>%
-  mutate(stock_intensity = stock_Mt * 1e9 / GDP_2015USD)
+  filter(!is.na(GDP_PPP2017USD)) %>%
+  mutate(stock_intensity = stock_Mt * 1e9 / GDP_PPP2017USD)
 
 stock_F_wld <- stock_sub %>%
   group_by(material_label, sub_use_label, year) %>%
   summarise(stock_Mt = sum(stock_Mt, na.rm = TRUE), .groups = "drop") %>%
   left_join(world_gdp, by = "year") %>%
-  filter(!is.na(GDP_2015USD)) %>%
-  mutate(stock_intensity = stock_Mt * 1e9 / GDP_2015USD, Region = "World")
+  filter(!is.na(GDP_PPP2017USD)) %>%
+  mutate(stock_intensity = stock_Mt * 1e9 / GDP_PPP2017USD, Region = "World")
 
 sub_order_F <- unname(SUB_USE_LABELS_FIG)
 
@@ -472,7 +474,7 @@ p_F <- ggplot() +
   scale_colour_manual(values = PALETTE_REGIONS, na.value = "#999999") +
   scale_x_continuous(breaks = seq(1970, 2024, 20)) +
   coord_cartesian(expand = FALSE, clip = "off") +
-  labs(x = "Year", y = "Stock intensity (kg / constant 2015 USD)", colour = NULL) +
+  labs(x = "Year", y = "Stock intensity (kg / $ GDP)", colour = NULL) +
   theme_pb_large() +
   theme(legend.position = "none", strip.text = element_text(size = 5.5))
 p_F

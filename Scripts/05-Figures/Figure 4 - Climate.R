@@ -1,4 +1,4 @@
-## Figure 4 - Climate.R  -> Figures/Fig4 - Climate.png (MAIN Figure 4)
+## Figure 4 - Climate.R  -> Figures/Fig5 - Climate.png (MAIN Figure 5)
 ##                         + Figures/Supporting-Figures/S23_Climate_Percentiles.png
 ## Runs assigned to their SSP label (closest world GDP/cap growth); SSP4 is not sampled by the MC (SSP_SAMPLED).
 ##   Fig4 - Climate, one column, three panels:
@@ -18,7 +18,7 @@ library(patchwork)
 
 pb_set_geom_defaults("small")
 
-cat("=== Figure 6 - Climate ===\n\n")
+cat("=== Figure 5 - Climate ===\n\n")
 
 # Parameters ------------------------------------------------------------
 
@@ -61,7 +61,8 @@ SSP_MARKERS <- c(
 
 MATERIAL_MAP <- c(
   "biomass" = "Biomass", "fossil_fuels" = "Fossil fuels", "metal_fe" = "Metal ores",
-  "metal_nonfe" = "Metal ores", "nonmetallic_minerals" = "Non-metallic minerals"
+  "metal_cu" = "Metal ores", "metal_al" = "Metal ores", "metal_othernonfe" = "Metal ores", "metal_gold" = "Metal ores",
+  "nonmetallic_minerals" = "Non-metallic minerals"
 )
 # Stacking order, bottom -> top
 MAT_LEVELS <- c("Non-metallic minerals", "Metal ores", "Fossil fuels", "Biomass")
@@ -408,7 +409,7 @@ p4b_main <- ggplot(scatter_df, aes(x = mat_cagr, y = gdp_cagr)) +
 # closed by a vertical drop line at both ends so the cut reads as a bound of the
 # runs, not a curve fading out. GDP growth is bounded by construction: each
 # run's world GDP/cap growth lies between the lowest- and highest-growth SSP
-# (02-RunSimulations.R STEP 4).
+# (03-RunSimulations.R STEP 4).
 marg_a_rows <- list()
 for (s in unique(scatter_df$ssp)) {
   for (v in c("mat_cagr", "gdp_cagr")) {
@@ -463,9 +464,20 @@ fig4 <- patchwork::wrap_plots(
   design = "AB\nCD\nEF",
   widths = grid::unit(c(BOX_CM, 0.8), "cm"), heights = grid::unit(c(0.9, BOX_CM, BOX_CM), "cm")
 )
-ggsave("Figures/Fig4 - Climate.png", fig4, units = "cm", dpi = 600, width = 8.7, height = 16.4, bg = "white")
-ggsave("Figures/SVG/Fig4 - Climate.svg", fig4, units = "cm", width = 8.7, height = 16.4, bg = "transparent")
-clean_svg("Figures/SVG/Fig4 - Climate.svg")
+ggsave("Figures/Fig5 - Climate.png", fig4, units = "cm", dpi = 600, width = 8.7, height = 16.4, bg = "white")
+ggsave("Figures/SVG/Fig5 - Climate.svg", fig4, units = "cm", width = 8.7, height = 16.4, bg = "transparent")
+clean_svg("Figures/SVG/Fig5 - Climate.svg")
+
+# Save figure data, one file per panel (margins are densities of the same runs)
+dir.create("Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+readr::write_csv(
+  dplyr::bind_rows(
+    scatter_df |> dplyr::mutate(layer = "mc_runs"),
+    fit_line_b |> dplyr::mutate(layer = "regression_line")
+  ),
+  "Figures/RawData/fig4a.csv"
+)
+readr::write_csv(mapped_df, "Figures/RawData/fig4b.csv")
 
 
 # SI: same scatter at the 33rd / 67th percentile warming -------------------------
@@ -478,6 +490,9 @@ fig4_si <- (map_panels$t_p33 + labs(title = "33rd percentile warming", tag = "a"
 ggsave("Figures/Supporting-Figures/S23_Climate_Percentiles.png", fig4_si, units = "cm", dpi = 600, width = 17, height = 9, bg = "white")
 ggsave("Figures/SVG/Supporting-Figures/S23_Climate_Percentiles.svg", fig4_si, units = "cm", width = 17, height = 9, bg = "transparent")
 clean_svg("Figures/SVG/Supporting-Figures/S23_Climate_Percentiles.svg")
+dir.create("Figures/Supporting-Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+readr::write_csv(mapped_df |> dplyr::select(run_id, ssp, total_Gt, t_p33, t_p67), "Figures/Supporting-Figures/RawData/S23_runs.csv")
+readr::write_csv(comp_df, "Figures/Supporting-Figures/RawData/S23_inset_composition.csv")
 
 print(comp_df |> dplyr::select(ssp, material, share) |> tidyr::pivot_wider(names_from = material, values_from = share))
 
@@ -526,9 +541,10 @@ ggplot(s24_df) +
 ggsave("Figures/Supporting-Figures/S24_MaterialShare_SSP.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 17, height = 6.5, bg = "white")
 ggsave("Figures/SVG/Supporting-Figures/S24_MaterialShare_SSP.svg", ggplot2::last_plot(), units = "cm", width = 17, height = 6.5, bg = "transparent")
 clean_svg("Figures/SVG/Supporting-Figures/S24_MaterialShare_SSP.svg")
+readr::write_csv(s24_df |> dplyr::select(ssp, material, share, q_lo, q_hi), "Figures/Supporting-Figures/RawData/S24_MaterialShare_SSP.csv")
 print(s24_df |> dplyr::select(ssp, material, share, q_lo, q_hi) |> dplyr::mutate(dplyr::across(c(share, q_lo, q_hi), \(v) round(100 * v, 1))) |> as.data.frame())
 
-cat("  Saved: Figures/Fig4 - Climate.png, Supporting-Figures/S23_Climate_Percentiles.png, S24_MaterialShare_SSP.png (+ SVG)\n")
+cat("  Saved: Figures/Fig5 - Climate.png, Supporting-Figures/S23_Climate_Percentiles.png, S24_MaterialShare_SSP.png (+ SVG)\n")
 cat("=== Figure 6 done ===\n")
 
 # EoF

@@ -1,5 +1,5 @@
 ## =============================================================================
-## 04-Decoupling.R
+## 05-Decoupling.R
 ## Decoupling analysis: CAGR of primary material consumption per capita vs CAGR
 ## of GDP per capita, global level, per run x material group. Classified as
 ## absolute / peak / relative / no decoupling. Main window 2040-2060; robustness:
@@ -24,7 +24,7 @@
 ## assumptions, not probabilities of real-world decoupling.
 ##
 ## SSP note: population, GDP/capita and flow-intensity bounds share ONE
-## continuous draw per run (ssp_u; see 02-RunSimulations.R) blending the two
+## continuous draw per run (ssp_u; see 03-RunSimulations.R) blending the two
 ## bracketing SSPs' full region x year trajectory by the same share for every
 ## region. There is no discrete SSP label -- ssp_u rides along as a plain
 ## continuous column throughout; "stratified by SSP" below means conditioning
@@ -93,7 +93,7 @@ results <- arrow::open_dataset("Results/MC/mc_results.parquet", format = "parque
     ssp_lo, ssp_hi, ssp_share_lo
   ) |>
   dplyr::collect() |>
-  mutate(material_group = ifelse(material_group %in% c("metal_fe", "metal_nonfe"), "metal_ores", material_group))
+  mutate(material_group = ifelse(material_group %in% METAL_GROUPS_ALL, "metal_ores", material_group))
 
 input_matrix <- read_csv("Parameters/Simulation/mc_input_matrix.csv", show_col_types = FALSE)
 gdp_region_hist <- read_csv("Parameters/Worldbank-GDP/gdp_region.csv", show_col_types = FALSE)
@@ -111,7 +111,7 @@ cat("STEP 2: Reconstruct region x run x year population & GDP\n")
 
 gdp_2024_region <- gdp_region_hist |>
   filter(year == 2024) |>
-  rename(region = Region, gdp_2024 = GDP_2015USD) |>
+  rename(region = Region, gdp_2024 = GDP_PPP2017USD) |>
   dplyr::select(region, gdp_2024)
 
 pop_2024_region <- pop_region_hist |>

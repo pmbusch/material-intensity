@@ -1,7 +1,8 @@
 ## Table 1 - Results.R
 ## Compiles headline Stock / Flow / Outflow results by material category and
 ## detail, at 2024 (current/historical) and FORECAST_END (MC median + 95% CI).
-## Rows: Total -> big category -> detail (metals split Ferrous/Non-ferrous;
+## Rows: Total -> big category -> detail (metals split Ferrous/Non-ferrous, where
+## non-ferrous = Cu + Al + other non-Fe + gold ore flow;
 ## minerals split by end-use). Columns: category, then Stock, Flow, Outflow,
 ## each with a 2024 and a FORECAST_END sub-column. Rendered as an HTML gt table.
 ##
@@ -15,7 +16,7 @@
 ## 2024 values use real historical/accounting data (stock_2024_total.csv;
 ## materials_region_DMC.csv for biomass/fossil). Metal/mineral 2024 flow and
 ## outflow come from the historical DSM on the model basis
-## (Results/MC/hist_flows_model_basis.csv, 02-RunSimulations.R STEP 8), so they
+## (Results/MC/hist_flows_model_basis.csv, 03-RunSimulations.R STEP 8), so they
 ## are the same quantity as the FORECAST_END columns.
 
 source("Scripts/00-Libraries.R", encoding = "UTF-8")
@@ -50,7 +51,10 @@ DETAIL_ORDER <- list(
 
 # Load data --------
 
-mc_results <- arrow::read_parquet("Results/MC/mc_results.parquet")
+mc_results <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
+  dplyr::filter(year %in% c(TARGET_YR, PROXY_YR)) |> # only years used below (mc_target, mc_proxy)
+  dplyr::select(run_id, material_group, material_key, year, in_use_stock_Mt, primary_consumption_Mt, secondary_supply_Mt, waste_Mt) |>
+  dplyr::collect()
 stock_2024_total <- readr::read_csv("Parameters/MISO-Stock/stock_2024_total.csv", show_col_types = FALSE)
 dmc_region <- readr::read_csv("Parameters/UNEP-Materials/materials_region_DMC.csv", show_col_types = FALSE)
 hist_flows_2024 <- readr::read_csv("Results/MC/hist_flows_model_basis.csv", show_col_types = FALSE) |>
@@ -59,7 +63,7 @@ hist_flows_2024 <- readr::read_csv("Results/MC/hist_flows_model_basis.csv", show
     category = dplyr::if_else(material == "Non-metallic minerals", "Non-metallic minerals", "Metals"),
     detail = dplyr::case_when(
       material == "Metal_Fe" ~ "Ferrous ores",
-      material == "Metal_NonFe" ~ "Non-ferrous ores",
+      material %in% NONFE_METAL_KEYS ~ "Non-ferrous ores",
       super_category == "buildings" ~ "Buildings",
       super_category == "civil_infrastructure" ~ "Civil infrastructure",
       super_category == "machinery" ~ "Machinery",
@@ -77,13 +81,13 @@ mc_labeled <- mc_results |>
     category = dplyr::case_when(
       material_group == "biomass" ~ "Biomass",
       material_group == "fossil_fuels" ~ "Fossil fuels",
-      material_group %in% c("metal_fe", "metal_nonfe") ~ "Metals",
+      material_group %in% METAL_GROUPS_ALL ~ "Metals",
       material_group == "nonmetallic_minerals" ~ "Non-metallic minerals"
     ),
     detail = dplyr::case_when(
       material_group %in% c("biomass", "fossil_fuels") ~ material_key,
       material_group == "metal_fe" ~ "Ferrous ores",
-      material_group == "metal_nonfe" ~ "Non-ferrous ores",
+      material_group %in% c("metal_cu", "metal_al", "metal_othernonfe", "metal_gold") ~ "Non-ferrous ores",
       material_group == "nonmetallic_minerals" ~ unname(ENDUSE_MAP[material_key])
     ),
     flow_Mt = primary_consumption_Mt + secondary_supply_Mt
@@ -99,10 +103,10 @@ mc_proxy <- mc_labeled |> dplyr::filter(year == PROXY_YR)
 
 stock_2024_detail <- stock_2024_total |>
   dplyr::mutate(
-    category = dplyr::if_else(material %in% c("Metal_Fe", "Metal_NonFe"), "Metals", "Non-metallic minerals"),
+    category = dplyr::if_else(material %in% names(METAL_KEYS), "Metals", "Non-metallic minerals"),
     detail = dplyr::case_when(
       material == "Metal_Fe" ~ "Ferrous ores",
-      material == "Metal_NonFe" ~ "Non-ferrous ores",
+      material %in% NONFE_METAL_KEYS ~ "Non-ferrous ores",
       super_category == "buildings" ~ "Buildings",
       super_category == "civil_infrastructure" ~ "Civil infrastructure",
       super_category == "machinery" ~ "Machinery",
@@ -178,10 +182,16 @@ flow_2024_fossil <- dmc_2024 |>
   dplyr::mutate(category = "Fossil fuels")
 
 # Metals/minerals: 2024 historical DSM inflow on the model basis (= primary +
-# secondary, ore-equivalent for metals; 02-RunSimulations.R STEP 8), the same
+# secondary, ore-equivalent for metals; 03-RunSimulations.R STEP 8), the same
 # quantity as the FORECAST_END flow -- not UNEP DMC (territorial, other scope).
+# Gold ore (a flow, inside Non-ferrous ores) has no DSM history: its 2024 flow
+# is the 2024 gold ore DMC (01-PrepareData/07-NonFerrous_Split.R)
+gold_2024 <- readr::read_csv("Parameters/MaterialFlows/nonfe_split_region.csv", show_col_types = FALSE) |>
+  dplyr::filter(nonfe_sub == "Gold", year == 2024) |>
+  dplyr::transmute(detail = "Non-ferrous ores", inflow_Mt = DMC_Mt)
 flow_2024_metal <- hist_flows_2024 |>
   dplyr::filter(category == "Metals") |>
+  dplyr::bind_rows(gold_2024) |>
   dplyr::group_by(detail) |>
   dplyr::summarise(flow_2024_Mt = sum(inflow_Mt, na.rm = TRUE), .groups = "drop") |>
   dplyr::mutate(category = "Metals")

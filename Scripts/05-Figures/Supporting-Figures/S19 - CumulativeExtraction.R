@@ -80,7 +80,10 @@ NONMET_HIST_CATS <- c(
 
 # Load data ---------------------------------------------------------------
 
-mc_results <- arrow::read_parquet("Results/MC/mc_results.parquet")
+mc_results <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
+  dplyr::filter(year >= FIG_START, year <= FIG_END) |>
+  dplyr::select(run_id, material_group, material_key, year, primary_consumption_Mt) |>
+  dplyr::collect()
 de_world_hist <- readr::read_csv("Parameters/UNEP-Materials/materials_world_DE.csv", show_col_types = FALSE)
 
 results_fig <- mc_results |> dplyr::filter(year >= FIG_START, year <= FIG_END)
@@ -142,7 +145,7 @@ panel_b_df <- fossil_annual |>
 # Panel c -- Metal ores: cumulative mass vs. historical benchmark -----------
 
 metal_annual <- results_fig |>
-  dplyr::filter(material_group %in% c("metal_fe", "metal_nonfe")) |>
+  dplyr::filter(material_group %in% METAL_GROUPS_ALL) |>
   dplyr::group_by(run_id, year) |>
   dplyr::summarise(mass_Mt = sum(primary_consumption_Mt, na.rm = TRUE), .groups = "drop") |>
   dplyr::arrange(run_id, year) |>
@@ -305,13 +308,13 @@ cat("  Saved: Figures/Supporting-Figures/S19_CumulativeExtraction.png, Figures/S
 
 ## Save figure data, one file per panel ----------------------------------
 
-dir.create("Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+dir.create("Figures/Supporting-Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
 
-readr::write_csv(panel_a_df, "Figures/RawData/S19a_biomass.csv")
-readr::write_csv(panel_b_df, "Figures/RawData/S19b_fossil.csv")
-readr::write_csv(panel_c_df, "Figures/RawData/S19c_metals.csv")
-readr::write_csv(panel_d_df, "Figures/RawData/S19d_minerals.csv")
-cat("  Saved: Figures/RawData/S19a_biomass.csv, fig5b_fossil.csv, fig5c_metals.csv, fig5d_minerals.csv\n")
+readr::write_csv(panel_a_df, "Figures/Supporting-Figures/RawData/S19a_biomass.csv")
+readr::write_csv(panel_b_df, "Figures/Supporting-Figures/RawData/S19b_fossil.csv")
+readr::write_csv(panel_c_df, "Figures/Supporting-Figures/RawData/S19c_metals.csv")
+readr::write_csv(panel_d_df, "Figures/Supporting-Figures/RawData/S19d_minerals.csv")
+cat("  Saved: Figures/Supporting-Figures/RawData/S19{a,b,c,d}_*.csv\n")
 
 cat("=== Figure 5 done ===\n")
 

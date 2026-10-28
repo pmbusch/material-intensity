@@ -12,7 +12,7 @@
 ##
 ## Projection: MC median (dashed) + 90% CI band (P5–P95) from 10K runs.
 ## Pop/GDP: each run blends the two SSPs bracketing its single
-## continuous ssp_u draw (see 02-RunSimulations.R); no
+## continuous ssp_u draw (see 03-RunSimulations.R); no
 ## discrete ssp_label exists in results, so world pop/GDP per run are
 ## reconstructed region-by-region from that blend (SECTION C2).
 ## M/G, S/G: derived post-hoc as DMC or stock / world GDP per run.
@@ -62,7 +62,7 @@ STACK_LABEL_YEAR <- 2005L
 HIST_LABEL_YEAR <- 2020L
 POWER_LABEL_YEAR <- 1990L # panel d: label on the historical power-sector line
 SIDE_BAR_W <- 1.35 # panels g/h: composition bar width (3x the 0.45 range bars of panels c-f)
-HIST_LABEL_X <- HIST_END + 2 # panels g/h: x of the rotated HIST_END share labels, just right of the historical stack
+HIST_LABEL_X <- HIST_END + 0.8 # panels g/h: x where the HIST_END share labels start, just right of the historical stack
 
 SUB_USE_LABELS <- c(
   "residential" = "Residential Bldg",
@@ -180,17 +180,21 @@ hist_flows_model <- read_csv("Results/MC/hist_flows_model_basis.csv", show_col_t
 
 cat("B: Loading MC results\n")
 
-results <- arrow::read_parquet("Results/MC/mc_results.parquet") |>
+results <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
+  dplyr::select(run_id, region, material_group, material_key, year, in_use_stock_Mt, primary_consumption_Mt) |>
+  filter(material_group != "metal_gold") |> # gold ore (a flow) is not shown in Figure 2
   mutate(
-    material_group = ifelse(material_group %in% c("metal_fe", "metal_nonfe"), "metal_ores", material_group),
-    # The four power-sector end uses (02-RunSimulations.R) shown as one "Power sector" end use
+    material_group = ifelse(material_group %in% unname(METAL_KEYS), "metal_ores", material_group),
+    # The four power-sector end uses (03-RunSimulations.R) shown as one "Power sector" end use
     material_key = ifelse(startsWith(material_key, "Power: "), "Power sector", material_key)
-  )
+  ) |>
+  collect()
 cat("  Runs:", n_distinct(results$run_id), "| Years:", paste(range(results$year), collapse = "-"), "\n")
 
 # One row per run with its continuous SSP blend (population & GDP/capita independent)
-run_ssp <- results |>
-  distinct(run_id, ssp_lo, ssp_hi, ssp_share_lo)
+run_ssp <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
+  distinct(run_id, ssp_lo, ssp_hi, ssp_share_lo) |>
+  collect()
 
 
 # ── SECTION C: 2024 regional GDP/population baselines ------------------------
@@ -200,7 +204,7 @@ cat("C: Regional 2024 baselines\n")
 
 gdp_2024_region <- gdp_region_hist |>
   filter(year == HIST_END) |>
-  rename(region = Region, gdp_2024 = GDP_2015USD) |>
+  rename(region = Region, gdp_2024 = GDP_PPP2017USD) |>
   dplyr::select(region, gdp_2024)
 
 pop_2024_region <- pop_region_hist |>
@@ -211,11 +215,11 @@ pop_2024_region <- pop_region_hist |>
 
 # ── SECTION C2: Per-run world GDP & population from the continuous blend ----
 # Each run blends two bracketing SSPs independently for population and for
-# GDP-per-capita (see 02-RunSimulations.R STEP 3/4). World GDP total is not
+# GDP-per-capita (see 03-RunSimulations.R STEP 3/4). World GDP total is not
 # itself one of the two draws -- it is reconstructed region-by-region as
 # GDP_2024 * pop_idx_blend(region,t) * gdppc_idx_blend(region,t), since
 # GDP_total_index = Population_index * GDP_per_capita_index exactly (see
-# Scripts/03-SSP Trajectories/01_preprocess_ssp_drivers.R, Step 5).
+# Scripts/03-SSP Trajectories/01-preprocess_ssp_drivers.R, Step 5).
 
 cat("C2: Per-run world GDP/population from continuous SSP blend\n")
 
@@ -274,8 +278,8 @@ biomass_hist <- dmc_hist |>
   group_by(year, material_category) |>
   summarise(DMC_Mt = sum(DMC_Mt, na.rm = TRUE), .groups = "drop") |>
   left_join(gdp_world_hist, by = "year") |>
-  filter(!is.na(GDP_2015USD), year <= HIST_END) |>
-  mutate(mg = DMC_Mt * 1e9 / GDP_2015USD)
+  filter(!is.na(GDP_PPP2017USD), year <= HIST_END) |>
+  mutate(mg = DMC_Mt * 1e9 / GDP_PPP2017USD)
 
 fossil_hist <- dmc_hist |>
   filter(
@@ -293,11 +297,11 @@ fossil_hist <- dmc_hist |>
   group_by(year, material_category) |>
   summarise(DMC_Mt = sum(DMC_Mt, na.rm = TRUE), .groups = "drop") |>
   left_join(gdp_world_hist, by = "year") |>
-  filter(!is.na(GDP_2015USD), year <= HIST_END) |>
-  mutate(mg = DMC_Mt * 1e9 / GDP_2015USD)
+  filter(!is.na(GDP_PPP2017USD), year <= HIST_END) |>
+  mutate(mg = DMC_Mt * 1e9 / GDP_PPP2017USD)
 
 # Power sector history (panels d/f): EIA installed capacity per region, 1980-HIST_END
-# (01-PrepareData/06-Aggregate_EIA_Capacity.R) x the model's static material
+# (01-PrepareData/05-Aggregate_EIA_Capacity.R) x the model's static material
 # intensities (power_material_intensity.csv, t/GW and t/GWh). EIA aggregates are
 # split into model technologies with each region's 2025 model anchor mix (fossil
 # -> coal/gas/oil, solar -> PV/CSP, wind -> onshore/offshore), held constant;
@@ -326,15 +330,15 @@ power_units_hist <- bind_rows(
     mutate(unit_key = "battery")
 )
 
-# Region x year x model material (Metal_Fe, Metal_NonFe, Non-metallic minerals), Mt
-POWER_MATERIAL_LABEL <- c("metal_fe" = "Metal_Fe", "metal_nonfe" = "Metal_NonFe", "nonmetallic_minerals" = "Non-metallic minerals")
+# Region x year x model material (Metal_Fe, Metal_Cu, Metal_Al, Metal_OtherNonFe, Non-metallic minerals), Mt
+POWER_MATERIAL_LABEL <- c(setNames(names(METAL_KEYS), METAL_KEYS), "nonmetallic_minerals" = "Non-metallic minerals")
 power_hist_region <- power_units_hist |>
   inner_join(read_csv("Parameters/Simulation/power_material_intensity.csv", show_col_types = FALSE), by = "unit_key", relationship = "many-to-many") |>
   mutate(material = unname(POWER_MATERIAL_LABEL[material_group])) |>
   group_by(Region = region, material, year) |>
   summarise(power_Mt = sum(units * t_per_unit) / 1e6, .groups = "drop") # GW x t/GW -> Mt
 
-# Same carve-out as the model (01b-PowerSector.R): the power stock is removed from
+# Same carve-out as the model (02-PowerSector.R): the power stock is removed from
 # civil engineering, per region x material, in every historical year
 stock_subenduse_hist <- stock_subenduse_hist |>
   left_join(power_hist_region |> mutate(sub_use = POWER_CARVEOUT_SUB_USE), by = c("Region", "material", "sub_use", "year")) |>
@@ -351,8 +355,8 @@ power_hist_mg <- power_hist_region |>
   group_by(year, is_metal) |>
   summarise(stock_Mt = sum(power_Mt), .groups = "drop") |>
   left_join(gdp_world_hist, by = "year") |>
-  filter(!is.na(GDP_2015USD)) |>
-  mutate(end_use_label = "Power sector", mg = stock_Mt * 1e9 / GDP_2015USD)
+  filter(!is.na(GDP_PPP2017USD)) |>
+  mutate(end_use_label = "Power sector", mg = stock_Mt * 1e9 / GDP_PPP2017USD)
 
 # EIA starts in 1980: S/G extended back to 1970 (display only) with the average
 # annual change over 1980-1990, linear from the 1980 value (floored at 0)
@@ -380,13 +384,13 @@ cat(
 
 # Panels e/f: 8 sub-end-use historical lines from sub-enduse stock file (civil engineering net of power)
 metal_hist_eu <- stock_subenduse_hist |>
-  filter(material %in% c("Metal_Fe", "Metal_NonFe")) |>
+  filter(material %in% names(METAL_KEYS)) |>
   mutate(end_use_label = SUB_USE_LABELS[sub_use]) |>
   group_by(year, end_use_label) |>
   summarise(stock_Mt = sum(stock_Mt, na.rm = TRUE), .groups = "drop") |>
   left_join(gdp_world_hist, by = "year") |>
-  filter(!is.na(GDP_2015USD), year <= HIST_END) |>
-  mutate(mg = stock_Mt * 1e9 / GDP_2015USD)
+  filter(!is.na(GDP_PPP2017USD), year <= HIST_END) |>
+  mutate(mg = stock_Mt * 1e9 / GDP_PPP2017USD)
 
 nonmet_hist_eu <- stock_subenduse_hist |>
   filter(material == "Non-metallic minerals") |>
@@ -394,8 +398,8 @@ nonmet_hist_eu <- stock_subenduse_hist |>
   group_by(year, end_use_label) |>
   summarise(stock_Mt = sum(stock_Mt, na.rm = TRUE), .groups = "drop") |>
   left_join(gdp_world_hist, by = "year") |>
-  filter(!is.na(GDP_2015USD), year <= HIST_END) |>
-  mutate(mg = stock_Mt * 1e9 / GDP_2015USD)
+  filter(!is.na(GDP_PPP2017USD), year <= HIST_END) |>
+  mutate(mg = stock_Mt * 1e9 / GDP_PPP2017USD)
 
 
 # ── SECTION E: MC projection envelopes (P5 / P50 / P95) ---------------------
@@ -504,7 +508,7 @@ dmc_total_hist <- dmc_hist |>
   group_by(year, mat_group) |>
   summarise(DMC_Gt = sum(DMC_Mt, na.rm = TRUE) / 1e3, .groups = "drop") |>
   # Metals/minerals: historical primary on the model basis (DSM inflow - secondary,
-  # 02-RunSimulations.R STEP 8) instead of UNEP DMC, so history meets the projection
+  # 03-RunSimulations.R STEP 8) instead of UNEP DMC, so history meets the projection
   filter(mat_group %in% c("Biomass", "Fossil fuels")) |>
   bind_rows(
     hist_flows_model |>
@@ -585,11 +589,11 @@ gdpcap_env <- gdpcap_env |>
       filter(year == HIST_END) |>
       transmute(
         year,
-        p_min = GDP_2015USD / population / 1e3,
-        p25 = GDP_2015USD / population / 1e3,
-        p50 = GDP_2015USD / population / 1e3,
-        p75 = GDP_2015USD / population / 1e3,
-        p_max = GDP_2015USD / population / 1e3
+        p_min = GDP_PPP2017USD / population / 1e3,
+        p25 = GDP_PPP2017USD / population / 1e3,
+        p50 = GDP_PPP2017USD / population / 1e3,
+        p75 = GDP_PPP2017USD / population / 1e3,
+        p_max = GDP_PPP2017USD / population / 1e3
       )
   )
 
@@ -927,7 +931,7 @@ p1 <- ggplot() +
 gdp_cap_hist <- gdp_world_hist |>
   left_join(pop_world_hist, by = "year") |>
   filter(year <= HIST_END) |>
-  mutate(v = GDP_2015USD / population / 1e3)
+  mutate(v = GDP_PPP2017USD / population / 1e3)
 
 p2 <- ggplot() +
   geom_ribbon(
@@ -947,7 +951,7 @@ p2 <- ggplot() +
   ) +
   present_line_top +
   x_sc +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.05)), breaks = seq(0, 30, 5), labels = function(x) {
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05)), breaks = seq(0, 100, 5), labels = function(x) {
     ifelse(x %% 10 == 0, x, "")
   }) +
   co +
@@ -985,7 +989,8 @@ p3 <- ggplot() +
       xmin = PROJ_END + pos_x + 1,
       xmax = PROJ_END + pos_x + 1 + 0.45,
       ymin = p_min,
-      ymax = p_max,
+      ymax = pmax(p_max, p_min + 0.002), # min visible height: Other biomass's range is ~0 wide
+
       fill = material_key
     ),
     color = NA
@@ -994,14 +999,14 @@ p3 <- ggplot() +
     data = bio_labels,
     aes(x = LABEL_YEAR, y = mg, colour = material_category, label = label_x, angle = angle),
     size = LABEL_SZ, show.legend = FALSE,
-    nudge_y = c(0.01,0.01,0.018,0.01,0.01)
+    nudge_y = c(0.01,0.01,0.018,0.01,0.01), nudge_x = c(5, 0, 0, 3, 0) # Crop Residues / Other biomass: clear of the left border
   ) +
   present_line +
   x_sc +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.05)), breaks = seq(0, 0.25, 0.05), labels = function(x) {
-    ifelse(abs(x / 0.1 - round(x / 0.1)) < 1e-9, x, "") # tolerance: %% on decimals misses e.g. 0.3
+  scale_y_continuous(breaks = seq(0, 0.2, 0.025), labels = function(x) {
+    ifelse(abs(x / 0.05 - round(x / 0.05)) < 1e-9, x, "") # tolerance: %% on decimals misses e.g. 0.3
   }) +
-  co +
+  coord_cartesian(xlim = c(1970, PROJ_END), ylim = c(0, 0.2), clip = "off", expand = FALSE) +
   scale_colour_manual(values = PALETTE_MATERIALS, guide = "none") +
   scale_fill_manual(values = PALETTE_MATERIALS, guide = "none") +
   panel_tag("c", side = "right") +
@@ -1050,10 +1055,10 @@ p4 <- ggplot() +
   ) +
   present_line +
   x_sc +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.05)), breaks = seq(0, 0.16, 0.02), labels = function(x) {
+  scale_y_continuous(breaks = seq(0, 0.12, 0.02), labels = function(x) {
     ifelse(abs(x / 0.04 - round(x / 0.04)) < 1e-9, x, "") # tolerance: 0.12 %% 0.04 != 0 in floating point
   }) +
-  co +
+  coord_cartesian(xlim = c(1970, PROJ_END), ylim = c(0, 0.12), clip = "off", expand = FALSE) +
   scale_colour_manual(values = PALETTE_MATERIALS, guide = "none") +
   scale_fill_manual(values = PALETTE_MATERIALS, guide = "none") +
   panel_tag("e", side = "right") +
@@ -1096,29 +1101,30 @@ p5 <- ggplot() +
     ),
     color = NA
   ) +
+  # Horizontal direct labels at fixed spots next to each historical line (the
+  # lines cross and bunch, so slope-following labels overlapped); the three
+  # near-zero lines (packaging, durables, power sector) share one row above them
   geom_text(
-    data = metal_hist_labels,
-    aes(x = year, y = mg, label = aux_label, colour = end_use_label, angle = angle),
-    # 7 labels, alphabetical: Civil eng., Durables, Machinery, Non-residential Bldg,
-    # Packaging, Residential Bldg, Vehicles (no metal Roads)
-    nudge_y=c(-7.5,1,5.7,3.5,0.9,3,-1.5)*0.005,
-    nudge_x = c(-15,3,-30,-30,3,-13,-0.5),
-    hjust = c(1,1,1,0.5,1,0.5,1),
-     lineheight = 0.8,
+    data = tibble::tribble(
+      ~end_use_label, ~x, ~y,
+      "Civil eng.", 1985, 0.103,
+      "Residential Bldg", 1983, 0.066,
+      "Machinery", 2004, 0.075,
+      "Non-residential Bldg", 1990, 0.040,
+      "Vehicles", 1990, 0.023,
+      "Packaging", 1978, 0.0135,
+      "Durables", 1997, 0.0135,
+      "Power sector", 2019, 0.0135
+    ),
+    aes(x = x, y = y, label = end_use_label, colour = end_use_label),
     size = LABEL_SZ, show.legend = FALSE
-  ) +
-  # Power sector: labelled on its historical (EIA) line
-  geom_text(
-    data = power_hist_metal |> filter(year == POWER_LABEL_YEAR),
-    aes(x = year, y = mg, label = end_use_label, colour = end_use_label),
-    vjust = -0.4, size = LABEL_SZ, show.legend = FALSE
   ) +
   present_line +
   x_sc +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.05)), breaks = seq(0, 0.4, 0.02), labels = function(x) {
-    ifelse(round(x * 100) %% 4 == 0, ifelse(x == 0, "0", sprintf("%.2f", x)), "") # 2 decimals: 0.20 like 0.04
+  scale_y_continuous(breaks = seq(0, 0.15, 0.025), labels = function(x) {
+    ifelse(abs(x / 0.05 - round(x / 0.05)) < 1e-9, ifelse(x == 0, "0", sprintf("%.2f", x)), "") # 2 decimals: 0.05, 0.10, 0.15
   }) +
-  co +
+  coord_cartesian(xlim = c(1970, PROJ_END), ylim = c(0, 0.15), clip = "off", expand = FALSE) +
   scale_colour_manual(values = PALETTE_SUBENDUSE, guide = "none") +
   scale_fill_manual(values = PALETTE_SUBENDUSE, guide = "none") +
   panel_tag("d", side = "right") +
@@ -1161,19 +1167,25 @@ p6 <- ggplot() +
     ),
     color = NA
   ) +
+  # Fixed label spots (as in panel d): Roads above its peak, the building
+  # lines' labels on their own side, Civil eng. below the lowest line
   geom_text(
-    data = nonmet_hist_labels,
-    aes(x = year, y = mg, label = end_use_label, colour = end_use_label, angle = angle),
-    nudge_y=c(-0.6,-0.6,-0.25,2),
-    nudge_x = c(-34,-0.5,-8,-25),
-    hjust = 1,size = LABEL_SZ, show.legend = FALSE
+    data = tibble::tribble(
+      ~end_use_label, ~x, ~y, ~angle,
+      "Roads", 1993, 3.75, 0,
+      "Residential Bldg", 1997, 1.95, 25,
+      "Non-residential Bldg", 1993, 0.95, 0,
+      "Civil eng.", 2013, 1.3, 0
+    ),
+    aes(x = x, y = y, label = end_use_label, colour = end_use_label, angle = angle),
+    size = LABEL_SZ, show.legend = FALSE
   ) +
   present_line +
   x_sc +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.05)), breaks = seq(0, 7), labels = function(x) {
-    ifelse(x %% 2 == 0, x, "")
+  scale_y_continuous(breaks = seq(0, 4, 0.5), labels = function(x) {
+    ifelse(x %% 1 == 0, x, "")
   }) +
-  co +
+  coord_cartesian(xlim = c(1970, PROJ_END), ylim = c(0, 4), clip = "off", expand = FALSE) +
   scale_colour_manual(values = PALETTE_SUBENDUSE, guide = "none") +
   scale_fill_manual(values = PALETTE_SUBENDUSE, guide = "none") +
   panel_tag("f") +
@@ -1194,7 +1206,7 @@ p7 <- ggplot() +
   geom_text(
     data = dmc_stack_labels,
     aes(x = STACK_LABEL_YEAR, y = label_y, label = label, colour = mat_group),
-    angle = c(0, 15, 20, 10), nudge_x = c(0, 0, 0, -12),
+    angle = c(0, 15, 20, 10), nudge_x = c(0, 0, 6, -12),
     size = LABEL_SZ, hjust = 0.5, vjust = 0.5, fontface = "bold", show.legend = FALSE
   ) +
   geom_ribbon(data = dmc_env, aes(x = year, ymin = p25, ymax = p75), fill = "grey60", alpha = RIBBON_ALPHA_IQR) +
@@ -1220,7 +1232,7 @@ p7 <- ggplot() +
   geom_text(
     data = hist_lab_g |> filter(share >= 0.05),
     aes(x = HIST_LABEL_X, y = (ymin + ymax) / 2, label = scales::percent(share, accuracy = 1), colour = mat_group),
-    angle = 90, hjust = 0.5, vjust = 0.5, size = LABEL_SZ
+    hjust = 0, vjust = 0.5, size = LABEL_SZ # horizontal: rotated labels overlapped on thin bands
   ) +
   present_line +
   x_sc +
@@ -1274,7 +1286,7 @@ p8 <- ggplot() +
   geom_text(
     data = hist_lab_h |> filter(share >= 0.05),
     aes(x = HIST_LABEL_X, y = (ymin + ymax) / 2, label = scales::percent(share, accuracy = 1), colour = end_use_label),
-    angle = 90, hjust = 0.5, vjust = 0.5, size = LABEL_SZ
+    hjust = 0, vjust = 0.5, size = LABEL_SZ # horizontal: rotated labels overlapped on thin bands
   ) +
   present_line +
   x_sc +
@@ -1304,5 +1316,71 @@ ggsave("Figures/SVG/Fig2 - Assumptions.svg", fig, units = "cm", width = 8.7 * 2,
 group_svg_layers("Figures/SVG/Fig2 - Assumptions.svg")
 
 cat("  Saved: Figures/Fig2 - Assumptions.png\n")
+
+
+## Save figure data, one file per panel ----------------------------------------
+## series = historical | projection (MC envelope) | range_2060 | median_run_2060
+
+dir.create("Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+
+readr::write_csv(
+  dplyr::bind_rows(pop_hist |> dplyr::mutate(series = "historical"), pop_env |> dplyr::mutate(series = "projection")),
+  "Figures/RawData/fig2a.csv"
+)
+readr::write_csv(
+  dplyr::bind_rows(gdp_cap_hist |> dplyr::mutate(series = "historical"), gdpcap_env |> dplyr::mutate(series = "projection")),
+  "Figures/RawData/fig2b.csv"
+)
+readr::write_csv(
+  dplyr::bind_rows(
+    biomass_hist |> dplyr::mutate(series = "historical"),
+    biomass_env |> dplyr::mutate(series = "projection"),
+    bio_range |> dplyr::mutate(series = "range_2060")
+  ),
+  "Figures/RawData/fig2c.csv"
+)
+readr::write_csv(
+  dplyr::bind_rows(
+    fossil_hist |> dplyr::mutate(series = "historical"),
+    fossil_env |> dplyr::mutate(series = "projection"),
+    fossil_range |> dplyr::mutate(series = "range_2060")
+  ),
+  "Figures/RawData/fig2d.csv"
+)
+readr::write_csv(
+  dplyr::bind_rows(
+    metal_hist_eu |> dplyr::mutate(series = "historical"),
+    power_hist_metal |> dplyr::mutate(series = "historical"),
+    metal_env |> dplyr::mutate(series = "projection"),
+    metal_range |> dplyr::mutate(series = "range_2060")
+  ),
+  "Figures/RawData/fig2e.csv"
+)
+readr::write_csv(
+  dplyr::bind_rows(
+    nonmet_hist_eu |> dplyr::mutate(series = "historical"),
+    power_hist_nonmet |> dplyr::mutate(series = "historical"),
+    nonmet_env |> dplyr::mutate(series = "projection"),
+    nonmet_range |> dplyr::mutate(series = "range_2060")
+  ),
+  "Figures/RawData/fig2f.csv"
+)
+readr::write_csv(
+  dplyr::bind_rows(
+    dmc_total_hist |> dplyr::mutate(series = "historical"),
+    dmc_env |> dplyr::mutate(series = "projection"),
+    bar_g |> dplyr::mutate(series = "median_run_2060")
+  ),
+  "Figures/RawData/fig2g.csv"
+)
+readr::write_csv(
+  dplyr::bind_rows(
+    stock_total_hist |> dplyr::mutate(series = "historical"),
+    stock_env |> dplyr::mutate(series = "projection"),
+    bar_h |> dplyr::mutate(series = "median_run_2060")
+  ),
+  "Figures/RawData/fig2h.csv"
+)
+cat("  Saved: Figures/RawData/fig2{a..h}.csv\n")
 
 # EoF

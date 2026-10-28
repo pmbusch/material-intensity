@@ -1,5 +1,5 @@
 ## =============================================================================
-## 05_climate_figures.R
+## 09-climate_figures.R
 ## Raw-level (NOT intensity) climate outcome figures from the IIASA
 ## ScenarioMIP CMIP7 climate assessment extract (World only, MAGICC v7.6.0a3):
 ##   01_forcing     -- Effective Radiative Forcing (W/m²): 33rd / Median / 67th percentile panels
@@ -306,6 +306,14 @@ for (cs in seq_len(nrow(COLOUR_SCHEMES))) {
     ggsave(out_png, p_grid, units = "cm", dpi = 300, width = 11 * GRID_NCOL, height = 11 * n_rows + 1)
     ggsave(out_svg, p_grid, units = "cm", width = 11 * GRID_NCOL, height = 11 * n_rows + 1)
     group_svg_layers(out_svg)
+    # S20/S21 data: every run's temperature series (tables: climate summary, Step 5)
+    if (grp$group == "temperature") {
+      dir.create("Figures/Supporting-Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+      write_csv(
+        clim_long %>% filter(variable %in% vars_here$variable),
+        sub("Supporting-Figures/(S2[01]_\\w+)\\.png$", "Supporting-Figures/RawData/\\1.csv", out_png)
+      )
+    }
 
     cat("  [OK] figure:", out_png, "\n")
   }

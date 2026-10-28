@@ -1,5 +1,5 @@
 ## =============================================================================
-## 02_OreGrade_Factor_g.R
+## 03-OreGrade_Factor_g.R
 ## Estimates the ore-to-metal physical conversion factor g (grade × recovery)
 ## for ferrous and non-ferrous metals, globally and by region, by stripping
 ## recycling out of MISO metal flows.
@@ -14,7 +14,7 @@
 ##                 "Products mainly from metals nec." is excluded (not gross ore)
 ##
 ## Inputs:
-##   Parameters/UNEP-Materials/materials_region_DMC.csv           — UNEP DMC Region × year
+##   Parameters/MaterialFlows/materials_region_DMC_exGold.csv           — UNEP DMC Region × year
 ##   Parameters/MISO-Stock/MISO_flows_regional.csv        — MISO metal inflows
 ##   Parameters/MISO-Stock/MISO_outflows_regional.csv     — MISO metal outflows
 ##
@@ -44,7 +44,7 @@ cat("STEP 1: Load data\n")
 
 miso_inflow <- read_csv("Parameters/MISO-Stock/MISO_flows_regional.csv", show_col_types = FALSE)
 miso_outflow <- read_csv("Parameters/MISO-Stock/MISO_outflows_regional.csv", show_col_types = FALSE)
-unep_raw <- read_csv("Parameters/UNEP-Materials/materials_region_DMC.csv", show_col_types = FALSE)
+unep_raw <- read_csv("Parameters/MaterialFlows/materials_region_DMC_exGold.csv", show_col_types = FALSE)
 
 cat("  Inflow  rows:", nrow(miso_inflow), "| years:", min(miso_inflow$year), "-", max(miso_inflow$year), "\n")
 cat("  Outflow rows:", nrow(miso_outflow), "| years:", min(miso_outflow$year), "-", max(miso_outflow$year), "\n")
@@ -193,6 +193,8 @@ ggplot(global_g_long, aes(year, g, colour = group)) +
 ggsave("Figures/Supporting-Figures/S05_OreGrade_g_Global.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 8.7 * 2, height = 8.7)
 ggsave("Figures/SVG/Supporting-Figures/S05_OreGrade_g_Global.svg", ggplot2::last_plot(), units = "cm", width = 8.7 * 2, height = 8.7)
 clean_svg("Figures/SVG/Supporting-Figures/S05_OreGrade_g_Global.svg")
+dir.create("Figures/Supporting-Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+readr::write_csv(global_g_long, "Figures/Supporting-Figures/RawData/S05_OreGrade_g_Global.csv")
 cat("  Saved: ore_grade_g_global.png\n")
 
 

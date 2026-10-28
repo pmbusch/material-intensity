@@ -1,10 +1,10 @@
 ## =============================================================================
-## 01_UNEP_enduse_shares.R
+## 01-UNEP_enduse_shares.R
 ## Disaggregate UNEP domestic material consumption (DMC) flows by end-use,
 ## using MISO2 flow shares as the disaggregation key.
 ##
 ## Input:
-##   Parameters/UNEP-Materials/materials_region_DMC.csv       — UNEP DMC by Region × material_category × year
+##   Parameters/MaterialFlows/materials_region_DMC_exGold.csv       — UNEP DMC by Region × material_category × year
 ##   Parameters/MISO-Stock/MISO_flows_regional.csv   — MISO2 inflows by Region × material × end_use × year
 ##
 ## Output:
@@ -60,7 +60,7 @@ SHARE_TOLERANCE <- 0.001
 
 cat("STEP 1: Load UNEP DMC flows\n")
 
-unep_raw <- read_csv("Parameters/UNEP-Materials/materials_region_DMC.csv", show_col_types = FALSE)
+unep_raw <- read_csv("Parameters/MaterialFlows/materials_region_DMC_exGold.csv", show_col_types = FALSE)
 cat("UNEP raw:", nrow(unep_raw), "x", ncol(unep_raw), "\n")
 cat("Column names:\n")
 print(names(unep_raw))
@@ -287,45 +287,67 @@ world_shares <- flows_16 %>%
   ungroup()
 
 # Build label positions — use a single year snapshot for placement
+# Non-metallic minerals: only Buildings and Civil infrastructure (other bands ~0%)
 label_data <- world_shares %>%
-  filter(material == "Metal ores") %>%
+  filter(material == "Metal ores" | end_use %in% c("Buildings", "Civil infrastructure")) %>%
   # Pick a label year; mid-point often works well
   filter(year == 2000) %>%
   # For stacked areas, compute cumulative midpoint per year so labels sit inside each band
-  arrange(year, desc(end_use)) %>%
-  mutate(cumsum = cumsum(share), midpoint = cumsum - share / 2)
+  arrange(material, year, desc(end_use)) %>%
+  group_by(material) %>%
+  mutate(cumsum = cumsum(share), midpoint = cumsum - share / 2) %>%
+  ungroup()
 
-p_world <- world_shares %>%
+# Shared layers; one patchwork panel per material so each repeats its y axis
+world_layers <- list(
+  geom_area(colour = "white", linewidth = 0.15, alpha = 0.95),
+  facet_wrap(~material),
+  scale_fill_manual(values = PALETTE_ENDUSE, name = NULL),
+  scale_x_continuous(breaks = seq(1970, 2010, by = 10)),
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)),
+  coord_cartesian(expand = F, clip = "off"),
+  labs(x = NULL, y = "Share of total flow"),
+  theme_pb_large(),
+  theme(legend.position = "none")
+)
+
+p_world_a <- world_shares %>%
+  filter(material == "Metal ores") %>%
   ggplot(aes(x = year, y = share, fill = end_use)) +
-  geom_area(colour = "white", linewidth = 0.15, alpha = 0.95) +
+  world_layers +
   geom_text(
-    data    = label_data,
+    data    = label_data %>% filter(material == "Metal ores"),
     aes(x = 2000, y = midpoint, label = end_use),
     inherit.aes = FALSE,
     size        = 3,
     fontface    = "bold",
     hjust       = 0.5,
     show.legend = FALSE
-  ) +
-  facet_wrap(~material, ncol = 2) +
-  scale_fill_manual(values = PALETTE_ENDUSE, name = NULL) +
-  scale_x_continuous(breaks = seq(1970, 2010, by = 10)) +
-  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
-  coord_cartesian(expand = F, clip = "off") +
-  labs(
-    title = "End-use shares of material consumption — world average, 1970–2016",
-    subtitle = "UNEP DMC flows disaggregated by MISO2 end-use shares",
-    x = NULL,
-    y = "Share of total flow"
-  ) +
-  theme_pb_large() +
-  theme(legend.position = "none", panel.spacing = unit(0.8, "lines"))
+  )
+
+p_world_b <- world_shares %>%
+  filter(material == "Non-metallic minerals") %>%
+  ggplot(aes(x = year, y = share, fill = end_use)) +
+  world_layers +
+  geom_text(
+    data    = label_data %>% filter(material == "Non-metallic minerals"),
+    aes(x = 2000, y = midpoint, label = end_use),
+    inherit.aes = FALSE,
+    size        = 3,
+    fontface    = "bold",
+    hjust       = 0.5,
+    show.legend = FALSE
+  )
+
+p_world <- patchwork::wrap_plots(p_world_a, p_world_b)
 p_world
 
 # fmt: skip
-ggsave("Figures/Supporting-Figures/S03_EndUseShares_World.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
-ggsave("Figures/SVG/Supporting-Figures/S03_EndUseShares_World.svg", ggplot2::last_plot(), units = 'cm', width = 8.7*2, height = 8.7)
+ggsave("Figures/Supporting-Figures/S03_EndUseShares_World.png", p_world, units = 'cm', dpi = 600, width = 8.7*2, height = 8.7)
+ggsave("Figures/SVG/Supporting-Figures/S03_EndUseShares_World.svg", p_world, units = 'cm', width = 8.7*2, height = 8.7)
 clean_svg("Figures/SVG/Supporting-Figures/S03_EndUseShares_World.svg")
+dir.create("Figures/Supporting-Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
+readr::write_csv(world_shares,"Figures/Supporting-Figures/RawData/S03_EndUseShares_World.csv")
 
 # ── Fig 10b: By region — facet_grid(Region ~ material) ───────────────────────
 
@@ -341,9 +363,9 @@ region_shares <- flows_16 %>%
   ungroup()
 
 label_data_region <- region_shares %>%
-  filter(material == "Metal ores", year == 2000) %>%
-  arrange(Region, desc(end_use)) %>%
-  group_by(Region) %>%
+  filter(material == "Metal ores" | end_use %in% c("Buildings", "Civil infrastructure"), year == 2000) %>%
+  arrange(Region, material, desc(end_use)) %>%
+  group_by(Region, material) %>%
   mutate(cumsum = cumsum(share), midpoint = cumsum - share / 2) %>%
   ungroup()
 
@@ -360,14 +382,12 @@ p_region <- region_shares %>%
     show.legend = FALSE
   ) +
   # facet_grid(Region ~ material) +
-  facet_wrap(Region ~ material) +
+  facet_wrap(Region ~ material, axes = "all_y") +
   scale_fill_manual(values = PALETTE_ENDUSE, name = NULL) +
   scale_x_continuous(breaks = seq(1970, 2016, by = 20)) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
   coord_cartesian(expand = FALSE, clip = "off", ylim = c(0, 1)) +
   labs(
-    title = "End-use shares of material consumption by region, 1970–2016",
-    subtitle = "UNEP DMC flows disaggregated by MISO2 end-use shares",
     x = NULL,
     y = "Share of total flow"
   ) +
@@ -385,5 +405,6 @@ p_region
 ggsave("Figures/Supporting-Figures/S04_EndUseShares_Region.png", ggplot2::last_plot(), units = 'cm', dpi = 600, width = 8.7*3, height = 8.7*3)
 ggsave("Figures/SVG/Supporting-Figures/S04_EndUseShares_Region.svg", ggplot2::last_plot(), units = 'cm', width = 8.7*3, height = 8.7*3)
 clean_svg("Figures/SVG/Supporting-Figures/S04_EndUseShares_Region.svg")
+readr::write_csv(region_shares, "Figures/Supporting-Figures/RawData/S04_EndUseShares_Region.csv")
 
 # EoF
