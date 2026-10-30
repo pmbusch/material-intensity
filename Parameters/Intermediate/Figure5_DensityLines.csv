@@ -1,6 +1,6 @@
-material,v0,v0_Gt,v25,metric_label,unit,lo,hi,rate_label,low_rate_min,high_rate_max
-Biomass,3.4266902502592593,28.072669481989895,8.132239072957885,biomass consumption,t/cap,3.2,3.5,NA,NA,NA
-Fossil fuels,2.0620910985720355,16.89376656822543,4.893765289272179,primary energy intensity,MJ/$,3,6,NA,NA,NA
-Metal ores,1.558159449329965,12.76368694616759,3.697832085867985,metal stock intensity,kg/$,0.41,0.42,recycled,0.55,0.45
-Non-metallic minerals,6.144354330804753,50.33800812245955,14.581813562894384,mineral stock intensity,kg/$,14.5,15.5,downcycled,0.55,0.45
-All materials,13.187714917227735,NA,31.29715343392794,NA,NA,NA,NA,NA,NA,NA
+material,v0,v0_Gt,v25,lo,hi,low_rate_min,high_rate_max,metric_label,unit,rate_label
+Biomass,3.4268229011285642,28.07426921064071,8.132553880688857,4,4.8,NA,NA,biomass consumption,t/cap,NA
+Fossil fuels,2.062137776692908,16.893663900078543,4.8938760660307095,1.5,2.7,NA,NA,primary energy intensity,MJ/$,NA
+Metal ores,1.492210819372558,12.224848827588948,3.541322455239104,0.23,0.24,0.7,0.7,metal stock intensity,kg/$,recycled
+Non-metallic minerals,6.175687217478156,50.59750550378249,14.65617293204213,7.7,8.7,0.7,0.7,mineral stock intensity,kg/$,downcycled
+All materials,13.156412030724953,NA,31.22286526134069,NA,NA,NA,NA,NA,NA,NA

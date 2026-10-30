@@ -9,7 +9,7 @@
 ## does not dominate. Dashed diagonal Y = X: no stock growth (inflow = outflow,
 ## all recovered material absorbed); runs fall below it when stocks grow (inflow >
 ## waste) or when recovered material cannot be absorbed (minerals' room caps).
-## Rows drawn: all runs (median + P25-P75), then median lines by end use.
+## Rows drawn: all runs (median + P2.5-P97.5 band, no run points), then median lines by end use.
 ## Also computed and saved to RawData/fig4_runs.csv (not drawn):
 ##   - stock-weighted mean lifetime (terciles; sampled lifetimes, weighted by the
 ##     run's own 2060 in-use stock per end use; power sector excluded: fixed lifetimes)
@@ -212,6 +212,8 @@ med_df <- plot_long |>
     y_med = stats::median(y),
     y_p25 = stats::quantile(y, 0.25),
     y_p75 = stats::quantile(y, 0.75),
+    y_p025 = stats::quantile(y, 0.025),
+    y_p975 = stats::quantile(y, 0.975),
     .groups = "drop"
   ) |>
   dplyr::filter(n >= MIN_N) |>
@@ -315,9 +317,8 @@ for (k in seq_len(nrow(panel_key))) {
     annotate("text", x = 0.62, y = 0.62, label = "No stock growth", angle = 45, vjust = -0.5, colour = "grey30", size = pb_annot_size("wide", 7)) +
     # Panel tag inside the plot area, close to the top-left corner
     annotate("text", x = 0.025, y = 0.975, label = substr(as.character(pk$panel), 1, 1), hjust = 0, vjust = 1, fontface = "bold", size = pb_annot_size("wide", 9)) +
-    # All-runs row: every run, plus the P25-P75 band of the median line (empty data elsewhere)
-    geom_point(data = pts_k, aes(x = x, y = y, colour = col), size = 0.3, alpha = 0.25, shape = 16) +
-    geom_ribbon(data = rib_k, aes(x = x_med, ymin = y_p25, ymax = y_p75, fill = col, group = group), alpha = 0.25, colour = NA) +
+    # All-runs row: P2.5-P97.5 (95%) band of the median line, no run points (empty data elsewhere)
+    geom_ribbon(data = rib_k, aes(x = x_med, ymin = y_p025, ymax = y_p975, fill = col, group = group), alpha = 0.25, colour = NA) +
     geom_line(data = med_k, aes(x = x_med, y = y_med, colour = col, group = group), linewidth = 0.6) +
     # End-use panels: label along each line (text only; the line is drawn above)
     geomtextpath::geom_textline(
@@ -344,7 +345,7 @@ patchwork::wrap_plots(p_list, ncol = 2)
 # Main Figure 4 (was SI S29)
 ggsave("Figures/Fig4 - CircularityStockGrowth.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 15.5, height = 15.5, bg = "white")
 ggsave("Figures/SVG/Fig4 - CircularityStockGrowth.svg", ggplot2::last_plot(), units = "cm", width = 15.5, height = 15.5, bg = "transparent")
-clean_svg("Figures/SVG/Fig4 - CircularityStockGrowth.svg")
+group_svg_layers("Figures/SVG/Fig4 - CircularityStockGrowth.svg") # fast now: no per-run points
 
 
 # Save figure data ------------------------------------------------------
@@ -359,7 +360,7 @@ readr::write_csv(
   "Figures/RawData/fig4_enduse_own_loop.csv"
 )
 readr::write_csv(
-  med_df |> dplyr::select(panel, material, row, group, bin, n, x_med, y_med, y_p25, y_p75),
+  med_df |> dplyr::select(panel, material, row, group, bin, n, x_med, y_med, y_p025, y_p25, y_p75, y_p975),
   "Figures/RawData/fig4_median_lines.csv"
 )
 

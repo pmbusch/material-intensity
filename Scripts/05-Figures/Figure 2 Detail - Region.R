@@ -147,7 +147,7 @@ results <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
   dplyr::select(run_id, region, material_group, material_key, year, in_use_stock_Mt, primary_consumption_Mt) |>
   filter(material_group != "metal_gold") |> # gold ore (a flow) is not shown in Figure 2
   mutate(
-    material_group = ifelse(material_group %in% unname(METAL_KEYS), "metal_ores", material_group),
+    material_group = ifelse(material_group %in% !!unname(METAL_KEYS), "metal_ores", material_group),
     # Power-sector end uses folded into civil engineering, the 2024 stock they were carved out of
     material_key = ifelse(startsWith(material_key, "Power: "), "Civil engineering", material_key)
   ) |>

@@ -44,3 +44,11 @@ Claude.md
 .Rhistory
 .RData
 .Rproj.user/
+
+# S&P Capital IQ (proprietary): raw exports and deposit-level tables ------------
+Inputs/SP/
+Parameters/SP/*_deposits.csv
+
+# 1,000-run backups (local only)
+Results/MC_N1000/
+Figures_N1000/

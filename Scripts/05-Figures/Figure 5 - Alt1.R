@@ -798,7 +798,7 @@ fig_s26 <- patchwork::wrap_elements(full = p_a_tagged) / (p_c_ver$jit + p_d_v2 +
   theme(plot.tag = element_text(face = "bold"))
 ggsave("Figures/Supporting-Figures/S26_Fig5_Jitter.png", fig_s26, units = "cm", dpi = 600, width = 18, height = 18)
 ggsave("Figures/SVG/Supporting-Figures/S26_Fig5_Jitter.svg", fig_s26, units = "cm", width = 18, height = 18)
-group_svg_layers("Figures/SVG/Supporting-Figures/S26_Fig5_Jitter.svg")
+# group_svg_layers() skipped here: one SVG node per run x term (~200k at 10,000 runs) makes the regrouping take >1 h
 cat("  Saved: Figures/Supporting-Figures/S26_Fig5_Jitter.png\n")
 readr::write_csv(dec, "Figures/Supporting-Figures/RawData/S26_RunContributions.csv") # panels a, c as in fig5a / fig5c-f
 

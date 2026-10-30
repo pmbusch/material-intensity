@@ -1,5 +1,5 @@
 metric,unit
-gdp_pc,USD_2010/capita
+gdp_pc,USD_2010 PPP/capita
 pe_gdp,MJ/USD
 pe_biomass_gdp,MJ/USD
 pe_coal_gdp,MJ/USD

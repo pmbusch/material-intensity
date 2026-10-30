@@ -263,6 +263,18 @@ High,SSP2,GDP|MER,Pacific OECD (R10),1
 High,SSP2,GDP|MER,Reforming Economies (R10),1
 High,SSP2,GDP|MER,Rest of Asia (R10),1
 High,SSP2,GDP|MER,World,1
+High,SSP2,GDP|PPP,Africa (R10),1
+High,SSP2,GDP|PPP,China+ (R10),1
+High,SSP2,GDP|PPP,Europe (R10),1
+High,SSP2,GDP|PPP,India+ (R10),1
+High,SSP2,GDP|PPP,Latin America (R10),1
+High,SSP2,GDP|PPP,Middle East (R10),1
+High,SSP2,GDP|PPP,North America (R10),1
+High,SSP2,GDP|PPP,Other (R10),1
+High,SSP2,GDP|PPP,Pacific OECD (R10),1
+High,SSP2,GDP|PPP,Reforming Economies (R10),1
+High,SSP2,GDP|PPP,Rest of Asia (R10),1
+High,SSP2,GDP|PPP,World,1
 High,SSP2,Population,Africa (R10),1
 High,SSP2,Population,China+ (R10),1
 High,SSP2,Population,Europe (R10),1
@@ -763,6 +775,18 @@ High,SSP3,GDP|MER,Pacific OECD (R10),5
 High,SSP3,GDP|MER,Reforming Economies (R10),5
 High,SSP3,GDP|MER,Rest of Asia (R10),5
 High,SSP3,GDP|MER,World,5
+High,SSP3,GDP|PPP,Africa (R10),5
+High,SSP3,GDP|PPP,China+ (R10),5
+High,SSP3,GDP|PPP,Europe (R10),5
+High,SSP3,GDP|PPP,India+ (R10),5
+High,SSP3,GDP|PPP,Latin America (R10),5
+High,SSP3,GDP|PPP,Middle East (R10),5
+High,SSP3,GDP|PPP,North America (R10),5
+High,SSP3,GDP|PPP,Other (R10),1
+High,SSP3,GDP|PPP,Pacific OECD (R10),5
+High,SSP3,GDP|PPP,Reforming Economies (R10),5
+High,SSP3,GDP|PPP,Rest of Asia (R10),5
+High,SSP3,GDP|PPP,World,5
 High,SSP3,Population,Africa (R10),5
 High,SSP3,Population,China+ (R10),5
 High,SSP3,Population,Europe (R10),5
@@ -1274,6 +1298,17 @@ High,SSP5,GDP|MER,Pacific OECD (R10),5
 High,SSP5,GDP|MER,Reforming Economies (R10),5
 High,SSP5,GDP|MER,Rest of Asia (R10),5
 High,SSP5,GDP|MER,World,5
+High,SSP5,GDP|PPP,Africa (R10),5
+High,SSP5,GDP|PPP,China+ (R10),5
+High,SSP5,GDP|PPP,Europe (R10),5
+High,SSP5,GDP|PPP,India+ (R10),5
+High,SSP5,GDP|PPP,Latin America (R10),5
+High,SSP5,GDP|PPP,Middle East (R10),5
+High,SSP5,GDP|PPP,North America (R10),5
+High,SSP5,GDP|PPP,Pacific OECD (R10),5
+High,SSP5,GDP|PPP,Reforming Economies (R10),5
+High,SSP5,GDP|PPP,Rest of Asia (R10),5
+High,SSP5,GDP|PPP,World,5
 High,SSP5,Population,Africa (R10),5
 High,SSP5,Population,China+ (R10),5
 High,SSP5,Population,Europe (R10),5
@@ -1725,6 +1760,17 @@ High-to-Low,SSP3,GDP|MER,Pacific OECD (R10),1
 High-to-Low,SSP3,GDP|MER,Reforming Economies (R10),1
 High-to-Low,SSP3,GDP|MER,Rest of Asia (R10),1
 High-to-Low,SSP3,GDP|MER,World,1
+High-to-Low,SSP3,GDP|PPP,Africa (R10),1
+High-to-Low,SSP3,GDP|PPP,China+ (R10),1
+High-to-Low,SSP3,GDP|PPP,Europe (R10),1
+High-to-Low,SSP3,GDP|PPP,India+ (R10),1
+High-to-Low,SSP3,GDP|PPP,Latin America (R10),1
+High-to-Low,SSP3,GDP|PPP,Middle East (R10),1
+High-to-Low,SSP3,GDP|PPP,North America (R10),1
+High-to-Low,SSP3,GDP|PPP,Pacific OECD (R10),1
+High-to-Low,SSP3,GDP|PPP,Reforming Economies (R10),1
+High-to-Low,SSP3,GDP|PPP,Rest of Asia (R10),1
+High-to-Low,SSP3,GDP|PPP,World,1
 High-to-Low,SSP3,Population,Africa (R10),1
 High-to-Low,SSP3,Population,China+ (R10),1
 High-to-Low,SSP3,Population,Europe (R10),1
@@ -2220,6 +2266,17 @@ High-to-Low,SSP5,GDP|MER,Pacific OECD (R10),4
 High-to-Low,SSP5,GDP|MER,Reforming Economies (R10),4
 High-to-Low,SSP5,GDP|MER,Rest of Asia (R10),4
 High-to-Low,SSP5,GDP|MER,World,4
+High-to-Low,SSP5,GDP|PPP,Africa (R10),4
+High-to-Low,SSP5,GDP|PPP,China+ (R10),4
+High-to-Low,SSP5,GDP|PPP,Europe (R10),4
+High-to-Low,SSP5,GDP|PPP,India+ (R10),4
+High-to-Low,SSP5,GDP|PPP,Latin America (R10),4
+High-to-Low,SSP5,GDP|PPP,Middle East (R10),4
+High-to-Low,SSP5,GDP|PPP,North America (R10),4
+High-to-Low,SSP5,GDP|PPP,Pacific OECD (R10),4
+High-to-Low,SSP5,GDP|PPP,Reforming Economies (R10),4
+High-to-Low,SSP5,GDP|PPP,Rest of Asia (R10),4
+High-to-Low,SSP5,GDP|PPP,World,4
 High-to-Low,SSP5,Population,Africa (R10),4
 High-to-Low,SSP5,Population,China+ (R10),4
 High-to-Low,SSP5,Population,Europe (R10),4
@@ -2737,6 +2794,18 @@ Low,SSP1,GDP|MER,Pacific OECD (R10),3
 Low,SSP1,GDP|MER,Reforming Economies (R10),3
 Low,SSP1,GDP|MER,Rest of Asia (R10),3
 Low,SSP1,GDP|MER,World,3
+Low,SSP1,GDP|PPP,Africa (R10),3
+Low,SSP1,GDP|PPP,China+ (R10),3
+Low,SSP1,GDP|PPP,Europe (R10),3
+Low,SSP1,GDP|PPP,India+ (R10),3
+Low,SSP1,GDP|PPP,Latin America (R10),3
+Low,SSP1,GDP|PPP,Middle East (R10),3
+Low,SSP1,GDP|PPP,North America (R10),3
+Low,SSP1,GDP|PPP,Other (R10),1
+Low,SSP1,GDP|PPP,Pacific OECD (R10),3
+Low,SSP1,GDP|PPP,Reforming Economies (R10),3
+Low,SSP1,GDP|PPP,Rest of Asia (R10),3
+Low,SSP1,GDP|PPP,World,3
 Low,SSP1,Population,Africa (R10),3
 Low,SSP1,Population,China+ (R10),3
 Low,SSP1,Population,Europe (R10),3
@@ -3270,6 +3339,18 @@ Low,SSP2,GDP|MER,Pacific OECD (R10),6
 Low,SSP2,GDP|MER,Reforming Economies (R10),6
 Low,SSP2,GDP|MER,Rest of Asia (R10),6
 Low,SSP2,GDP|MER,World,6
+Low,SSP2,GDP|PPP,Africa (R10),7
+Low,SSP2,GDP|PPP,China+ (R10),7
+Low,SSP2,GDP|PPP,Europe (R10),7
+Low,SSP2,GDP|PPP,India+ (R10),7
+Low,SSP2,GDP|PPP,Latin America (R10),7
+Low,SSP2,GDP|PPP,Middle East (R10),7
+Low,SSP2,GDP|PPP,North America (R10),7
+Low,SSP2,GDP|PPP,Other (R10),1
+Low,SSP2,GDP|PPP,Pacific OECD (R10),7
+Low,SSP2,GDP|PPP,Reforming Economies (R10),7
+Low,SSP2,GDP|PPP,Rest of Asia (R10),7
+Low,SSP2,GDP|PPP,World,7
 Low,SSP2,Population,Africa (R10),7
 Low,SSP2,Population,China+ (R10),7
 Low,SSP2,Population,Europe (R10),7
@@ -3748,6 +3829,17 @@ Low-to-Negative,SSP1,GDP|MER,Pacific OECD (R10),2
 Low-to-Negative,SSP1,GDP|MER,Reforming Economies (R10),2
 Low-to-Negative,SSP1,GDP|MER,Rest of Asia (R10),2
 Low-to-Negative,SSP1,GDP|MER,World,2
+Low-to-Negative,SSP1,GDP|PPP,Africa (R10),2
+Low-to-Negative,SSP1,GDP|PPP,China+ (R10),2
+Low-to-Negative,SSP1,GDP|PPP,Europe (R10),2
+Low-to-Negative,SSP1,GDP|PPP,India+ (R10),2
+Low-to-Negative,SSP1,GDP|PPP,Latin America (R10),2
+Low-to-Negative,SSP1,GDP|PPP,Middle East (R10),2
+Low-to-Negative,SSP1,GDP|PPP,North America (R10),2
+Low-to-Negative,SSP1,GDP|PPP,Pacific OECD (R10),2
+Low-to-Negative,SSP1,GDP|PPP,Reforming Economies (R10),2
+Low-to-Negative,SSP1,GDP|PPP,Rest of Asia (R10),2
+Low-to-Negative,SSP1,GDP|PPP,World,2
 Low-to-Negative,SSP1,Population,Africa (R10),2
 Low-to-Negative,SSP1,Population,China+ (R10),2
 Low-to-Negative,SSP1,Population,Europe (R10),2
@@ -4232,6 +4324,18 @@ Low-to-Negative,SSP2,GDP|MER,Pacific OECD (R10),5
 Low-to-Negative,SSP2,GDP|MER,Reforming Economies (R10),5
 Low-to-Negative,SSP2,GDP|MER,Rest of Asia (R10),5
 Low-to-Negative,SSP2,GDP|MER,World,5
+Low-to-Negative,SSP2,GDP|PPP,Africa (R10),6
+Low-to-Negative,SSP2,GDP|PPP,China+ (R10),6
+Low-to-Negative,SSP2,GDP|PPP,Europe (R10),6
+Low-to-Negative,SSP2,GDP|PPP,India+ (R10),6
+Low-to-Negative,SSP2,GDP|PPP,Latin America (R10),6
+Low-to-Negative,SSP2,GDP|PPP,Middle East (R10),6
+Low-to-Negative,SSP2,GDP|PPP,North America (R10),6
+Low-to-Negative,SSP2,GDP|PPP,Other (R10),1
+Low-to-Negative,SSP2,GDP|PPP,Pacific OECD (R10),6
+Low-to-Negative,SSP2,GDP|PPP,Reforming Economies (R10),6
+Low-to-Negative,SSP2,GDP|PPP,Rest of Asia (R10),6
+Low-to-Negative,SSP2,GDP|PPP,World,6
 Low-to-Negative,SSP2,Population,Africa (R10),6
 Low-to-Negative,SSP2,Population,China+ (R10),6
 Low-to-Negative,SSP2,Population,Europe (R10),6
@@ -4699,6 +4803,17 @@ Low-to-Negative,SSP4,GDP|MER,Pacific OECD (R10),1
 Low-to-Negative,SSP4,GDP|MER,Reforming Economies (R10),1
 Low-to-Negative,SSP4,GDP|MER,Rest of Asia (R10),1
 Low-to-Negative,SSP4,GDP|MER,World,1
+Low-to-Negative,SSP4,GDP|PPP,Africa (R10),1
+Low-to-Negative,SSP4,GDP|PPP,China+ (R10),1
+Low-to-Negative,SSP4,GDP|PPP,Europe (R10),1
+Low-to-Negative,SSP4,GDP|PPP,India+ (R10),1
+Low-to-Negative,SSP4,GDP|PPP,Latin America (R10),1
+Low-to-Negative,SSP4,GDP|PPP,Middle East (R10),1
+Low-to-Negative,SSP4,GDP|PPP,North America (R10),1
+Low-to-Negative,SSP4,GDP|PPP,Pacific OECD (R10),1
+Low-to-Negative,SSP4,GDP|PPP,Reforming Economies (R10),1
+Low-to-Negative,SSP4,GDP|PPP,Rest of Asia (R10),1
+Low-to-Negative,SSP4,GDP|PPP,World,1
 Low-to-Negative,SSP4,Population,Africa (R10),1
 Low-to-Negative,SSP4,Population,China+ (R10),1
 Low-to-Negative,SSP4,Population,Europe (R10),1
@@ -5150,6 +5265,17 @@ Low-to-Negative,SSP5,GDP|MER,Pacific OECD (R10),1
 Low-to-Negative,SSP5,GDP|MER,Reforming Economies (R10),1
 Low-to-Negative,SSP5,GDP|MER,Rest of Asia (R10),1
 Low-to-Negative,SSP5,GDP|MER,World,1
+Low-to-Negative,SSP5,GDP|PPP,Africa (R10),1
+Low-to-Negative,SSP5,GDP|PPP,China+ (R10),1
+Low-to-Negative,SSP5,GDP|PPP,Europe (R10),1
+Low-to-Negative,SSP5,GDP|PPP,India+ (R10),1
+Low-to-Negative,SSP5,GDP|PPP,Latin America (R10),1
+Low-to-Negative,SSP5,GDP|PPP,Middle East (R10),1
+Low-to-Negative,SSP5,GDP|PPP,North America (R10),1
+Low-to-Negative,SSP5,GDP|PPP,Pacific OECD (R10),1
+Low-to-Negative,SSP5,GDP|PPP,Reforming Economies (R10),1
+Low-to-Negative,SSP5,GDP|PPP,Rest of Asia (R10),1
+Low-to-Negative,SSP5,GDP|PPP,World,1
 Low-to-Negative,SSP5,Population,Africa (R10),1
 Low-to-Negative,SSP5,Population,China+ (R10),1
 Low-to-Negative,SSP5,Population,Europe (R10),1
@@ -5645,6 +5771,18 @@ Medium,SSP1,GDP|MER,Pacific OECD (R10),3
 Medium,SSP1,GDP|MER,Reforming Economies (R10),3
 Medium,SSP1,GDP|MER,Rest of Asia (R10),3
 Medium,SSP1,GDP|MER,World,3
+Medium,SSP1,GDP|PPP,Africa (R10),3
+Medium,SSP1,GDP|PPP,China+ (R10),3
+Medium,SSP1,GDP|PPP,Europe (R10),3
+Medium,SSP1,GDP|PPP,India+ (R10),3
+Medium,SSP1,GDP|PPP,Latin America (R10),3
+Medium,SSP1,GDP|PPP,Middle East (R10),3
+Medium,SSP1,GDP|PPP,North America (R10),3
+Medium,SSP1,GDP|PPP,Other (R10),1
+Medium,SSP1,GDP|PPP,Pacific OECD (R10),3
+Medium,SSP1,GDP|PPP,Reforming Economies (R10),3
+Medium,SSP1,GDP|PPP,Rest of Asia (R10),3
+Medium,SSP1,GDP|PPP,World,3
 Medium,SSP1,Population,Africa (R10),3
 Medium,SSP1,Population,China+ (R10),3
 Medium,SSP1,Population,Europe (R10),3
@@ -6156,6 +6294,18 @@ Medium,SSP2,GDP|MER,Pacific OECD (R10),6
 Medium,SSP2,GDP|MER,Reforming Economies (R10),6
 Medium,SSP2,GDP|MER,Rest of Asia (R10),6
 Medium,SSP2,GDP|MER,World,6
+Medium,SSP2,GDP|PPP,Africa (R10),7
+Medium,SSP2,GDP|PPP,China+ (R10),7
+Medium,SSP2,GDP|PPP,Europe (R10),7
+Medium,SSP2,GDP|PPP,India+ (R10),7
+Medium,SSP2,GDP|PPP,Latin America (R10),7
+Medium,SSP2,GDP|PPP,Middle East (R10),7
+Medium,SSP2,GDP|PPP,North America (R10),7
+Medium,SSP2,GDP|PPP,Other (R10),1
+Medium,SSP2,GDP|PPP,Pacific OECD (R10),7
+Medium,SSP2,GDP|PPP,Reforming Economies (R10),7
+Medium,SSP2,GDP|PPP,Rest of Asia (R10),7
+Medium,SSP2,GDP|PPP,World,7
 Medium,SSP2,Population,Africa (R10),7
 Medium,SSP2,Population,China+ (R10),7
 Medium,SSP2,Population,Europe (R10),7
@@ -6645,6 +6795,18 @@ Medium,SSP3,GDP|MER,Pacific OECD (R10),1
 Medium,SSP3,GDP|MER,Reforming Economies (R10),1
 Medium,SSP3,GDP|MER,Rest of Asia (R10),1
 Medium,SSP3,GDP|MER,World,1
+Medium,SSP3,GDP|PPP,Africa (R10),1
+Medium,SSP3,GDP|PPP,China+ (R10),1
+Medium,SSP3,GDP|PPP,Europe (R10),1
+Medium,SSP3,GDP|PPP,India+ (R10),1
+Medium,SSP3,GDP|PPP,Latin America (R10),1
+Medium,SSP3,GDP|PPP,Middle East (R10),1
+Medium,SSP3,GDP|PPP,North America (R10),1
+Medium,SSP3,GDP|PPP,Other (R10),1
+Medium,SSP3,GDP|PPP,Pacific OECD (R10),1
+Medium,SSP3,GDP|PPP,Reforming Economies (R10),1
+Medium,SSP3,GDP|PPP,Rest of Asia (R10),1
+Medium,SSP3,GDP|PPP,World,1
 Medium,SSP3,Population,Africa (R10),1
 Medium,SSP3,Population,China+ (R10),1
 Medium,SSP3,Population,Europe (R10),1
@@ -7123,6 +7285,18 @@ Medium-to-Low,SSP1,GDP|MER,Pacific OECD (R10),2
 Medium-to-Low,SSP1,GDP|MER,Reforming Economies (R10),2
 Medium-to-Low,SSP1,GDP|MER,Rest of Asia (R10),2
 Medium-to-Low,SSP1,GDP|MER,World,2
+Medium-to-Low,SSP1,GDP|PPP,Africa (R10),2
+Medium-to-Low,SSP1,GDP|PPP,China+ (R10),2
+Medium-to-Low,SSP1,GDP|PPP,Europe (R10),2
+Medium-to-Low,SSP1,GDP|PPP,India+ (R10),2
+Medium-to-Low,SSP1,GDP|PPP,Latin America (R10),2
+Medium-to-Low,SSP1,GDP|PPP,Middle East (R10),2
+Medium-to-Low,SSP1,GDP|PPP,North America (R10),2
+Medium-to-Low,SSP1,GDP|PPP,Other (R10),1
+Medium-to-Low,SSP1,GDP|PPP,Pacific OECD (R10),2
+Medium-to-Low,SSP1,GDP|PPP,Reforming Economies (R10),2
+Medium-to-Low,SSP1,GDP|PPP,Rest of Asia (R10),2
+Medium-to-Low,SSP1,GDP|PPP,World,2
 Medium-to-Low,SSP1,Population,Africa (R10),2
 Medium-to-Low,SSP1,Population,China+ (R10),2
 Medium-to-Low,SSP1,Population,Europe (R10),2
@@ -7634,6 +7808,18 @@ Medium-to-Low,SSP2,GDP|MER,Pacific OECD (R10),6
 Medium-to-Low,SSP2,GDP|MER,Reforming Economies (R10),6
 Medium-to-Low,SSP2,GDP|MER,Rest of Asia (R10),6
 Medium-to-Low,SSP2,GDP|MER,World,6
+Medium-to-Low,SSP2,GDP|PPP,Africa (R10),7
+Medium-to-Low,SSP2,GDP|PPP,China+ (R10),7
+Medium-to-Low,SSP2,GDP|PPP,Europe (R10),7
+Medium-to-Low,SSP2,GDP|PPP,India+ (R10),7
+Medium-to-Low,SSP2,GDP|PPP,Latin America (R10),7
+Medium-to-Low,SSP2,GDP|PPP,Middle East (R10),7
+Medium-to-Low,SSP2,GDP|PPP,North America (R10),7
+Medium-to-Low,SSP2,GDP|PPP,Other (R10),1
+Medium-to-Low,SSP2,GDP|PPP,Pacific OECD (R10),7
+Medium-to-Low,SSP2,GDP|PPP,Reforming Economies (R10),7
+Medium-to-Low,SSP2,GDP|PPP,Rest of Asia (R10),7
+Medium-to-Low,SSP2,GDP|PPP,World,7
 Medium-to-Low,SSP2,Population,Africa (R10),7
 Medium-to-Low,SSP2,Population,China+ (R10),7
 Medium-to-Low,SSP2,Population,Europe (R10),7
@@ -8123,6 +8309,18 @@ Medium-to-Low,SSP3,GDP|MER,Pacific OECD (R10),1
 Medium-to-Low,SSP3,GDP|MER,Reforming Economies (R10),1
 Medium-to-Low,SSP3,GDP|MER,Rest of Asia (R10),1
 Medium-to-Low,SSP3,GDP|MER,World,1
+Medium-to-Low,SSP3,GDP|PPP,Africa (R10),1
+Medium-to-Low,SSP3,GDP|PPP,China+ (R10),1
+Medium-to-Low,SSP3,GDP|PPP,Europe (R10),1
+Medium-to-Low,SSP3,GDP|PPP,India+ (R10),1
+Medium-to-Low,SSP3,GDP|PPP,Latin America (R10),1
+Medium-to-Low,SSP3,GDP|PPP,Middle East (R10),1
+Medium-to-Low,SSP3,GDP|PPP,North America (R10),1
+Medium-to-Low,SSP3,GDP|PPP,Other (R10),1
+Medium-to-Low,SSP3,GDP|PPP,Pacific OECD (R10),1
+Medium-to-Low,SSP3,GDP|PPP,Reforming Economies (R10),1
+Medium-to-Low,SSP3,GDP|PPP,Rest of Asia (R10),1
+Medium-to-Low,SSP3,GDP|PPP,World,1
 Medium-to-Low,SSP3,Population,Africa (R10),1
 Medium-to-Low,SSP3,Population,China+ (R10),1
 Medium-to-Low,SSP3,Population,Europe (R10),1
@@ -8623,6 +8821,18 @@ Very Low,SSP1,GDP|MER,Pacific OECD (R10),5
 Very Low,SSP1,GDP|MER,Reforming Economies (R10),5
 Very Low,SSP1,GDP|MER,Rest of Asia (R10),5
 Very Low,SSP1,GDP|MER,World,5
+Very Low,SSP1,GDP|PPP,Africa (R10),5
+Very Low,SSP1,GDP|PPP,China+ (R10),5
+Very Low,SSP1,GDP|PPP,Europe (R10),5
+Very Low,SSP1,GDP|PPP,India+ (R10),5
+Very Low,SSP1,GDP|PPP,Latin America (R10),5
+Very Low,SSP1,GDP|PPP,Middle East (R10),5
+Very Low,SSP1,GDP|PPP,North America (R10),5
+Very Low,SSP1,GDP|PPP,Other (R10),1
+Very Low,SSP1,GDP|PPP,Pacific OECD (R10),5
+Very Low,SSP1,GDP|PPP,Reforming Economies (R10),5
+Very Low,SSP1,GDP|PPP,Rest of Asia (R10),5
+Very Low,SSP1,GDP|PPP,World,5
 Very Low,SSP1,Population,Africa (R10),5
 Very Low,SSP1,Population,China+ (R10),5
 Very Low,SSP1,Population,Europe (R10),5
@@ -9156,6 +9366,18 @@ Very Low,SSP2,GDP|MER,Pacific OECD (R10),5
 Very Low,SSP2,GDP|MER,Reforming Economies (R10),5
 Very Low,SSP2,GDP|MER,Rest of Asia (R10),5
 Very Low,SSP2,GDP|MER,World,5
+Very Low,SSP2,GDP|PPP,Africa (R10),6
+Very Low,SSP2,GDP|PPP,China+ (R10),6
+Very Low,SSP2,GDP|PPP,Europe (R10),6
+Very Low,SSP2,GDP|PPP,India+ (R10),6
+Very Low,SSP2,GDP|PPP,Latin America (R10),6
+Very Low,SSP2,GDP|PPP,Middle East (R10),6
+Very Low,SSP2,GDP|PPP,North America (R10),6
+Very Low,SSP2,GDP|PPP,Other (R10),1
+Very Low,SSP2,GDP|PPP,Pacific OECD (R10),6
+Very Low,SSP2,GDP|PPP,Reforming Economies (R10),6
+Very Low,SSP2,GDP|PPP,Rest of Asia (R10),6
+Very Low,SSP2,GDP|PPP,World,6
 Very Low,SSP2,Population,Africa (R10),6
 Very Low,SSP2,Population,China+ (R10),6
 Very Low,SSP2,Population,Europe (R10),6
