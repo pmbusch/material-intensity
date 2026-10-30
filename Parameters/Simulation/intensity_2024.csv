@@ -1,0 +1,129 @@
+region,material_group,mat_key,int_2024
+East Asia,biomass,crops,0.06847986260153192
+East Asia,biomass,grazed_biomass,0.01792009429393322
+East Asia,biomass,other_biomass,0.0010807903320900374
+East Asia,biomass,wood,0.012532658782658248
+East Asia,fossil_fuels,coal,0.0977247821777604
+East Asia,fossil_fuels,gas,0.011538442164514157
+East Asia,fossil_fuels,oil,0.02660693626948784
+East Asia,fossil_fuels,other_fossil,0.0012010127122171017
+Europe & Russia,biomass,crops,0.03301393138787376
+Europe & Russia,biomass,grazed_biomass,0.021173844093450755
+Europe & Russia,biomass,other_biomass,-8.600141278291202e-4
+Europe & Russia,biomass,wood,0.012065322819344002
+Europe & Russia,fossil_fuels,coal,0.022591767814738227
+Europe & Russia,fossil_fuels,gas,0.01862388593743125
+Europe & Russia,fossil_fuels,oil,0.02540859185109043
+Europe & Russia,fossil_fuels,other_fossil,-0.0026608654717090365
+Latin America,biomass,crops,0.1268142719962556
+Latin America,biomass,grazed_biomass,0.14141976323824174
+Latin America,biomass,other_biomass,5.357099738925965e-4
+Latin America,biomass,wood,0.02338123813389859
+Latin America,fossil_fuels,coal,0.00467984625118415
+Latin America,fossil_fuels,gas,0.01492300428870777
+Latin America,fossil_fuels,oil,0.021032846805699168
+Latin America,fossil_fuels,other_fossil,0.008910179165295228
+Middle East & North Africa,biomass,crops,0.061254059172499355
+Middle East & North Africa,biomass,grazed_biomass,0.031337245418671736
+Middle East & North Africa,biomass,other_biomass,0.0031509028195724465
+Middle East & North Africa,biomass,wood,0.006693525267523808
+Middle East & North Africa,fossil_fuels,coal,0.005297293123154178
+Middle East & North Africa,fossil_fuels,gas,0.05526265568223703
+Middle East & North Africa,fossil_fuels,oil,0.0731148668119249
+Middle East & North Africa,fossil_fuels,other_fossil,-0.011795856683479588
+North America,biomass,crops,0.025910846237882132
+North America,biomass,grazed_biomass,0.026324638825161475
+North America,biomass,other_biomass,-4.415895279528867e-4
+North America,biomass,wood,0.010463688433908411
+North America,fossil_fuels,coal,0.017880445736833155
+North America,fossil_fuels,gas,0.026623811426992636
+North America,fossil_fuels,oil,0.037385224171082025
+North America,fossil_fuels,other_fossil,0.033718062601345404
+Oceania,biomass,crops,0.043942536852719344
+Oceania,biomass,grazed_biomass,0.1608648239691843
+Oceania,biomass,other_biomass,-0.004744957210236433
+Oceania,biomass,wood,0.008691242566664058
+Oceania,fossil_fuels,coal,0.0551591711644506
+Oceania,fossil_fuels,gas,0.020053465492400283
+Oceania,fossil_fuels,oil,0.012306027839556945
+Oceania,fossil_fuels,other_fossil,0.019684563965879597
+South Asia,biomass,crops,0.09633918492404656
+South Asia,biomass,grazed_biomass,0.0353301245874988
+South Asia,biomass,other_biomass,5.16896825114363e-4
+South Asia,biomass,wood,0.018462161248057506
+South Asia,fossil_fuels,coal,0.0736713299664451
+South Asia,fossil_fuels,gas,0.00464864941550624
+South Asia,fossil_fuels,oil,0.017584484585276287
+South Asia,fossil_fuels,other_fossil,2.3963751657686306e-4
+Sub-Saharan Africa,biomass,crops,0.1564092627814235
+Sub-Saharan Africa,biomass,grazed_biomass,0.1892292439446188
+Sub-Saharan Africa,biomass,other_biomass,0.0037003394034254692
+Sub-Saharan Africa,biomass,wood,0.07901754604549033
+Sub-Saharan Africa,fossil_fuels,coal,0.03091406934981979
+Sub-Saharan Africa,fossil_fuels,gas,0.004157362822432532
+Sub-Saharan Africa,fossil_fuels,oil,0.008697583896864978
+Sub-Saharan Africa,fossil_fuels,other_fossil,0.014167371192349227
+East Asia,metal_ores,buildings,0.06003423827370709
+East Asia,metal_ores,civil,0.17175073093772825
+East Asia,metal_ores,machinery,0.08197710329195708
+East Asia,metal_ores,sl_products,0.009645293073552885
+East Asia,nonmetallic_minerals,buildings,8.029767436958778
+East Asia,nonmetallic_minerals,civil,3.451915975874386
+East Asia,nonmetallic_minerals,machinery,9.640395537475057e-4
+East Asia,nonmetallic_minerals,sl_products,4.089015176272835e-4
+Europe & Russia,metal_ores,buildings,0.07335934258823122
+Europe & Russia,metal_ores,civil,0.12848543136360147
+Europe & Russia,metal_ores,machinery,0.06379094929026052
+Europe & Russia,metal_ores,sl_products,0.005364860706712915
+Europe & Russia,nonmetallic_minerals,buildings,2.5485376631701606
+Europe & Russia,nonmetallic_minerals,civil,5.541796518928807
+Europe & Russia,nonmetallic_minerals,machinery,7.062249275236905e-4
+Europe & Russia,nonmetallic_minerals,sl_products,0.0012354254867558037
+Latin America,metal_ores,buildings,0.04840039606992396
+Latin America,metal_ores,civil,0.09409203109581173
+Latin America,metal_ores,machinery,0.038383154722754775
+Latin America,metal_ores,sl_products,0.005241892119301714
+Latin America,nonmetallic_minerals,buildings,2.524153732389581
+Latin America,nonmetallic_minerals,civil,3.465727646077368
+Latin America,nonmetallic_minerals,machinery,5.677708552483338e-4
+Latin America,nonmetallic_minerals,sl_products,8.813561082713191e-4
+Middle East & North Africa,metal_ores,buildings,0.07743039458447307
+Middle East & North Africa,metal_ores,civil,0.10386821625639908
+Middle East & North Africa,metal_ores,machinery,0.06283306957452679
+Middle East & North Africa,metal_ores,sl_products,0.007619928008437177
+Middle East & North Africa,nonmetallic_minerals,buildings,4.72320959324976
+Middle East & North Africa,nonmetallic_minerals,civil,5.243153292239554
+Middle East & North Africa,nonmetallic_minerals,machinery,1.526048483703694e-4
+Middle East & North Africa,nonmetallic_minerals,sl_products,6.478925601430394e-4
+North America,metal_ores,buildings,0.10106053621300312
+North America,metal_ores,civil,0.07757628829181609
+North America,metal_ores,machinery,0.04269258687710244
+North America,metal_ores,sl_products,0.004054948708136911
+North America,nonmetallic_minerals,buildings,1.0268948010341958
+North America,nonmetallic_minerals,civil,5.223082941681864
+North America,nonmetallic_minerals,machinery,4.6096436812716554e-4
+North America,nonmetallic_minerals,sl_products,4.136214087647484e-4
+Oceania,metal_ores,buildings,0.19611729487082305
+Oceania,metal_ores,civil,0.10413725680555713
+Oceania,metal_ores,machinery,0.14648744712109862
+Oceania,metal_ores,sl_products,0.02331442170008376
+Oceania,nonmetallic_minerals,buildings,1.6860072215238673
+Oceania,nonmetallic_minerals,civil,2.616369042965162
+Oceania,nonmetallic_minerals,machinery,1.1588505237140488e-4
+Oceania,nonmetallic_minerals,sl_products,0.0012348602438675973
+South Asia,metal_ores,buildings,0.017908157462538106
+South Asia,metal_ores,civil,0.046953436617652715
+South Asia,metal_ores,machinery,0.05132314142125568
+South Asia,metal_ores,sl_products,0.005884721211460954
+South Asia,nonmetallic_minerals,buildings,3.904969407679628
+South Asia,nonmetallic_minerals,civil,2.355683582773858
+South Asia,nonmetallic_minerals,machinery,9.355913971651272e-5
+South Asia,nonmetallic_minerals,sl_products,3.8108946734994703e-4
+Sub-Saharan Africa,metal_ores,buildings,0.039857020346588584
+Sub-Saharan Africa,metal_ores,civil,0.06268222074778958
+Sub-Saharan Africa,metal_ores,machinery,0.035447044278091276
+Sub-Saharan Africa,metal_ores,sl_products,0.004443773024665782
+Sub-Saharan Africa,nonmetallic_minerals,buildings,3.1224466505944037
+Sub-Saharan Africa,nonmetallic_minerals,civil,2.1213111228335766
+Sub-Saharan Africa,nonmetallic_minerals,machinery,1.5823025492082878e-4
+Sub-Saharan Africa,nonmetallic_minerals,sl_products,5.593847808681655e-4

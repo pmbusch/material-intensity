@@ -4,7 +4,8 @@
 ##   Fig4 - Climate, one column, three panels:
 ##     a) material vs. GDP growth (Figure5_Scatter.csv), margins: material density
 ##        (top), GDP histogram (right)
-##     b) cumulative material use vs. 2060 warming: scatter + 33%/66% HDR contours,
+##     (a and b: filled 33%/66% HDR contours + median run per SSP, no points)
+##     b) cumulative material use vs. 2060 warming: 33%/66% HDR contours,
 ##        each run at the IDW temperature of its nearest ScenarioMIP scenarios
 ##        (Figure 4 - Climate - PrepareData.R); temperature margin (right)
 ##     c) cumulative material composition per SSP
@@ -48,6 +49,7 @@ RANGE_MARGIN <- 26 # pt, right plot margin that holds the bars
 # Mapped version
 MAP_ALPHA <- 0.12 # point transparency
 HDR_PROBS <- c(0.66, 0.33) # contours enclosing 66% / 33% of the density
+HDR_ALPHA <- c("66%" = 0.25, "33%" = 0.55) # filled contours: 66% lighter, 33% medium (median dot: full colour)
 MAP_BW <- c(1500, 0.25) # 2D-density bandwidths (Gt, °C), MASS::kde2d convention
 MAT_SHORT <- c("Non-metallic minerals" = "Minerals", "Metal ores" = "Metals", "Fossil fuels" = "Fossil", "Biomass" = "Biomass")
 
@@ -220,20 +222,34 @@ for (yv in c("t_med", "t_p33", "t_p67")) {
     linetype = "dashed", colour = "grey55", linewidth = 0.3, hjust = 0.03, vjust = -0.3,
     size = pb_annot_size("small", 7)
   ) +
-  geom_point(size = 0.4, alpha = MAP_ALPHA) +
-  # Highest-density regions enclosing HDR_PROBS of each SSP's runs; fixed
-  # bandwidths, grid spans the whole panel so contours are not cut at the data range
-  ggdensity::geom_hdr_lines(
+  # Highest-density regions enclosing HDR_PROBS of each SSP's runs, filled, no
+  # outline (33% medium, 66% lighter); fixed bandwidths, grid spans the whole
+  # panel so contours are not cut at the data range
+  ggdensity::geom_hdr(
+    aes(fill = ssp), colour = NA,
     probs = HDR_PROBS, method = ggdensity::method_kde(h = MAP_BW),
-    xlim = X_LIM_MAP, ylim = Y_LIM_MAP, alpha = 1, linewidth = 0.4
+    xlim = X_LIM_MAP, ylim = Y_LIM_MAP
   ) +
-  geom_point(data = map_median, aes(x = x, y = y), shape = 16, size = 1.8) +
+  geom_point(data = map_median, aes(x = x, y = y, fill = ssp), shape = 21, colour = "white", stroke = 0.4, size = 2) +
   geom_text(
     data = map_median, aes(x = x, y = y, label = ssp),
     hjust = -0.3, vjust = -0.5, fontface = "bold", size = pb_annot_size("small", 7)
   ) +
-  geom_path(data = key_circles, aes(x = x, y = y, group = ring), inherit.aes = FALSE, colour = "grey30", linewidth = 0.4) +
-  annotate("point", x = KEY_X0, y = KEY_Y0, shape = 16, size = 1.8, colour = "grey30", alpha = key_alpha) +
+  # outer disc, then the inner disc knocked out in white and refilled, so each
+  # ring shows its own alpha as the (disjoint) HDR bands do
+  geom_polygon(
+    data = key_circles |> dplyr::filter(ring == "outer"), aes(x = x, y = y), inherit.aes = FALSE,
+    fill = "grey30", colour = NA, alpha = HDR_ALPHA[["66%"]]
+  ) +
+  geom_polygon(
+    data = key_circles |> dplyr::filter(ring == "inner"), aes(x = x, y = y), inherit.aes = FALSE,
+    fill = "white", colour = NA
+  ) +
+  geom_polygon(
+    data = key_circles |> dplyr::filter(ring == "inner"), aes(x = x, y = y), inherit.aes = FALSE,
+    fill = "grey30", colour = NA, alpha = HDR_ALPHA[["33%"]]
+  ) +
+  annotate("point", x = KEY_X0, y = KEY_Y0, shape = 21, size = 2, fill = "grey30", colour = "white", stroke = 0.4, alpha = key_alpha) +
   geom_segment(
     data = key_labels, aes(x = x, y = y, xend = xend, yend = yend), inherit.aes = FALSE,
     colour = "grey50", linewidth = 0.2
@@ -244,7 +260,13 @@ for (yv in c("t_med", "t_p33", "t_p67")) {
   ) +
   scale_colour_manual(values = SSP_COLORS, guide = "none") +
   scale_fill_manual(values = SSP_COLORS, guide = "none") +
-  scale_x_continuous(labels = scales::label_comma()) +
+  # HDR bands: after_stat(probs) is an ordered factor, outer 66% first
+  scale_alpha_manual(values = unname(HDR_ALPHA[c("66%", "33%")]), guide = "none") +
+  # X: ticks every 1,000 Gt, labels every 2,000 Gt
+  scale_x_continuous(
+    breaks = scales::breaks_width(1000),
+    labels = function(x) ifelse(round(x) %% 2000 == 0, scales::comma(x), "")
+  ) +
   scale_y_continuous(breaks = Y_BREAKS_MAP, labels = Y_LABELS_MAP) +
   coord_cartesian(xlim = X_LIM_MAP, ylim = Y_LIM_MAP, expand = FALSE, clip = "off") +
   labs(x = paste0("Cumulative material use ", FIG_START, "–", FIG_END, " (Gt)"), y = TEMP_TITLE) +
@@ -325,7 +347,7 @@ p_comp <- ggplot(comp_df, aes(x = share, y = ssp, fill = material)) +
 
 p4a_main <- map_panels$t_med +
   annotate("text", x = X_LIM_MAP[1], y = map_ylim$t_med[2], label = "b", fontface = "bold", hjust = -0.4, vjust = 1.3, size = pb_annot_size("small", 10)) +
-  labs(title = "Material use & Climate change") +
+  labs(title = "Material use & Global Temperature") +
   theme(plot.margin = margin(t = 10, r = 0, b = 4, l = 4, unit = "pt")) # r = 0: margin flush on the box
 
 # Temperature margin: Paris levels as dashed reference lines. Each SSP's curve
@@ -376,9 +398,20 @@ ssp_lab_b <- scatter_df |>
     x = pmax(x, x_range_b[1] + 0.14 * diff(x_range_b))
   )
 
+# Per-SSP median run position (dot, as in panel b)
+median_b <- scatter_df |>
+  dplyr::group_by(ssp) |>
+  dplyr::summarise(x = median(mat_cagr), y = median(gdp_cagr), .groups = "drop")
+
 p4b_main <- ggplot(scatter_df, aes(x = mat_cagr, y = gdp_cagr)) +
   geom_vline(xintercept = 0, linetype = "dashed", colour = "grey40", linewidth = 0.3) +
-  geom_point(aes(colour = ssp), size = 0.4, alpha = 0.65) +
+  # Same filled 33% / 66% highest-density regions as panel b (default KDE bandwidths)
+  ggdensity::geom_hdr(
+    aes(fill = ssp), colour = NA,
+    probs = HDR_PROBS, method = ggdensity::method_kde(),
+    xlim = x_range_b, ylim = y_range_b
+  ) +
+  geom_point(data = median_b, aes(x = x, y = y, fill = ssp), shape = 21, colour = "white", stroke = 0.4, size = 2) +
   geom_text(data = ssp_lab_b, aes(x = x, y = y, label = ssp, colour = ssp), hjust = 1.1, fontface = "bold", size = pb_annot_size("small", 7)) +
   geom_line(data = fit_line_b, colour = "black", linewidth = 0.5) +
   annotate(
@@ -387,6 +420,8 @@ p4b_main <- ggplot(scatter_df, aes(x = mat_cagr, y = gdp_cagr)) +
   ) +
   annotate("text", x = x_range_b[1], y = y_range_b[2], label = "a", fontface = "bold", hjust = -0.4, vjust = 1.3, size = pb_annot_size("small", 10)) +
   scale_colour_manual(values = SSP_COLORS, guide = "none") +
+  scale_fill_manual(values = SSP_COLORS, guide = "none") +
+  scale_alpha_manual(values = unname(HDR_ALPHA[c("66%", "33%")]), guide = "none") +
   coord_cartesian(xlim = x_range_b, ylim = y_range_b, expand = FALSE, clip = "off") +
   # X: ticks every 0.5%, labels on whole percents only
   scale_x_continuous(
@@ -396,10 +431,13 @@ p4b_main <- ggplot(scatter_df, aes(x = mat_cagr, y = gdp_cagr)) +
       ifelse(abs(pct - round(pct)) < 1e-6, paste0(round(pct), "%"), "")
     }
   ) +
-  # Y: ticks and labels every 0.5% (1.5%, 2%, 2.5%, 3%)
+  # Y: ticks every 0.25%, labels every 0.5% (1.5%, 2%, 2.5%, 3%)
   scale_y_continuous(
-    breaks = function(lims) (ceiling(lims[1] / 0.005 - 1e-9):floor(lims[2] / 0.005 + 1e-9)) * 0.005,
-    labels = function(x) paste0(format(round(x * 100, 1), drop0trailing = TRUE, trim = TRUE), "%")
+    breaks = function(lims) (ceiling(lims[1] / 0.0025 - 1e-9):floor(lims[2] / 0.0025 + 1e-9)) * 0.0025,
+    labels = function(x) {
+      pct <- round(x * 100, 6)
+      ifelse(abs(pct * 2 - round(pct * 2)) < 1e-6, paste0(format(round(pct, 1), drop0trailing = TRUE, trim = TRUE), "%"), "")
+    }
   ) +
   labs(x = paste0("Material consumption annual growth ", FIG_START, "–", FIG_END), y = paste0("GDP annual growth ", FIG_START, "–", FIG_END)) +
   theme_pb_small() +
@@ -466,7 +504,7 @@ fig4 <- patchwork::wrap_plots(
 )
 ggsave("Figures/Fig5 - Climate.png", fig4, units = "cm", dpi = 600, width = 8.7, height = 16.4, bg = "white")
 ggsave("Figures/SVG/Fig5 - Climate.svg", fig4, units = "cm", width = 8.7, height = 16.4, bg = "transparent")
-clean_svg("Figures/SVG/Fig5 - Climate.svg")
+group_svg_layers("Figures/SVG/Fig5 - Climate.svg")
 
 # Save figure data, one file per panel (margins are densities of the same runs)
 dir.create("Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
@@ -489,7 +527,7 @@ fig4_si <- (map_panels$t_p33 + labs(title = "33rd percentile warming", tag = "a"
     patchwork::inset_element(p_comp, left = 0.42, bottom = 0.04, right = 1, top = 0.42, align_to = "panel"))
 ggsave("Figures/Supporting-Figures/S23_Climate_Percentiles.png", fig4_si, units = "cm", dpi = 600, width = 17, height = 9, bg = "white")
 ggsave("Figures/SVG/Supporting-Figures/S23_Climate_Percentiles.svg", fig4_si, units = "cm", width = 17, height = 9, bg = "transparent")
-clean_svg("Figures/SVG/Supporting-Figures/S23_Climate_Percentiles.svg")
+group_svg_layers("Figures/SVG/Supporting-Figures/S23_Climate_Percentiles.svg")
 dir.create("Figures/Supporting-Figures/RawData/", showWarnings = FALSE, recursive = TRUE)
 readr::write_csv(mapped_df |> dplyr::select(run_id, ssp, total_Gt, t_p33, t_p67), "Figures/Supporting-Figures/RawData/S23_runs.csv")
 readr::write_csv(comp_df, "Figures/Supporting-Figures/RawData/S23_inset_composition.csv")
@@ -540,7 +578,7 @@ ggplot(s24_df) +
   )
 ggsave("Figures/Supporting-Figures/S24_MaterialShare_SSP.png", ggplot2::last_plot(), units = "cm", dpi = 600, width = 17, height = 6.5, bg = "white")
 ggsave("Figures/SVG/Supporting-Figures/S24_MaterialShare_SSP.svg", ggplot2::last_plot(), units = "cm", width = 17, height = 6.5, bg = "transparent")
-clean_svg("Figures/SVG/Supporting-Figures/S24_MaterialShare_SSP.svg")
+group_svg_layers("Figures/SVG/Supporting-Figures/S24_MaterialShare_SSP.svg")
 readr::write_csv(s24_df |> dplyr::select(ssp, material, share, q_lo, q_hi), "Figures/Supporting-Figures/RawData/S24_MaterialShare_SSP.csv")
 print(s24_df |> dplyr::select(ssp, material, share, q_lo, q_hi) |> dplyr::mutate(dplyr::across(c(share, q_lo, q_hi), \(v) round(100 * v, 1))) |> as.data.frame())
 

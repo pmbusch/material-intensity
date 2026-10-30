@@ -36,7 +36,7 @@ cat("=== Figure 3 - Growth Decoupling ===\n\n")
 results <- arrow::open_dataset("Results/MC/mc_results.parquet") |>
   dplyr::select(run_id, region, material_group, material_key, year, in_use_stock_Mt, primary_consumption_Mt, secondary_supply_Mt, waste_Mt) |>
   dplyr::filter(material_group != "metal_gold") |>
-  dplyr::mutate(material_group = dplyr::if_else(material_group %in% c("metal_cu", "metal_al", "metal_othernonfe"), "metal_nonfe", material_group)) |>
+  dplyr::mutate(material_group = dplyr::if_else(material_group %in% !!c("metal_cu", "metal_al", "metal_othernonfe"), "metal_nonfe", material_group)) |>
   dplyr::collect()
 mc_input_matrix <- readr::read_csv("Parameters/Simulation/mc_input_matrix.csv", show_col_types = FALSE)
 
